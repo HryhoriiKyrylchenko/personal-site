@@ -1,0 +1,12 @@
+global using Microsoft.Extensions.Hosting;
+global using Microsoft.EntityFrameworkCore;
+global using PersonalSite.Domain.Entities.Analytics;
+global using PersonalSite.Domain.Entities.Blog;
+global using PersonalSite.Domain.Entities.Common;
+global using PersonalSite.Domain.Entities.Contact;
+global using PersonalSite.Domain.Entities.Projects;
+global using PersonalSite.Domain.Entities.Skills;
+global using PersonalSite.Domain.Entities.Translations;
+global using PersonalSite.Infrastructure.Persistence;
+global using Microsoft.Extensions.Configuration;
+global using Microsoft.Extensions.DependencyInjection;

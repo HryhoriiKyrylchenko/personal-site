@@ -6,7 +6,7 @@ public class UserSkill : SoftDeletableEntity
     [Key]
     public Guid Id { get; set; }
     [Required]
-    public int SkillId { get; set; }
+    public Guid SkillId { get; set; }
     [ForeignKey("SkillId")]
     public virtual Skill Skill { get; set; } = null!;
     [Range(1,5)]

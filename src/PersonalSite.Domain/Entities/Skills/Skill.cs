@@ -6,7 +6,7 @@ public class Skill
     [Key]
     public Guid Id { get; set; }
     [Required]
-    public int CategoryId { get; set; }
+    public Guid CategoryId { get; set; }
     [ForeignKey("CategoryId")]
     public virtual SkillCategory Category { get; set; } = null!;
     [Required, MaxLength(50)]

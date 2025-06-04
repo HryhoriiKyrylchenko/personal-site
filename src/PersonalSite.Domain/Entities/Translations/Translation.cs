@@ -8,5 +8,5 @@ public abstract class Translation
     [Required, MaxLength(2)]
     public string LanguageCode { get; set; } = string.Empty;
     [ForeignKey("LanguageCode")]
-    public Language Language { get; set; } = null!;
+    public virtual Language Language { get; set; } = null!;
 }
