@@ -1,0 +1,14 @@
+namespace PersonalSite.Infrastructure.Persistence.Repositories.Translations;
+
+public class LanguageRepository : EfRepository<Language>, ILanguageRepository
+{
+    public LanguageRepository(ApplicationDbContext context) : base(context)
+    {
+    }
+
+    public async Task<Language?> GetByCodeAsync(string code, CancellationToken cancellationToken = default)
+    {
+        return await DbContext.Languages
+            .FirstOrDefaultAsync(l => l.Code == code, cancellationToken);
+    }
+}
