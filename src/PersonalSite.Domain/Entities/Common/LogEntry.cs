@@ -4,7 +4,7 @@ namespace PersonalSite.Domain.Entities.Common;
 public class LogEntry
 {
     [Key]
-    public Guid Id { get; set; } = Guid.NewGuid();
+    public Guid Id { get; set; }
 
     [Required]
     public DateTime Timestamp { get; set; } = DateTime.UtcNow;

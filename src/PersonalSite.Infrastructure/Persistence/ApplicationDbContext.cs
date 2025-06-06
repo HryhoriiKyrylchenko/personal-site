@@ -105,12 +105,16 @@ public class ApplicationDbContext : DbContext
             entity.HasIndex(e => e.SkillId);
         });
         
+        modelBuilder.Entity<Language>(entity =>
+        {
+            entity.HasIndex(e => e.Code).IsUnique();
+        });
+        
         modelBuilder.Entity<BlogPostTranslation>(entity =>
         {
             entity.HasIndex(e => e.BlogPostId);
         });
-       
-
+        
         modelBuilder.Entity<SkillTranslation>(entity =>
         {
             entity.HasIndex(e => e.Name);

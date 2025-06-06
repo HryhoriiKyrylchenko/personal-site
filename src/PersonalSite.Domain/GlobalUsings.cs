@@ -8,5 +8,4 @@ global using PersonalSite.Domain.Entities.Translations;
 global using PersonalSite.Domain.Entities.Blog;
 global using PersonalSite.Domain.Entities.Contact;
 global using PersonalSite.Domain.Entities.Common;
-global using PersonalSite.Domain.Interfaces;
 global using PersonalSite.Domain.Entities.Analytics;

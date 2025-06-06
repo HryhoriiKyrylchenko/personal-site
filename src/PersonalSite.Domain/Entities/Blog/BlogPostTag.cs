@@ -9,5 +9,5 @@ public class BlogPostTag
     [Required, MaxLength(50)]
     public string Name { get; set; } = string.Empty;
 
-    public ICollection<PostTag> PostTags { get; set; } = [];
+    public virtual ICollection<PostTag> PostTags { get; set; } = [];
 }

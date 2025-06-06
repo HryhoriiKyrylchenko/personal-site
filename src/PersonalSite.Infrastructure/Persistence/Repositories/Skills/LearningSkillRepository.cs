@@ -18,6 +18,11 @@ public class LearningSkillRepository : EfRepository<LearningSkill>, ILearningSki
     {
         return await DbContext.LearningSkills
             .Where(ls => !ls.IsDeleted)
+            .Include(us => us.Skill)
+                .ThenInclude(s => s.Translations)
+            .Include(us => us.Skill)
+                .ThenInclude(s => s.Category)
+                    .ThenInclude(c => c.Translations)
             .OrderBy(ls => ls.DisplayOrder)
             .ToListAsync(cancellationToken);
     }
