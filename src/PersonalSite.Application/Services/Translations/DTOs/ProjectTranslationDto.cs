@@ -3,7 +3,7 @@ namespace PersonalSite.Application.Services.Translations.DTOs;
 public class ProjectTranslationDto
 {
     public Guid Id { get; set; }
-    public string LanguageCode { get; set; } = string.Empty;
+    public Guid LanguageId { get; set; }
     public Guid ProjectId { get; set; }
     public string Title { get; set; } = string.Empty;
     public string ShortDescription { get; set; } = string.Empty;

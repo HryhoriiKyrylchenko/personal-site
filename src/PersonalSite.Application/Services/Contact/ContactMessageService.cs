@@ -30,17 +30,45 @@ public class ContactMessageService :
 
     public override async Task AddAsync(ContactMessageAddRequest request, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        var newMessage = new ContactMessage
+        {
+            Id = Guid.NewGuid(),
+            Name = request.Name,
+            Email = request.Email,
+            Subject = request.Subject,
+            Message = request.Message,
+            IpAddress = request.IpAddress,
+            UserAgent = request.UserAgent,
+            CreatedAt = DateTime.UtcNow,
+            IsRead = false
+        };
+        
+        await Repository.AddAsync(newMessage, cancellationToken);
+        await UnitOfWork.SaveChangesAsync(cancellationToken);
     }
 
     public override async Task UpdateAsync(ContactMessageUpdateRequest request, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        var existingMessage = await Repository.GetByIdAsync(request.Id, cancellationToken);
+        if(existingMessage is null) throw new Exception("Message not found");
+
+        existingMessage.Name = request.Name;
+        existingMessage.Email = request.Email;
+        existingMessage.Subject = request.Subject;
+        existingMessage.Message = request.Message;
+        
+        Repository.Update(existingMessage);
+        await UnitOfWork.SaveChangesAsync(cancellationToken);
     }
 
     public override async Task DeleteAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        var entity = await Repository.GetByIdAsync(id, cancellationToken);
+        if(entity is not null)
+        {
+            Repository.Remove(entity);
+            await UnitOfWork.SaveChangesAsync(cancellationToken);
+        }   
     }
 
     public async Task<List<ContactMessageDto>> GetUnreadMessagesAsync(CancellationToken cancellationToken = default)
@@ -52,5 +80,10 @@ public class ContactMessageService :
     public async Task MarkMessageAsReadAsync(Guid id, CancellationToken cancellationToken = default)
     {
         await _contactMessageRepository.MarkAsReadAsync(id, cancellationToken);
+    }
+
+    public async Task MarkMessageAsUnreadAsync(Guid id, CancellationToken cancellationToken = default)
+    {
+        await _contactMessageRepository.MarkAsUnreadAsync(id, cancellationToken);
     }
 }

@@ -17,42 +17,52 @@ public class UserSkillService :
         _language = language;
     }
 
-    public async Task<List<SkillDto>> GetAllAsSkillAsync(CancellationToken cancellationToken = default)
+    public override async Task<UserSkillDto?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        var skills = await _userSkillRepository.GetAllActiveAsync(cancellationToken);
-
-        return EntityToDtoMapper.MapSkillsToDtoList(skills.Select(us => us.Skill), _language.LanguageCode);
+        var userSkill = await _userSkillRepository.GetWithSkillDataById(id, cancellationToken);
+        
+        return userSkill == null ? null : EntityToDtoMapper.MapUserSkillToDto(userSkill, _language.LanguageCode);
     }
 
-    public async Task<List<UserSkillDto>> GetAllWithFullDataAsync(CancellationToken cancellationToken = default)
+    public override async Task<IReadOnlyList<UserSkillDto>> GetAllAsync(CancellationToken cancellationToken = default)
     {
         var skills = await _userSkillRepository.GetAllActiveAsync(cancellationToken);
 
         return EntityToDtoMapper.MapUserSkillsToDtoList(skills, _language.LanguageCode);
     }
 
-    public override async Task<UserSkillDto?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
-    {
-        throw new NotImplementedException();
-    }
-
-    public override async Task<IReadOnlyList<UserSkillDto>> GetAllAsync(CancellationToken cancellationToken = default)
-    {
-        throw new NotImplementedException();
-    }
-
     public override async Task AddAsync(UserSkillAddRequest request, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        var newUserSkill = new UserSkill
+        {
+            Id = Guid.NewGuid(),
+            SkillId = request.SkillId,
+            Proficiency = request.Proficiency,
+            CreatedAt = DateTime.UtcNow
+        };
+        
+        await _userSkillRepository.AddAsync(newUserSkill, cancellationToken);
+        await UnitOfWork.SaveChangesAsync(cancellationToken);   
     }
 
     public override async Task UpdateAsync(UserSkillUpdateRequest request, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        var existingUserSkill = await _userSkillRepository.GetByIdAsync(request.Id, cancellationToken);
+        if (existingUserSkill is null) throw new Exception("User skill not found");
+        
+        existingUserSkill.Proficiency = request.Proficiency;
+        
+        _userSkillRepository.Update(existingUserSkill);
+        await UnitOfWork.SaveChangesAsync(cancellationToken);  
     }
 
     public override async Task DeleteAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        var entity = await Repository.GetByIdAsync(id, cancellationToken);
+        if (entity is not null)
+        {
+            Repository.Remove(entity);
+            await UnitOfWork.SaveChangesAsync(cancellationToken);
+        } 
     }
 }

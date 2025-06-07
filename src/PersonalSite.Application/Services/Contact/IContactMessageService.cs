@@ -4,4 +4,5 @@ public interface IContactMessageService : ICrudService<ContactMessageDto, Contac
 {
     Task<List<ContactMessageDto>> GetUnreadMessagesAsync(CancellationToken cancellationToken = default);
     Task MarkMessageAsReadAsync(Guid id, CancellationToken cancellationToken = default);
+    Task MarkMessageAsUnreadAsync(Guid id, CancellationToken cancellationToken = default);
 }

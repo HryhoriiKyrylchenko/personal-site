@@ -9,6 +9,6 @@ public class SkillCategoryTranslationRepository : EfRepository<SkillCategoryTran
     public async Task<SkillCategoryTranslation?> GetBySkillCategoryIdAndLanguageAsync(Guid skillCategoryId, string languageCode, CancellationToken cancellationToken = default)
     {
         return await DbContext.SkillCategoryTranslations
-            .FirstOrDefaultAsync(sct => sct.SkillCategoryId == skillCategoryId && sct.LanguageCode == languageCode, cancellationToken);
+            .FirstOrDefaultAsync(sct => sct.SkillCategoryId == skillCategoryId && sct.Language.Code == languageCode, cancellationToken);
     }
 }

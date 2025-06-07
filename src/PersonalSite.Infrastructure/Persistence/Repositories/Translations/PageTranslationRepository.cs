@@ -6,9 +6,10 @@ public class PageTranslationRepository : EfRepository<PageTranslation>, IPageTra
     {
     }
 
-    public async Task<PageTranslation?> GetByPageKeyAndLanguageAsync(string pageKey, string languageCode, CancellationToken cancellationToken = default)
+    public async Task<List<PageTranslation>> GetAllByPageKeyAsync(string pageKey, CancellationToken cancellationToken = default)
     {
         return await DbContext.PageTranslations
-            .FirstOrDefaultAsync(pt => pt.PageKey == pageKey && pt.LanguageCode == languageCode, cancellationToken);
+            .Where(p => p.Page.Key == pageKey)
+            .ToListAsync(cancellationToken);
     }
 }

@@ -27,16 +27,33 @@ public class BlogPostTagService :
 
     public override async Task AddAsync(BlogPostTagAddRequest request, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        var newTag = new BlogPostTag
+        {
+            Id = Guid.NewGuid(),
+            Name = request.Name
+        };
+        
+        await Repository.AddAsync(newTag, cancellationToken);
+        await UnitOfWork.SaveChangesAsync(cancellationToken);
     }
 
     public override async Task UpdateAsync(BlogPostTagUpdateRequest request, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        var existingTag = await Repository.GetByIdAsync(request.Id, cancellationToken);
+        if (existingTag is null) throw new Exception("Tag not found");
+        
+        existingTag.Name = request.Name;
+        
+        Repository.Update(existingTag);
     }
 
     public override async Task DeleteAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        var entity = await Repository.GetByIdAsync(id, cancellationToken);
+        if (entity is not null)
+        {
+            Repository.Remove(entity);
+            await UnitOfWork.SaveChangesAsync(cancellationToken);
+        }
     }
 }

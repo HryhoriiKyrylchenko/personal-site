@@ -25,4 +25,15 @@ public class UserSkillRepository : EfRepository<UserSkill>, IUserSkillRepository
                     .ThenInclude(c => c.Translations)
             .ToListAsync(cancellationToken);
     }
+
+    public async Task<UserSkill?> GetWithSkillDataById(Guid id, CancellationToken cancellationToken)
+    {
+        return await DbContext.UserSkills
+            .Include(us => us.Skill)
+                .ThenInclude(s => s.Translations)
+            .Include(us => us.Skill)
+                .ThenInclude(s => s.Category)
+                    .ThenInclude(c => c.Translations)
+            .FirstOrDefaultAsync(us => us.Id == id, cancellationToken);   
+    }
 }

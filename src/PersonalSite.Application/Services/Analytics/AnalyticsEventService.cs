@@ -27,12 +27,33 @@ public class AnalyticsEventService :
 
     public override async Task AddAsync(AnalyticsEventAddRequest request, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        var newEvent = new AnalyticsEvent
+        {
+            Id = Guid.NewGuid(),
+            EventType = request.EventType,
+            PageSlug = request.PageSlug,
+            Referrer = request.Referrer,
+            UserAgent = request.UserAgent,
+            CreatedAt = DateTime.UtcNow,
+            AdditionalDataJson = request.AdditionalDataJson
+        };
+        
+        await Repository.AddAsync(newEvent, cancellationToken);
+        await UnitOfWork.SaveChangesAsync(cancellationToken);
     }
 
     public override async Task UpdateAsync(AnalyticsEventUpdateRequest request, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        var existingEvent = await Repository.GetByIdAsync(request.Id, cancellationToken);
+        if (existingEvent is null) throw new Exception("Event not found");
+        
+        existingEvent.PageSlug = request.PageSlug;
+        existingEvent.Referrer = request.Referrer;
+        existingEvent.UserAgent = request.UserAgent;
+        existingEvent.AdditionalDataJson = request.AdditionalDataJson;
+        
+        Repository.Update(existingEvent);
+        await UnitOfWork.SaveChangesAsync(cancellationToken);
     }
 
     public override async Task DeleteAsync(Guid id, CancellationToken cancellationToken = default)

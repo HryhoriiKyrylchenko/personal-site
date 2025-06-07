@@ -9,6 +9,7 @@ public class BlogPostRepository : EfRepository<BlogPost>, IBlogPostRepository
         return await DbContext.BlogPosts
             .Where(p => !p.IsDeleted)
             .Include(p => p.Translations)
+                .ThenInclude(t => t.Language)
             .Include(p => p.PostTags)
                 .ThenInclude(pt => pt.BlogPostTag)
             .FirstOrDefaultAsync(p => p.Id == id, cancellationToken);
@@ -18,6 +19,7 @@ public class BlogPostRepository : EfRepository<BlogPost>, IBlogPostRepository
     {
         return await DbContext.BlogPosts
             .Include(p => p.Translations)
+                .ThenInclude(t => t.Language)
             .Include(p => p.PostTags)
                 .ThenInclude(pt => pt.BlogPostTag)
             .FirstOrDefaultAsync(p => p.Slug == slug, cancellationToken);
@@ -28,6 +30,7 @@ public class BlogPostRepository : EfRepository<BlogPost>, IBlogPostRepository
         return await DbContext.BlogPosts
             .Where(p => p.IsPublished && !p.IsDeleted)
             .Include(p => p.Translations)
+                .ThenInclude(t => t.Language)
             .Include(p => p.PostTags)
                 .ThenInclude(pt => pt.BlogPostTag)
             .OrderByDescending(p => p.PublishedAt)
@@ -39,6 +42,7 @@ public class BlogPostRepository : EfRepository<BlogPost>, IBlogPostRepository
         return await DbContext.BlogPosts
             .Where(p => !p.IsDeleted)
             .Include(p => p.Translations)
+                .ThenInclude(t => t.Language)
             .Include(p => p.PostTags)
                 .ThenInclude(pt => pt.BlogPostTag)
             .OrderByDescending(p => p.CreatedAt)

@@ -2,7 +2,7 @@ namespace PersonalSite.Application.Services.Translations.DTOs;
 
 public class PageTranslationDto
 {
-    public string PageKey { get; set; } = string.Empty;
+    public Guid PageId { get; set; }
     public Dictionary<string, string> Data { get; set; } = [];
     public string Title { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;

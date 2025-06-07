@@ -36,17 +36,39 @@ public class BlogPostService :
 
     public override async Task AddAsync(BlogPostAddRequest request, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        var newPost = new BlogPost
+        {
+            Id = Guid.NewGuid(),
+            Slug = request.Slug,
+            CoverImage = request.CoverImage,
+            CreatedAt = DateTime.UtcNow,
+            IsPublished = false
+        };
+        
+        await _blogPostRepository.AddAsync(newPost, cancellationToken);
+        await UnitOfWork.SaveChangesAsync(cancellationToken);
     }
 
     public override async Task UpdateAsync(BlogPostUpdateRequest request, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        var existingPost = await _blogPostRepository.GetByIdAsync(request.Id, cancellationToken);
+        if (existingPost is null) throw new Exception("Post not found");
+        
+        existingPost.Slug = request.Slug;
+        existingPost.CoverImage = request.CoverImage;
+        existingPost.UpdatedAt = DateTime.UtcNow;
+        
+        _blogPostRepository.Update(existingPost);
     }
 
     public override async Task DeleteAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        var entity = await _blogPostRepository.GetByIdAsync(id, cancellationToken);
+        if (entity is not null)
+        {
+            _blogPostRepository.Remove(entity);
+            await UnitOfWork.SaveChangesAsync(cancellationToken);
+        }
     }
 
     public async Task PublishPostAsync(Guid id, CancellationToken cancellationToken = default)

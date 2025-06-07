@@ -36,3 +36,7 @@ global using PersonalSite.Application.Services.Contact.Requests;
 global using PersonalSite.Application.Services.Projects.Requests;
 global using PersonalSite.Application.Services.Skills.Requests;
 global using PersonalSite.Application.Services.Translations.Requests;
+global using PersonalSite.Domain.Enums;
+global using PersonalSite.Application.Services.Pages.DTOs;
+global using PersonalSite.Domain.Entities.Pages;
+global using PersonalSite.Application.Services.Pages.Requests;

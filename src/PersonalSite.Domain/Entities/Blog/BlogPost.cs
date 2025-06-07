@@ -15,7 +15,7 @@ public class BlogPost : SoftDeletableEntity
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
     
-    public bool IsPublished { get; set; } = false;
+    public bool IsPublished { get; set; }
     public DateTime? PublishedAt { get; set; }
     
     public virtual ICollection<BlogPostTranslation> Translations { get; set; } = [];

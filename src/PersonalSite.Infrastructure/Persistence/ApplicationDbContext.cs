@@ -1,3 +1,5 @@
+using PersonalSite.Domain.Entities.Pages;
+
 namespace PersonalSite.Infrastructure.Persistence;
 
 public class ApplicationDbContext : DbContext
@@ -10,6 +12,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<ContactMessage> ContactMessages { get; set; }
     public DbSet<Project> Projects { get; set; }
     public DbSet<LearningSkill> LearningSkills { get; set; }
+    public DbSet<Page> Pages { get; set; }
     public DbSet<ProjectSkill> ProjectSkills { get; set; }
     public DbSet<Skill> Skills { get; set; }
     public DbSet<SkillCategory> SkillCategories { get; set; }
@@ -81,6 +84,11 @@ public class ApplicationDbContext : DbContext
             entity.HasIndex(e => e.DisplayOrder);
         });
 
+        modelBuilder.Entity<Page>(entity =>
+        {
+            entity.HasIndex(p => p.Key).IsUnique();
+        });
+
         modelBuilder.Entity<ProjectSkill>(entity =>
         {
             entity.HasIndex(e => e.ProjectId);
@@ -124,7 +132,7 @@ public class ApplicationDbContext : DbContext
         {
             entity.HasOne(t => t.Language)
                 .WithMany()
-                .HasForeignKey(t => t.LanguageCode)
+                .HasForeignKey(t => t.LanguageId)
                 .OnDelete(DeleteBehavior.Restrict);
         });
     }

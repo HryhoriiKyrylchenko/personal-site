@@ -4,48 +4,80 @@ public class PageTranslationService :
     CrudServiceBase<PageTranslation, PageTranslationDto, PageTranslationAddRequest, PageTranslationUpdateRequest>, 
     IPageTranslationService
 {
-    private readonly LanguageContext _language;
     private readonly IPageTranslationRepository _pageTranslationRepository;
     
     public PageTranslationService(
         IPageTranslationRepository repository, 
-        IUnitOfWork unitOfWork,
-        LanguageContext language) 
+        IUnitOfWork unitOfWork) 
         : base(repository, unitOfWork)
     {
-        _language = language;
         _pageTranslationRepository = repository;
     }
 
-    public async Task<PageTranslationDto?> GetPageByKeyAsync(string pageKey, CancellationToken cancellationToken = default)
+    public async Task<List<PageTranslationDto>> GetAllByPageKeyAsync(string pageKey, CancellationToken cancellationToken = default)
     {
-        var page = await _pageTranslationRepository.GetByPageKeyAndLanguageAsync(pageKey, _language.LanguageCode, cancellationToken);
-        
-        return page == null ? null : EntityToDtoMapper.MapPageTranslationToDto(page);
+        var pages = await _pageTranslationRepository.GetAllByPageKeyAsync(pageKey, cancellationToken);
+
+        return EntityToDtoMapper.MapPageTranslationsToDtoList(pages);
     }
 
     public override async Task<PageTranslationDto?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        var pageTranslation = await _pageTranslationRepository.GetByIdAsync(id, cancellationToken);
+        return pageTranslation == null
+            ? null
+            : EntityToDtoMapper.MapPageTranslationToDto(pageTranslation);
     }
 
     public override async Task<IReadOnlyList<PageTranslationDto>> GetAllAsync(CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        var pageTranslations = await _pageTranslationRepository.ListAsync(cancellationToken);
+        
+        return EntityToDtoMapper.MapPageTranslationsToDtoList(pageTranslations);
     }
 
     public override async Task AddAsync(PageTranslationAddRequest request, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        var newPageTranslation = new PageTranslation
+        {
+            Id = Guid.NewGuid(),
+            LanguageId = request.LanguageId,
+            PageId = request.PageId,
+            Data = request.Data,
+            Title = request.Title,
+            Description = request.Description,
+            MetaTitle = request.MetaTitle,
+            MetaDescription = request.MetaDescription,
+            OgImage = request.OgImage
+        };
+        
+        await _pageTranslationRepository.AddAsync(newPageTranslation, cancellationToken);
+        await UnitOfWork.SaveChangesAsync(cancellationToken);
     }
 
     public override async Task UpdateAsync(PageTranslationUpdateRequest request, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        var existingPageTranslation = await _pageTranslationRepository.GetByIdAsync(request.Id, cancellationToken);
+        if (existingPageTranslation is null) throw new Exception("Page translation not found");
+        
+        existingPageTranslation.Data = request.Data;
+        existingPageTranslation.Title = request.Title;
+        existingPageTranslation.Description = request.Description;
+        existingPageTranslation.MetaTitle = request.MetaTitle;
+        existingPageTranslation.MetaDescription = request.MetaDescription;
+        existingPageTranslation.OgImage = request.OgImage;
+        
+        _pageTranslationRepository.Update(existingPageTranslation);
+        await UnitOfWork.SaveChangesAsync(cancellationToken);
     }
 
     public override async Task DeleteAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        var entity = await _pageTranslationRepository.GetByIdAsync(id, cancellationToken);
+        if (entity is not null)
+        {
+            _pageTranslationRepository.Remove(entity);
+            await UnitOfWork.SaveChangesAsync(cancellationToken);
+        }  
     }
 }

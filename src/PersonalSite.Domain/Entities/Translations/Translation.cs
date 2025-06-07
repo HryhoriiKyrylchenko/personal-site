@@ -6,7 +6,7 @@ public abstract class Translation
     [Key]
     public Guid Id { get; set; }
     [Required, MaxLength(2)]
-    public string LanguageCode { get; set; } = string.Empty;
-    [ForeignKey("LanguageCode")]
+    public Guid LanguageId { get; set; }
+    [ForeignKey("LanguageId")]
     public virtual Language Language { get; set; } = null!;
 }

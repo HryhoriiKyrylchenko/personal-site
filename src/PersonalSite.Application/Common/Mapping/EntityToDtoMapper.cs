@@ -5,7 +5,7 @@ public static class EntityToDtoMapper
     public static BlogPostDto MapBlogPostToDto(BlogPost entity, string languageCode)
     {
         var translation = entity.Translations
-            .FirstOrDefault(t => t.LanguageCode.Equals(languageCode, StringComparison.OrdinalIgnoreCase));
+            .FirstOrDefault(t => t.Language.Code.Equals(languageCode, StringComparison.OrdinalIgnoreCase));
 
         return new BlogPostDto
         {
@@ -105,7 +105,7 @@ public static class EntityToDtoMapper
     public static SkillCategoryDto MapSkillCategoryToDto(SkillCategory entity, string languageCode)
     {
         var translation = entity.Translations
-            .FirstOrDefault(t => t.LanguageCode.Equals(languageCode, 
+            .FirstOrDefault(t => t.Language.Code.Equals(languageCode, 
                 StringComparison.OrdinalIgnoreCase));
         
         return new SkillCategoryDto
@@ -127,7 +127,7 @@ public static class EntityToDtoMapper
     public static SkillDto MapSkillToDto(Skill entity, string languageCode)
     {
         var translation = entity.Translations
-            .FirstOrDefault(t => t.LanguageCode.Equals(languageCode, 
+            .FirstOrDefault(t => t.Language.Code.Equals(languageCode, 
                 StringComparison.OrdinalIgnoreCase));
 
         return new SkillDto
@@ -148,7 +148,7 @@ public static class EntityToDtoMapper
     public static ProjectDto MapProjectToDto(Project entity, string languageCode)
     {
         var translation = entity.Translations
-            .FirstOrDefault(t => t.LanguageCode.Equals(languageCode, 
+            .FirstOrDefault(t => t.Language.Code.Equals(languageCode, 
                 StringComparison.OrdinalIgnoreCase));
 
         return new ProjectDto
@@ -208,7 +208,7 @@ public static class EntityToDtoMapper
     {
         return new PageTranslationDto
         {
-            PageKey = entity.PageKey,
+            PageId = entity.PageId,
             Data = entity.Data,
             Title = entity.Title,
             Description = entity.Description,
@@ -217,13 +217,18 @@ public static class EntityToDtoMapper
             OgImage = entity.OgImage,
         };
     }
+    
+    public static List<PageTranslationDto> MapPageTranslationsToDtoList(IEnumerable<PageTranslation> entities)
+    {
+        return entities.Select(MapPageTranslationToDto).ToList();
+    }
 
     public static BlogPostTranslationDto MapBlogPostTranslationToDto(BlogPostTranslation entity)
     {
         return new BlogPostTranslationDto
         {
             Id = entity.Id,
-            LanguageCode = entity.LanguageCode,
+            LanguageId = entity.LanguageId,
             BlogPostId = entity.BlogPostId,
             Title = entity.Title,
             Excerpt = entity.Excerpt,
@@ -260,7 +265,7 @@ public static class EntityToDtoMapper
         return new ProjectTranslationDto
         {
             Id = entity.Id,
-            LanguageCode = entity.LanguageCode,
+            LanguageId = entity.LanguageId,
             ProjectId = entity.ProjectId,
             Title = entity.Title,
             ShortDescription = entity.ShortDescription,
@@ -282,7 +287,7 @@ public static class EntityToDtoMapper
         return new SkillCategoryTranslationDto
         {
             Id = entity.Id,
-            LanguageCode = entity.LanguageCode,
+            LanguageId = entity.LanguageId,
             SkillCategoryId = entity.SkillCategoryId,
             Name = entity.Name,
             Description = entity.Description
@@ -300,7 +305,7 @@ public static class EntityToDtoMapper
         return new SkillTranslationDto
         {
             Id = entity.Id,
-            LanguageCode = entity.LanguageCode,
+            LanguageId = entity.LanguageId,
             SkillId = entity.SkillId,
             Name = entity.Name,
             Description = entity.Description
@@ -311,5 +316,44 @@ public static class EntityToDtoMapper
         IEnumerable<SkillTranslation> entities)
     {
         return entities.Select(MapSkillTranslationToDto).ToList();
+    }
+
+    public static ProjectSkillDto MapProjectSkillToDto(ProjectSkill entity, string languageCode)
+    {
+        return new ProjectSkillDto
+        {
+            Id = entity.Id,
+            ProjectId = entity.ProjectId,
+            Skill = MapSkillToDto(entity.Skill, languageCode)
+        };
+    }
+    
+    public static List<ProjectSkillDto> MapProjectSkillsToDtoList(IEnumerable<ProjectSkill> entities, string languageCode)
+    {
+        return entities.Select(e => MapProjectSkillToDto(e, languageCode)).ToList();
+    }
+
+    public static PageDto MapPageToDto(Page entity, string languageCode)
+    {
+        var translation = entity.Translations
+            .FirstOrDefault(p => p.Language.Code.Equals(languageCode, 
+                StringComparison.OrdinalIgnoreCase));
+
+        return new PageDto
+        {
+            Id = entity.Id,
+            Key = entity.Key,
+            Data = translation?.Data ?? new Dictionary<string, string>(),
+            Title = translation?.Title ?? string.Empty,
+            Description = translation?.Description ?? string.Empty,
+            MetaTitle = translation?.MetaTitle ?? string.Empty,
+            MetaDescription = translation?.MetaDescription ?? string.Empty,
+            OgImage = translation?.OgImage ?? string.Empty
+        };
+    }
+
+    public static List<PageDto> MapPagesToDtoList(IEnumerable<Page> entities, string languageCode)
+    {
+        return entities.Select(e => MapPageToDto(e, languageCode)).ToList();
     }
 }
