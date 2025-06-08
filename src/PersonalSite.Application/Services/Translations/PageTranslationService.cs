@@ -23,7 +23,7 @@ public class PageTranslationService :
 
     public override async Task<PageTranslationDto?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        var pageTranslation = await _pageTranslationRepository.GetByIdAsync(id, cancellationToken);
+        var pageTranslation = await _pageTranslationRepository.GetWithLanguageByIdAsync(id, cancellationToken);
         return pageTranslation == null
             ? null
             : EntityToDtoMapper.MapPageTranslationToDto(pageTranslation);
@@ -31,7 +31,7 @@ public class PageTranslationService :
 
     public override async Task<IReadOnlyList<PageTranslationDto>> GetAllAsync(CancellationToken cancellationToken = default)
     {
-        var pageTranslations = await _pageTranslationRepository.ListAsync(cancellationToken);
+        var pageTranslations = await _pageTranslationRepository.ListWithLanguageAsync(cancellationToken);
         
         return EntityToDtoMapper.MapPageTranslationsToDtoList(pageTranslations);
     }

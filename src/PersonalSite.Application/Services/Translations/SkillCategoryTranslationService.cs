@@ -4,16 +4,19 @@ public class SkillCategoryTranslationService :
     CrudServiceBase<SkillCategoryTranslation, SkillCategoryTranslationDto, SkillCategoryTranslationAddRequest, SkillCategoryTranslationUpdateRequest>, 
     ISkillCategoryTranslationService
 {
+    ISkillCategoryTranslationRepository _skillCategoryTranslationRepository;
+    
     public SkillCategoryTranslationService(
-        IRepository<SkillCategoryTranslation> repository, 
+        ISkillCategoryTranslationRepository repository, 
         IUnitOfWork unitOfWork) 
         : base(repository, unitOfWork)
     {
+        _skillCategoryTranslationRepository = repository;  
     }
 
     public override async Task<SkillCategoryTranslationDto?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        var skillCategoryTranslation = await Repository.GetByIdAsync(id, cancellationToken);
+        var skillCategoryTranslation = await _skillCategoryTranslationRepository.GetWithLanguageByIdAsync(id, cancellationToken);
         return skillCategoryTranslation == null
             ? null
             : EntityToDtoMapper.MapSkillCategoryTranslationToDto(skillCategoryTranslation);
@@ -21,7 +24,7 @@ public class SkillCategoryTranslationService :
 
     public override async Task<IReadOnlyList<SkillCategoryTranslationDto>> GetAllAsync(CancellationToken cancellationToken = default)
     {
-        var skillCategoryTranslations = await Repository.ListAsync(cancellationToken);
+        var skillCategoryTranslations = await _skillCategoryTranslationRepository.ListWithLanguageAsync(cancellationToken);
         
         return EntityToDtoMapper.MapSkillCategoryTranslationsToDtoList(skillCategoryTranslations);   
     }

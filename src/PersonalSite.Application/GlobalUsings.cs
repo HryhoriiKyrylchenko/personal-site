@@ -40,3 +40,5 @@ global using PersonalSite.Domain.Enums;
 global using PersonalSite.Application.Services.Pages.DTOs;
 global using PersonalSite.Domain.Entities.Pages;
 global using PersonalSite.Application.Services.Pages.Requests;
+global using PersonalSite.Application.Services.Pages;
+global using PersonalSite.Application.Services.Aggregates;

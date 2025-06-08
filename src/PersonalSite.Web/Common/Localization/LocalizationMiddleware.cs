@@ -9,14 +9,13 @@ public class LocalizationMiddleware
         _next = next;
     }
 
-    public async Task Invoke(HttpContext context, LanguageContext languageContext)
+    public async Task Invoke(HttpContext context, LanguageContext languageContext, ILanguageService languageService)
     {
-        var lang = context.Request.Headers["Accept-Language"].FirstOrDefault()
-                   ?? "en";
+        var lang = context.Request.Headers["Accept-Language"].FirstOrDefault() ?? "en";
 
         var formattedLang = lang[..2].ToLower();
 
-        languageContext.LanguageCode = SupportedLanguages.IsSupported(formattedLang) ? formattedLang : "en";
+        languageContext.LanguageCode = await languageService.IsSupportedAsync(formattedLang) ? formattedLang : "en";
 
         await _next(context);
     }

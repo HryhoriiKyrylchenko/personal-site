@@ -4,11 +4,14 @@ public class LanguageService :
     CrudServiceBase<Language, LanguageDto, LanguageAddRequest, LanguageUpdateRequest>, 
     ILanguageService
 {
+    ILanguageRepository _languageRepository;
+    
     public LanguageService(
-        IRepository<Language> repository, 
+        ILanguageRepository repository, 
         IUnitOfWork unitOfWork) 
         : base(repository, unitOfWork)
     {
+        _languageRepository = repository; 
     }
 
     public override async Task<LanguageDto?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
@@ -58,5 +61,11 @@ public class LanguageService :
             Repository.Remove(entity);
             await UnitOfWork.SaveChangesAsync(cancellationToken);
         }   
+    }
+
+    public async Task<bool> IsSupportedAsync(string code, CancellationToken cancellationToken = default)
+    {
+        var language = await _languageRepository.GetByCodeAsync(code, cancellationToken);
+        return language is not null;
     }
 }

@@ -208,6 +208,8 @@ public static class EntityToDtoMapper
     {
         return new PageTranslationDto
         {
+            Id = entity.Id,
+            LanguageCode = entity.Language.Code,
             PageId = entity.PageId,
             Data = entity.Data,
             Title = entity.Title,
@@ -228,7 +230,7 @@ public static class EntityToDtoMapper
         return new BlogPostTranslationDto
         {
             Id = entity.Id,
-            LanguageId = entity.LanguageId,
+            LanguageCode = entity.Language.Code,
             BlogPostId = entity.BlogPostId,
             Title = entity.Title,
             Excerpt = entity.Excerpt,
@@ -265,7 +267,7 @@ public static class EntityToDtoMapper
         return new ProjectTranslationDto
         {
             Id = entity.Id,
-            LanguageId = entity.LanguageId,
+            LanguageCode = entity.Language.Code,
             ProjectId = entity.ProjectId,
             Title = entity.Title,
             ShortDescription = entity.ShortDescription,
@@ -287,7 +289,7 @@ public static class EntityToDtoMapper
         return new SkillCategoryTranslationDto
         {
             Id = entity.Id,
-            LanguageId = entity.LanguageId,
+            LanguageCode = entity.Language.Code,
             SkillCategoryId = entity.SkillCategoryId,
             Name = entity.Name,
             Description = entity.Description
@@ -305,7 +307,7 @@ public static class EntityToDtoMapper
         return new SkillTranslationDto
         {
             Id = entity.Id,
-            LanguageId = entity.LanguageId,
+            LanguageCode = entity.Language.Code,
             SkillId = entity.SkillId,
             Name = entity.Name,
             Description = entity.Description

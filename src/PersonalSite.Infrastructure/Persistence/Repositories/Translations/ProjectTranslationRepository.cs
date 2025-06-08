@@ -11,4 +11,18 @@ public class ProjectTranslationRepository : EfRepository<ProjectTranslation>, IP
         return await DbContext.ProjectTranslations
             .FirstOrDefaultAsync(pt => pt.ProjectId == projectId && pt.Language.Code == languageCode, cancellationToken);
     }
+
+    public async Task<ProjectTranslation?> GetWithLanguageByIdAsync(Guid id, CancellationToken cancellationToken)
+    {
+        return await DbContext.ProjectTranslations
+            .Include(t => t.Language)
+            .FirstOrDefaultAsync(t => t.Id == id, cancellationToken);
+    }
+
+    public async Task<IEnumerable<ProjectTranslation>> ListWithLanguageAsync(CancellationToken cancellationToken)
+    {
+        return await DbContext.ProjectTranslations
+            .Include(t => t.Language)
+            .ToListAsync(cancellationToken);   
+    }
 }

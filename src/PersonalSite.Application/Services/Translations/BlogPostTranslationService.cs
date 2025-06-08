@@ -4,16 +4,19 @@ public class BlogPostTranslationService :
     CrudServiceBase<BlogPostTranslation, BlogPostTranslationDto, BlogPostTranslationAddRequest, BlogPostTranslationUpdateRequest>, 
     IBlogPostTranslationService
 {
+    private IBlogPostTranslationRepository _blogPostTranslationRepository;
+    
     public BlogPostTranslationService(
-        IRepository<BlogPostTranslation> repository, 
+        IBlogPostTranslationRepository repository, 
         IUnitOfWork unitOfWork) 
         : base(repository, unitOfWork)
     {
+        _blogPostTranslationRepository = repository;   
     }
 
     public override async Task<BlogPostTranslationDto?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        var postTranslation = await Repository.GetByIdAsync(id, cancellationToken);
+        var postTranslation = await _blogPostTranslationRepository.GetWithLanguageByIdAsync(id, cancellationToken);
         return postTranslation == null
             ? null
             : EntityToDtoMapper.MapBlogPostTranslationToDto(postTranslation);
@@ -21,7 +24,7 @@ public class BlogPostTranslationService :
 
     public override async Task<IReadOnlyList<BlogPostTranslationDto>> GetAllAsync(CancellationToken cancellationToken = default)
     {
-        var postTranslations = await Repository.ListAsync(cancellationToken);
+        var postTranslations = await _blogPostTranslationRepository.ListWithLanguageAsync(cancellationToken);
         
         return EntityToDtoMapper.MapBlogPostTranslationsToDtoList(postTranslations);
     }

@@ -14,6 +14,7 @@ public static class ApplicationServiceCollectionExtensions
         services.AddScoped<IProjectService, ProjectService>();
         services.AddScoped<ISkillService, SkillService>();
         services.AddScoped<ILearningSkillService, LearningSkillService>();
+        services.AddScoped<IPageService, PageService>();
         services.AddScoped<IProjectSkillService, ProjectSkillService>();
         services.AddScoped<ISkillCategoryService, SkillCategoryService>();
         services.AddScoped<IUserSkillService, UserSkillService>();
@@ -23,6 +24,8 @@ public static class ApplicationServiceCollectionExtensions
         services.AddScoped<IProjectTranslationService, ProjectTranslationService>();
         services.AddScoped<ISkillCategoryTranslationService, SkillCategoryTranslationService>();
         services.AddScoped<ISkillTranslationService, SkillTranslationService>();
+        
+        services.AddScoped<IPagesDataService, PagesDataService>();
         
         return services;
     }

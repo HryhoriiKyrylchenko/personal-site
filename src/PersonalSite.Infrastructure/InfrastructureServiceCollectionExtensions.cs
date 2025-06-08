@@ -1,4 +1,6 @@
-﻿namespace PersonalSite.Infrastructure;
+﻿using PersonalSite.Infrastructure.Persistence.Repositories.Pages;
+
+namespace PersonalSite.Infrastructure;
 
 public static class InfrastructureServiceCollectionExtensions
 {
@@ -14,6 +16,7 @@ public static class InfrastructureServiceCollectionExtensions
         services.AddScoped<IPostTagRepository, PostTagRepository>();
         services.AddScoped<ILogEntryRepository, LogEntryRepository>();
         services.AddScoped<IContactMessageRepository, ContactMessageRepository>();
+        services.AddScoped<IPageRepository, PageRepository>();
         services.AddScoped<IProjectRepository, ProjectRepository>();
         services.AddScoped<ILearningSkillRepository, LearningSkillRepository>();
         services.AddScoped<IProjectSkillRepository, ProjectSkillRepository>();

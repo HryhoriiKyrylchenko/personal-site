@@ -18,4 +18,18 @@ public class BlogPostTranslationRepository : EfRepository<BlogPostTranslation>, 
         return await DbContext.BlogPostTranslations
             .FirstOrDefaultAsync(t => t.BlogPostId == blogPostId && t.Language.Code == languageCode, cancellationToken);
     }
+
+    public async Task<BlogPostTranslation?> GetWithLanguageByIdAsync(Guid id, CancellationToken cancellationToken)
+    {
+        return await DbContext.BlogPostTranslations
+            .Include(t => t.Language)
+            .FirstOrDefaultAsync(t => t.Id == id, cancellationToken);
+    }
+
+    public async Task<IEnumerable<BlogPostTranslation>> ListWithLanguageAsync(CancellationToken cancellationToken)
+    {
+        return await DbContext.BlogPostTranslations
+            .Include(t => t.Language)
+            .ToListAsync(cancellationToken);
+    }
 }

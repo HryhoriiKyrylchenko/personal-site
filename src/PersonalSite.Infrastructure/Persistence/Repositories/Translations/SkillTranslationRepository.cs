@@ -11,4 +11,18 @@ public class SkillTranslationRepository : EfRepository<SkillTranslation>, ISkill
         return await DbContext.SkillTranslations
             .FirstOrDefaultAsync(st => st.SkillId == skillId && st.Language.Code == languageCode, cancellationToken);
     }
+
+    public async Task<SkillTranslation?> GetWithLanguageByIdAsync(Guid id, CancellationToken cancellationToken)
+    {
+        return await DbContext.SkillTranslations
+            .Include(t => t.Language)
+            .FirstOrDefaultAsync(t => t.Id == id, cancellationToken);
+    }
+
+    public async Task<IEnumerable<SkillTranslation>> ListWithLanguageAsync(CancellationToken cancellationToken)
+    {
+        return await DbContext.SkillTranslations
+            .Include(t => t.Language)
+            .ToListAsync(cancellationToken); 
+    }
 }

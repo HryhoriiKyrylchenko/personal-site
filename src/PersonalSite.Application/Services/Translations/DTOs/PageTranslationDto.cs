@@ -2,6 +2,8 @@ namespace PersonalSite.Application.Services.Translations.DTOs;
 
 public class PageTranslationDto
 {
+    public Guid Id { get; set; }
+    public string LanguageCode { get; set; } = string.Empty;
     public Guid PageId { get; set; }
     public Dictionary<string, string> Data { get; set; } = [];
     public string Title { get; set; } = string.Empty;

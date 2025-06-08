@@ -4,16 +4,19 @@ public class ProjectTranslationService :
     CrudServiceBase<ProjectTranslation, ProjectTranslationDto, ProjectTranslationAddRequest, ProjectTranslationUpdateRequest>, 
     IProjectTranslationService
 {
+    IProjectTranslationRepository _projectTranslationRepository;
+    
     public ProjectTranslationService(
-        IRepository<ProjectTranslation> repository, 
+        IProjectTranslationRepository repository, 
         IUnitOfWork unitOfWork) 
         : base(repository, unitOfWork)
     {
+        _projectTranslationRepository = repository;   
     }
 
     public override async Task<ProjectTranslationDto?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        var projectTranslation = await Repository.GetByIdAsync(id, cancellationToken);
+        var projectTranslation = await _projectTranslationRepository.GetWithLanguageByIdAsync(id, cancellationToken);
         return projectTranslation == null
             ? null
             : EntityToDtoMapper.MapProjectTranslationToDto(projectTranslation);
@@ -21,7 +24,7 @@ public class ProjectTranslationService :
 
     public override async Task<IReadOnlyList<ProjectTranslationDto>> GetAllAsync(CancellationToken cancellationToken = default)
     {
-        var projectTranslations = await Repository.ListAsync(cancellationToken);
+        var projectTranslations = await _projectTranslationRepository.ListWithLanguageAsync(cancellationToken);
         
         return EntityToDtoMapper.MapProjectTranslationsToDtoList(projectTranslations);
     }

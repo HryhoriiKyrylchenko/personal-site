@@ -12,4 +12,18 @@ public class PageTranslationRepository : EfRepository<PageTranslation>, IPageTra
             .Where(p => p.Page.Key == pageKey)
             .ToListAsync(cancellationToken);
     }
+
+    public async Task<PageTranslation?> GetWithLanguageByIdAsync(Guid id, CancellationToken cancellationToken)
+    {
+        return await DbContext.PageTranslations
+            .Include(t => t.Language)
+            .FirstOrDefaultAsync(t => t.Id == id, cancellationToken);
+    }
+
+    public async Task<IEnumerable<PageTranslation>> ListWithLanguageAsync(CancellationToken cancellationToken)
+    {
+        return await DbContext.PageTranslations
+            .Include(t => t.Language)
+            .ToListAsync(cancellationToken);
+    }
 }
