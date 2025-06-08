@@ -179,6 +179,64 @@ namespace PersonalSite.Infrastructure.Migrations
                     b.ToTable("Logs");
                 });
 
+            modelBuilder.Entity("PersonalSite.Domain.Entities.Common.Resume", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("FileName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("FileUrl")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime>("UploadedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UploadedAt");
+
+                    b.ToTable("Resumes");
+                });
+
+            modelBuilder.Entity("PersonalSite.Domain.Entities.Common.SocialMediaLink", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("DisplayOrder")
+                        .HasColumnType("integer");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Platform")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Platform")
+                        .IsUnique();
+
+                    b.ToTable("SocialMediaLinks");
+                });
+
             modelBuilder.Entity("PersonalSite.Domain.Entities.Contact.ContactMessage", b =>
                 {
                     b.Property<Guid>("Id")
@@ -229,6 +287,25 @@ namespace PersonalSite.Infrastructure.Migrations
                     b.HasIndex("IsRead");
 
                     b.ToTable("ContactMessages");
+                });
+
+            modelBuilder.Entity("PersonalSite.Domain.Entities.Pages.Page", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Key")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Key")
+                        .IsUnique();
+
+                    b.ToTable("Pages");
                 });
 
             modelBuilder.Entity("PersonalSite.Domain.Entities.Projects.Project", b =>
@@ -407,7 +484,12 @@ namespace PersonalSite.Infrastructure.Migrations
 
             modelBuilder.Entity("PersonalSite.Domain.Entities.Translations.Language", b =>
                 {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
                     b.Property<string>("Code")
+                        .IsRequired()
                         .HasMaxLength(2)
                         .HasColumnType("character varying(2)");
 
@@ -415,7 +497,10 @@ namespace PersonalSite.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.HasKey("Code");
+                    b.HasKey("Id");
+
+                    b.HasIndex("Code")
+                        .IsUnique();
 
                     b.ToTable("Languages");
                 });
@@ -426,14 +511,13 @@ namespace PersonalSite.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<string>("LanguageCode")
-                        .IsRequired()
+                    b.Property<Guid>("LanguageId")
                         .HasMaxLength(2)
-                        .HasColumnType("character varying(2)");
+                        .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("LanguageCode");
+                    b.HasIndex("LanguageId");
 
                     b.ToTable("Translations");
 
@@ -508,15 +592,15 @@ namespace PersonalSite.Infrastructure.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("character varying(255)");
 
-                    b.Property<string>("PageKey")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
+                    b.Property<Guid>("PageId")
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("character varying(255)");
+
+                    b.HasIndex("PageId");
 
                     b.ToTable("PageTranslations");
                 });
@@ -680,7 +764,7 @@ namespace PersonalSite.Infrastructure.Migrations
                 {
                     b.HasOne("PersonalSite.Domain.Entities.Translations.Language", "Language")
                         .WithMany()
-                        .HasForeignKey("LanguageCode")
+                        .HasForeignKey("LanguageId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
@@ -711,6 +795,14 @@ namespace PersonalSite.Infrastructure.Migrations
                         .HasForeignKey("PersonalSite.Domain.Entities.Translations.PageTranslation", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("PersonalSite.Domain.Entities.Pages.Page", "Page")
+                        .WithMany("Translations")
+                        .HasForeignKey("PageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Page");
                 });
 
             modelBuilder.Entity("PersonalSite.Domain.Entities.Translations.ProjectTranslation", b =>
@@ -774,6 +866,11 @@ namespace PersonalSite.Infrastructure.Migrations
             modelBuilder.Entity("PersonalSite.Domain.Entities.Blog.BlogPostTag", b =>
                 {
                     b.Navigation("PostTags");
+                });
+
+            modelBuilder.Entity("PersonalSite.Domain.Entities.Pages.Page", b =>
+                {
+                    b.Navigation("Translations");
                 });
 
             modelBuilder.Entity("PersonalSite.Domain.Entities.Projects.Project", b =>

@@ -1,3 +1,5 @@
+using PersonalSite.Domain.Entities.Pages;
+
 namespace PersonalSite.Infrastructure.Persistence;
 
 public class ApplicationDbContext : DbContext
@@ -7,9 +9,12 @@ public class ApplicationDbContext : DbContext
     public DbSet<BlogPostTag> BlogPostTags { get; set; }
     public DbSet<PostTag> PostTags { get; set; }
     public DbSet<LogEntry> Logs { get; set; }
+    public DbSet<SocialMediaLink> SocialMediaLinks { get; set; }
+    public DbSet<Resume> Resumes { get; set; }
     public DbSet<ContactMessage> ContactMessages { get; set; }
     public DbSet<Project> Projects { get; set; }
     public DbSet<LearningSkill> LearningSkills { get; set; }
+    public DbSet<Page> Pages { get; set; }
     public DbSet<ProjectSkill> ProjectSkills { get; set; }
     public DbSet<Skill> Skills { get; set; }
     public DbSet<SkillCategory> SkillCategories { get; set; }
@@ -60,6 +65,16 @@ public class ApplicationDbContext : DbContext
             entity.HasIndex(e => e.Level);
             entity.HasIndex(e => e.Source);
         });
+
+        modelBuilder.Entity<SocialMediaLink>(entity =>
+        {
+            entity.HasIndex(e => e.Platform).IsUnique();
+        });
+
+        modelBuilder.Entity<Resume>(entity =>
+        {
+            entity.HasIndex(e => e.UploadedAt);
+        });
         
         modelBuilder.Entity<ContactMessage>(entity =>
         {
@@ -79,6 +94,11 @@ public class ApplicationDbContext : DbContext
         {
             entity.HasIndex(e => e.SkillId); 
             entity.HasIndex(e => e.DisplayOrder);
+        });
+
+        modelBuilder.Entity<Page>(entity =>
+        {
+            entity.HasIndex(p => p.Key).IsUnique();
         });
 
         modelBuilder.Entity<ProjectSkill>(entity =>
@@ -105,12 +125,16 @@ public class ApplicationDbContext : DbContext
             entity.HasIndex(e => e.SkillId);
         });
         
+        modelBuilder.Entity<Language>(entity =>
+        {
+            entity.HasIndex(e => e.Code).IsUnique();
+        });
+        
         modelBuilder.Entity<BlogPostTranslation>(entity =>
         {
             entity.HasIndex(e => e.BlogPostId);
         });
-       
-
+        
         modelBuilder.Entity<SkillTranslation>(entity =>
         {
             entity.HasIndex(e => e.Name);
@@ -120,7 +144,7 @@ public class ApplicationDbContext : DbContext
         {
             entity.HasOne(t => t.Language)
                 .WithMany()
-                .HasForeignKey(t => t.LanguageCode)
+                .HasForeignKey(t => t.LanguageId)
                 .OnDelete(DeleteBehavior.Restrict);
         });
     }

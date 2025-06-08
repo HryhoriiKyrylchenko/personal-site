@@ -22,10 +22,11 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Controllers\" />
+      <Folder Include="Controllers\Admin\" />
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\PersonalSite.Application\PersonalSite.Application.csproj" />
       <ProjectReference Include="..\PersonalSite.Infrastructure\PersonalSite.Infrastructure.csproj" />
     </ItemGroup>
 

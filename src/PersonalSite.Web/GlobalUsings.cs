@@ -1,1 +1,13 @@
+global using Microsoft.EntityFrameworkCore;
 global using PersonalSite.Infrastructure;
+global using PersonalSite.Application;
+global using PersonalSite.Application.Common.Localization;
+global using PersonalSite.Web.Common.Localization;
+global using PersonalSite.Infrastructure.Persistence;
+global using Microsoft.AspNetCore.Mvc;
+global using PersonalSite.Application.Services.Contact;
+global using PersonalSite.Application.Services.Contact.Requests;
+global using PersonalSite.Application.Services.Aggregates;
+global using PersonalSite.Application.Services.Translations;
+global using PersonalSite.Application.Services.Common;
+global using PersonalSite.Application.Services.Common.DTOs;

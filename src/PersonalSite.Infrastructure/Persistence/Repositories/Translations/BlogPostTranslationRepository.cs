@@ -16,6 +16,20 @@ public class BlogPostTranslationRepository : EfRepository<BlogPostTranslation>, 
     public async Task<BlogPostTranslation?> GetByBlogPostIdAndLanguageAsync(Guid blogPostId, string languageCode, CancellationToken cancellationToken = default)
     {
         return await DbContext.BlogPostTranslations
-            .FirstOrDefaultAsync(t => t.BlogPostId == blogPostId && t.LanguageCode == languageCode, cancellationToken);
+            .FirstOrDefaultAsync(t => t.BlogPostId == blogPostId && t.Language.Code == languageCode, cancellationToken);
+    }
+
+    public async Task<BlogPostTranslation?> GetWithLanguageByIdAsync(Guid id, CancellationToken cancellationToken)
+    {
+        return await DbContext.BlogPostTranslations
+            .Include(t => t.Language)
+            .FirstOrDefaultAsync(t => t.Id == id, cancellationToken);
+    }
+
+    public async Task<IEnumerable<BlogPostTranslation>> ListWithLanguageAsync(CancellationToken cancellationToken)
+    {
+        return await DbContext.BlogPostTranslations
+            .Include(t => t.Language)
+            .ToListAsync(cancellationToken);
     }
 }

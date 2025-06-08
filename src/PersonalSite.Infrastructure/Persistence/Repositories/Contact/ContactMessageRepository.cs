@@ -22,4 +22,14 @@ public class ContactMessageRepository : EfRepository<ContactMessage>, IContactMe
             await DbContext.SaveChangesAsync(cancellationToken);
         }
     }
+
+    public async Task MarkAsUnreadAsync(Guid id, CancellationToken cancellationToken)
+    {
+        var message = await DbContext.ContactMessages.FindAsync([id], cancellationToken);
+        if (message is { IsRead: true })
+        {
+            message.IsRead = false;
+            await DbContext.SaveChangesAsync(cancellationToken);
+        }
+    }
 }

@@ -18,7 +18,23 @@ public class LearningSkillRepository : EfRepository<LearningSkill>, ILearningSki
     {
         return await DbContext.LearningSkills
             .Where(ls => !ls.IsDeleted)
+            .Include(us => us.Skill)
+                .ThenInclude(s => s.Translations)
+            .Include(us => us.Skill)
+                .ThenInclude(s => s.Category)
+                    .ThenInclude(c => c.Translations)
             .OrderBy(ls => ls.DisplayOrder)
             .ToListAsync(cancellationToken);
+    }
+
+    public async Task<LearningSkill?> GetWithFullDataByIdAsync(Guid id, CancellationToken cancellationToken)
+    {
+        return await DbContext.LearningSkills
+            .Include(ls => ls.Skill)
+                .ThenInclude(s => s.Translations)
+            .Include(ls => ls.Skill)
+                .ThenInclude(s => s.Category)
+                    .ThenInclude(c => c.Translations)
+            .FirstOrDefaultAsync(ls => ls.Id == id, cancellationToken);
     }
 }

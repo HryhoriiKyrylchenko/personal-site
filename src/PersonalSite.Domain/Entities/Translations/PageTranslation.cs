@@ -1,10 +1,13 @@
+using PersonalSite.Domain.Entities.Pages;
+
 namespace PersonalSite.Domain.Entities.Translations;
 
 [Table("PageTranslations")]
 public class PageTranslation : Translation
 {
-    [Required, MaxLength(50)]
-    public string PageKey { get; set; } = string.Empty;
+    [Required]
+    public Guid PageId { get; set; }
+    public virtual Page Page { get; set; } = null!;
     [Column(TypeName = "jsonb")]
     public Dictionary<string, string> Data { get; set; } = [];
     [Required, MaxLength(255)]

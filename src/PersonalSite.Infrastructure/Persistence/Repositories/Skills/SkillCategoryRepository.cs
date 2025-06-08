@@ -20,4 +20,11 @@ public class SkillCategoryRepository : EfRepository<SkillCategory>, ISkillCatego
             .OrderBy(sc => sc.DisplayOrder)
             .ToListAsync(cancellationToken);
     }
+
+    public async Task<SkillCategory?> GetWithTranslationsByIdAsync(Guid id, CancellationToken cancellationToken = default)
+    {
+        return await DbContext.SkillCategories
+            .Include(sc => sc.Translations)
+            .FirstOrDefaultAsync(sc => sc.Id == id, cancellationToken);
+    }
 }
