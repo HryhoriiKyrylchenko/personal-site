@@ -9,6 +9,8 @@ public class ApplicationDbContext : DbContext
     public DbSet<BlogPostTag> BlogPostTags { get; set; }
     public DbSet<PostTag> PostTags { get; set; }
     public DbSet<LogEntry> Logs { get; set; }
+    public DbSet<SocialMediaLink> SocialMediaLinks { get; set; }
+    public DbSet<Resume> Resumes { get; set; }
     public DbSet<ContactMessage> ContactMessages { get; set; }
     public DbSet<Project> Projects { get; set; }
     public DbSet<LearningSkill> LearningSkills { get; set; }
@@ -62,6 +64,16 @@ public class ApplicationDbContext : DbContext
             entity.HasIndex(e => e.Timestamp);
             entity.HasIndex(e => e.Level);
             entity.HasIndex(e => e.Source);
+        });
+
+        modelBuilder.Entity<SocialMediaLink>(entity =>
+        {
+            entity.HasIndex(e => e.Platform).IsUnique();
+        });
+
+        modelBuilder.Entity<Resume>(entity =>
+        {
+            entity.HasIndex(e => e.UploadedAt);
         });
         
         modelBuilder.Entity<ContactMessage>(entity =>

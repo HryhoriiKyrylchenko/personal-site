@@ -9,3 +9,5 @@ global using PersonalSite.Application.Services.Contact;
 global using PersonalSite.Application.Services.Contact.Requests;
 global using PersonalSite.Application.Services.Aggregates;
 global using PersonalSite.Application.Services.Translations;
+global using PersonalSite.Application.Services.Common;
+global using PersonalSite.Application.Services.Common.DTOs;

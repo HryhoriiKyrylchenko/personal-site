@@ -42,3 +42,5 @@ global using PersonalSite.Domain.Entities.Pages;
 global using PersonalSite.Application.Services.Pages.Requests;
 global using PersonalSite.Application.Services.Pages;
 global using PersonalSite.Application.Services.Aggregates;
+global using PersonalSite.Domain.Interfaces.Repositories.Common;
+global using PersonalSite.Application.Services.Aggregates.DTOs;

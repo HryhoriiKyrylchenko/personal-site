@@ -15,6 +15,8 @@ public static class InfrastructureServiceCollectionExtensions
         services.AddScoped<IBlogPostTagRepository, BlogPostTagRepository>();
         services.AddScoped<IPostTagRepository, PostTagRepository>();
         services.AddScoped<ILogEntryRepository, LogEntryRepository>();
+        services.AddScoped<ISocialMediaLinkRepository, SocialMediaLinkRepository>();
+        services.AddScoped<IResumeRepository, ResumeRepository>();
         services.AddScoped<IContactMessageRepository, ContactMessageRepository>();
         services.AddScoped<IPageRepository, PageRepository>();
         services.AddScoped<IProjectRepository, ProjectRepository>();

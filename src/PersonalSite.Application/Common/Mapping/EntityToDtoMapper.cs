@@ -21,7 +21,7 @@ public static class EntityToDtoMapper
                 
             MetaTitle = translation?.MetaTitle ?? string.Empty,
             MetaDescription = translation?.MetaDescription ?? string.Empty,
-            OgImage = translation?.OgImage ?? string.Empty,
+            OgImage = string.IsNullOrWhiteSpace(translation?.OgImage) ? string.Empty : S3UrlHelper.BuildImageUrl(translation.OgImage),
             
             Tags = MapBlogPostTagsToDtoList(entity.PostTags.Select(pt => pt.BlogPostTag))
         };
@@ -163,7 +163,7 @@ public static class EntityToDtoMapper
             DescriptionSections = translation?.DescriptionSections ?? new Dictionary<string, string>(),
             MetaTitle = translation?.MetaTitle ?? string.Empty,
             MetaDescription = translation?.MetaDescription ?? string.Empty,
-            OgImage = S3UrlHelper.BuildImageUrl(translation?.OgImage),
+            OgImage = string.IsNullOrWhiteSpace(translation?.OgImage) ? string.Empty : S3UrlHelper.BuildImageUrl(translation.OgImage),
             Skills = MapSkillsToDtoList(entity.ProjectSkills.Select(ps => ps.Skill), languageCode)
         };
     }
@@ -216,7 +216,7 @@ public static class EntityToDtoMapper
             Description = entity.Description,
             MetaTitle = entity.MetaTitle,
             MetaDescription = entity.MetaDescription,
-            OgImage = entity.OgImage,
+            OgImage = string.IsNullOrWhiteSpace(entity.OgImage) ? string.Empty : S3UrlHelper.BuildImageUrl(entity.OgImage)
         };
     }
     
@@ -237,7 +237,7 @@ public static class EntityToDtoMapper
             Content = entity.Content,
             MetaTitle = entity.MetaTitle,
             MetaDescription = entity.MetaDescription,
-            OgImage = entity.OgImage,
+            OgImage = string.IsNullOrWhiteSpace(entity.OgImage) ? string.Empty : S3UrlHelper.BuildImageUrl(entity.OgImage)
         };
     }
 
@@ -274,7 +274,7 @@ public static class EntityToDtoMapper
             DescriptionSections = entity.DescriptionSections,
             MetaTitle = entity.MetaTitle,
             MetaDescription = entity.MetaDescription,
-            OgImage = entity.OgImage
+            OgImage = string.IsNullOrWhiteSpace(entity.OgImage) ? string.Empty : S3UrlHelper.BuildImageUrl(entity.OgImage)
         };
     }
     
@@ -350,12 +350,46 @@ public static class EntityToDtoMapper
             Description = translation?.Description ?? string.Empty,
             MetaTitle = translation?.MetaTitle ?? string.Empty,
             MetaDescription = translation?.MetaDescription ?? string.Empty,
-            OgImage = translation?.OgImage ?? string.Empty
+            OgImage = string.IsNullOrWhiteSpace(translation?.OgImage) ? string.Empty : S3UrlHelper.BuildImageUrl(translation.OgImage)
         };
     }
 
     public static List<PageDto> MapPagesToDtoList(IEnumerable<Page> entities, string languageCode)
     {
         return entities.Select(e => MapPageToDto(e, languageCode)).ToList();
+    }
+
+    public static SocialMediaLinkDto MapSocialMediaLinkToDto(SocialMediaLink entity)
+    {
+        return new SocialMediaLinkDto
+        {
+            Id = entity.Id,
+            Platform = entity.Platform,
+            Url = S3UrlHelper.BuildImageUrl(entity.Url),
+            DisplayOrder = entity.DisplayOrder,
+            IsActive = entity.IsActive
+        };
+    }
+
+    public static List<SocialMediaLinkDto> MapSocialMediaLinksToDtoList(IEnumerable<SocialMediaLink> entities)
+    {
+        return entities.Select(MapSocialMediaLinkToDto).ToList();
+    }
+
+    public static ResumeDto MapResumeToDto(Resume entity)
+    {
+        return new ResumeDto
+        {
+            Id = entity.Id,
+            FileUrl = S3UrlHelper.BuildImageUrl(entity.FileUrl),
+            FileName = entity.FileName,
+            UploadedAt = entity.UploadedAt,
+            IsActive = entity.IsActive
+        };
+    }
+    
+    public static List<ResumeDto> MapResumesToDtoList(IEnumerable<Resume> entities)
+    {
+        return entities.Select(MapResumeToDto).ToList();
     }
 }

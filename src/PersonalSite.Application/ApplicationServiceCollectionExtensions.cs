@@ -10,6 +10,8 @@ public static class ApplicationServiceCollectionExtensions
         services.AddScoped<IBlogPostService, BlogPostService>();
         services.AddScoped<IBlogPostTagService, BlogPostTagService>();
         services.AddScoped<ILogEntryService, LogEntryService>();
+        services.AddScoped<ISocialMediaLinkService, SocialMediaLinkService>();
+        services.AddScoped<IResumeService, ResumeService>();
         services.AddScoped<IContactMessageService, ContactMessageService>();
         services.AddScoped<IProjectService, ProjectService>();
         services.AddScoped<ISkillService, SkillService>();
@@ -26,6 +28,7 @@ public static class ApplicationServiceCollectionExtensions
         services.AddScoped<ISkillTranslationService, SkillTranslationService>();
         
         services.AddScoped<IPagesDataService, PagesDataService>();
+        services.AddScoped<ISiteInfoService, SiteInfoService>();
         
         return services;
     }
