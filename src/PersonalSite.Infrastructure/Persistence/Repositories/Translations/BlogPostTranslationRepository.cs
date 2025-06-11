@@ -2,9 +2,11 @@ namespace PersonalSite.Infrastructure.Persistence.Repositories.Translations;
 
 public class BlogPostTranslationRepository : EfRepository<BlogPostTranslation>, IBlogPostTranslationRepository
 {
-    public BlogPostTranslationRepository(ApplicationDbContext context) : base(context)
-    {
-    }
+    public BlogPostTranslationRepository(
+        ApplicationDbContext context, 
+        ILogger<BlogPostTranslationRepository> logger,
+        IServiceProvider serviceProvider) 
+        : base(context, logger, serviceProvider) { }
 
     public async Task<List<BlogPostTranslation>> GetByBlogPostIdAsync(Guid blogPostId, CancellationToken cancellationToken = default)
     {

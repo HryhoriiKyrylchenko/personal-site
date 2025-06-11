@@ -32,9 +32,11 @@ public class LogEntryService :
             Id = Guid.NewGuid(),
             Timestamp = DateTime.UtcNow,
             Level = request.Level,
-            Source = request.Source,
             Message = request.Message,
-            Exception = request.Exception
+            MessageTemplate = request.MessageTemplate,
+            Exception = request.Exception,
+            Properties = request.Properties,
+            SourceContext = request.SourceContext
         };
         
         await Repository.AddAsync(newLog, cancellationToken);
@@ -47,11 +49,13 @@ public class LogEntryService :
         if (existingLog is null) throw new Exception("Log not found");
         
         existingLog.Level = request.Level;
-        existingLog.Source = request.Source;
         existingLog.Message = request.Message;
+        existingLog.MessageTemplate = request.MessageTemplate;
         existingLog.Exception = request.Exception;
+        existingLog.Properties = request.Properties;
+        existingLog.SourceContext = request.SourceContext;
         
-        Repository.Update(existingLog);
+        await Repository.UpdateAsync(existingLog, cancellationToken);
         await UnitOfWork.SaveChangesAsync(cancellationToken);
     }
 

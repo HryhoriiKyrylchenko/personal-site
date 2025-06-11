@@ -16,4 +16,15 @@
       </Reference>
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Services\Analytics\Validators\" />
+      <Folder Include="Services\Blog\Validators\" />
+      <Folder Include="Services\Common\Validators\" />
+      <Folder Include="Services\Contact\Validators\" />
+      <Folder Include="Services\Pages\Validators\" />
+      <Folder Include="Services\Projects\Validators\" />
+      <Folder Include="Services\Skills\Validators\" />
+      <Folder Include="Services\Translations\Validators\" />
+    </ItemGroup>
+
 </Project>

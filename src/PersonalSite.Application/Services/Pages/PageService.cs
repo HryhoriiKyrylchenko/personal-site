@@ -52,7 +52,7 @@ public class PageService :
         
         existingPage.Key = request.Key;
         
-        _pageRepository.Update(existingPage);
+        await _pageRepository.UpdateAsync(existingPage, cancellationToken);
         await UnitOfWork.SaveChangesAsync(cancellationToken); 
     }
 

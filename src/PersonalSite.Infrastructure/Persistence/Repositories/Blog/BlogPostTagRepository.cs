@@ -2,7 +2,11 @@ namespace PersonalSite.Infrastructure.Persistence.Repositories.Blog;
 
 public class BlogPostTagRepository : EfRepository<BlogPostTag>, IBlogPostTagRepository
 {
-    public BlogPostTagRepository(ApplicationDbContext context) : base(context) { }
+    public BlogPostTagRepository(
+        ApplicationDbContext context, 
+        ILogger<BlogPostTagRepository> logger,
+        IServiceProvider serviceProvider) 
+        : base(context, logger, serviceProvider) { }
 
     public async Task<BlogPostTag?> GetByNameAsync(string name, CancellationToken cancellationToken = default)
     {

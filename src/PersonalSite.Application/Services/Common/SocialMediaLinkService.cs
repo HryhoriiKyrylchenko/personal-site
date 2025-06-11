@@ -53,7 +53,7 @@ public class SocialMediaLinkService :
         existingSocialMediaLink.DisplayOrder = request.DisplayOrder;
         existingSocialMediaLink.IsActive = request.IsActive;
         
-        Repository.Update(existingSocialMediaLink);
+        await Repository.UpdateAsync(existingSocialMediaLink, cancellationToken);
         await UnitOfWork.SaveChangesAsync(cancellationToken);
     }
 

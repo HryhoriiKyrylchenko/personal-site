@@ -57,7 +57,7 @@ public class ContactMessageService :
         existingMessage.Subject = request.Subject;
         existingMessage.Message = request.Message;
         
-        Repository.Update(existingMessage);
+        await Repository.UpdateAsync(existingMessage, cancellationToken);
         await UnitOfWork.SaveChangesAsync(cancellationToken);
     }
 

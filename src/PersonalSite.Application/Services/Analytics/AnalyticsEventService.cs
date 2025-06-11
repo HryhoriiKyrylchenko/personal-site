@@ -52,7 +52,7 @@ public class AnalyticsEventService :
         existingEvent.UserAgent = request.UserAgent;
         existingEvent.AdditionalDataJson = request.AdditionalDataJson;
         
-        Repository.Update(existingEvent);
+        await Repository.UpdateAsync(existingEvent, cancellationToken);
         await UnitOfWork.SaveChangesAsync(cancellationToken);
     }
 

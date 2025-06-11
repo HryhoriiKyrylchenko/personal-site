@@ -2,9 +2,11 @@ namespace PersonalSite.Infrastructure.Persistence.Repositories.Contact;
 
 public class ContactMessageRepository : EfRepository<ContactMessage>, IContactMessageRepository
 {
-    public ContactMessageRepository(ApplicationDbContext context) : base(context)
-    {
-    }
+    public ContactMessageRepository(
+        ApplicationDbContext context, 
+        ILogger<ContactMessageRepository> logger,
+        IServiceProvider serviceProvider) 
+        : base(context, logger, serviceProvider) { }
 
     public async Task<List<ContactMessage>> GetUnreadMessagesAsync(CancellationToken cancellationToken = default)
     {

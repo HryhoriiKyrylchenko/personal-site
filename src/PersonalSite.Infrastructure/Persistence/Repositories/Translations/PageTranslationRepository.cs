@@ -2,9 +2,11 @@ namespace PersonalSite.Infrastructure.Persistence.Repositories.Translations;
 
 public class PageTranslationRepository : EfRepository<PageTranslation>, IPageTranslationRepository
 {
-    public PageTranslationRepository(ApplicationDbContext context) : base(context)
-    {
-    }
+    public PageTranslationRepository(
+        ApplicationDbContext context, 
+        ILogger<PageTranslationRepository> logger,
+        IServiceProvider serviceProvider) 
+        : base(context, logger, serviceProvider) { }
 
     public async Task<List<PageTranslation>> GetAllByPageKeyAsync(string pageKey, CancellationToken cancellationToken = default)
     {

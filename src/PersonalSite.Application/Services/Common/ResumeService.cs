@@ -53,7 +53,7 @@ public class ResumeService :
         existingResume.FileName = request.FileName;
         existingResume.IsActive = request.IsActive;
         
-        Repository.Update(existingResume);
+        await Repository.UpdateAsync(existingResume, cancellationToken);
         await UnitOfWork.SaveChangesAsync(cancellationToken);
     }
 

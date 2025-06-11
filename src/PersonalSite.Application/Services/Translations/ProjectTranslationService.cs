@@ -60,7 +60,7 @@ public class ProjectTranslationService :
         existingProjectTranslation.MetaDescription = request.MetaDescription;
         existingProjectTranslation.OgImage = request.OgImage;
         
-        Repository.Update(existingProjectTranslation);
+        await Repository.UpdateAsync(existingProjectTranslation, cancellationToken);
         await UnitOfWork.SaveChangesAsync(cancellationToken);   
     }
 

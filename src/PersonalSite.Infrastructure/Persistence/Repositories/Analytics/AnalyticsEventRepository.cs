@@ -2,7 +2,11 @@ namespace PersonalSite.Infrastructure.Persistence.Repositories.Analytics;
 
 public class AnalyticsEventRepository : EfRepository<AnalyticsEvent>, IAnalyticsEventRepository
 {
-    public AnalyticsEventRepository(ApplicationDbContext context) : base(context) { }
+    public AnalyticsEventRepository(
+        ApplicationDbContext context, 
+        ILogger<AnalyticsEventRepository> logger,
+        IServiceProvider serviceProvider) 
+        : base(context, logger, serviceProvider) { }
 
     public async Task<List<AnalyticsEvent>> GetRecentAsync(int count, CancellationToken cancellationToken = default)
     {

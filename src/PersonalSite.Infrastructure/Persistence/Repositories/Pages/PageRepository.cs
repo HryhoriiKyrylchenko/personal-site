@@ -2,9 +2,11 @@ namespace PersonalSite.Infrastructure.Persistence.Repositories.Pages;
 
 public class PageRepository : EfRepository<Page>, IPageRepository
 {
-    public PageRepository(ApplicationDbContext dbContext) : base(dbContext)
-    {
-    }
+    public PageRepository(
+        ApplicationDbContext context, 
+        ILogger<PageRepository> logger,
+        IServiceProvider serviceProvider) 
+        : base(context, logger, serviceProvider) { }
 
     public async Task<Page?> GetByKeyAsync(string key, CancellationToken cancellationToken = default)
     {

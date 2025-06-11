@@ -51,7 +51,7 @@ public class ProjectSkillService :
         
         existingProjectSkill.SkillId = request.SkillId;
         
-        _projectSkillRepository.Update(existingProjectSkill);
+        await _projectSkillRepository.UpdateAsync(existingProjectSkill, cancellationToken);
         await UnitOfWork.SaveChangesAsync(cancellationToken);
     }
 

@@ -90,10 +90,12 @@ public static class EntityToDtoMapper
         {
             Id = entity.Id,
             Timestamp = entity.Timestamp,
-            Level = entity.Level.ToString(),
-            Source = entity.Source,
+            Level = entity.Level,
             Message = entity.Message,
-            Exception = entity.Exception
+            MessageTemplate = entity.MessageTemplate,
+            Exception = entity.Exception,
+            Properties = entity.Properties,
+            SourceContext = entity.SourceContext
         };
     }
     

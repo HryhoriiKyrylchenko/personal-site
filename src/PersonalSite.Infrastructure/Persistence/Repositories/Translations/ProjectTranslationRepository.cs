@@ -2,9 +2,11 @@ namespace PersonalSite.Infrastructure.Persistence.Repositories.Translations;
 
 public class ProjectTranslationRepository : EfRepository<ProjectTranslation>, IProjectTranslationRepository
 {
-    public ProjectTranslationRepository(ApplicationDbContext context) : base(context)
-    {
-    }
+    public ProjectTranslationRepository(
+        ApplicationDbContext context, 
+        ILogger<ProjectTranslationRepository> logger,
+        IServiceProvider serviceProvider) 
+        : base(context, logger, serviceProvider) { }
 
     public async Task<ProjectTranslation?> GetByProjectIdAndLanguageAsync(Guid projectId, string languageCode, CancellationToken cancellationToken = default)
     {

@@ -2,9 +2,11 @@ namespace PersonalSite.Infrastructure.Persistence.Repositories.Translations;
 
 public class SkillCategoryTranslationRepository : EfRepository<SkillCategoryTranslation>, ISkillCategoryTranslationRepository
 {
-    public SkillCategoryTranslationRepository(ApplicationDbContext context) : base(context)
-    {
-    }
+    public SkillCategoryTranslationRepository(
+        ApplicationDbContext context, 
+        ILogger<SkillCategoryTranslationRepository> logger,
+        IServiceProvider serviceProvider) 
+        : base(context, logger, serviceProvider) { }
 
     public async Task<SkillCategoryTranslation?> GetBySkillCategoryIdAndLanguageAsync(Guid skillCategoryId, string languageCode, CancellationToken cancellationToken = default)
     {

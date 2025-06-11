@@ -52,7 +52,7 @@ public class UserSkillService :
         
         existingUserSkill.Proficiency = request.Proficiency;
         
-        _userSkillRepository.Update(existingUserSkill);
+        await _userSkillRepository.UpdateAsync(existingUserSkill, cancellationToken);
         await UnitOfWork.SaveChangesAsync(cancellationToken);  
     }
 

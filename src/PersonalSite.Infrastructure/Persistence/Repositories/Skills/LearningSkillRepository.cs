@@ -2,9 +2,11 @@ namespace PersonalSite.Infrastructure.Persistence.Repositories.Skills;
 
 public class LearningSkillRepository : EfRepository<LearningSkill>, ILearningSkillRepository
 {
-    public LearningSkillRepository(ApplicationDbContext context) : base(context)
-    {
-    }
+    public LearningSkillRepository(
+        ApplicationDbContext context, 
+        ILogger<LearningSkillRepository> logger,
+        IServiceProvider serviceProvider) 
+        : base(context, logger, serviceProvider) { }
 
     public async Task<List<LearningSkill>> GetByStatusAsync(LearningStatus status, CancellationToken cancellationToken = default)
     {

@@ -3,10 +3,35 @@ namespace PersonalSite.Infrastructure.Persistence.Repositories;
 public class EfRepository<T> : IRepository<T> where T : class
 {
     protected readonly ApplicationDbContext DbContext;
+    protected readonly ILogger<EfRepository<T>> Logger;
+    private readonly IValidator<T>? _validator;
 
-    public EfRepository(ApplicationDbContext dbContext)
+    public EfRepository(
+        ApplicationDbContext dbContext, 
+        ILogger<EfRepository<T>> logger,
+        IServiceProvider serviceProvider)
     {
         DbContext = dbContext;
+        Logger = logger;
+        _validator = serviceProvider.GetService<IValidator<T>>();
+    }
+    
+    private async Task ValidateAsync(T entity, CancellationToken cancellationToken)
+    {
+        if (_validator is null)
+            return;
+
+        var result = await _validator.ValidateAsync(entity, cancellationToken);
+        if (!result.IsValid)
+        {
+            var entityName = typeof(T).Name;
+            var errorDetails = string.Join("; ", 
+                result.Errors.Select(e => $"{e.PropertyName}: {e.ErrorMessage}"));
+
+            Logger.LogWarning("Validation failed for entity {Entity}: {Errors}", entityName, errorDetails);
+
+            throw new ValidationException(result.Errors);
+        }
     }
 
     public async Task<T?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
@@ -31,16 +56,23 @@ public class EfRepository<T> : IRepository<T> where T : class
 
     public async Task AddAsync(T entity, CancellationToken cancellationToken = default)
     {
+        await ValidateAsync(entity, cancellationToken);
         await DbContext.Set<T>().AddAsync(entity, cancellationToken);
     }
 
     public async Task AddRangeAsync(IEnumerable<T> entities, CancellationToken cancellationToken = default)
     {
-        await DbContext.Set<T>().AddRangeAsync(entities, cancellationToken);
+        var enumerable = entities.ToList();
+        
+        foreach (var entity in enumerable)
+            await ValidateAsync(entity, cancellationToken);
+        
+        await DbContext.Set<T>().AddRangeAsync(enumerable, cancellationToken);
     }
 
-    public void Update(T entity)
+    public async Task UpdateAsync(T entity, CancellationToken cancellationToken = default)
     {
+        await ValidateAsync(entity, cancellationToken);
         DbContext.Set<T>().Update(entity);
     }
 

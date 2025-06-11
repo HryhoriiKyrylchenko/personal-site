@@ -55,7 +55,7 @@ public class LearningSkillService :
         existingLearningSkill.LearningStatus = request.LearningStatus;
         existingLearningSkill.DisplayOrder = request.DisplayOrder;
         
-        _learningSkillRepository.Update(existingLearningSkill);
+        await _learningSkillRepository.UpdateAsync(existingLearningSkill, cancellationToken);
     }
 
     public override async Task DeleteAsync(Guid id, CancellationToken cancellationToken = default)

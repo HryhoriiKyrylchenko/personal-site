@@ -2,21 +2,16 @@ namespace PersonalSite.Infrastructure.Persistence.Repositories.Common;
 
 public class LogEntryRepository : EfRepository<LogEntry>, ILogEntryRepository
 {
-    public LogEntryRepository(ApplicationDbContext context) : base(context)
-    {
-    }
+    public LogEntryRepository(
+        ApplicationDbContext context, 
+        ILogger<LogEntryRepository> logger,
+        IServiceProvider serviceProvider) 
+        : base(context, logger, serviceProvider) { }
 
-    public async Task<List<LogEntry>> GetByLevelAsync(LogLevel level, CancellationToken cancellationToken = default)
+    public async Task<List<LogEntry>> GetByLevelAsync(string level, CancellationToken cancellationToken = default)
     {
         return await DbContext.Logs
             .Where(log => log.Level == level)
-            .ToListAsync(cancellationToken);
-    }
-
-    public async Task<List<LogEntry>> GetBySourceAsync(string source, CancellationToken cancellationToken = default)
-    {
-        return await DbContext.Logs
-            .Where(log => log.Source == source)
             .ToListAsync(cancellationToken);
     }
 }

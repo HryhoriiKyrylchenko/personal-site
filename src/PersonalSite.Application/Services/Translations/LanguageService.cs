@@ -49,7 +49,7 @@ public class LanguageService :
         existingLanguage.Code = request.Code;
         existingLanguage.Name = request.Name;
         
-        Repository.Update(existingLanguage);
+        await Repository.UpdateAsync(existingLanguage, cancellationToken);
         await UnitOfWork.SaveChangesAsync(cancellationToken);
     }
 

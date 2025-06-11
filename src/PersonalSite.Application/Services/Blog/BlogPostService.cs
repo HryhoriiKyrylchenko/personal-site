@@ -58,7 +58,7 @@ public class BlogPostService :
         existingPost.CoverImage = request.CoverImage;
         existingPost.UpdatedAt = DateTime.UtcNow;
         
-        _blogPostRepository.Update(existingPost);
+        await _blogPostRepository.UpdateAsync(existingPost, cancellationToken);
     }
 
     public override async Task DeleteAsync(Guid id, CancellationToken cancellationToken = default)
@@ -79,7 +79,7 @@ public class BlogPostService :
         post.IsPublished = true;
         post.PublishedAt = DateTime.UtcNow;
 
-        Repository.Update(post);
+        await Repository.UpdateAsync(post, cancellationToken);
         await UnitOfWork.SaveChangesAsync(cancellationToken);
     }
     

@@ -52,7 +52,7 @@ public class SkillTranslationService :
         existingSkillTranslation.Name = request.Name;
         existingSkillTranslation.Description = request.Description;
         
-        Repository.Update(existingSkillTranslation);
+        await Repository.UpdateAsync(existingSkillTranslation, cancellationToken);
         await UnitOfWork.SaveChangesAsync(cancellationToken);
     }
 

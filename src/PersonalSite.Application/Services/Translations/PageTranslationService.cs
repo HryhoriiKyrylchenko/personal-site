@@ -67,7 +67,7 @@ public class PageTranslationService :
         existingPageTranslation.MetaDescription = request.MetaDescription;
         existingPageTranslation.OgImage = request.OgImage;
         
-        _pageTranslationRepository.Update(existingPageTranslation);
+        await _pageTranslationRepository.UpdateAsync(existingPageTranslation, cancellationToken);
         await UnitOfWork.SaveChangesAsync(cancellationToken);
     }
 

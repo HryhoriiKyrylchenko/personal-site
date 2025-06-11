@@ -52,7 +52,7 @@ public class SkillCategoryService :
         existingSkillCategory.Key = request.Key;
         existingSkillCategory.DisplayOrder = request.DisplayOrder;
         
-        _skillCategoryRepository.Update(existingSkillCategory);
+        await _skillCategoryRepository.UpdateAsync(existingSkillCategory, cancellationToken);
         await UnitOfWork.SaveChangesAsync(cancellationToken);   
     }
 

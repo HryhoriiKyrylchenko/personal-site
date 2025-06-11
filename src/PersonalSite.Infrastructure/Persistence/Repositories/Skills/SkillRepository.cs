@@ -2,9 +2,11 @@ namespace PersonalSite.Infrastructure.Persistence.Repositories.Skills;
 
 public class SkillRepository : EfRepository<Skill>, ISkillRepository
 {
-    public SkillRepository(ApplicationDbContext context) : base(context)
-    {
-    }
+    public SkillRepository(
+        ApplicationDbContext context, 
+        ILogger<SkillRepository> logger,
+        IServiceProvider serviceProvider) 
+        : base(context, logger, serviceProvider) { }
 
     public async Task<Skill?> GetByKeyAsync(string key, CancellationToken cancellationToken = default)
     {

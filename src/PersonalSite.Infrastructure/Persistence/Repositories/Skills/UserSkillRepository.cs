@@ -2,9 +2,11 @@ namespace PersonalSite.Infrastructure.Persistence.Repositories.Skills;
 
 public class UserSkillRepository : EfRepository<UserSkill>, IUserSkillRepository
 {
-    public UserSkillRepository(ApplicationDbContext context) : base(context)
-    {
-    }
+    public UserSkillRepository(
+        ApplicationDbContext context, 
+        ILogger<UserSkillRepository> logger,
+        IServiceProvider serviceProvider) 
+        : base(context, logger, serviceProvider) { }
 
     public async Task<List<UserSkill>> GetBySkillIdAsync(Guid skillId, CancellationToken cancellationToken = default)
     {

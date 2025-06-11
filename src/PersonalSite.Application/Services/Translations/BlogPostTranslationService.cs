@@ -60,7 +60,7 @@ public class BlogPostTranslationService :
         existingPostTranslation.MetaDescription = request.MetaDescription;
         existingPostTranslation.OgImage = request.OgImage;
         
-        Repository.Update(existingPostTranslation);
+        await Repository.UpdateAsync(existingPostTranslation, cancellationToken);
         await UnitOfWork.SaveChangesAsync(cancellationToken);
     }
 

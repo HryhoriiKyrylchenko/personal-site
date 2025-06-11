@@ -44,7 +44,7 @@ public class BlogPostTagService :
         
         existingTag.Name = request.Name;
         
-        Repository.Update(existingTag);
+        await Repository.UpdateAsync(existingTag, cancellationToken);
     }
 
     public override async Task DeleteAsync(Guid id, CancellationToken cancellationToken = default)

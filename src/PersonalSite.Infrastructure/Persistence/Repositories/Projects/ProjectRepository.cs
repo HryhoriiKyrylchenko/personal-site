@@ -2,7 +2,11 @@ namespace PersonalSite.Infrastructure.Persistence.Repositories.Projects;
 
 public class ProjectRepository : EfRepository<Project>, IProjectRepository
 {
-    public ProjectRepository(ApplicationDbContext context) : base(context) { }
+    public ProjectRepository(
+        ApplicationDbContext context, 
+        ILogger<ProjectRepository> logger,
+        IServiceProvider serviceProvider) 
+        : base(context, logger, serviceProvider) { }
 
     public async Task<Project?> GetBySlugAsync(string slug, CancellationToken cancellationToken = default)
     {

@@ -65,7 +65,7 @@ public class ProjectService :
         existingProject.RepoUrl = request.RepoUrl;
         existingProject.UpdatedAt = DateTime.UtcNow;
         
-        _projectRepository.Update(existingProject);
+        await _projectRepository.UpdateAsync(existingProject, cancellationToken);
         await UnitOfWork.SaveChangesAsync(cancellationToken);
     }
 
