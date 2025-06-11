@@ -8,8 +8,10 @@ public class ResumeService :
     
     public ResumeService(
         IResumeRepository repository, 
-        IUnitOfWork unitOfWork) 
-        : base(repository, unitOfWork)
+        IUnitOfWork unitOfWork,
+        ILogger<CrudServiceBase<Resume, ResumeDto, ResumeAddRequest, ResumeUpdateRequest>> logger,
+        IServiceProvider serviceProvider) 
+        : base(repository, unitOfWork, logger, serviceProvider)
     {
         _resumeRepository = repository;
     }
@@ -31,6 +33,8 @@ public class ResumeService :
 
     public override async Task AddAsync(ResumeAddRequest request, CancellationToken cancellationToken = default)
     {
+        await ValidateAddRequestAsync(request, cancellationToken);
+        
         var newResume = new Resume
         {
             Id = Guid.NewGuid(),
@@ -46,6 +50,8 @@ public class ResumeService :
 
     public override async Task UpdateAsync(ResumeUpdateRequest request, CancellationToken cancellationToken = default)
     {
+        await ValidateUpdateRequestAsync(request, cancellationToken);
+        
         var existingResume = await Repository.GetByIdAsync(request.Id, cancellationToken);
         if (existingResume is null) throw new Exception("Resume not found");
         

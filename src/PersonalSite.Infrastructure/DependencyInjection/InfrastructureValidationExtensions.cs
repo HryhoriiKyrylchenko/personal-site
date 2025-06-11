@@ -1,6 +1,6 @@
 namespace PersonalSite.Infrastructure.DependencyInjection;
 
-public static class ValidationExtensions
+public static class InfrastructureValidationExtensions
 {
     public static IServiceCollection AddDomainValidators(this IServiceCollection services)
     {

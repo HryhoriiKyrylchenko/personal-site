@@ -8,8 +8,10 @@ public class ProjectTranslationService :
     
     public ProjectTranslationService(
         IProjectTranslationRepository repository, 
-        IUnitOfWork unitOfWork) 
-        : base(repository, unitOfWork)
+        IUnitOfWork unitOfWork,
+        ILogger<CrudServiceBase<ProjectTranslation, ProjectTranslationDto, ProjectTranslationAddRequest, ProjectTranslationUpdateRequest>> logger,
+        IServiceProvider serviceProvider) 
+        : base(repository, unitOfWork, logger, serviceProvider)
     {
         _projectTranslationRepository = repository;   
     }
@@ -31,6 +33,8 @@ public class ProjectTranslationService :
 
     public override async Task AddAsync(ProjectTranslationAddRequest request, CancellationToken cancellationToken = default)
     {
+        await ValidateAddRequestAsync(request, cancellationToken);
+        
         var newProjectTranslation = new ProjectTranslation
         {
             Id = Guid.NewGuid(),
@@ -50,6 +54,8 @@ public class ProjectTranslationService :
 
     public override async Task UpdateAsync(ProjectTranslationUpdateRequest request, CancellationToken cancellationToken = default)
     {
+        await ValidateUpdateRequestAsync(request, cancellationToken);
+        
         var existingProjectTranslation = await Repository.GetByIdAsync(request.Id, cancellationToken);
         if (existingProjectTranslation is null) throw new Exception("Project translation not found");
         

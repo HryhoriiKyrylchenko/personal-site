@@ -10,8 +10,10 @@ public class ProjectService :
     public ProjectService(
         IProjectRepository repository, 
         IUnitOfWork unitOfWork,
-        LanguageContext language) 
-        : base(repository, unitOfWork)
+        LanguageContext language,
+        ILogger<CrudServiceBase<Project, ProjectDto, ProjectAddRequest, ProjectUpdateRequest>> logger,
+        IServiceProvider serviceProvider) 
+        : base(repository, unitOfWork, logger, serviceProvider)
     {
         _language = language;
         _projectRepository = repository;
@@ -40,6 +42,8 @@ public class ProjectService :
 
     public override async Task AddAsync(ProjectAddRequest request, CancellationToken cancellationToken = default)
     {
+        await ValidateAddRequestAsync(request, cancellationToken);
+        
         var newProject = new Project
         {
             Id = Guid.NewGuid(),
@@ -56,6 +60,8 @@ public class ProjectService :
 
     public override async Task UpdateAsync(ProjectUpdateRequest request, CancellationToken cancellationToken = default)
     {
+        await ValidateUpdateRequestAsync(request, cancellationToken);
+        
         var existingProject = await _projectRepository.GetByIdAsync(request.Id, cancellationToken);
         if (existingProject is null) throw new Exception("Project not found");
         

@@ -4,6 +4,9 @@ public class PageTranslationValidator : AbstractValidator<PageTranslation>
 {
     public PageTranslationValidator()
     {
+        RuleFor(x => x.Id)
+            .NotEmpty().WithMessage("Translation ID is required.");
+        
         RuleFor(x => x.PageId)
             .NotEmpty().WithMessage("PageId is required.");
 

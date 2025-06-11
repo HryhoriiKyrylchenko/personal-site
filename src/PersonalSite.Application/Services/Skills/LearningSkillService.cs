@@ -10,8 +10,10 @@ public class LearningSkillService :
     public LearningSkillService(
         ILearningSkillRepository repository, 
         IUnitOfWork unitOfWork,
-        LanguageContext language) 
-        : base(repository, unitOfWork)
+        LanguageContext language,
+        ILogger<CrudServiceBase<LearningSkill, LearningSkillDto, LearningSkillAddRequest, LearningSkillUpdateRequest>> logger,
+        IServiceProvider serviceProvider) 
+        : base(repository, unitOfWork, logger, serviceProvider)
     {
         _learningSkillRepository = repository;
         _language = language;
@@ -35,6 +37,8 @@ public class LearningSkillService :
 
     public override async Task AddAsync(LearningSkillAddRequest request, CancellationToken cancellationToken = default)
     {
+        await ValidateAddRequestAsync(request, cancellationToken);
+        
         var newLearningSkill = new LearningSkill
         {
             Id = Guid.NewGuid(),
@@ -49,6 +53,8 @@ public class LearningSkillService :
 
     public override async Task UpdateAsync(LearningSkillUpdateRequest request, CancellationToken cancellationToken = default)
     {
+        await ValidateUpdateRequestAsync(request, cancellationToken);
+        
         var existingLearningSkill = await _learningSkillRepository.GetByIdAsync(request.Id, cancellationToken);
         if (existingLearningSkill is null) throw new Exception("Learning skill not found");
         

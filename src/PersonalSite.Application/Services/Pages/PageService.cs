@@ -12,8 +12,10 @@ public class PageService :
     public PageService(
         IPageRepository repository, 
         IUnitOfWork unitOfWork,
-        LanguageContext language) 
-        : base(repository, unitOfWork)
+        LanguageContext language,
+        ILogger<CrudServiceBase<Page, PageDto, PageAddRequest, PageUpdateRequest>> logger,
+        IServiceProvider serviceProvider) 
+        : base(repository, unitOfWork, logger, serviceProvider)
     {
         _pageRepository = repository;
         _language = language;
@@ -35,6 +37,8 @@ public class PageService :
 
     public override async Task AddAsync(PageAddRequest request, CancellationToken cancellationToken = default)
     {
+        await ValidateAddRequestAsync(request, cancellationToken);
+        
         var newPage = new Page()
         {
             Id = Guid.NewGuid(),
@@ -47,6 +51,8 @@ public class PageService :
 
     public override async Task UpdateAsync(PageUpdateRequest request, CancellationToken cancellationToken = default)
     {
+        await ValidateUpdateRequestAsync(request, cancellationToken);
+        
         var existingPage = await _pageRepository.GetByIdAsync(request.Id, cancellationToken);
         if (existingPage is null) throw new Exception("Page not found");
         

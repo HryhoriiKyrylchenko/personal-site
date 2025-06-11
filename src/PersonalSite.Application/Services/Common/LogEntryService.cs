@@ -6,10 +6,10 @@ public class LogEntryService :
 {
     public LogEntryService(
         IRepository<LogEntry> repository, 
-        IUnitOfWork unitOfWork) 
-        : base(repository, unitOfWork)
-    {
-    }
+        IUnitOfWork unitOfWork,
+        ILogger<CrudServiceBase<LogEntry, LogEntryDto, LogEntryAddRequest, LogEntryUpdateRequest>> logger,
+        IServiceProvider serviceProvider) 
+        : base(repository, unitOfWork, logger, serviceProvider) { }
     
     public override async Task<LogEntryDto?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
@@ -27,6 +27,8 @@ public class LogEntryService :
 
     public override async Task AddAsync(LogEntryAddRequest request, CancellationToken cancellationToken = default)
     {
+        await ValidateAddRequestAsync(request, cancellationToken);
+        
         var newLog = new LogEntry
         {
             Id = Guid.NewGuid(),
@@ -45,6 +47,8 @@ public class LogEntryService :
 
     public override async Task UpdateAsync(LogEntryUpdateRequest request, CancellationToken cancellationToken = default)
     {
+        await ValidateUpdateRequestAsync(request, cancellationToken);
+        
         var existingLog = await Repository.GetByIdAsync(request.Id, cancellationToken);
         if (existingLog is null) throw new Exception("Log not found");
         

@@ -8,8 +8,10 @@ public class SkillTranslationService :
     
     public SkillTranslationService(
         ISkillTranslationRepository repository, 
-        IUnitOfWork unitOfWork) 
-        : base(repository, unitOfWork)
+        IUnitOfWork unitOfWork,
+        ILogger<CrudServiceBase<SkillTranslation, SkillTranslationDto, SkillTranslationAddRequest, SkillTranslationUpdateRequest>> logger,
+        IServiceProvider serviceProvider) 
+        : base(repository, unitOfWork, logger, serviceProvider)
     {
         _skillTranslationRepository = repository; 
     }
@@ -31,6 +33,8 @@ public class SkillTranslationService :
 
     public override async Task AddAsync(SkillTranslationAddRequest request, CancellationToken cancellationToken = default)
     {
+        await ValidateAddRequestAsync(request, cancellationToken);
+        
         var newSkillTranslation = new SkillTranslation
         {
             Id = Guid.NewGuid(),
@@ -46,6 +50,8 @@ public class SkillTranslationService :
 
     public override async Task UpdateAsync(SkillTranslationUpdateRequest request, CancellationToken cancellationToken = default)
     {
+        await ValidateUpdateRequestAsync(request, cancellationToken);
+        
         var existingSkillTranslation = await Repository.GetByIdAsync(request.Id, cancellationToken);
         if (existingSkillTranslation is null) throw new Exception("Skill translation not found");
         

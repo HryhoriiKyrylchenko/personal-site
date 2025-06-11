@@ -10,8 +10,10 @@ public class ProjectSkillService :
     public ProjectSkillService(
         IProjectSkillRepository repository, 
         IUnitOfWork unitOfWork,
-        LanguageContext language) 
-        : base(repository, unitOfWork)
+        LanguageContext language,
+        ILogger<CrudServiceBase<ProjectSkill, ProjectSkillDto, ProjectSkillAddRequest, ProjectSkillUpdateRequest>> logger,
+        IServiceProvider serviceProvider) 
+        : base(repository, unitOfWork, logger, serviceProvider)
     {
         _projectSkillRepository = repository;
         _language = language;
@@ -33,6 +35,8 @@ public class ProjectSkillService :
 
     public override async Task AddAsync(ProjectSkillAddRequest request, CancellationToken cancellationToken = default)
     {
+        await ValidateAddRequestAsync(request, cancellationToken);
+        
         var newProjectSkill = new ProjectSkill
         {
             Id = Guid.NewGuid(),
@@ -46,6 +50,8 @@ public class ProjectSkillService :
 
     public override async Task UpdateAsync(ProjectSkillUpdateRequest request, CancellationToken cancellationToken = default)
     {
+        await ValidateUpdateRequestAsync(request, cancellationToken);
+        
         var existingProjectSkill = await _projectSkillRepository.GetByIdAsync(request.Id, cancellationToken);
         if (existingProjectSkill is null) throw new Exception("Project skill not found");
         

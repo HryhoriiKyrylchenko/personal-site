@@ -8,8 +8,10 @@ public class ContactMessageService :
     
     public ContactMessageService(
         IContactMessageRepository repository, 
-        IUnitOfWork unitOfWork) 
-        : base(repository, unitOfWork)
+        IUnitOfWork unitOfWork,
+        ILogger<CrudServiceBase<ContactMessage, ContactMessageDto, ContactMessageAddRequest, ContactMessageUpdateRequest>> logger,
+        IServiceProvider serviceProvider) 
+        : base(repository, unitOfWork, logger, serviceProvider)
     {
         _contactMessageRepository = repository;
     }
@@ -30,6 +32,8 @@ public class ContactMessageService :
 
     public override async Task AddAsync(ContactMessageAddRequest request, CancellationToken cancellationToken = default)
     {
+        await ValidateAddRequestAsync(request, cancellationToken);
+        
         var newMessage = new ContactMessage
         {
             Id = Guid.NewGuid(),
@@ -49,6 +53,8 @@ public class ContactMessageService :
 
     public override async Task UpdateAsync(ContactMessageUpdateRequest request, CancellationToken cancellationToken = default)
     {
+        await ValidateUpdateRequestAsync(request, cancellationToken);
+        
         var existingMessage = await Repository.GetByIdAsync(request.Id, cancellationToken);
         if(existingMessage is null) throw new Exception("Message not found");
 

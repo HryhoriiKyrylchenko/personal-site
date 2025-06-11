@@ -4,6 +4,9 @@ public class SkillCategoryTranslationValidator : AbstractValidator<SkillCategory
 {
     public SkillCategoryTranslationValidator()
     {
+        RuleFor(x => x.Id)
+            .NotEmpty().WithMessage("Translation ID is required.");
+        
         RuleFor(x => x.SkillCategoryId)
             .NotEmpty().WithMessage("SkillCategoryId is required.");
 

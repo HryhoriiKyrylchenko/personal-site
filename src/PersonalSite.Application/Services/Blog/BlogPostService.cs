@@ -12,8 +12,10 @@ public class BlogPostService :
         IBlogPostRepository blogPostRepository,
         IPostTagRepository postTagRepository,
         IUnitOfWork unitOfWork, 
-        LanguageContext language)
-        : base(blogPostRepository, unitOfWork)
+        LanguageContext language,
+        ILogger<CrudServiceBase<BlogPost, BlogPostDto, BlogPostAddRequest, BlogPostUpdateRequest>> logger,
+        IServiceProvider serviceProvider)
+        : base(blogPostRepository, unitOfWork, logger, serviceProvider)
     {
         _language = language;
         _blogPostRepository = blogPostRepository;
@@ -36,6 +38,8 @@ public class BlogPostService :
 
     public override async Task AddAsync(BlogPostAddRequest request, CancellationToken cancellationToken = default)
     {
+        await ValidateAddRequestAsync(request, cancellationToken);
+        
         var newPost = new BlogPost
         {
             Id = Guid.NewGuid(),
@@ -51,6 +55,8 @@ public class BlogPostService :
 
     public override async Task UpdateAsync(BlogPostUpdateRequest request, CancellationToken cancellationToken = default)
     {
+        await ValidateUpdateRequestAsync(request, cancellationToken);
+        
         var existingPost = await _blogPostRepository.GetByIdAsync(request.Id, cancellationToken);
         if (existingPost is null) throw new Exception("Post not found");
         

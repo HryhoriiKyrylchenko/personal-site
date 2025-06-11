@@ -6,10 +6,10 @@ public class AnalyticsEventService :
 {
     public AnalyticsEventService(
         IRepository<AnalyticsEvent> repository, 
-        IUnitOfWork unitOfWork) 
-        : base(repository, unitOfWork)
-    {
-    }
+        IUnitOfWork unitOfWork,
+        ILogger<CrudServiceBase<AnalyticsEvent, AnalyticsEventDto, AnalyticsEventAddRequest, AnalyticsEventUpdateRequest>> logger,
+        IServiceProvider serviceProvider) 
+        : base(repository, unitOfWork, logger, serviceProvider) { }
     
     public override async Task<AnalyticsEventDto?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
@@ -27,6 +27,8 @@ public class AnalyticsEventService :
 
     public override async Task AddAsync(AnalyticsEventAddRequest request, CancellationToken cancellationToken = default)
     {
+        await ValidateAddRequestAsync(request, cancellationToken);
+        
         var newEvent = new AnalyticsEvent
         {
             Id = Guid.NewGuid(),
@@ -44,6 +46,8 @@ public class AnalyticsEventService :
 
     public override async Task UpdateAsync(AnalyticsEventUpdateRequest request, CancellationToken cancellationToken = default)
     {
+        await ValidateUpdateRequestAsync(request, cancellationToken);
+        
         var existingEvent = await Repository.GetByIdAsync(request.Id, cancellationToken);
         if (existingEvent is null) throw new Exception("Event not found");
         

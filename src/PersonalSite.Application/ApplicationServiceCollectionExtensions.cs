@@ -4,6 +4,10 @@ public static class ApplicationServiceCollectionExtensions
 {
     public static IServiceCollection AddApplicationServices(this IServiceCollection services)
     {
+        services.AddApplicationValidators();
+        services.AddFluentValidationAutoValidation();
+        services.AddFluentValidationClientsideAdapters();
+        
         services.AddScoped<LanguageContext>();
         
         services.AddScoped<IAnalyticsEventService, AnalyticsEventService>();

@@ -10,8 +10,10 @@ public class SkillService :
     public SkillService(
         ISkillRepository repository, 
         IUnitOfWork unitOfWork,
-        LanguageContext language) 
-        : base(repository, unitOfWork)
+        LanguageContext language,
+        ILogger<CrudServiceBase<Skill, SkillDto, SkillAddRequest, SkillUpdateRequest>> logger,
+        IServiceProvider serviceProvider) 
+        : base(repository, unitOfWork, logger, serviceProvider)
     {
         _skillRepository = repository;
         _language = language;
@@ -33,6 +35,8 @@ public class SkillService :
 
     public override async Task AddAsync(SkillAddRequest request, CancellationToken cancellationToken = default)
     {
+        await ValidateAddRequestAsync(request, cancellationToken);
+        
         var newSkill = new Skill()
         {
             Id = Guid.NewGuid(),
@@ -46,6 +50,8 @@ public class SkillService :
 
     public override async Task UpdateAsync(SkillUpdateRequest request, CancellationToken cancellationToken = default)
     {
+        await ValidateUpdateRequestAsync(request, cancellationToken);
+        
         var existingSkill = await _skillRepository.GetByIdAsync(request.Id, cancellationToken);
         if (existingSkill is null) throw new Exception("Skill not found");
         

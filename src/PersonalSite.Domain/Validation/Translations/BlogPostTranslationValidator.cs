@@ -4,6 +4,9 @@ public class BlogPostTranslationValidator : AbstractValidator<BlogPostTranslatio
 {
     public BlogPostTranslationValidator()
     {
+        RuleFor(x => x.Id)
+            .NotEmpty().WithMessage("Translation ID is required.");
+        
         RuleFor(x => x.BlogPostId)
             .NotEmpty().WithMessage("BlogPostId is required.");
 

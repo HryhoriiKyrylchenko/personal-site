@@ -8,8 +8,10 @@ public class LanguageService :
     
     public LanguageService(
         ILanguageRepository repository, 
-        IUnitOfWork unitOfWork) 
-        : base(repository, unitOfWork)
+        IUnitOfWork unitOfWork,
+        ILogger<CrudServiceBase<Language, LanguageDto, LanguageAddRequest, LanguageUpdateRequest>> logger,
+        IServiceProvider serviceProvider) 
+        : base(repository, unitOfWork, logger, serviceProvider)
     {
         _languageRepository = repository; 
     }
@@ -30,6 +32,8 @@ public class LanguageService :
 
     public override async Task AddAsync(LanguageAddRequest request, CancellationToken cancellationToken = default)
     {
+        await ValidateAddRequestAsync(request, cancellationToken);
+        
         var newLanguage = new Language
         {
             Id = Guid.NewGuid(),
@@ -43,6 +47,8 @@ public class LanguageService :
 
     public override async Task UpdateAsync(LanguageUpdateRequest request, CancellationToken cancellationToken = default)
     {
+        await ValidateUpdateRequestAsync(request, cancellationToken);
+        
         var existingLanguage = await Repository.GetByIdAsync(request.Id, cancellationToken);
         if (existingLanguage is null) throw new Exception("Language not found");
         

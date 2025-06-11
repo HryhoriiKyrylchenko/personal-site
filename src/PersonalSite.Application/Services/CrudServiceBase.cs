@@ -6,13 +6,57 @@ public abstract class CrudServiceBase<TEntity, TDto, TAddRequest, TUpdateRequest
 {
     protected readonly IRepository<TEntity> Repository;
     protected readonly IUnitOfWork UnitOfWork;
+    protected readonly ILogger<CrudServiceBase<TEntity, TDto, TAddRequest, TUpdateRequest>> Logger;
+    private readonly IValidator<TAddRequest>? _addRequestValidator;
+    private readonly IValidator<TUpdateRequest>? _updateRequestValidator;
 
     protected CrudServiceBase(
         IRepository<TEntity> repository,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+        ILogger<CrudServiceBase<TEntity, TDto, TAddRequest, TUpdateRequest>> logger,
+        IServiceProvider serviceProvider)
     {
         Repository = repository;
         UnitOfWork = unitOfWork;
+        Logger = logger;
+        _addRequestValidator = serviceProvider.GetService<IValidator<TAddRequest>>();
+        _updateRequestValidator = serviceProvider.GetService<IValidator<TUpdateRequest>>();
+    }
+    
+    protected async Task ValidateAddRequestAsync(TAddRequest entity, CancellationToken cancellationToken)
+    {
+        if (_addRequestValidator is null)
+            return;
+    
+        var result = await _addRequestValidator.ValidateAsync(entity, cancellationToken);
+        if (!result.IsValid)
+        {
+            var entityName = typeof(TEntity).Name;
+            var errorDetails = string.Join("; ", 
+                result.Errors.Select(e => $"{e.PropertyName}: {e.ErrorMessage}"));
+    
+            Logger.LogWarning("Validation failed for entity {Entity}: {Errors}", entityName, errorDetails);
+    
+            throw new ValidationException(result.Errors);
+        }
+    }
+    
+    protected async Task ValidateUpdateRequestAsync(TUpdateRequest entity, CancellationToken cancellationToken)
+    {
+        if (_updateRequestValidator is null)
+            return;
+    
+        var result = await _updateRequestValidator.ValidateAsync(entity, cancellationToken);
+        if (!result.IsValid)
+        {
+            var entityName = typeof(TEntity).Name;
+            var errorDetails = string.Join("; ", 
+                result.Errors.Select(e => $"{e.PropertyName}: {e.ErrorMessage}"));
+    
+            Logger.LogWarning("Validation failed for entity {Entity}: {Errors}", entityName, errorDetails);
+    
+            throw new ValidationException(result.Errors);
+        }
     }
 
     public abstract Task<TDto?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);

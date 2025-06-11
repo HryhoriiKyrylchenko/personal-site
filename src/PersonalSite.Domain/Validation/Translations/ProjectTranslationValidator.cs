@@ -4,6 +4,9 @@ public class ProjectTranslationValidator : AbstractValidator<ProjectTranslation>
 {
     public ProjectTranslationValidator()
     {
+        RuleFor(x => x.Id)
+            .NotEmpty().WithMessage("Translation ID is required.");
+        
         RuleFor(x => x.ProjectId)
             .NotEmpty().WithMessage("ProjectId is required.");
 
