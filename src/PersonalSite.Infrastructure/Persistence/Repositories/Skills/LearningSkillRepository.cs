@@ -2,9 +2,11 @@ namespace PersonalSite.Infrastructure.Persistence.Repositories.Skills;
 
 public class LearningSkillRepository : EfRepository<LearningSkill>, ILearningSkillRepository
 {
-    public LearningSkillRepository(ApplicationDbContext context) : base(context)
-    {
-    }
+    public LearningSkillRepository(
+        ApplicationDbContext context, 
+        ILogger<LearningSkillRepository> logger,
+        IServiceProvider serviceProvider) 
+        : base(context, logger, serviceProvider) { }
 
     public async Task<List<LearningSkill>> GetByStatusAsync(LearningStatus status, CancellationToken cancellationToken = default)
     {
@@ -29,6 +31,9 @@ public class LearningSkillRepository : EfRepository<LearningSkill>, ILearningSki
 
     public async Task<LearningSkill?> GetWithFullDataByIdAsync(Guid id, CancellationToken cancellationToken)
     {
+        if (id == Guid.Empty)
+            throw new ArgumentException("Id cannot be empty", nameof(id));
+        
         return await DbContext.LearningSkills
             .Include(ls => ls.Skill)
                 .ThenInclude(s => s.Translations)

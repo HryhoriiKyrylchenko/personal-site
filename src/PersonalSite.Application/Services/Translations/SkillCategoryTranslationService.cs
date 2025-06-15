@@ -8,8 +8,10 @@ public class SkillCategoryTranslationService :
     
     public SkillCategoryTranslationService(
         ISkillCategoryTranslationRepository repository, 
-        IUnitOfWork unitOfWork) 
-        : base(repository, unitOfWork)
+        IUnitOfWork unitOfWork,
+        ILogger<CrudServiceBase<SkillCategoryTranslation, SkillCategoryTranslationDto, SkillCategoryTranslationAddRequest, SkillCategoryTranslationUpdateRequest>> logger,
+        IServiceProvider serviceProvider) 
+        : base(repository, unitOfWork, logger, serviceProvider)
     {
         _skillCategoryTranslationRepository = repository;  
     }
@@ -31,6 +33,8 @@ public class SkillCategoryTranslationService :
 
     public override async Task AddAsync(SkillCategoryTranslationAddRequest request, CancellationToken cancellationToken = default)
     {
+        await ValidateAddRequestAsync(request, cancellationToken);
+        
         var newSkillCategoryTranslation = new SkillCategoryTranslation
         {
             Id = Guid.NewGuid(),
@@ -46,13 +50,15 @@ public class SkillCategoryTranslationService :
 
     public override async Task UpdateAsync(SkillCategoryTranslationUpdateRequest request, CancellationToken cancellationToken = default)
     {
+        await ValidateUpdateRequestAsync(request, cancellationToken);
+        
         var existingSkillCategoryTranslation = await Repository.GetByIdAsync(request.Id, cancellationToken);
         if (existingSkillCategoryTranslation is null) throw new Exception("Skill category translation not found");
         
         existingSkillCategoryTranslation.Name = request.Name;
         existingSkillCategoryTranslation.Description = request.Description;
         
-        Repository.Update(existingSkillCategoryTranslation);
+        await Repository.UpdateAsync(existingSkillCategoryTranslation, cancellationToken);
         await UnitOfWork.SaveChangesAsync(cancellationToken); 
     }
 

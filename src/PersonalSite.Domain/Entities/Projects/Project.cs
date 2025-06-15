@@ -15,7 +15,7 @@ public class Project : SoftDeletableEntity
     public string RepoUrl { get; set; } = string.Empty;
 
     public DateTime CreatedAt { get; set; }
-    public DateTime UpdatedAt { get; set; }
+    public DateTime? UpdatedAt { get; set; }
     
     public ICollection<ProjectTranslation> Translations { get; set; } = [];
     public ICollection<ProjectSkill> ProjectSkills { get; set; } = [];

@@ -8,8 +8,10 @@ public class BlogPostTranslationService :
     
     public BlogPostTranslationService(
         IBlogPostTranslationRepository repository, 
-        IUnitOfWork unitOfWork) 
-        : base(repository, unitOfWork)
+        IUnitOfWork unitOfWork,
+        ILogger<CrudServiceBase<BlogPostTranslation, BlogPostTranslationDto, BlogPostTranslationAddRequest, BlogPostTranslationUpdateRequest>> logger,
+        IServiceProvider serviceProvider) 
+        : base(repository, unitOfWork, logger, serviceProvider)
     {
         _blogPostTranslationRepository = repository;   
     }
@@ -31,6 +33,8 @@ public class BlogPostTranslationService :
 
     public override async Task AddAsync(BlogPostTranslationAddRequest request, CancellationToken cancellationToken = default)
     {
+        await ValidateAddRequestAsync(request, cancellationToken);
+        
         var newPostTranslation = new BlogPostTranslation
         {
             Id = Guid.NewGuid(),
@@ -50,6 +54,8 @@ public class BlogPostTranslationService :
 
     public override async Task UpdateAsync(BlogPostTranslationUpdateRequest request, CancellationToken cancellationToken = default)
     {
+        await ValidateUpdateRequestAsync(request, cancellationToken);
+        
         var existingPostTranslation = await Repository.GetByIdAsync(request.Id, cancellationToken);
         if (existingPostTranslation is null) throw new Exception("Blog post translation not found");
 
@@ -60,7 +66,7 @@ public class BlogPostTranslationService :
         existingPostTranslation.MetaDescription = request.MetaDescription;
         existingPostTranslation.OgImage = request.OgImage;
         
-        Repository.Update(existingPostTranslation);
+        await Repository.UpdateAsync(existingPostTranslation, cancellationToken);
         await UnitOfWork.SaveChangesAsync(cancellationToken);
     }
 

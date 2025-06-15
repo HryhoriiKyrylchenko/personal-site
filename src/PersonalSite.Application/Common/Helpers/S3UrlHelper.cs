@@ -6,9 +6,8 @@ public static class S3UrlHelper
 
     public static string BuildImageUrl(string? relativePath)
     {
-        if (string.IsNullOrWhiteSpace(relativePath))
-            return string.Empty;
-
-        return $"{BucketBaseUrl.TrimEnd('/')}/{relativePath.TrimStart('/')}";
+        return string.IsNullOrWhiteSpace(relativePath) 
+            ? string.Empty 
+            : $"{BucketBaseUrl.TrimEnd('/')}/{relativePath.TrimStart('/')}";
     }
 }

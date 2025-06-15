@@ -13,7 +13,7 @@ public class BlogPost : SoftDeletableEntity
     public string CoverImage { get; set; } = string.Empty;
 
     public DateTime CreatedAt { get; set; }
-    public DateTime UpdatedAt { get; set; }
+    public DateTime? UpdatedAt { get; set; }
     
     public bool IsPublished { get; set; }
     public DateTime? PublishedAt { get; set; }

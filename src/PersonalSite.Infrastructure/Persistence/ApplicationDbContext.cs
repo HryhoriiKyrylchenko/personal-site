@@ -1,5 +1,3 @@
-using PersonalSite.Domain.Entities.Pages;
-
 namespace PersonalSite.Infrastructure.Persistence;
 
 public class ApplicationDbContext : DbContext
@@ -63,7 +61,6 @@ public class ApplicationDbContext : DbContext
         {
             entity.HasIndex(e => e.Timestamp);
             entity.HasIndex(e => e.Level);
-            entity.HasIndex(e => e.Source);
         });
 
         modelBuilder.Entity<SocialMediaLink>(entity =>

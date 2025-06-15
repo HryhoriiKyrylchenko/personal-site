@@ -8,8 +8,10 @@ public class PageTranslationService :
     
     public PageTranslationService(
         IPageTranslationRepository repository, 
-        IUnitOfWork unitOfWork) 
-        : base(repository, unitOfWork)
+        IUnitOfWork unitOfWork,
+        ILogger<CrudServiceBase<PageTranslation, PageTranslationDto, PageTranslationAddRequest, PageTranslationUpdateRequest>> logger,
+        IServiceProvider serviceProvider) 
+        : base(repository, unitOfWork, logger, serviceProvider)
     {
         _pageTranslationRepository = repository;
     }
@@ -38,6 +40,8 @@ public class PageTranslationService :
 
     public override async Task AddAsync(PageTranslationAddRequest request, CancellationToken cancellationToken = default)
     {
+        await ValidateAddRequestAsync(request, cancellationToken);
+        
         var newPageTranslation = new PageTranslation
         {
             Id = Guid.NewGuid(),
@@ -57,6 +61,8 @@ public class PageTranslationService :
 
     public override async Task UpdateAsync(PageTranslationUpdateRequest request, CancellationToken cancellationToken = default)
     {
+        await ValidateUpdateRequestAsync(request, cancellationToken);
+        
         var existingPageTranslation = await _pageTranslationRepository.GetByIdAsync(request.Id, cancellationToken);
         if (existingPageTranslation is null) throw new Exception("Page translation not found");
         
@@ -67,7 +73,7 @@ public class PageTranslationService :
         existingPageTranslation.MetaDescription = request.MetaDescription;
         existingPageTranslation.OgImage = request.OgImage;
         
-        _pageTranslationRepository.Update(existingPageTranslation);
+        await _pageTranslationRepository.UpdateAsync(existingPageTranslation, cancellationToken);
         await UnitOfWork.SaveChangesAsync(cancellationToken);
     }
 

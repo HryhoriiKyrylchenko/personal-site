@@ -6,17 +6,29 @@ public class AnalyticsEventService :
 {
     public AnalyticsEventService(
         IRepository<AnalyticsEvent> repository, 
-        IUnitOfWork unitOfWork) 
-        : base(repository, unitOfWork)
-    {
-    }
+        IUnitOfWork unitOfWork,
+        ILogger<CrudServiceBase<AnalyticsEvent, AnalyticsEventDto, AnalyticsEventAddRequest, AnalyticsEventUpdateRequest>> logger,
+        IServiceProvider serviceProvider) 
+        : base(repository, unitOfWork, logger, serviceProvider) { }
     
     public override async Task<AnalyticsEventDto?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        var entity = await Repository.GetByIdAsync(id, cancellationToken);
-        return entity == null
-            ? null
-            : EntityToDtoMapper.MapAnalyticsEventToDto(entity);
+        if (id == Guid.Empty) 
+            throw new ArgumentException("Id cannot be empty", nameof(id));
+
+        try
+        {
+            var entity = await Repository.GetByIdAsync(id, cancellationToken);
+            return entity == null
+                ? null
+                : EntityToDtoMapper.MapAnalyticsEventToDto(entity);
+        }
+        catch (Exception e)
+        {
+            Logger.LogError(e, "Error getting analytics event with ID {Id}", id);
+            throw;
+        }
+        
     }
 
     public override async Task<IReadOnlyList<AnalyticsEventDto>> GetAllAsync(CancellationToken cancellationToken = default)
@@ -27,6 +39,8 @@ public class AnalyticsEventService :
 
     public override async Task AddAsync(AnalyticsEventAddRequest request, CancellationToken cancellationToken = default)
     {
+        await ValidateAddRequestAsync(request, cancellationToken);
+        
         var newEvent = new AnalyticsEvent
         {
             Id = Guid.NewGuid(),
@@ -44,6 +58,8 @@ public class AnalyticsEventService :
 
     public override async Task UpdateAsync(AnalyticsEventUpdateRequest request, CancellationToken cancellationToken = default)
     {
+        await ValidateUpdateRequestAsync(request, cancellationToken);
+        
         var existingEvent = await Repository.GetByIdAsync(request.Id, cancellationToken);
         if (existingEvent is null) throw new Exception("Event not found");
         
@@ -52,7 +68,7 @@ public class AnalyticsEventService :
         existingEvent.UserAgent = request.UserAgent;
         existingEvent.AdditionalDataJson = request.AdditionalDataJson;
         
-        Repository.Update(existingEvent);
+        await Repository.UpdateAsync(existingEvent, cancellationToken);
         await UnitOfWork.SaveChangesAsync(cancellationToken);
     }
 

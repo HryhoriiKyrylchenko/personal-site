@@ -10,8 +10,10 @@ public class UserSkillService :
     public UserSkillService(
         IUserSkillRepository repository, 
         IUnitOfWork unitOfWork,
-        LanguageContext language) 
-        : base(repository, unitOfWork)
+        LanguageContext language,
+        ILogger<CrudServiceBase<UserSkill, UserSkillDto, UserSkillAddRequest, UserSkillUpdateRequest>> logger,
+        IServiceProvider serviceProvider) 
+        : base(repository, unitOfWork, logger, serviceProvider)
     {
         _userSkillRepository = repository;
         _language = language;
@@ -33,6 +35,8 @@ public class UserSkillService :
 
     public override async Task AddAsync(UserSkillAddRequest request, CancellationToken cancellationToken = default)
     {
+        await ValidateAddRequestAsync(request, cancellationToken);
+        
         var newUserSkill = new UserSkill
         {
             Id = Guid.NewGuid(),
@@ -47,12 +51,14 @@ public class UserSkillService :
 
     public override async Task UpdateAsync(UserSkillUpdateRequest request, CancellationToken cancellationToken = default)
     {
+        await ValidateUpdateRequestAsync(request, cancellationToken);
+        
         var existingUserSkill = await _userSkillRepository.GetByIdAsync(request.Id, cancellationToken);
         if (existingUserSkill is null) throw new Exception("User skill not found");
         
         existingUserSkill.Proficiency = request.Proficiency;
         
-        _userSkillRepository.Update(existingUserSkill);
+        await _userSkillRepository.UpdateAsync(existingUserSkill, cancellationToken);
         await UnitOfWork.SaveChangesAsync(cancellationToken);  
     }
 

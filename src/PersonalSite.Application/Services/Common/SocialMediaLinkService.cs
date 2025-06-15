@@ -8,8 +8,10 @@ public class SocialMediaLinkService :
     
     public SocialMediaLinkService(
         ISocialMediaLinkRepository repository, 
-        IUnitOfWork unitOfWork) 
-        : base(repository, unitOfWork)
+        IUnitOfWork unitOfWork,
+        ILogger<CrudServiceBase<SocialMediaLink, SocialMediaLinkDto, SocialMediaLinkAddRequest, SocialMediaLinkUpdateRequest>> logger,
+        IServiceProvider serviceProvider) 
+        : base(repository, unitOfWork, logger, serviceProvider)
     {
         _socialMediaLinkRepository = repository;
     }
@@ -31,6 +33,8 @@ public class SocialMediaLinkService :
 
     public override async Task AddAsync(SocialMediaLinkAddRequest request, CancellationToken cancellationToken = default)
     {
+        await ValidateAddRequestAsync(request, cancellationToken);
+        
         var newSocialMediaLink = new SocialMediaLink
         {
             Id = Guid.NewGuid(),
@@ -46,6 +50,8 @@ public class SocialMediaLinkService :
 
     public override async Task UpdateAsync(SocialMediaLinkUpdateRequest request, CancellationToken cancellationToken = default)
     {
+        await ValidateUpdateRequestAsync(request, cancellationToken);
+        
         var existingSocialMediaLink = await Repository.GetByIdAsync(request.Id, cancellationToken);
         if (existingSocialMediaLink is null) throw new Exception("Social media link is not found");
         
@@ -53,7 +59,7 @@ public class SocialMediaLinkService :
         existingSocialMediaLink.DisplayOrder = request.DisplayOrder;
         existingSocialMediaLink.IsActive = request.IsActive;
         
-        Repository.Update(existingSocialMediaLink);
+        await Repository.UpdateAsync(existingSocialMediaLink, cancellationToken);
         await UnitOfWork.SaveChangesAsync(cancellationToken);
     }
 

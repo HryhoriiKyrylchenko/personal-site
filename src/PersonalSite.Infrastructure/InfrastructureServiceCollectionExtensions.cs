@@ -1,11 +1,13 @@
-﻿using PersonalSite.Infrastructure.Persistence.Repositories.Pages;
-
-namespace PersonalSite.Infrastructure;
+﻿namespace PersonalSite.Infrastructure;
 
 public static class InfrastructureServiceCollectionExtensions
 {
     public static IServiceCollection AddInfrastructureServices(this IServiceCollection services)
     {
+        services.AddDomainValidators();
+        services.AddFluentValidationAutoValidation();
+        services.AddFluentValidationClientsideAdapters();
+        
         services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
         services.AddScoped(typeof(IReadOnlyRepository<>), typeof(EfRepository<>));
         services.AddScoped<IUnitOfWork, EfUnitOfWork>();

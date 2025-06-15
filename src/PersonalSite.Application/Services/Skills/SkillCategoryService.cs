@@ -10,8 +10,10 @@ public class SkillCategoryService :
     public SkillCategoryService(
         ISkillCategoryRepository repository, 
         IUnitOfWork unitOfWork,
-        LanguageContext language) 
-        : base(repository, unitOfWork)
+        LanguageContext language,
+        ILogger<CrudServiceBase<SkillCategory, SkillCategoryDto, SkillCategoryAddRequest, SkillCategoryUpdateRequest>> logger,
+        IServiceProvider serviceProvider) 
+        : base(repository, unitOfWork, logger, serviceProvider)
     {
         _skillCategoryRepository = repository;
         _language = language;
@@ -33,6 +35,8 @@ public class SkillCategoryService :
 
     public override async Task AddAsync(SkillCategoryAddRequest request, CancellationToken cancellationToken = default)
     {
+        await ValidateAddRequestAsync(request, cancellationToken);
+        
         var newSkillCategory = new SkillCategory
         {
             Id = Guid.NewGuid(),
@@ -46,13 +50,15 @@ public class SkillCategoryService :
 
     public override async Task UpdateAsync(SkillCategoryUpdateRequest request, CancellationToken cancellationToken = default)
     {
+        await ValidateUpdateRequestAsync(request, cancellationToken);
+        
         var existingSkillCategory = await _skillCategoryRepository.GetByIdAsync(request.Id, cancellationToken);
         if (existingSkillCategory is null) throw new Exception("Skill category not found");
         
         existingSkillCategory.Key = request.Key;
         existingSkillCategory.DisplayOrder = request.DisplayOrder;
         
-        _skillCategoryRepository.Update(existingSkillCategory);
+        await _skillCategoryRepository.UpdateAsync(existingSkillCategory, cancellationToken);
         await UnitOfWork.SaveChangesAsync(cancellationToken);   
     }
 

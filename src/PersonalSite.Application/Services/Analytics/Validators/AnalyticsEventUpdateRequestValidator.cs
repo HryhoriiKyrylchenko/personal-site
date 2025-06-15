@@ -1,0 +1,40 @@
+namespace PersonalSite.Application.Services.Analytics.Validators;
+
+public class AnalyticsEventUpdateRequestValidator : AbstractValidator<AnalyticsEventUpdateRequest>
+{
+    public AnalyticsEventUpdateRequestValidator()
+    {
+        RuleFor(x => x.Id)
+            .NotEmpty().WithMessage("Event ID is required.");
+
+        RuleFor(x => x.PageSlug)
+            .NotEmpty().WithMessage("Page slug is required.")
+            .MaximumLength(200).WithMessage("Page slug must be 200 characters or fewer.");
+
+        RuleFor(x => x.Referrer)
+            .MaximumLength(512).When(x => !string.IsNullOrWhiteSpace(x.Referrer));
+
+        RuleFor(x => x.UserAgent)
+            .MaximumLength(512).When(x => !string.IsNullOrWhiteSpace(x.UserAgent));
+
+        RuleFor(x => x.AdditionalDataJson)
+            .Must(BeValidJson).When(x => !string.IsNullOrWhiteSpace(x.AdditionalDataJson))
+            .WithMessage("AdditionalDataJson must be valid JSON.");
+    }
+
+    private bool BeValidJson(string? json)
+    {
+        if (string.IsNullOrWhiteSpace(json))
+            return true;
+
+        try
+        {
+            System.Text.Json.JsonDocument.Parse(json);
+            return true;
+        }
+        catch
+        {
+            return false;
+        }
+    }
+}

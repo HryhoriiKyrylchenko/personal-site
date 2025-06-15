@@ -6,10 +6,10 @@ public class BlogPostTagService :
 {
     public BlogPostTagService(
         IRepository<BlogPostTag> repository, 
-        IUnitOfWork unitOfWork) 
-        : base(repository, unitOfWork)
-    {
-    }
+        IUnitOfWork unitOfWork,
+        ILogger<CrudServiceBase<BlogPostTag, BlogPostTagDto, BlogPostTagAddRequest, BlogPostTagUpdateRequest>> logger,
+        IServiceProvider serviceProvider) 
+        : base(repository, unitOfWork, logger, serviceProvider) { }
     
     public override async Task<BlogPostTagDto?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
@@ -27,6 +27,8 @@ public class BlogPostTagService :
 
     public override async Task AddAsync(BlogPostTagAddRequest request, CancellationToken cancellationToken = default)
     {
+        await ValidateAddRequestAsync(request, cancellationToken);
+        
         var newTag = new BlogPostTag
         {
             Id = Guid.NewGuid(),
@@ -39,12 +41,14 @@ public class BlogPostTagService :
 
     public override async Task UpdateAsync(BlogPostTagUpdateRequest request, CancellationToken cancellationToken = default)
     {
+        await ValidateUpdateRequestAsync(request, cancellationToken);
+        
         var existingTag = await Repository.GetByIdAsync(request.Id, cancellationToken);
         if (existingTag is null) throw new Exception("Tag not found");
         
         existingTag.Name = request.Name;
         
-        Repository.Update(existingTag);
+        await Repository.UpdateAsync(existingTag, cancellationToken);
     }
 
     public override async Task DeleteAsync(Guid id, CancellationToken cancellationToken = default)

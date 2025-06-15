@@ -6,10 +6,10 @@ public class LogEntryService :
 {
     public LogEntryService(
         IRepository<LogEntry> repository, 
-        IUnitOfWork unitOfWork) 
-        : base(repository, unitOfWork)
-    {
-    }
+        IUnitOfWork unitOfWork,
+        ILogger<CrudServiceBase<LogEntry, LogEntryDto, LogEntryAddRequest, LogEntryUpdateRequest>> logger,
+        IServiceProvider serviceProvider) 
+        : base(repository, unitOfWork, logger, serviceProvider) { }
     
     public override async Task<LogEntryDto?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
@@ -27,14 +27,18 @@ public class LogEntryService :
 
     public override async Task AddAsync(LogEntryAddRequest request, CancellationToken cancellationToken = default)
     {
+        await ValidateAddRequestAsync(request, cancellationToken);
+        
         var newLog = new LogEntry
         {
             Id = Guid.NewGuid(),
             Timestamp = DateTime.UtcNow,
             Level = request.Level,
-            Source = request.Source,
             Message = request.Message,
-            Exception = request.Exception
+            MessageTemplate = request.MessageTemplate,
+            Exception = request.Exception,
+            Properties = request.Properties,
+            SourceContext = request.SourceContext
         };
         
         await Repository.AddAsync(newLog, cancellationToken);
@@ -43,15 +47,19 @@ public class LogEntryService :
 
     public override async Task UpdateAsync(LogEntryUpdateRequest request, CancellationToken cancellationToken = default)
     {
+        await ValidateUpdateRequestAsync(request, cancellationToken);
+        
         var existingLog = await Repository.GetByIdAsync(request.Id, cancellationToken);
         if (existingLog is null) throw new Exception("Log not found");
         
         existingLog.Level = request.Level;
-        existingLog.Source = request.Source;
         existingLog.Message = request.Message;
+        existingLog.MessageTemplate = request.MessageTemplate;
         existingLog.Exception = request.Exception;
+        existingLog.Properties = request.Properties;
+        existingLog.SourceContext = request.SourceContext;
         
-        Repository.Update(existingLog);
+        await Repository.UpdateAsync(existingLog, cancellationToken);
         await UnitOfWork.SaveChangesAsync(cancellationToken);
     }
 
