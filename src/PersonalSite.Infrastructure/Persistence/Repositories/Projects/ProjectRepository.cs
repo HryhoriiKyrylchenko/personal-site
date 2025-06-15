@@ -47,6 +47,9 @@ public class ProjectRepository : EfRepository<Project>, IProjectRepository
 
     public async Task<Project?> GetWithFullDataAsync(Guid id, CancellationToken cancellationToken)
     {
+        if (id == Guid.Empty)
+            throw new ArgumentException("Id cannot be empty", nameof(id));
+        
         return await DbContext.Projects
             .Include(p => p.Translations)
             .Include(p => p.ProjectSkills)

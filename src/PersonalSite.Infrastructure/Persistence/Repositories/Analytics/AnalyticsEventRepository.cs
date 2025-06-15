@@ -10,6 +10,9 @@ public class AnalyticsEventRepository : EfRepository<AnalyticsEvent>, IAnalytics
 
     public async Task<List<AnalyticsEvent>> GetRecentAsync(int count, CancellationToken cancellationToken = default)
     {
+        if (count <= 0)
+            return [];
+        
         return await DbContext.AnalyticsEvents
             .OrderByDescending(e => e.CreatedAt)
             .Take(count)
@@ -18,6 +21,9 @@ public class AnalyticsEventRepository : EfRepository<AnalyticsEvent>, IAnalytics
 
     public async Task<int> CountByEventTypeAsync(string eventType, CancellationToken cancellationToken = default)
     {
+        if (string.IsNullOrWhiteSpace(eventType) || eventType.Length > 255)
+            return 0;
+    
         return await DbContext.AnalyticsEvents
             .CountAsync(e => e.EventType == eventType, cancellationToken);
     }

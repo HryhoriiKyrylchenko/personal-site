@@ -56,3 +56,5 @@ global using PersonalSite.Application.Services.Projects.Validators;
 global using PersonalSite.Application.Services.Skills.Validators;
 global using PersonalSite.Application.Services.Translations.Validators;
 global using Microsoft.Extensions.Logging;
+global using PersonalSite.Infrastructure.EventBus;
+global using PersonalSite.Infrastructure.Email;

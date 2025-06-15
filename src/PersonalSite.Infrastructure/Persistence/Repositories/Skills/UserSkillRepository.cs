@@ -10,6 +10,9 @@ public class UserSkillRepository : EfRepository<UserSkill>, IUserSkillRepository
 
     public async Task<List<UserSkill>> GetBySkillIdAsync(Guid skillId, CancellationToken cancellationToken = default)
     {
+        if (skillId == Guid.Empty)
+            throw new ArgumentException("Id cannot be empty", nameof(skillId));
+        
         return await DbContext.UserSkills
             .Where(us => us.SkillId == skillId && !us.IsDeleted)
             .Include(us => us.Skill)
@@ -30,6 +33,9 @@ public class UserSkillRepository : EfRepository<UserSkill>, IUserSkillRepository
 
     public async Task<UserSkill?> GetWithSkillDataById(Guid id, CancellationToken cancellationToken)
     {
+        if (id == Guid.Empty)
+            throw new ArgumentException("Id cannot be empty", nameof(id));
+        
         return await DbContext.UserSkills
             .Include(us => us.Skill)
                 .ThenInclude(s => s.Translations)

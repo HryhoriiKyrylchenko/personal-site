@@ -10,6 +10,9 @@ public class BlogPostTagRepository : EfRepository<BlogPostTag>, IBlogPostTagRepo
 
     public async Task<BlogPostTag?> GetByNameAsync(string name, CancellationToken cancellationToken = default)
     {
+        if (string.IsNullOrWhiteSpace(name))
+            throw new ArgumentException("Name cannot be null or whitespace", nameof(name));
+        
         return await DbContext.BlogPostTags
             .FirstOrDefaultAsync(t => t.Name == name, cancellationToken);
     }

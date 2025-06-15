@@ -10,6 +10,9 @@ public class LanguageRepository : EfRepository<Language>, ILanguageRepository
 
     public async Task<Language?> GetByCodeAsync(string code, CancellationToken cancellationToken = default)
     {
+        if (string.IsNullOrWhiteSpace(code))
+            throw new ArgumentException("Code cannot be null or whitespace", nameof(code));
+        
         return await DbContext.Languages
             .FirstOrDefaultAsync(l => l.Code == code, cancellationToken);
     }

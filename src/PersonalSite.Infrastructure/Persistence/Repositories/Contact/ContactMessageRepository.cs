@@ -17,6 +17,9 @@ public class ContactMessageRepository : EfRepository<ContactMessage>, IContactMe
 
     public async Task MarkAsReadAsync(Guid id, CancellationToken cancellationToken = default)
     {
+        if (id == Guid.Empty)
+            throw new ArgumentException("Id cannot be empty", nameof(id));
+        
         var message = await DbContext.ContactMessages.FindAsync([id], cancellationToken);
         if (message is { IsRead: false })
         {
@@ -27,6 +30,9 @@ public class ContactMessageRepository : EfRepository<ContactMessage>, IContactMe
 
     public async Task MarkAsUnreadAsync(Guid id, CancellationToken cancellationToken)
     {
+        if (id == Guid.Empty)
+            throw new ArgumentException("Id cannot be empty", nameof(id));
+        
         var message = await DbContext.ContactMessages.FindAsync([id], cancellationToken);
         if (message is { IsRead: true })
         {

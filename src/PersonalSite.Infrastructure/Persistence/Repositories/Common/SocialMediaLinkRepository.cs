@@ -17,6 +17,9 @@ public class SocialMediaLinkRepository : EfRepository<SocialMediaLink>, ISocialM
 
     public async Task<SocialMediaLink?> GetActiveByPlatformAsync(string platform, CancellationToken cancellationToken = default)
     {
+        if (string.IsNullOrWhiteSpace(platform))
+            throw new ArgumentException("Platform cannot be null or whitespace", nameof(platform));
+        
         return await DbContext.SocialMediaLinks
             .FirstOrDefaultAsync(l => l.Platform == platform && l.IsActive, cancellationToken);
     }

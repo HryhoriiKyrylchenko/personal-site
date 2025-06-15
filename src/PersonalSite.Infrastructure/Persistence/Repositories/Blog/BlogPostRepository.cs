@@ -10,6 +10,9 @@ public class BlogPostRepository : EfRepository<BlogPost>, IBlogPostRepository
 
     public async Task<BlogPost?> GetByIdWithTagsAsync(Guid id, CancellationToken cancellationToken = default)
     {
+        if (id == Guid.Empty)
+            throw new ArgumentException("Id cannot be empty", nameof(id));
+        
         return await DbContext.BlogPosts
             .Where(p => !p.IsDeleted)
             .Include(p => p.Translations)

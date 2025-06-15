@@ -10,6 +10,9 @@ public class SkillRepository : EfRepository<Skill>, ISkillRepository
 
     public async Task<Skill?> GetByKeyAsync(string key, CancellationToken cancellationToken = default)
     {
+        if (string.IsNullOrWhiteSpace(key))
+            throw new ArgumentException("Key cannot be null or whitespace", nameof(key));
+        
         return await DbContext.Skills
             .Include(s => s.Translations)
             .Include(s => s.Category)
@@ -19,6 +22,9 @@ public class SkillRepository : EfRepository<Skill>, ISkillRepository
 
     public async Task<List<Skill>> GetByCategoryIdAsync(Guid categoryId, CancellationToken cancellationToken = default)
     {
+        if (categoryId == Guid.Empty)
+            throw new ArgumentException("Id cannot be empty", nameof(categoryId));
+        
         return await DbContext.Skills
             .Where(s => s.CategoryId == categoryId)
             .Include(s => s.Translations)
@@ -29,6 +35,9 @@ public class SkillRepository : EfRepository<Skill>, ISkillRepository
 
     public async Task<Skill?> GetWithTranslationsById(Guid id, CancellationToken cancellationToken = default)
     {
+        if (id == Guid.Empty)
+            throw new ArgumentException("Id cannot be empty", nameof(id));
+        
         return await DbContext.Skills
             .Include(s => s.Translations)
             .Include(s => s.Category)

@@ -10,6 +10,9 @@ public class ProjectSkillRepository : EfRepository<ProjectSkill>, IProjectSkillR
 
     public async Task<List<ProjectSkill>> GetByProjectIdAsync(Guid projectId, CancellationToken cancellationToken = default)
     {
+        if (projectId == Guid.Empty)
+            throw new ArgumentException("Id cannot be empty", nameof(projectId));
+        
         return await DbContext.ProjectSkills
             .Where(ps => ps.ProjectId == projectId)
             .Include(ps => ps.Skill)
@@ -22,6 +25,9 @@ public class ProjectSkillRepository : EfRepository<ProjectSkill>, IProjectSkillR
 
     public async Task<List<ProjectSkill>> GetBySkillIdAsync(Guid skillId, CancellationToken cancellationToken = default)
     {
+        if (skillId == Guid.Empty)
+            throw new ArgumentException("Id cannot be empty", nameof(skillId));
+        
         return await DbContext.ProjectSkills
             .Where(ps => ps.SkillId == skillId)
             .Include(ps => ps.Skill)
@@ -34,6 +40,9 @@ public class ProjectSkillRepository : EfRepository<ProjectSkill>, IProjectSkillR
 
     public async Task<ProjectSkill?> GetWithSkillDataById(Guid id, CancellationToken cancellationToken = default)
     {
+        if (id == Guid.Empty)
+            throw new ArgumentException("Id cannot be empty", nameof(id));
+        
         return await DbContext.ProjectSkills
             .Include(ps => ps.Skill)
                 .ThenInclude(s => s.Translations)

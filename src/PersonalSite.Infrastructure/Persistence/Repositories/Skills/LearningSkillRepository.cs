@@ -31,6 +31,9 @@ public class LearningSkillRepository : EfRepository<LearningSkill>, ILearningSki
 
     public async Task<LearningSkill?> GetWithFullDataByIdAsync(Guid id, CancellationToken cancellationToken)
     {
+        if (id == Guid.Empty)
+            throw new ArgumentException("Id cannot be empty", nameof(id));
+        
         return await DbContext.LearningSkills
             .Include(ls => ls.Skill)
                 .ThenInclude(s => s.Translations)

@@ -27,6 +27,9 @@ public abstract class CrudServiceBase<TEntity, TDto, TAddRequest, TUpdateRequest
     {
         if (_addRequestValidator is null)
             return;
+        
+        if (entity is null)
+            throw new ArgumentNullException(nameof(entity));
     
         var result = await _addRequestValidator.ValidateAsync(entity, cancellationToken);
         if (!result.IsValid)
@@ -45,6 +48,9 @@ public abstract class CrudServiceBase<TEntity, TDto, TAddRequest, TUpdateRequest
     {
         if (_updateRequestValidator is null)
             return;
+        
+        if (entity is null)
+            throw new ArgumentNullException(nameof(entity));
     
         var result = await _updateRequestValidator.ValidateAsync(entity, cancellationToken);
         if (!result.IsValid)

@@ -10,6 +10,9 @@ public class PageRepository : EfRepository<Page>, IPageRepository
 
     public async Task<Page?> GetByKeyAsync(string key, CancellationToken cancellationToken = default)
     {
+        if (string.IsNullOrWhiteSpace(key))
+            throw new ArgumentException("Key cannot be null or whitespace", nameof(key));
+        
         return await DbContext.Pages
             .Include(p => p.Translations)
             .FirstOrDefaultAsync(p => p.Key == key, cancellationToken);
@@ -24,6 +27,9 @@ public class PageRepository : EfRepository<Page>, IPageRepository
 
     public async Task<Page?> GetWithTranslationByIdAsync(Guid id, CancellationToken cancellationToken)
     {
+        if (id == Guid.Empty)
+            throw new ArgumentException("Id cannot be empty", nameof(id));
+        
         return await DbContext.Pages
             .Include(p => p.Translations)
             .FirstOrDefaultAsync(p => p.Id == id, cancellationToken);

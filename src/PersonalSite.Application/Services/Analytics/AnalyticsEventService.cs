@@ -13,10 +13,22 @@ public class AnalyticsEventService :
     
     public override async Task<AnalyticsEventDto?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        var entity = await Repository.GetByIdAsync(id, cancellationToken);
-        return entity == null
-            ? null
-            : EntityToDtoMapper.MapAnalyticsEventToDto(entity);
+        if (id == Guid.Empty) 
+            throw new ArgumentException("Id cannot be empty", nameof(id));
+
+        try
+        {
+            var entity = await Repository.GetByIdAsync(id, cancellationToken);
+            return entity == null
+                ? null
+                : EntityToDtoMapper.MapAnalyticsEventToDto(entity);
+        }
+        catch (Exception e)
+        {
+            Logger.LogError(e, "Error getting analytics event with ID {Id}", id);
+            throw;
+        }
+        
     }
 
     public override async Task<IReadOnlyList<AnalyticsEventDto>> GetAllAsync(CancellationToken cancellationToken = default)
