@@ -1,3 +1,5 @@
+using PersonalSite.Application.Features.Common.Common.Dtos;
+
 namespace PersonalSite.Application.Services.Translations;
 
 public interface ILanguageService : ICrudService<LanguageDto, LanguageAddRequest, LanguageUpdateRequest>

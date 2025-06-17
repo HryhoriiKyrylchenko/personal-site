@@ -1,3 +1,4 @@
+using PersonalSite.Application.Features.Pages.Common.Dtos;
 using PersonalSite.Domain.Interfaces.Repositories.Pages;
 
 namespace PersonalSite.Application.Services.Pages;

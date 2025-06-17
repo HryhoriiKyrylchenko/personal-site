@@ -1,4 +1,4 @@
-using PersonalSite.Application.Services.Aggregates.DTOs;
+using PersonalSite.Application.Features.Common.SiteInfo.Queries.GetSiteInfo;
 
 namespace PersonalSite.Web.Controllers.Public;
 
@@ -6,18 +6,17 @@ namespace PersonalSite.Web.Controllers.Public;
 [Route("api/site-info")]
 public class SiteInfoController : ControllerBase
 {
-    private readonly ISiteInfoService _siteInfoService;
+    private readonly IMediator _mediator;
     
-    public SiteInfoController(ISiteInfoService siteInfoService)
+    public SiteInfoController(IMediator mediator)
     {
-        _siteInfoService = siteInfoService;
+        _mediator = mediator;
     }
 
     [HttpGet]
     public async Task<ActionResult<SiteInfoDto>> GetSiteInfo(CancellationToken cancellationToken)
     {
-        var siteInfo = await _siteInfoService.GetAsync(cancellationToken);
-        
-        return Ok(siteInfo);
+        var result = await _mediator.Send(new GetSiteInfoQuery(), cancellationToken);
+        return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
     }
 }

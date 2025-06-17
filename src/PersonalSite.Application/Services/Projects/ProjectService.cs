@@ -1,3 +1,5 @@
+using PersonalSite.Application.Features.Projects.Common.Dtos;
+
 namespace PersonalSite.Application.Services.Projects;
 
 public class ProjectService : 

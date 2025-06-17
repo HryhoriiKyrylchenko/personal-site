@@ -4,6 +4,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+builder.Services.Configure<SmtpSettings>(
+    builder.Configuration.GetSection("SmtpSettings"));
+
+builder.Services.AddTransient<IEmailSender, SmtpEmailSender>();
+
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddInfrastructureServices();
 builder.Services.AddApplicationServices();

@@ -1,3 +1,5 @@
+using PersonalSite.Application.Features.Blog.Common.Dtos;
+
 namespace PersonalSite.Application.Services.Blog;
 
 public interface IBlogPostService : ICrudService<BlogPostDto, BlogPostAddRequest, BlogPostUpdateRequest>

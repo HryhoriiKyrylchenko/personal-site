@@ -17,4 +17,14 @@
       </Reference>
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="MediatR" Version="12.5.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Services\Blog\DTOs\" />
+      <Folder Include="Services\Projects\DTOs\" />
+      <Folder Include="Services\Skills\DTOs\" />
+    </ItemGroup>
+
 </Project>

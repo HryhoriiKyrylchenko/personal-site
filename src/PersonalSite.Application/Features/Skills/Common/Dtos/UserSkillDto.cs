@@ -1,0 +1,8 @@
+namespace PersonalSite.Application.Features.Skills.Common.Dtos;
+
+public class UserSkillDto
+{
+    public Guid Id { get; set; }
+    public SkillDto Skill { get; set; } = null!;
+    public short Proficiency { get; set; }
+}

@@ -4,9 +4,12 @@ public static class InfrastructureServiceCollectionExtensions
 {
     public static IServiceCollection AddInfrastructureServices(this IServiceCollection services)
     {
-        services.AddDomainValidators();
+        services.AddValidatorsFromAssembly(typeof(ContactMessageValidator).Assembly);
         services.AddFluentValidationAutoValidation();
         services.AddFluentValidationClientsideAdapters();
+        
+        services.AddSingleton<IBackgroundQueue, BackgroundQueue>();
+        services.AddHostedService<QueuedHostedService>();
         
         services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
         services.AddScoped(typeof(IReadOnlyRepository<>), typeof(EfRepository<>));

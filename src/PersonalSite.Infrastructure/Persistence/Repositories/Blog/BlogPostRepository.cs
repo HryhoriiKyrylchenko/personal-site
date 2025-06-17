@@ -44,7 +44,7 @@ public class BlogPostRepository : EfRepository<BlogPost>, IBlogPostRepository
             .ToListAsync(cancellationToken);
     }
 
-    public async Task<IEnumerable<BlogPost>> GetAllWithTagsAsync(CancellationToken cancellationToken)
+    public async Task<List<BlogPost>> GetAllWithTagsAsync(CancellationToken cancellationToken)
     {
         return await DbContext.BlogPosts
             .Where(p => !p.IsDeleted)
