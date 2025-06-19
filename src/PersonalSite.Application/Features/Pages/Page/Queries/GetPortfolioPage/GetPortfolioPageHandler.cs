@@ -22,32 +22,40 @@ public class GetPortfolioPageHandler : IRequestHandler<GetPortfolioPageQuery, Re
     
     public async Task<Result<PortfolioPageDto>> Handle(GetPortfolioPageQuery request, CancellationToken cancellationToken)
     {
-        if (string.IsNullOrWhiteSpace(_language.LanguageCode))
+        try
         {
-            return Result<PortfolioPageDto>.Failure("Invalid language context.");
+            if (string.IsNullOrWhiteSpace(_language.LanguageCode))
+            {
+                return Result<PortfolioPageDto>.Failure("Invalid language context.");
+            }
+        
+            var page = await _pageRepository.GetByKeyAsync(Key, cancellationToken);
+            if (page == null)
+            {
+                _logger.LogWarning("Portfolio page not found.");
+                return Result<PortfolioPageDto>.Failure("Portfolio page not found.");
+            }
+            var pageData = EntityToDtoMapper.MapPageToDto(page, _language.LanguageCode);
+        
+            var projects = await _projectRepository.GetAllWithFullDataAsync(cancellationToken);
+            if (projects.Count < 1)
+            {
+                _logger.LogWarning("No projects found.");     
+            }
+            var projectsData = EntityToDtoMapper.MapProjectsToDtoList(projects, _language.LanguageCode);
+        
+            var portfolioPage = new PortfolioPageDto
+            {
+                PageData = pageData,
+                Projects = projectsData
+            };
+        
+            return Result<PortfolioPageDto>.Success(portfolioPage);
         }
-        
-        var page = await _pageRepository.GetByKeyAsync(Key, cancellationToken);
-        if (page == null)
+        catch (Exception ex)
         {
-            _logger.LogWarning("Portfolio page not found.");
-            return Result<PortfolioPageDto>.Failure("Portfolio page not found.");
+            _logger.LogError(ex, "Error occurred while retrieving portfolio page data.");
+            return Result<PortfolioPageDto>.Failure("An unexpected error occurred.");
         }
-        var pageData = EntityToDtoMapper.MapPageToDto(page, _language.LanguageCode);
-        
-        var projects = await _projectRepository.GetAllWithFullDataAsync(cancellationToken);
-        if (projects.Count < 1)
-        {
-            _logger.LogWarning("No projects found.");     
-        }
-        var projectsData = EntityToDtoMapper.MapProjectsToDtoList(projects, _language.LanguageCode);
-        
-        var portfolioPage = new PortfolioPageDto
-        {
-            PageData = pageData,
-            Projects = projectsData
-        };
-        
-        return Result<PortfolioPageDto>.Success(portfolioPage);
     }
 }

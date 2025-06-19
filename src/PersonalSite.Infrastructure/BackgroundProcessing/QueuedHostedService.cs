@@ -13,12 +13,14 @@ public class QueuedHostedService : BackgroundService
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
+        _logger.LogInformation("Background queue worker started.");
+        
         while (!stoppingToken.IsCancellationRequested)
         {
-            var workItem = await _queue.DequeueAsync(stoppingToken);
-
             try
             {
+                var workItem = await _queue.DequeueAsync(stoppingToken);
+                
                 await workItem(stoppingToken);
             }
             catch (Exception ex)

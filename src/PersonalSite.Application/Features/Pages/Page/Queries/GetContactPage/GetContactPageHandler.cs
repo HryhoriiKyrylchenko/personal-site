@@ -20,24 +20,32 @@ public class GetContactPageHandler : IRequestHandler<GetContactPageQuery, Result
     
     public async Task<Result<ContactPageDto>> Handle(GetContactPageQuery request, CancellationToken cancellationToken)
     {
-        if (string.IsNullOrWhiteSpace(_language.LanguageCode))
+        try
         {
-            return Result<ContactPageDto>.Failure("Invalid language context.");
+            if (string.IsNullOrWhiteSpace(_language.LanguageCode))
+            {
+                return Result<ContactPageDto>.Failure("Invalid language context.");
+            }
+        
+            var page = await _pageRepository.GetByKeyAsync(Key, cancellationToken);
+            if (page == null)
+            {
+                _logger.LogWarning("Contact page not found.");
+                return Result<ContactPageDto>.Failure("Contact page not found.");
+            }
+            var pageData = EntityToDtoMapper.MapPageToDto(page, _language.LanguageCode);
+        
+            var contactPage = new ContactPageDto
+            {
+                PageData = pageData
+            };
+        
+            return Result<ContactPageDto>.Success(contactPage);
         }
-        
-        var page = await _pageRepository.GetByKeyAsync(Key, cancellationToken);
-        if (page == null)
+        catch (Exception ex)
         {
-            _logger.LogWarning("Contact page not found.");
-            return Result<ContactPageDto>.Failure("Contact page not found.");
+            _logger.LogError(ex, "Error occurred while retrieving contact page data.");
+            return Result<ContactPageDto>.Failure("An unexpected error occurred.");
         }
-        var pageData = EntityToDtoMapper.MapPageToDto(page, _language.LanguageCode);
-        
-        var contactPage = new ContactPageDto
-        {
-            PageData = pageData
-        };
-        
-        return Result<ContactPageDto>.Success(contactPage);
     }
 }

@@ -22,32 +22,40 @@ public class GetBlogPageHandler : IRequestHandler<GetBlogPageQuery, Result<BlogP
     
     public async Task<Result<BlogPageDto>> Handle(GetBlogPageQuery request, CancellationToken cancellationToken)
     {
-        if (string.IsNullOrWhiteSpace(_language.LanguageCode))
+        try
         {
-            return Result<BlogPageDto>.Failure("Invalid language context.");
+            if (string.IsNullOrWhiteSpace(_language.LanguageCode))
+            {
+                return Result<BlogPageDto>.Failure("Invalid language context.");
+            }
+        
+            var page = await _pageRepository.GetByKeyAsync(Key, cancellationToken);
+            if (page == null)
+            {
+                _logger.LogWarning("Blog page not found.");
+                return Result<BlogPageDto>.Failure("Blog page not found.");
+            }
+            var pageData = EntityToDtoMapper.MapPageToDto(page, _language.LanguageCode);
+        
+            var blogPosts = await _blogPostRepository.GetPublishedPostsAsync(cancellationToken);
+            if (blogPosts.Count < 1)
+            {
+                _logger.LogWarning("No blog posts found.");     
+            }
+            var blogPostsData = EntityToDtoMapper.MapBlogPostsToDtoList(blogPosts, _language.LanguageCode);
+        
+            var blogPage = new BlogPageDto
+            {
+                PageData = pageData,
+                BlogPosts = blogPostsData
+            };
+        
+            return Result<BlogPageDto>.Success(blogPage);
         }
-        
-        var page = await _pageRepository.GetByKeyAsync(Key, cancellationToken);
-        if (page == null)
+        catch (Exception ex)
         {
-            _logger.LogWarning("Blog page not found.");
-            return Result<BlogPageDto>.Failure("Blog page not found.");
+            _logger.LogError(ex, "Error occurred while retrieving blog page data.");
+            return Result<BlogPageDto>.Failure("An unexpected error occurred.");
         }
-        var pageData = EntityToDtoMapper.MapPageToDto(page, _language.LanguageCode);
-        
-        var blogPosts = await _blogPostRepository.GetAllWithTagsAsync(cancellationToken);
-        if (blogPosts.Count < 1)
-        {
-            _logger.LogWarning("No blog posts found.");     
-        }
-        var blogPostsData = EntityToDtoMapper.MapBlogPostsToDtoList(blogPosts, _language.LanguageCode);
-        
-        var blogPage = new BlogPageDto
-        {
-            PageData = pageData,
-            BlogPosts = blogPostsData
-        };
-        
-        return Result<BlogPageDto>.Success(blogPage);
     }
 }

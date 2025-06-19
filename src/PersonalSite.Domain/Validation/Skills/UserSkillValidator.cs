@@ -15,9 +15,9 @@ public class UserSkillValidator : AbstractValidator<UserSkill>
             .WithMessage("Proficiency must be between 1 and 5.");
 
         RuleFor(x => x.CreatedAt)
-            .LessThanOrEqualTo(DateTime.UtcNow).WithMessage("CreatedAt cannot be in the future.");
+            .LessThanOrEqualTo(_ => DateTime.UtcNow).WithMessage("CreatedAt cannot be in the future.");
 
         RuleFor(x => x.UpdatedAt)
-            .LessThanOrEqualTo(DateTime.UtcNow).WithMessage("UpdatedAt cannot be in the future.");
+            .LessThanOrEqualTo(_ => DateTime.UtcNow).WithMessage("UpdatedAt cannot be in the future.");
     }
 }

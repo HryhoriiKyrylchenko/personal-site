@@ -25,42 +25,50 @@ public class GetHomePageHandler : IRequestHandler<GetHomePageQuery, Result<HomeP
     
     public async Task<Result<HomePageDto>> Handle(GetHomePageQuery request, CancellationToken cancellationToken)
     {
-        if (string.IsNullOrWhiteSpace(_language.LanguageCode))
+        try
         {
-            return Result<HomePageDto>.Failure("Invalid language context.");
+            if (string.IsNullOrWhiteSpace(_language.LanguageCode))
+            {
+                return Result<HomePageDto>.Failure("Invalid language context.");
+            }
+        
+            var page = await _pageRepository.GetByKeyAsync(Key, cancellationToken);
+            if (page == null)
+            {
+                _logger.LogWarning("About page not found.");
+                return Result<HomePageDto>.Failure("About page not found.");
+            }
+            var pageData = EntityToDtoMapper.MapPageToDto(page, _language.LanguageCode);
+        
+            var userSkills = await _userSkillRepository.GetAllActiveAsync(cancellationToken);
+            if (userSkills.Count < 1)
+            {
+                _logger.LogWarning("No skills found.");     
+            }
+            var userSkillsData = EntityToDtoMapper.MapUserSkillsToDtoList(userSkills, _language.LanguageCode);
+        
+            var lastProject = await _projectRepository.GetLastAsync(cancellationToken);
+            if (lastProject == null)
+            {
+                _logger.LogWarning("No projects found.");   
+            }
+            var lastProjectData = lastProject == null 
+                ? null 
+                : EntityToDtoMapper.MapProjectToDto(lastProject, _language.LanguageCode);
+        
+            var aboutPage = new HomePageDto
+            {
+                PageData = pageData,
+                UserSkills = userSkillsData,
+                LastProject = lastProjectData
+            };
+        
+            return Result<HomePageDto>.Success(aboutPage);
         }
-        
-        var page = await _pageRepository.GetByKeyAsync(Key, cancellationToken);
-        if (page == null)
+        catch (Exception ex)
         {
-            _logger.LogWarning("About page not found.");
-            return Result<HomePageDto>.Failure("About page not found.");
+            _logger.LogError(ex, "Error occurred while retrieving home page data.");
+            return Result<HomePageDto>.Failure("An unexpected error occurred.");
         }
-        var pageData = EntityToDtoMapper.MapPageToDto(page, _language.LanguageCode);
-        
-        var userSkills = await _userSkillRepository.GetAllActiveAsync(cancellationToken);
-        if (userSkills.Count < 1)
-        {
-            _logger.LogWarning("No skills found.");     
-        }
-        var userSkillsData = EntityToDtoMapper.MapUserSkillsToDtoList(userSkills, _language.LanguageCode);
-        
-        var lastProject = await _projectRepository.GetLastAsync(cancellationToken);
-        if (lastProject == null)
-        {
-            _logger.LogWarning("No projects found.");   
-        }
-        var lastProjectData = lastProject == null 
-            ? null 
-            : EntityToDtoMapper.MapProjectToDto(lastProject, _language.LanguageCode);
-        
-        var aboutPage = new HomePageDto
-        {
-            PageData = pageData,
-            UserSkills = userSkillsData,
-            LastProject = lastProjectData
-        };
-        
-        return Result<HomePageDto>.Success(aboutPage);
     }
 }

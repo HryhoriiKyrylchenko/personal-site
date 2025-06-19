@@ -16,6 +16,19 @@ public class BackgroundQueue : IBackgroundQueue
         _queue.Writer.TryWrite(workItem);
     }
 
+    public void Schedule(Func<CancellationToken, Task> work, TimeSpan delay)
+    {
+        if (work == null) throw new ArgumentNullException(nameof(work));
+
+        Func<CancellationToken, Task> delayedWork = async token =>
+        {
+            await Task.Delay(delay, token);
+            await work(token);
+        };
+
+        _queue.Writer.TryWrite(delayedWork);
+    }
+
     public async Task<Func<CancellationToken, Task>> DequeueAsync(CancellationToken cancellationToken)
     {
         var workItem = await _queue.Reader.ReadAsync(cancellationToken);

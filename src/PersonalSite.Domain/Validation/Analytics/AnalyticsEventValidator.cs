@@ -23,7 +23,7 @@ public class AnalyticsEventValidator : AbstractValidator<AnalyticsEvent>
 
         RuleFor(x => x.CreatedAt)
             .NotEmpty().WithMessage("Creation date is required.")
-            .LessThanOrEqualTo(DateTime.UtcNow).WithMessage("Creation date cannot be in the future.");
+            .LessThanOrEqualTo(_ => DateTime.UtcNow).WithMessage("Creation date cannot be in the future.");
 
         RuleFor(x => x.AdditionalDataJson)
             .Must(BeValidJson).When(x => !string.IsNullOrWhiteSpace(x.AdditionalDataJson))

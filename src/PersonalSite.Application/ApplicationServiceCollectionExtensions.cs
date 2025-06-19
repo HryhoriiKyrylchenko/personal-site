@@ -1,6 +1,4 @@
-﻿using PersonalSite.Application.Features.Contact.ContactMessages.Commands.SendContactMessage;
-
-namespace PersonalSite.Application;
+﻿namespace PersonalSite.Application;
 
 public static class ApplicationServiceCollectionExtensions
 {
@@ -13,6 +11,10 @@ public static class ApplicationServiceCollectionExtensions
         
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(GetHomePageQuery).Assembly));
         services.AddValidatorsFromAssembly(typeof(SendContactMessageCommandValidator).Assembly);
+        
+        services.AddScoped<IBackgroundPublisher, BackgroundPublisher>();
+        
+        services.AddScoped<ILanguageService, LanguageService>();
         
         return services;
     }

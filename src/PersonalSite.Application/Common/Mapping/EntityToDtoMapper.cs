@@ -1,9 +1,3 @@
-using PersonalSite.Application.Features.Blog.Common.Dtos;
-using PersonalSite.Application.Features.Common.Common.Dtos;
-using PersonalSite.Application.Features.Pages.Common.Dtos;
-using PersonalSite.Application.Features.Projects.Common.Dtos;
-using PersonalSite.Application.Features.Skills.Common.Dtos;
-
 namespace PersonalSite.Application.Common.Mapping;
 
 public static class EntityToDtoMapper
@@ -36,6 +30,28 @@ public static class EntityToDtoMapper
     public static List<BlogPostDto> MapBlogPostsToDtoList(IEnumerable<BlogPost> entities, string languageCode)
     {
         return entities.Select(e => MapBlogPostToDto(e, languageCode)).ToList();
+    }
+
+    public static BlogPostAdminDto MapBlogPostAdminToDto(BlogPost entity)
+    {
+        return new BlogPostAdminDto
+        {
+            Id = entity.Id,
+            Slug = entity.Slug,
+            CoverImage = entity.CoverImage,
+            CreatedAt = entity.CreatedAt,
+            UpdatedAt = entity.UpdatedAt,
+            IsDeleted = entity.IsDeleted,
+            IsPublished = entity.IsPublished,
+            PublishedAt = entity.PublishedAt,
+            Translations = MapBlogPostTranslationsToDtoList(entity.Translations),
+            Tags = MapBlogPostTagsToDtoList(entity.PostTags.Select(pt => pt.BlogPostTag))
+        };
+    }
+
+    public static List<BlogPostAdminDto> MapBlogPostAdminsToDtoList(IEnumerable<BlogPost> entities)
+    {
+        return entities.Select(MapBlogPostAdminToDto).ToList();
     }
 
     public static ContactMessageDto MapContactMessageToDto(ContactMessage entity)

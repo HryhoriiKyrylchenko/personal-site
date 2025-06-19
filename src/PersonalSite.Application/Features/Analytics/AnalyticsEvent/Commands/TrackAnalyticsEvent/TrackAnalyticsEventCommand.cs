@@ -5,6 +5,5 @@ public record TrackAnalyticsEventCommand(
     string PageSlug,
     string? Referrer,
     string? UserAgent,
-    string? IpAddress,
-    Dictionary<string, string>? AdditionalData
+    string? AdditionalDataJson
 ) : IRequest<Result>;

@@ -22,9 +22,11 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Services\Blog\DTOs\" />
-      <Folder Include="Services\Projects\DTOs\" />
-      <Folder Include="Services\Skills\DTOs\" />
+      <Folder Include="Services-depricated\Common\DTOs\" />
+      <Folder Include="Services-depricated\Contact\DTOs\" />
+      <Folder Include="Services-depricated\Projects\DTOs\" />
+      <Folder Include="Services-depricated\Skills\DTOs\" />
+      <Folder Include="Services-depricated\Translations\DTOs\" />
     </ItemGroup>
 
 </Project>

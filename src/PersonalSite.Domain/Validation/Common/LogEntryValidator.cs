@@ -9,7 +9,7 @@ public class LogEntryValidator : AbstractValidator<LogEntry>
 
         RuleFor(x => x.Timestamp)
             .NotEmpty().WithMessage("Timestamp is required.")
-            .LessThanOrEqualTo(DateTime.UtcNow).WithMessage("Timestamp cannot be in the future.");
+            .LessThanOrEqualTo(_ => DateTime.UtcNow).WithMessage("Timestamp cannot be in the future.");
 
         RuleFor(x => x.Level)
             .NotEmpty().WithMessage("Level is required.")

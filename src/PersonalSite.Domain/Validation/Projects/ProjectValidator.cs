@@ -23,7 +23,7 @@ public class ProjectValidator : AbstractValidator<Project>
             .Must(BeValidUrlOrEmpty).WithMessage("RepoUrl must be a valid URL or empty.");
 
         RuleFor(x => x.CreatedAt)
-            .LessThanOrEqualTo(DateTime.UtcNow).WithMessage("CreatedAt cannot be in the future.");
+            .LessThanOrEqualTo(_ => DateTime.UtcNow).WithMessage("CreatedAt cannot be in the future.");
 
         RuleFor(x => x.UpdatedAt)
             .Must(updatedAt => !updatedAt.HasValue || updatedAt <= DateTime.UtcNow)

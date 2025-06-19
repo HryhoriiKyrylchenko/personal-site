@@ -22,8 +22,7 @@ public class AnalyticsController : ControllerBase
             request.PageSlug,
             Request.Headers["Referer"].ToString(),
             Request.Headers["User-Agent"].ToString(),
-            HttpContext.Connection.RemoteIpAddress?.ToString(),
-            request.AdditionalData
+            request.AdditionalDataJson
         );
 
         var result = await _mediator.Send(command);

@@ -23,34 +23,34 @@ public class SendContactMessageHandler : IRequestHandler<SendContactMessageComma
     
     public async Task<Result> Handle(SendContactMessageCommand request, CancellationToken cancellationToken)
     {
-        var contactMessage = new ContactMessage
-        {
-            Id = Guid.NewGuid(),
-            Name = request.Name,
-            Email = request.Email,
-            Subject = request.Subject,
-            Message = request.Message,
-            IpAddress = request.IpAddress,
-            UserAgent = request.UserAgent,
-            CreatedAt = DateTime.UtcNow,
-            IsRead = false
-        };
-
         try
         {
+            var contactMessage = new ContactMessage
+            {
+                Id = Guid.NewGuid(),
+                Name = request.Name,
+                Email = request.Email,
+                Subject = request.Subject,
+                Message = request.Message,
+                IpAddress = request.IpAddress,
+                UserAgent = request.UserAgent,
+                CreatedAt = DateTime.UtcNow,
+                IsRead = false
+            };
+            
             await _repository.AddAsync(contactMessage, cancellationToken);
             await _unitOfWork.SaveChangesAsync(cancellationToken);
             
             _logger.LogInformation("Contact message created successfully.");
             
             await _mediator.Publish(new ContactMessageCreatedEvent(contactMessage), cancellationToken);
+            
+            return Result.Success();
         }
         catch (Exception e)
         {
             _logger.LogError(e, "Error creating contact message.");
             return Result.Failure("Error creating contact message.");       
         }
-
-        return Result.Success();
     }
 }

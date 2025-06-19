@@ -1,0 +1,15 @@
+namespace PersonalSite.Application.Features.Translations.Common.Dtos;
+
+public class PageTranslationDto
+{
+    public Guid Id { get; set; }
+    public string LanguageCode { get; set; } = string.Empty;
+    public Guid PageId { get; set; }
+    public Dictionary<string, string> Data { get; set; } = [];
+    public string Title { get; set; } = string.Empty;
+    public string Description { get; set; } = string.Empty;
+    
+    public string MetaTitle { get; set; } = string.Empty;
+    public string MetaDescription { get; set; } = string.Empty;
+    public string OgImage { get; set; } = string.Empty;
+}
