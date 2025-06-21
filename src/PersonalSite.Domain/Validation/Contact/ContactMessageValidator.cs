@@ -30,6 +30,6 @@ public class ContactMessageValidator : AbstractValidator<ContactMessage>
 
         RuleFor(x => x.CreatedAt)
             .NotEmpty().WithMessage("CreatedAt is required.")
-            .LessThanOrEqualTo(DateTime.UtcNow).WithMessage("CreatedAt cannot be in the future.");
+            .LessThanOrEqualTo(_ => DateTime.UtcNow).WithMessage("CreatedAt cannot be in the future.");
     }
 }

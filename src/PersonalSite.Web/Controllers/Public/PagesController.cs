@@ -1,52 +1,49 @@
-using PersonalSite.Application.Services.Aggregates.DTOs;
-
 namespace PersonalSite.Web.Controllers.Public;
 
 [ApiController]
 [Route("api/pages")]
 public class PagesController : ControllerBase
 {
-    private readonly IPagesDataService _pagesDataService;
+    private readonly IMediator _mediator;
 
-    public PagesController(
-        IPagesDataService pagesesDataService)
+    public PagesController(IMediator mediator)
     {
-        _pagesDataService = pagesesDataService;
+        _mediator = mediator;
 
     }
 
     [HttpGet("home")]
     public async Task<ActionResult<HomePageDto>> GetHomePage(CancellationToken cancellationToken = default)
     {
-        var result = await _pagesDataService.GetHomePageAsync(cancellationToken);
-        return Ok(result);
+        var result = await _mediator.Send(new GetHomePageQuery(), cancellationToken);
+        return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
     }
 
     [HttpGet("about")]
     public async Task<ActionResult<AboutPageDto>> GetAboutPage(CancellationToken cancellationToken = default)
     {
-        var result = await _pagesDataService.GetAboutPageAsync(cancellationToken);
-        return Ok(result);
+        var result = await _mediator.Send(new GetAboutPageQuery(), cancellationToken);
+        return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
     }
 
     [HttpGet("portfolio")]
     public async Task<ActionResult<PortfolioPageDto>> GetPortfolioPage(CancellationToken cancellationToken = default)
     {
-        var result = await _pagesDataService.GetPortfolioPageAsync(cancellationToken);
-        return Ok(result);
+        var result = await _mediator.Send(new GetPortfolioPageQuery(), cancellationToken);
+        return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
     }
 
     [HttpGet("blog")]
     public async Task<ActionResult<BlogPageDto>> GetBlogPage(CancellationToken cancellationToken = default)
     {
-        var result = await _pagesDataService.GetBlogPageAsync(cancellationToken);
-        return Ok(result);
+        var result = await _mediator.Send(new GetBlogPageQuery(), cancellationToken);
+        return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
     }
 
     [HttpGet("contacts")]
     public async Task<ActionResult<ContactPageDto>> GetContactPage(CancellationToken cancellationToken = default)
     {
-        var result = await _pagesDataService.GetContactPageAsync(cancellationToken);
-        return Ok(result);
+        var result = await _mediator.Send(new GetContactPageQuery(), cancellationToken);
+        return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
     }
 }

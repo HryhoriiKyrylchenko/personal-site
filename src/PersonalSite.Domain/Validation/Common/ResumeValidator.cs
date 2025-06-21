@@ -16,6 +16,6 @@ public class ResumeValidator : AbstractValidator<Resume>
 
         RuleFor(x => x.UploadedAt)
             .NotEmpty().WithMessage("UploadedAt is required.")
-            .LessThanOrEqualTo(DateTime.UtcNow).WithMessage("UploadedAt cannot be in the future.");
+            .LessThanOrEqualTo(_ => DateTime.UtcNow).WithMessage("UploadedAt cannot be in the future.");
     }
 }

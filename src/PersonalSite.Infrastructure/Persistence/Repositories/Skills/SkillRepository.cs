@@ -8,29 +8,12 @@ public class SkillRepository : EfRepository<Skill>, ISkillRepository
         IServiceProvider serviceProvider) 
         : base(context, logger, serviceProvider) { }
 
-    public async Task<Skill?> GetByKeyAsync(string key, CancellationToken cancellationToken = default)
+    public async Task<bool> ExistsByKeyAsync(string key, CancellationToken cancellationToken)
     {
         if (string.IsNullOrWhiteSpace(key))
             throw new ArgumentException("Key cannot be null or whitespace", nameof(key));
         
-        return await DbContext.Skills
-            .Include(s => s.Translations)
-            .Include(s => s.Category)
-                .ThenInclude(c => c.Translations)
-            .FirstOrDefaultAsync(s => s.Key == key, cancellationToken);
-    }
-
-    public async Task<List<Skill>> GetByCategoryIdAsync(Guid categoryId, CancellationToken cancellationToken = default)
-    {
-        if (categoryId == Guid.Empty)
-            throw new ArgumentException("Id cannot be empty", nameof(categoryId));
-        
-        return await DbContext.Skills
-            .Where(s => s.CategoryId == categoryId)
-            .Include(s => s.Translations)
-            .Include(s => s.Category)
-                .ThenInclude(c => c.Translations)
-            .ToListAsync(cancellationToken);
+        return await DbContext.Skills.AnyAsync(s => s.Key == key, cancellationToken);  
     }
 
     public async Task<Skill?> GetWithTranslationsById(Guid id, CancellationToken cancellationToken = default)
@@ -42,6 +25,7 @@ public class SkillRepository : EfRepository<Skill>, ISkillRepository
             .Include(s => s.Translations)
             .Include(s => s.Category)
                 .ThenInclude(c => c.Translations)
+                    .ThenInclude(t => t.Language)
             .FirstOrDefaultAsync(s => s.Id == id, cancellationToken);   
     }
 
@@ -49,8 +33,10 @@ public class SkillRepository : EfRepository<Skill>, ISkillRepository
     {
         return await DbContext.Skills
             .Include(s => s.Translations)
+                .ThenInclude(t => t.Language)
             .Include(s => s.Category)
                 .ThenInclude(c => c.Translations)
+                    .ThenInclude(t => t.Language)
             .OrderBy(s => s.CategoryId)
             .ToListAsync(cancellationToken);
     }

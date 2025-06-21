@@ -8,20 +8,12 @@ public class SkillCategoryRepository : EfRepository<SkillCategory>, ISkillCatego
         IServiceProvider serviceProvider) 
         : base(context, logger, serviceProvider) { }
 
-    public async Task<SkillCategory?> GetByKeyAsync(string key, CancellationToken cancellationToken = default)
-    {
-        if (string.IsNullOrWhiteSpace(key))
-            throw new ArgumentException("Key cannot be null or whitespace", nameof(key));
-        
-        return await DbContext.SkillCategories
-            .Include(sc => sc.Translations)
-            .FirstOrDefaultAsync(sc => sc.Key == key, cancellationToken);
-    }
 
     public async Task<List<SkillCategory>> GetAllOrderedAsync(CancellationToken cancellationToken = default)
     {
         return await DbContext.SkillCategories
             .Include(sc => sc.Translations)
+                .ThenInclude(t => t.Language)
             .OrderBy(sc => sc.DisplayOrder)
             .ToListAsync(cancellationToken);
     }
@@ -33,6 +25,17 @@ public class SkillCategoryRepository : EfRepository<SkillCategory>, ISkillCatego
         
         return await DbContext.SkillCategories
             .Include(sc => sc.Translations)
+                .ThenInclude(t => t.Language)
             .FirstOrDefaultAsync(sc => sc.Id == id, cancellationToken);
+    }
+
+    public async Task<bool> ExistsByKeyAsync(string key, CancellationToken cancellationToken = default)
+    {
+        if (string.IsNullOrWhiteSpace(key))
+        {
+            throw new ArgumentException("Key cannot be null or whitespace", nameof(key));
+        }
+        
+        return await DbContext.SkillCategories.AnyAsync(sc => sc.Key == key, cancellationToken); 
     }
 }

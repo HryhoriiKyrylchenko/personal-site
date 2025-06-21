@@ -8,24 +8,20 @@ public class ProjectRepository : EfRepository<Project>, IProjectRepository
         IServiceProvider serviceProvider) 
         : base(context, logger, serviceProvider) { }
 
-    public async Task<Project?> GetBySlugAsync(string slug, CancellationToken cancellationToken = default)
-    {
-        return await DbContext.Projects
-            .Include(p => p.Translations)
-            .FirstOrDefaultAsync(p => p.Slug == slug, cancellationToken);
-    }
-
     public async Task<List<Project>> GetAllWithFullDataAsync(CancellationToken cancellationToken = default)
     {
         return await DbContext.Projects
-            .Include(p => p.Translations)
+            .Include(p => p.Translations.Where(t => !t.Language.IsDeleted))
+                .ThenInclude(t => t.Language)
             .Include(p => p.ProjectSkills)
                 .ThenInclude(ps => ps.Skill)
-                    .ThenInclude(s => s.Translations)
+                    .ThenInclude(s => s.Translations.Where(t => !t.Language.IsDeleted))
+                        .ThenInclude(t => t.Language)
             .Include(p => p.ProjectSkills)
                 .ThenInclude(ps => ps.Skill)
                     .ThenInclude(s => s.Category)
-                    .ThenInclude(c => c.Translations)
+                        .ThenInclude(c => c.Translations.Where(t => !t.Language.IsDeleted))
+                            .ThenInclude(t => t.Language)
             .OrderByDescending(p => p.CreatedAt)
             .ToListAsync(cancellationToken);
     }
@@ -33,14 +29,17 @@ public class ProjectRepository : EfRepository<Project>, IProjectRepository
     public async Task<Project?> GetLastAsync(CancellationToken cancellationToken)
     {
         return await DbContext.Projects
-            .Include(p => p.Translations)
+            .Include(p => p.Translations.Where(t => !t.Language.IsDeleted))
+                .ThenInclude(t => t.Language)
             .Include(p => p.ProjectSkills)
                 .ThenInclude(ps => ps.Skill)
-                    .ThenInclude(s => s.Translations)
+                    .ThenInclude(s => s.Translations.Where(t => !t.Language.IsDeleted))
+                        .ThenInclude(t => t.Language)
             .Include(p => p.ProjectSkills)
                 .ThenInclude(ps => ps.Skill)
                     .ThenInclude(s => s.Category)
-                        .ThenInclude(c => c.Translations)
+                        .ThenInclude(c => c.Translations.Where(t => !t.Language.IsDeleted))
+                            .ThenInclude(t => t.Language)
             .OrderByDescending(p => p.CreatedAt)
             .FirstOrDefaultAsync(cancellationToken);
     }
@@ -52,6 +51,7 @@ public class ProjectRepository : EfRepository<Project>, IProjectRepository
         
         return await DbContext.Projects
             .Include(p => p.Translations)
+                .ThenInclude(t => t.Language)
             .Include(p => p.ProjectSkills)
                 .ThenInclude(ps => ps.Skill)
                     .ThenInclude(s => s.Translations)
@@ -60,5 +60,10 @@ public class ProjectRepository : EfRepository<Project>, IProjectRepository
                     .ThenInclude(s => s.Category)
                         .ThenInclude(c => c.Translations)
             .FirstOrDefaultAsync(p => p.Id == id, cancellationToken);
+    }
+
+    public async Task<bool> IsSlugAvailableAsync(string requestSlug, CancellationToken cancellationToken)
+    {
+        return await DbContext.Projects.AllAsync(p => p.Slug != requestSlug, cancellationToken);   
     }
 }

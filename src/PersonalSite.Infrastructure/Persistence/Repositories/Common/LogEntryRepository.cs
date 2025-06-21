@@ -8,13 +8,10 @@ public class LogEntryRepository : EfRepository<LogEntry>, ILogEntryRepository
         IServiceProvider serviceProvider) 
         : base(context, logger, serviceProvider) { }
 
-    public async Task<List<LogEntry>> GetByLevelAsync(string level, CancellationToken cancellationToken = default)
+    public async Task<List<LogEntry>> GetByIdsAsync(List<Guid> requestIds, CancellationToken cancellationToken)
     {
-        if (string.IsNullOrWhiteSpace(level))
-            throw new ArgumentException("Level cannot be null or whitespace", nameof(level));
-        
         return await DbContext.Logs
-            .Where(log => log.Level == level)
-            .ToListAsync(cancellationToken);
+            .Where(l => requestIds.Contains(l.Id))
+            .ToListAsync(cancellationToken); 
     }
 }

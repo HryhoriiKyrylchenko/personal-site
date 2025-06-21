@@ -16,7 +16,7 @@ public class BlogPostValidator : AbstractValidator<BlogPost>
 
         RuleFor(x => x.CreatedAt)
             .NotEmpty().WithMessage("CreatedAt is required.")
-            .LessThanOrEqualTo(DateTime.UtcNow).WithMessage("CreatedAt cannot be in the future.");
+            .LessThanOrEqualTo(_ => DateTime.UtcNow).WithMessage("CreatedAt cannot be in the future.");
 
         RuleFor(x => x.UpdatedAt)
             .Must(updatedAt => !updatedAt.HasValue || updatedAt <= DateTime.UtcNow)
@@ -26,7 +26,7 @@ public class BlogPostValidator : AbstractValidator<BlogPost>
             .WithMessage("UpdatedAt cannot be before CreatedAt.");
 
         RuleFor(x => x.PublishedAt)
-            .LessThanOrEqualTo(DateTime.UtcNow)
+            .LessThanOrEqualTo(_ => DateTime.UtcNow)
             .When(x => x.PublishedAt.HasValue)
             .WithMessage("PublishedAt cannot be in the future.");
 
