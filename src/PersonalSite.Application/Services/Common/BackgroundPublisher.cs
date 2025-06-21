@@ -1,3 +1,5 @@
+using PersonalSite.Infrastructure.BackgroundProcessing.BackgroundQueue;
+
 namespace PersonalSite.Application.Services.Common;
 
 public class BackgroundPublisher : IBackgroundPublisher

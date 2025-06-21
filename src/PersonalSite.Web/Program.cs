@@ -9,6 +9,10 @@ builder.Services.Configure<SmtpSettings>(
 
 builder.Services.AddTransient<IEmailSender, SmtpEmailSender>();
 
+builder.Services.Configure<AwsS3Settings>(builder.Configuration.GetSection("AwsS3Settings"));
+builder.Services.AddAWSService<IAmazonS3>();
+
+
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddInfrastructureServices();
 builder.Services.AddApplicationServices();
