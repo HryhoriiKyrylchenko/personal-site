@@ -38,14 +38,14 @@ public class GetHomePageHandler : IRequestHandler<GetHomePageQuery, Result<HomeP
                 _logger.LogWarning("About page not found.");
                 return Result<HomePageDto>.Failure("About page not found.");
             }
-            var pageData = EntityToDtoMapper.MapPageToDto(page, _language.LanguageCode);
+            var pageData = PageMapper.MapToDto(page, _language.LanguageCode);
         
             var userSkills = await _userSkillRepository.GetAllActiveAsync(cancellationToken);
             if (userSkills.Count < 1)
             {
                 _logger.LogWarning("No skills found.");     
             }
-            var userSkillsData = EntityToDtoMapper.MapUserSkillsToDtoList(userSkills, _language.LanguageCode);
+            var userSkillsData = UserSkillMapper.MapToDtoList(userSkills, _language.LanguageCode);
         
             var lastProject = await _projectRepository.GetLastAsync(cancellationToken);
             if (lastProject == null)
@@ -54,7 +54,7 @@ public class GetHomePageHandler : IRequestHandler<GetHomePageQuery, Result<HomeP
             }
             var lastProjectData = lastProject == null 
                 ? null 
-                : EntityToDtoMapper.MapProjectToDto(lastProject, _language.LanguageCode);
+                : ProjectMapper.MapToDto(lastProject, _language.LanguageCode);
         
             var aboutPage = new HomePageDto
             {

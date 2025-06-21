@@ -35,14 +35,14 @@ public class GetPortfolioPageHandler : IRequestHandler<GetPortfolioPageQuery, Re
                 _logger.LogWarning("Portfolio page not found.");
                 return Result<PortfolioPageDto>.Failure("Portfolio page not found.");
             }
-            var pageData = EntityToDtoMapper.MapPageToDto(page, _language.LanguageCode);
+            var pageData = PageMapper.MapToDto(page, _language.LanguageCode);
         
             var projects = await _projectRepository.GetAllWithFullDataAsync(cancellationToken);
             if (projects.Count < 1)
             {
                 _logger.LogWarning("No projects found.");     
             }
-            var projectsData = EntityToDtoMapper.MapProjectsToDtoList(projects, _language.LanguageCode);
+            var projectsData = ProjectMapper.MapToDtoList(projects, _language.LanguageCode);
         
             var portfolioPage = new PortfolioPageDto
             {

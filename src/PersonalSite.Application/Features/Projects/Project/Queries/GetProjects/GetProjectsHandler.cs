@@ -1,5 +1,3 @@
-using PersonalSite.Application.Features.Projects.Project.Dtos;
-
 namespace PersonalSite.Application.Features.Projects.Project.Queries.GetProjects;
 
 public class GetProjectsHandler : IRequestHandler<GetProjectsQuery, PaginatedResult<ProjectAdminDto>>
@@ -44,7 +42,7 @@ public class GetProjectsHandler : IRequestHandler<GetProjectsQuery, PaginatedRes
                 .Take(request.PageSize)
                 .ToListAsync(cancellationToken);
 
-            var items = EntityToDtoMapper.MapProjectsToAdminDtoList(entities);
+            var items = ProjectMapper.MapToAdminDtoList(entities);
 
             return PaginatedResult<ProjectAdminDto>.Success(items, total, request.Page, request.PageSize);
         }

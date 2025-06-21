@@ -1,5 +1,3 @@
-using PersonalSite.Application.Features.Common.SiteInfo.Dtos;
-
 namespace PersonalSite.Application.Features.Common.SiteInfo.Queries.GetSiteInfo;
 
 public class GetSiteInfoHandler : IRequestHandler<GetSiteInfoQuery, Result<SiteInfoDto>>
@@ -31,22 +29,21 @@ public class GetSiteInfoHandler : IRequestHandler<GetSiteInfoQuery, Result<SiteI
                 _logger.LogWarning("No languages found."); 
                 return Result<SiteInfoDto>.Failure("No languages found.");
             }
-            var languagesData = EntityToDtoMapper.MapLanguagesToDtoList(
-                languages.Where(l => !l.IsDeleted));
+            var languagesData = LanguageMapper.MapToDtoList(languages.Where(l => !l.IsDeleted));
         
             var socialLinks = await _socialMediaLinkRepository.GetAllActiveAsync(cancellationToken);
             if (socialLinks.Count < 1)
             {
                 _logger.LogWarning("No social links found.");     
             }
-            var socialLinksData = EntityToDtoMapper.MapSocialMediaLinksToDtoList(socialLinks);
+            var socialLinksData = SocialMediaLinkMapper.MapToDtoList(socialLinks);
 
             var resume = await _resumeRepository.GetLastActiveAsync(cancellationToken);
             if (resume is null)
             {
                 _logger.LogWarning("No active resume found.");     
             }
-            var resumeData = resume is null ? null : EntityToDtoMapper.MapResumeToDto(resume);
+            var resumeData = resume is null ? null : ResumeMapper.MapToDto(resume);
         
             var siteInfo = new SiteInfoDto
             {

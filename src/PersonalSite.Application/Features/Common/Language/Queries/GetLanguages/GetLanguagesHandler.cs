@@ -18,7 +18,7 @@ public class GetLanguagesHandler : IRequestHandler<GetLanguagesQuery, Result<Lis
         try
         {
             var languages = await _repository.ListAsync(cancellationToken);
-            var result = EntityToDtoMapper.MapLanguagesToDtoList(languages);
+            var result = LanguageMapper.MapToDtoList(languages);
             return Result<List<LanguageDto>>.Success(result);
         }
         catch (Exception e)

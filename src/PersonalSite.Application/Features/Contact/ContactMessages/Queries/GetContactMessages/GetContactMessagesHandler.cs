@@ -1,5 +1,3 @@
-using PersonalSite.Application.Features.Contact.ContactMessages.Dtos;
-
 namespace PersonalSite.Application.Features.Contact.ContactMessages.Queries.GetContactMessages;
 
 public class GetContactMessagesHandler : IRequestHandler<GetContactMessagesQuery, PaginatedResult<ContactMessageDto>>
@@ -33,7 +31,7 @@ public class GetContactMessagesHandler : IRequestHandler<GetContactMessagesQuery
                 .AsNoTracking()
                 .ToListAsync(cancellationToken);
         
-            var items = EntityToDtoMapper.MapContactMessagesToDtoList(entities);
+            var items = ContactMessageMapper.MapToDtoList(entities);
 
             return PaginatedResult<ContactMessageDto>.Success(items, total, request.Page, request.PageSize);
         }

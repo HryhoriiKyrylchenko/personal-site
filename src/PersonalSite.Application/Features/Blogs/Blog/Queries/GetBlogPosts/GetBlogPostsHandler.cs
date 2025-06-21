@@ -38,7 +38,7 @@ public class GetBlogPostsHandler : IRequestHandler<GetBlogPostsQuery, PaginatedR
                 .Take(request.PageSize)
                 .ToListAsync(cancellationToken);
 
-            var items = EntityToDtoMapper.MapBlogPostsToAdminDtoList(entities);
+            var items = BlogPostMapper.MapToAdminDtoList(entities);
 
             return PaginatedResult<BlogPostAdminDto>.Success(items, total, request.Page, request.PageSize);
         }

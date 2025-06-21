@@ -1,5 +1,3 @@
-using PersonalSite.Application.Features.Common.SocialMediaLinks.Dtos;
-
 namespace PersonalSite.Application.Features.Common.SocialMediaLinks.Queries.GetSocialMediaLinks;
 
 public class GetSocialMediaLinksHandler : IRequestHandler<GetSocialMediaLinksQuery, List<SocialMediaLinkDto>>
@@ -25,6 +23,6 @@ public class GetSocialMediaLinksHandler : IRequestHandler<GetSocialMediaLinksQue
             .OrderBy(x => x.DisplayOrder)
             .ToListAsync(cancellationToken);
 
-        return EntityToDtoMapper.MapSocialMediaLinksToDtoList(entities);
+        return SocialMediaLinkMapper.MapToDtoList(entities);
     }
 }

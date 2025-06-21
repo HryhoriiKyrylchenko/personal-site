@@ -33,7 +33,7 @@ public class GetSkillsHandler : IRequestHandler<GetSkillsQuery, Result<List<Skil
                 .OrderBy(s => s.Key)
                 .ToListAsync(cancellationToken);
 
-            var items = EntityToDtoMapper.MapSkillsToAdminDtoList(entities);
+            var items = SkillMapper.MapToAdminDtoList(entities);
             
             return Result<List<SkillAdminDto>>.Success(items);
         }

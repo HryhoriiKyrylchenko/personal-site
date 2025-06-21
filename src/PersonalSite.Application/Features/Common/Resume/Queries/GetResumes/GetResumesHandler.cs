@@ -1,5 +1,3 @@
-using PersonalSite.Application.Features.Common.Resume.Dtos;
-
 namespace PersonalSite.Application.Features.Common.Resume.Queries.GetResumes;
 
 public class GetResumesHandler : IRequestHandler<GetResumesQuery, PaginatedResult<ResumeDto>>
@@ -24,7 +22,7 @@ public class GetResumesHandler : IRequestHandler<GetResumesQuery, PaginatedResul
             .AsNoTracking()
             .ToListAsync(cancellationToken);
         
-        var items = EntityToDtoMapper.MapResumesToDtoList(entities);
+        var items = ResumeMapper.MapToDtoList(entities);
 
         return PaginatedResult<ResumeDto>.Success(items, total, request.Page, request.PageSize);
     }

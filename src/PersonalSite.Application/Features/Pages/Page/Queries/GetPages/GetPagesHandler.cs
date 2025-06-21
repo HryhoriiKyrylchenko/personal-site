@@ -23,6 +23,6 @@ public class GetPagesHandler : IRequestHandler<GetPagesQuery, Result<List<PageAd
             return Result<List<PageAdminDto>>.Failure("No pages found.");
         }
 
-        return Result<List<PageAdminDto>>.Success(EntityToDtoMapper.MapPageAdminsToDtoList(pages));
+        return Result<List<PageAdminDto>>.Success(PageMapper.MapToAdminDtoList(pages));
     }
 }

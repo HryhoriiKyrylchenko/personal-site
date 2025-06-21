@@ -33,7 +33,7 @@ public class GetContactPageHandler : IRequestHandler<GetContactPageQuery, Result
                 _logger.LogWarning("Contact page not found.");
                 return Result<ContactPageDto>.Failure("Contact page not found.");
             }
-            var pageData = EntityToDtoMapper.MapPageToDto(page, _language.LanguageCode);
+            var pageData = PageMapper.MapToDto(page, _language.LanguageCode);
         
             var contactPage = new ContactPageDto
             {

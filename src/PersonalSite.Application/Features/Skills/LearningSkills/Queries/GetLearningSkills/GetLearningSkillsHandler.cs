@@ -35,7 +35,7 @@ public class GetLearningSkillsHandler : IRequestHandler<GetLearningSkillsQuery, 
                 .OrderBy(s => s.Skill.Category.Key)
                 .ToListAsync(cancellationToken);
 
-            var items = EntityToDtoMapper.MapLearningSkillsToAdminDtoList(entities);
+            var items = LearningSkillMapper.MapToAdminDtoList(entities);
             
             return Result<List<LearningSkillAdminDto>>.Success(items);
         }

@@ -30,7 +30,7 @@ public class GetSkillCategoriesHandler : IRequestHandler<GetSkillCategoriesQuery
                 query = query.Where(x => x.DisplayOrder <= request.MaxDisplayOrder.Value);
 
             var entities = await query.OrderBy(sc => sc.DisplayOrder).ToListAsync(cancellationToken);
-            var items = EntityToDtoMapper.MapSkillCategoriesToAdminDtoList(entities);
+            var items = SkillCategoryMapper.MapToAdminDtoList(entities);
             return Result<List<SkillCategoryAdminDto>>.Success(items);           
         }
         catch (Exception ex)

@@ -1,5 +1,3 @@
-using PersonalSite.Application.Features.Analytics.AnalyticsEvent.Dtos;
-
 namespace PersonalSite.Application.Features.Analytics.AnalyticsEvent.Queries.GetAnalyticsEvents;
 
 public class GetAnalyticsEventsHandler : IRequestHandler<GetAnalyticsEventsQuery, PaginatedResult<AnalyticsEventDto>>
@@ -44,7 +42,7 @@ public class GetAnalyticsEventsHandler : IRequestHandler<GetAnalyticsEventsQuery
                 .AsNoTracking()
                 .ToListAsync(cancellationToken);
             
-            var items = EntityToDtoMapper.MapAnalyticsEventsToDtoList(entities);
+            var items = AnalyticsEventMapper.MapToDtoList(entities);
 
             return PaginatedResult<AnalyticsEventDto>.Success(items, total, request.Page, request.PageSize);
 

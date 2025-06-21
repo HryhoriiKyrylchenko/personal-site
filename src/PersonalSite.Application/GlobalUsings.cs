@@ -1,7 +1,6 @@
 global using Microsoft.Extensions.DependencyInjection;
 global using PersonalSite.Domain.Interfaces;
 global using PersonalSite.Domain.Entities.Blog;
-global using PersonalSite.Domain.Entities.Analytics;
 global using PersonalSite.Domain.Interfaces.Repositories.Blog;
 global using PersonalSite.Domain.Entities.Common;
 global using PersonalSite.Domain.Entities.Contact;
@@ -48,3 +47,19 @@ global using PersonalSite.Application.Features.Skills.SkillCategories.Commands.C
 global using PersonalSite.Application.Features.Skills.Skills.Commands.CreateSkill;
 global using PersonalSite.Application.Features.Skills.LearningSkills.Dtos;
 global using PersonalSite.Application.Features.Skills.UserSkills.Dtos;
+global using PersonalSite.Application.Features.Common.LogEntries.Dtos;
+global using PersonalSite.Application.Features.Common.SocialMediaLinks.Dtos;
+global using PersonalSite.Application.Features.Contact.ContactMessages.Dtos;
+global using PersonalSite.Application.Features.Analytics.AnalyticsEvent.Mappers;
+global using PersonalSite.Application.Features.Blogs.Blog.Mappers;
+global using PersonalSite.Application.Features.Common.Language.Mappers;
+global using PersonalSite.Application.Features.Common.LogEntries.Mappers;
+global using PersonalSite.Application.Features.Common.Resume.Mappers;
+global using PersonalSite.Application.Features.Common.SocialMediaLinks.Mappers;
+global using PersonalSite.Application.Features.Contact.ContactMessages.Mappers;
+global using PersonalSite.Application.Features.Pages.Page.Mappers;
+global using PersonalSite.Application.Features.Skills.SkillCategories.Mappers;
+global using PersonalSite.Application.Features.Skills.Skills.Mappers;
+global using PersonalSite.Application.Features.Projects.Project.Mappers;
+global using PersonalSite.Application.Features.Skills.LearningSkills.Mappers;
+global using PersonalSite.Application.Features.Skills.UserSkills.Mappers;

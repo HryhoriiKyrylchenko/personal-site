@@ -38,21 +38,21 @@ public class GetAboutPageHandler : IRequestHandler<GetAboutPageQuery, Result<Abo
                 _logger.LogWarning("Home page not found.");
                 return Result<AboutPageDto>.Failure("Home page not found.");
             }
-            var pageData = EntityToDtoMapper.MapPageToDto(page, _language.LanguageCode);
+            var pageData = PageMapper.MapToDto(page, _language.LanguageCode);
         
             var userSkills = await _userSkillRepository.GetAllActiveAsync(cancellationToken);
             if (userSkills.Count < 1)
             {
                 _logger.LogWarning("No skills found.");     
             }
-            var userSkillsData = EntityToDtoMapper.MapUserSkillsToDtoList(userSkills, _language.LanguageCode);
+            var userSkillsData = UserSkillMapper.MapToDtoList(userSkills, _language.LanguageCode);
         
             var learningSkills = await _learningSkillRepository.GetAllOrderedAsync(cancellationToken);
             if (learningSkills.Count < 1)
             {
                 _logger.LogWarning("No skills found.");     
             }
-            var learningSkillsData = EntityToDtoMapper.MapLearningSkillsToDtoList(learningSkills, _language.LanguageCode);
+            var learningSkillsData = LearningSkillMapper.MapToDtoList(learningSkills, _language.LanguageCode);
         
             var aboutPage = new AboutPageDto
             {

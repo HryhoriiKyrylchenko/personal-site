@@ -25,7 +25,7 @@ public class GetBlogPostByIdHandler : IRequestHandler<GetBlogPostByIdQuery, Resu
                 return Result<BlogPostAdminDto>.Failure("Blog post not found.");
             }
             
-            var dto = EntityToDtoMapper.MapBlogPostToAdminDto(blogPost);
+            var dto = BlogPostMapper.MapToAdminDto(blogPost);
             
             return Result<BlogPostAdminDto>.Success(dto);
         }

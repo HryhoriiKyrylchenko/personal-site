@@ -35,14 +35,14 @@ public class GetBlogPageHandler : IRequestHandler<GetBlogPageQuery, Result<BlogP
                 _logger.LogWarning("Blog page not found.");
                 return Result<BlogPageDto>.Failure("Blog page not found.");
             }
-            var pageData = EntityToDtoMapper.MapPageToDto(page, _language.LanguageCode);
+            var pageData = PageMapper.MapToDto(page, _language.LanguageCode);
         
             var blogPosts = await _blogPostRepository.GetPublishedPostsAsync(cancellationToken);
             if (blogPosts.Count < 1)
             {
                 _logger.LogWarning("No blog posts found.");     
             }
-            var blogPostsData = EntityToDtoMapper.MapBlogPostsToDtoList(blogPosts, _language.LanguageCode);
+            var blogPostsData = BlogPostMapper.MapToDtoList(blogPosts, _language.LanguageCode);
         
             var blogPage = new BlogPageDto
             {

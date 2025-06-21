@@ -1,5 +1,3 @@
-using PersonalSite.Application.Features.Common.LogEntries.Dtos;
-
 namespace PersonalSite.Application.Features.Common.LogEntries.Queries.GetLogEntries;
 
 public class GetLogEntriesHandler : IRequestHandler<GetLogEntriesQuery, PaginatedResult<LogEntryDto>>
@@ -42,7 +40,7 @@ public class GetLogEntriesHandler : IRequestHandler<GetLogEntriesQuery, Paginate
                 .AsNoTracking()
                 .ToListAsync(cancellationToken);
         
-            var items = EntityToDtoMapper.MapLogEntriesToDtoList(entities);
+            var items = LogEntryMapper.MapToDtoList(entities);
 
             return PaginatedResult<LogEntryDto>.Success(items, total, request.Page, request.PageSize);
         }
