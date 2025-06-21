@@ -1,10 +1,3 @@
-using PersonalSite.Application.Features.Pages.Page.Dtos;
-using PersonalSite.Application.Features.Pages.Page.Queries.GetAboutPage;
-using PersonalSite.Application.Features.Pages.Page.Queries.GetBlogPage;
-using PersonalSite.Application.Features.Pages.Page.Queries.GetContactPage;
-using PersonalSite.Application.Features.Pages.Page.Queries.GetHomePage;
-using PersonalSite.Application.Features.Pages.Page.Queries.GetPortfolioPage;
-
 namespace PersonalSite.Web.Controllers.Public;
 
 [ApiController]

@@ -31,7 +31,8 @@ public class GetSiteInfoHandler : IRequestHandler<GetSiteInfoQuery, Result<SiteI
                 _logger.LogWarning("No languages found."); 
                 return Result<SiteInfoDto>.Failure("No languages found.");
             }
-            var languagesData = EntityToDtoMapper.MapLanguagesToDtoList(languages);
+            var languagesData = EntityToDtoMapper.MapLanguagesToDtoList(
+                languages.Where(l => !l.IsDeleted));
         
             var socialLinks = await _socialMediaLinkRepository.GetAllActiveAsync(cancellationToken);
             if (socialLinks.Count < 1)

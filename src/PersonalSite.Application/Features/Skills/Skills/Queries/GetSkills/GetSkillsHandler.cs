@@ -17,9 +17,9 @@ public class GetSkillsHandler : IRequestHandler<GetSkillsQuery, Result<List<Skil
         {
             var query = _repository.GetQueryable()
                 .Include(s => s.Category)
-                    .ThenInclude(c => c.Translations)
+                    .ThenInclude(c => c.Translations.Where(t => !t.Language.IsDeleted))
                         .ThenInclude(t => t.Language)
-                .Include(s => s.Translations)
+                .Include(s => s.Translations.Where(t => !t.Language.IsDeleted))
                     .ThenInclude(t => t.Language)
                 .AsNoTracking();
 

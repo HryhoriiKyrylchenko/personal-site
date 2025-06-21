@@ -21,10 +21,12 @@ public class LearningSkillRepository : EfRepository<LearningSkill>, ILearningSki
         return await DbContext.LearningSkills
             .Where(ls => !ls.IsDeleted)
             .Include(us => us.Skill)
-                .ThenInclude(s => s.Translations)
+                .ThenInclude(s => s.Translations.Where(t => !t.Language.IsDeleted))
+                    .ThenInclude(t => t.Language)
             .Include(us => us.Skill)
                 .ThenInclude(s => s.Category)
-                    .ThenInclude(c => c.Translations)
+                    .ThenInclude(c => c.Translations.Where(t => !t.Language.IsDeleted))
+                        .ThenInclude(t => t.Language)
             .OrderBy(ls => ls.DisplayOrder)
             .ToListAsync(cancellationToken);
     }
@@ -41,5 +43,14 @@ public class LearningSkillRepository : EfRepository<LearningSkill>, ILearningSki
                 .ThenInclude(s => s.Category)
                     .ThenInclude(c => c.Translations)
             .FirstOrDefaultAsync(ls => ls.Id == id, cancellationToken);
+    }
+
+    public async Task<bool> ExistsBySkillIdAsync(Guid skillId, CancellationToken cancellationToken)
+    {
+        if (skillId == Guid.Empty)
+            throw new ArgumentException("SkillId cannot be empty", nameof(skillId));
+        
+        return await DbContext.LearningSkills
+            .AnyAsync(ls => ls.SkillId == skillId, cancellationToken);   
     }
 }

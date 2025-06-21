@@ -6,8 +6,10 @@ using PersonalSite.Application.Features.Common.Resume.Dtos;
 using PersonalSite.Application.Features.Common.SocialMediaLinks.Dtos;
 using PersonalSite.Application.Features.Contact.ContactMessages.Dtos;
 using PersonalSite.Application.Features.Projects.Project.Dtos;
+using PersonalSite.Application.Features.Skills.LearningSkills.Dtos;
 using PersonalSite.Application.Features.Skills.SkillCategories.Dtos;
 using PersonalSite.Application.Features.Skills.Skills.Dtos;
+using PersonalSite.Application.Features.Skills.UserSkills.Dtos;
 
 namespace PersonalSite.Application.Common.Mapping;
 
@@ -263,13 +265,46 @@ public static class EntityToDtoMapper
         return entities.Select(e => MapProjectToDto(e, languageCode)).ToList();
     }
 
+    public static LearningSkillAdminDto MapLearningSkillToAdminDto(LearningSkill entity)
+    {
+        return new LearningSkillAdminDto
+        {
+            Id = entity.Id,
+            Skill = MapSkillToAdminDto(entity.Skill),
+            LearningStatus = entity.LearningStatus,
+            DisplayOrder = entity.DisplayOrder
+        };
+    }
+
+    public static List<LearningSkillAdminDto> MapLearningSkillsToAdminDtoList(IEnumerable<LearningSkill> entities)
+    {
+        return entities.Select(MapLearningSkillToAdminDto).ToList();
+    }
+    
+    public static UserSkillAdminDto MapUserSkillToAdminDto(UserSkill entity)
+    {
+        return new UserSkillAdminDto
+        {
+            Id = entity.Id,
+            Skill = MapSkillToAdminDto(entity.Skill),
+            Proficiency = entity.Proficiency,
+            CreatedAt = entity.CreatedAt,
+            UpdatedAt = entity.UpdatedAt
+        };
+    }
+
+    public static List<UserSkillAdminDto> MapUserSkillsToAdminDtoList(IEnumerable<UserSkill> entities)
+    {
+        return entities.Select(MapUserSkillToAdminDto).ToList();
+    }
+
     public static UserSkillDto MapUserSkillToDto(UserSkill entity, string languageCode)
     {
         return new UserSkillDto
         {
             Id = entity.Id,
             Skill = MapSkillToDto(entity.Skill, languageCode),
-            Proficiency = entity.Proficiency
+            Proficiency = entity.Proficiency,
         };
     }
     

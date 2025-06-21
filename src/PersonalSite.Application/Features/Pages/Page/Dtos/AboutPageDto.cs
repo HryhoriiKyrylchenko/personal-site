@@ -1,3 +1,6 @@
+using PersonalSite.Application.Features.Skills.LearningSkills.Dtos;
+using PersonalSite.Application.Features.Skills.UserSkills.Dtos;
+
 namespace PersonalSite.Application.Features.Pages.Page.Dtos;
 
 public class AboutPageDto

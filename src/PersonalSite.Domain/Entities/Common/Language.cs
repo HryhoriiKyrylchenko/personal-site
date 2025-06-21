@@ -1,7 +1,7 @@
 namespace PersonalSite.Domain.Entities.Common;
 
 [Table("Languages")]
-public class Language
+public class Language : SoftDeletableEntity
 {
     [Key]
     public Guid Id { get; set; }

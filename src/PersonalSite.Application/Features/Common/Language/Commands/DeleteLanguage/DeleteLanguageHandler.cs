@@ -27,7 +27,9 @@ public class DeleteLanguageHandler : IRequestHandler<DeleteLanguageCommand, Resu
                 return Result.Failure("Language not found.");
             }
 
-            _repository.Remove(language);
+            language.IsDeleted = true;
+            
+            await _repository.UpdateAsync(language, cancellationToken);
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 
             return Result.Success();

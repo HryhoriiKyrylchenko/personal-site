@@ -18,7 +18,7 @@ public class GetBlogPostsHandler : IRequestHandler<GetBlogPostsQuery, PaginatedR
         try
         {
             var query = _repository.GetQueryable()
-                .Include(x => x.Translations)
+                .Include(x => x.Translations.Where(t => !t.Language.IsDeleted))
                     .ThenInclude(t => t.Language)
                 .Include(x => x.PostTags)
                     .ThenInclude(pt => pt.BlogPostTag)

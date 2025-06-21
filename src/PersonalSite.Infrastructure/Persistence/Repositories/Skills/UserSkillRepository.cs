@@ -24,10 +24,12 @@ public class UserSkillRepository : EfRepository<UserSkill>, IUserSkillRepository
         return await DbContext.UserSkills
             .Where(us => !us.IsDeleted)
             .Include(us => us.Skill)
-                .ThenInclude(s => s.Translations)
+                .ThenInclude(s => s.Translations.Where(t => !t.Language.IsDeleted))
+                    .ThenInclude(t => t.Language)
             .Include(us => us.Skill)
                 .ThenInclude(s => s.Category)
-                    .ThenInclude(c => c.Translations)
+                    .ThenInclude(c => c.Translations.Where(t => !t.Language.IsDeleted))
+                        .ThenInclude(t => t.Language)
             .ToListAsync(cancellationToken);
     }
 
@@ -43,5 +45,14 @@ public class UserSkillRepository : EfRepository<UserSkill>, IUserSkillRepository
                 .ThenInclude(s => s.Category)
                     .ThenInclude(c => c.Translations)
             .FirstOrDefaultAsync(us => us.Id == id, cancellationToken);   
+    }
+
+    public async Task<bool> ExistsBySkillIdAsync(Guid requestSkillId, CancellationToken cancellationToken)
+    {
+        if (requestSkillId == Guid.Empty)
+            throw new ArgumentException("SkillId cannot be empty", nameof(requestSkillId));
+        
+        return await DbContext.UserSkills
+            .AnyAsync(us => us.SkillId == requestSkillId, cancellationToken);   
     }
 }

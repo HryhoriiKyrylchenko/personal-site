@@ -27,7 +27,9 @@ public class DeleteSkillHandler : IRequestHandler<DeleteSkillCommand, Result>
                 return Result.Failure("Skill not found.");
             }
 
-            _repository.Remove(skill);
+            skill.IsDeleted = true;
+            await _repository.UpdateAsync(skill, cancellationToken);
+            
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 
             return Result.Success();

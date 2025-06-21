@@ -1,7 +1,7 @@
 namespace PersonalSite.Domain.Entities.Skills;
 
 [Table("Skills")]
-public class Skill
+public class Skill : SoftDeletableEntity
 {
     [Key]
     public Guid Id { get; set; }

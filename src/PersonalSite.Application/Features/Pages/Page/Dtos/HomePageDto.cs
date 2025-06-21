@@ -1,4 +1,5 @@
 using PersonalSite.Application.Features.Projects.Project.Dtos;
+using PersonalSite.Application.Features.Skills.UserSkills.Dtos;
 
 namespace PersonalSite.Application.Features.Pages.Page.Dtos;
 

@@ -15,7 +15,7 @@ public class BlogPostRepository : EfRepository<BlogPost>, IBlogPostRepository
         
         return await DbContext.BlogPosts
             .AsNoTracking()
-            .Include(p => p.Translations)
+            .Include(p => p.Translations.Where(t => !t.Language.IsDeleted))
                 .ThenInclude(t => t.Language)
             .Include(p => p.PostTags)
                 .ThenInclude(pt => pt.BlogPostTag)
@@ -26,7 +26,7 @@ public class BlogPostRepository : EfRepository<BlogPost>, IBlogPostRepository
     {
         return await DbContext.BlogPosts
             .Where(p => p.IsPublished && !p.IsDeleted)
-            .Include(p => p.Translations)
+            .Include(p => p.Translations.Where(t => !t.Language.IsDeleted))
                 .ThenInclude(t => t.Language)
             .Include(p => p.PostTags)
                 .ThenInclude(pt => pt.BlogPostTag)

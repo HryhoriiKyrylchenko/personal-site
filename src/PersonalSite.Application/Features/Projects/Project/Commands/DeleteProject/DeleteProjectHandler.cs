@@ -29,8 +29,6 @@ public class DeleteProjectHandler : IRequestHandler<DeleteProjectCommand, Result
 
             project.IsDeleted = true;
             project.UpdatedAt = DateTime.UtcNow;
-            
-            //TODO: Delete related entities, also in other handlers with similar situations
 
             await _repository.UpdateAsync(project, cancellationToken);
             await _unitOfWork.SaveChangesAsync(cancellationToken);

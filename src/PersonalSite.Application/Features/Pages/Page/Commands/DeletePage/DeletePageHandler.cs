@@ -27,7 +27,9 @@ public class DeletePageHandler : IRequestHandler<DeletePageCommand, Result>
                 return Result.Failure("Page not found.");
             }
 
-            _repository.Remove(page);
+            page.IsDeleted = true;
+            
+            await _repository.UpdateAsync(page, cancellationToken);
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 
             return Result.Success();
