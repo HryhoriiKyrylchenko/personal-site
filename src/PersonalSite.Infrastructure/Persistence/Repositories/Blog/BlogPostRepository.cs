@@ -38,9 +38,4 @@ public class BlogPostRepository : EfRepository<BlogPost>, IBlogPostRepository
     {
         return await DbContext.BlogPosts.AllAsync(p => p.Slug != slug, cancellationToken);   
     }
-
-    public IQueryable<BlogPost> GetQueryable()
-    {
-        return DbContext.BlogPosts.AsNoTracking();   
-    }
 }

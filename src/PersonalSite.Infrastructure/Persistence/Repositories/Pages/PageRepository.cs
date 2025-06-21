@@ -22,6 +22,7 @@ public class PageRepository : EfRepository<Page>, IPageRepository
     {
         return await DbContext.Pages
             .Include(p => p.Translations)
+                .ThenInclude(t => t.Language)
             .ToListAsync(cancellationToken);
     }
 
@@ -33,5 +34,10 @@ public class PageRepository : EfRepository<Page>, IPageRepository
         return await DbContext.Pages
             .Include(p => p.Translations)
             .FirstOrDefaultAsync(p => p.Id == id, cancellationToken);
+    }
+
+    public async Task<bool> IsKeyAvailableAsync(string requestKey, CancellationToken cancellationToken)
+    {
+        return await DbContext.Pages.AllAsync(p => p.Key != requestKey, cancellationToken);   
     }
 }

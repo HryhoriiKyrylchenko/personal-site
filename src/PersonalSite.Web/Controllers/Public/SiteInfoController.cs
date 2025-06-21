@@ -1,4 +1,4 @@
-using PersonalSite.Application.Features.Common.Common.Dtos;
+using PersonalSite.Application.Features.Common.SiteInfo.Dtos;
 using PersonalSite.Application.Features.Common.SiteInfo.Queries.GetSiteInfo;
 
 namespace PersonalSite.Web.Controllers.Public;

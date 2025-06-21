@@ -8,16 +8,16 @@ public class ProjectTranslationRepository : EfRepository<ProjectTranslation>, IP
         IServiceProvider serviceProvider) 
         : base(context, logger, serviceProvider) { }
 
-    public async Task<ProjectTranslation?> GetByProjectIdAndLanguageAsync(Guid projectId, string languageCode, CancellationToken cancellationToken = default)
+
+    public async Task<List<ProjectTranslation>> GetByProjectIdAsync(Guid projectId, CancellationToken cancellationToken = default)
     {
         if (projectId == Guid.Empty)
-            throw new ArgumentException("Id cannot be empty", nameof(projectId));
-        
-        if (string.IsNullOrWhiteSpace(languageCode))
-            throw new ArgumentException("Language code cannot be null or whitespace", nameof(languageCode));
+            throw new ArgumentException("Project ID cannot be empty", nameof(projectId));
         
         return await DbContext.ProjectTranslations
-            .FirstOrDefaultAsync(pt => pt.ProjectId == projectId && pt.Language.Code == languageCode, cancellationToken);
+            .Where(t => t.ProjectId == projectId)
+            .Include(t => t.Language)
+            .ToListAsync(cancellationToken);
     }
 
     public async Task<ProjectTranslation?> GetWithLanguageByIdAsync(Guid id, CancellationToken cancellationToken)

@@ -2,5 +2,5 @@ namespace PersonalSite.Domain.Interfaces.Repositories.Common;
 
 public interface ILogEntryRepository : IRepository<LogEntry>
 {
-    Task<List<LogEntry>> GetByLevelAsync(string level, CancellationToken cancellationToken = default);
+    Task<List<LogEntry>> GetByIdsAsync(List<Guid> requestIds, CancellationToken cancellationToken);
 }

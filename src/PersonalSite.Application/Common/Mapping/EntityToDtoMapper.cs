@@ -1,7 +1,20 @@
+using PersonalSite.Application.Features.Analytics.AnalyticsEvent.Dtos;
+using PersonalSite.Application.Features.Blogs.Blog.Dtos;
+using PersonalSite.Application.Features.Common.Language.Dtos;
+using PersonalSite.Application.Features.Common.LogEntries.Dtos;
+using PersonalSite.Application.Features.Common.Resume.Dtos;
+using PersonalSite.Application.Features.Common.SocialMediaLinks.Dtos;
+using PersonalSite.Application.Features.Contact.ContactMessages.Dtos;
+using PersonalSite.Application.Features.Projects.Project.Dtos;
+using PersonalSite.Application.Features.Skills.SkillCategories.Dtos;
+using PersonalSite.Application.Features.Skills.Skills.Dtos;
+
 namespace PersonalSite.Application.Common.Mapping;
 
 public static class EntityToDtoMapper
 {
+    // TODO: Refactor this class into smaller ones
+    
     public static BlogPostDto MapBlogPostToDto(BlogPost entity, string languageCode)
     {
         var translation = entity.Translations
@@ -32,7 +45,7 @@ public static class EntityToDtoMapper
         return entities.Select(e => MapBlogPostToDto(e, languageCode)).ToList();
     }
 
-    public static BlogPostAdminDto MapBlogPostAdminToDto(BlogPost entity)
+    public static BlogPostAdminDto MapBlogPostToAdminDto(BlogPost entity)
     {
         return new BlogPostAdminDto
         {
@@ -49,9 +62,30 @@ public static class EntityToDtoMapper
         };
     }
 
-    public static List<BlogPostAdminDto> MapBlogPostAdminsToDtoList(IEnumerable<BlogPost> entities)
+    public static List<BlogPostAdminDto> MapBlogPostsToAdminDtoList(IEnumerable<BlogPost> entities)
     {
-        return entities.Select(MapBlogPostAdminToDto).ToList();
+        return entities.Select(MapBlogPostToAdminDto).ToList();
+    }
+
+    public static ProjectAdminDto MapProjectToAdminDto(Project entity)
+    {
+        return new ProjectAdminDto
+        {
+            Id = entity.Id,
+            Slug = entity.Slug,
+            CoverImage = entity.CoverImage,
+            DemoUrl = entity.DemoUrl,
+            RepoUrl = entity.RepoUrl,
+            CreatedAt = entity.CreatedAt,
+            UpdatedAt = entity.UpdatedAt,
+            Translations = MapProjectTranslationsToDtoList(entity.Translations),
+            Skills = MapSkillsToAdminDtoList(entity.ProjectSkills.Select(ps => ps.Skill))
+        };
+    }
+    
+    public static List<ProjectAdminDto> MapProjectsToAdminDtoList(IEnumerable<Project> entities)
+    {
+        return entities.Select(MapProjectToAdminDto).ToList();
     }
 
     public static ContactMessageDto MapContactMessageToDto(ContactMessage entity)
@@ -168,6 +202,38 @@ public static class EntityToDtoMapper
     {
         return entities.Select(e => MapSkillToDto(e, languageCode)).ToList();
     }
+
+    public static SkillCategoryAdminDto MapSkillCategoryToAdminDto(SkillCategory entity)
+    {
+        return new SkillCategoryAdminDto
+        {
+            Id = entity.Id,
+            Key = entity.Key,
+            DisplayOrder = entity.DisplayOrder,
+            Translations = MapSkillCategoryTranslationsToDtoList(entity.Translations)
+        };
+    }
+
+    public static List<SkillCategoryAdminDto> MapSkillCategoriesToAdminDtoList(IEnumerable<SkillCategory> entities)
+    {
+        return entities.Select(MapSkillCategoryToAdminDto).ToList();
+    }
+
+    public static SkillAdminDto MapSkillToAdminDto(Skill entity)
+    {
+        return new SkillAdminDto
+        {
+            Id = entity.Id,
+            Key = entity.Key,
+            Translations = MapSkillTranslationsToDtoList(entity.Translations),
+            Category = MapSkillCategoryToAdminDto(entity.Category)
+        };
+    }
+
+    public static List<SkillAdminDto> MapSkillsToAdminDtoList(IEnumerable<Skill> entities)
+    {
+        return entities.Select(MapSkillToAdminDto).ToList();   
+    }
     
     public static ProjectDto MapProjectToDto(Project entity, string languageCode)
     {
@@ -226,6 +292,21 @@ public static class EntityToDtoMapper
     public static List<LearningSkillDto> MapLearningSkillsToDtoList(IEnumerable<LearningSkill> entities, string languageCode)
     {
         return entities.Select(e => MapLearningSkillToDto(e, languageCode)).ToList();
+    }
+
+    public static PageAdminDto MapPageAdminToDto(Page entity)
+    {
+        return new PageAdminDto
+        {
+            Id = entity.Id,
+            Key = entity.Key,
+            Translations = MapPageTranslationsToDtoList(entity.Translations)
+        };
+    }
+
+    public static List<PageAdminDto> MapPageAdminsToDtoList(IEnumerable<Page> entities)
+    {
+        return entities.Select(MapPageAdminToDto).ToList();   
     }
 
     public static PageTranslationDto MapPageTranslationToDto(PageTranslation entity)

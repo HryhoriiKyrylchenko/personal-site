@@ -11,7 +11,6 @@ public class LanguageService : ILanguageService
 
     public async Task<bool> IsSupportedAsync(string code, CancellationToken cancellationToken = default)
     {
-        var language = await _languageRepository.GetByCodeAsync(code, cancellationToken);
-        return language is not null;
+        return await _languageRepository.ExistsByCodeAsync(code, cancellationToken);
     }
 }

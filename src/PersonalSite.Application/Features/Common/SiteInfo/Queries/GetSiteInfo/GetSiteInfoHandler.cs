@@ -1,3 +1,5 @@
+using PersonalSite.Application.Features.Common.SiteInfo.Dtos;
+
 namespace PersonalSite.Application.Features.Common.SiteInfo.Queries.GetSiteInfo;
 
 public class GetSiteInfoHandler : IRequestHandler<GetSiteInfoQuery, Result<SiteInfoDto>>

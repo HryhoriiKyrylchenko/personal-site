@@ -21,12 +21,4 @@
       <PackageReference Include="MediatR" Version="12.5.0" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Services-depricated\Common\DTOs\" />
-      <Folder Include="Services-depricated\Contact\DTOs\" />
-      <Folder Include="Services-depricated\Projects\DTOs\" />
-      <Folder Include="Services-depricated\Skills\DTOs\" />
-      <Folder Include="Services-depricated\Translations\DTOs\" />
-    </ItemGroup>
-
 </Project>

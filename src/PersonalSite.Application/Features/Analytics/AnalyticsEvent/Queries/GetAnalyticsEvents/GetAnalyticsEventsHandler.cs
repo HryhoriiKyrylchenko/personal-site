@@ -1,3 +1,5 @@
+using PersonalSite.Application.Features.Analytics.AnalyticsEvent.Dtos;
+
 namespace PersonalSite.Application.Features.Analytics.AnalyticsEvent.Queries.GetAnalyticsEvents;
 
 public class GetAnalyticsEventsHandler : IRequestHandler<GetAnalyticsEventsQuery, PaginatedResult<AnalyticsEventDto>>
@@ -35,12 +37,14 @@ public class GetAnalyticsEventsHandler : IRequestHandler<GetAnalyticsEventsQuery
                 query = query.Where(x => x.CreatedAt <= request.To.Value);
 
             var total = await query.CountAsync(cancellationToken);
-            var items = await query
+            var entities = await query
                 .OrderByDescending(x => x.CreatedAt)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
-                .Select(x => EntityToDtoMapper.MapAnalyticsEventToDto(x))
+                .AsNoTracking()
                 .ToListAsync(cancellationToken);
+            
+            var items = EntityToDtoMapper.MapAnalyticsEventsToDtoList(entities);
 
             return PaginatedResult<AnalyticsEventDto>.Success(items, total, request.Page, request.PageSize);
 

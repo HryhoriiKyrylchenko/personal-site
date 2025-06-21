@@ -7,9 +7,4 @@ public class AnalyticsEventRepository : EfRepository<AnalyticsEvent>, IAnalytics
         ILogger<AnalyticsEventRepository> logger,
         IServiceProvider serviceProvider) 
         : base(context, logger, serviceProvider) { }
-
-    public IQueryable<AnalyticsEvent> GetQueryable()
-    {
-        return DbContext.AnalyticsEvents.AsNoTracking();
-    }
 }

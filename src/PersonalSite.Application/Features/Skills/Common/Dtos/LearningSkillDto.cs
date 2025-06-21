@@ -1,3 +1,5 @@
+using PersonalSite.Application.Features.Skills.Skills.Dtos;
+
 namespace PersonalSite.Application.Features.Skills.Common.Dtos;
 
 public class LearningSkillDto
