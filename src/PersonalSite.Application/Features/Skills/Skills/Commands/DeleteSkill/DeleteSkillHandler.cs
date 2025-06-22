@@ -1,0 +1,45 @@
+using PersonalSite.Domain.Interfaces.Repositories.Skills;
+
+namespace PersonalSite.Application.Features.Skills.Skills.Commands.DeleteSkill;
+
+public class DeleteSkillHandler : IRequestHandler<DeleteSkillCommand, Result>
+{
+    private readonly ISkillRepository _repository;
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly ILogger<DeleteSkillHandler> _logger;
+
+    public DeleteSkillHandler(
+        ISkillRepository repository, 
+        IUnitOfWork unitOfWork, 
+        ILogger<DeleteSkillHandler> logger)
+    {
+        _repository = repository;
+        _unitOfWork = unitOfWork;
+        _logger = logger;
+    }
+
+    public async Task<Result> Handle(DeleteSkillCommand request, CancellationToken cancellationToken)
+    {
+        try
+        {
+            var skill = await _repository.GetByIdAsync(request.Id, cancellationToken);
+            if (skill == null)
+            {
+                _logger.LogWarning("Skill not found.");
+                return Result.Failure("Skill not found.");
+            }
+
+            skill.IsDeleted = true;
+            await _repository.UpdateAsync(skill, cancellationToken);
+            
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+            return Result.Success();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error while deleting skill.");
+            return Result.Failure("Error while deleting skill.");
+        }
+    }
+}

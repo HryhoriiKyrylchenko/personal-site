@@ -1,0 +1,16 @@
+global using System.Reflection;
+global using System.Text.Json;
+global using FluentValidation;
+global using FluentValidation.AspNetCore;
+global using MediatR;
+global using Microsoft.EntityFrameworkCore;
+global using Microsoft.Extensions.DependencyInjection;
+global using Microsoft.Extensions.Logging;
+global using PersonalSite.Application.Common.Localization;
+global using PersonalSite.Application.Common.Mapping;
+global using PersonalSite.Application.Common.Results;
+global using PersonalSite.Application.DependencyInjection;
+global using PersonalSite.Application.Services.Common;
+global using PersonalSite.Domain.Interfaces;
+global using PersonalSite.Infrastructure.Email;
+global using PersonalSite.Infrastructure.Storage;
