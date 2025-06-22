@@ -1,4 +1,4 @@
-namespace PersonalSite.Web.Common.Localization;
+namespace PersonalSite.Web.Middlewares;
 
 public class LocalizationMiddleware
 {

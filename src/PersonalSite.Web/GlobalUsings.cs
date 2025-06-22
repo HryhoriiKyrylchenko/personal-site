@@ -10,7 +10,6 @@ global using PersonalSite.Infrastructure.Email;
 global using PersonalSite.Infrastructure.Persistence;
 global using PersonalSite.Infrastructure.Security;
 global using PersonalSite.Infrastructure.Storage;
-global using PersonalSite.Web.Common.Localization;
 global using PersonalSite.Web.Logging;
 global using PersonalSite.Web.Models.Analytics;
 global using Serilog;

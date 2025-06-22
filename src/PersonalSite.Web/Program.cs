@@ -1,5 +1,6 @@
 using PersonalSite.Application.DependencyInjection;
 using PersonalSite.Infrastructure.DependencyInjection;
+using PersonalSite.Web.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,6 +30,7 @@ builder.Services.AddOpenApi();
 var app = builder.Build();
 
 app.UseMiddleware<LocalizationMiddleware>();
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
