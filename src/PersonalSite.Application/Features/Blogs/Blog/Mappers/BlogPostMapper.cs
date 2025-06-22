@@ -1,18 +1,19 @@
 using PersonalSite.Application.Features.Blogs.Blog.Dtos;
 using PersonalSite.Domain.Entities.Blog;
+using PersonalSite.Domain.Entities.Translations;
 
 namespace PersonalSite.Application.Features.Blogs.Blog.Mappers;
 
 public class BlogPostMapper : ITranslatableMapper<BlogPost, BlogPostDto>, IAdminMapper<BlogPost, BlogPostAdminDto>
 {
     private readonly IS3UrlBuilder _urlBuilder;
-    private readonly BlogPostTagMapper _tagMapper;
-    private readonly BlogPostTranslationMapper _translationMapper;
+    private readonly IMapper<BlogPostTag, BlogPostTagDto> _tagMapper;
+    private readonly IMapper<BlogPostTranslation, BlogPostTranslationDto> _translationMapper;
 
     public BlogPostMapper(
         IS3UrlBuilder urlBuilder,
-        BlogPostTagMapper tagMapper,
-        BlogPostTranslationMapper translationMapper)
+        IMapper<BlogPostTag, BlogPostTagDto> tagMapper,
+        IMapper<BlogPostTranslation, BlogPostTranslationDto> translationMapper)
     {
         _urlBuilder = urlBuilder;   
         _tagMapper = tagMapper;  

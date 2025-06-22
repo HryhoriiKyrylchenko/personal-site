@@ -1,3 +1,5 @@
+using PersonalSite.Domain.Common.Results;
+
 namespace PersonalSite.Application.Features.Contact.ContactMessages.Commands.SendContactMessage;
 
 public record SendContactMessageCommand(

@@ -1,3 +1,4 @@
+using PersonalSite.Domain.Common.Results;
 using PersonalSite.Domain.Interfaces.Repositories.Blog;
 
 namespace PersonalSite.Application.Features.Blogs.Blog.Commands.PublishBlogPost;
@@ -23,44 +24,52 @@ public class PublishBlogPostCommandHandler : IRequestHandler<PublishBlogPostComm
 
     public async Task<Result> Handle(PublishBlogPostCommand request, CancellationToken cancellationToken)
     {
-        var post = await _repository.GetByIdAsync(request.Id, cancellationToken);
-        if (post == null)
+        try
         {
-            _logger.LogWarning("Blog post with ID {Id} not found.", request.Id);
-            return Result.Failure("Blog post not found.");
-        }
-
-        post.UpdatedAt = DateTime.UtcNow;
-
-        if (request.IsPublished)
-        {
-            if (request.PublishDate!.Value <= DateTime.UtcNow)
+            var post = await _repository.GetByIdAsync(request.Id, cancellationToken);
+            if (post == null)
             {
-                post.IsPublished = true;
-                post.PublishedAt = DateTime.UtcNow;
+                _logger.LogWarning("Blog post with ID {Id} not found.", request.Id);
+                return Result.Failure("Blog post not found.");
+            }
+
+            post.UpdatedAt = DateTime.UtcNow;
+
+            if (request.IsPublished)
+            {
+                if (request.PublishDate!.Value <= DateTime.UtcNow)
+                {
+                    post.IsPublished = true;
+                    post.PublishedAt = DateTime.UtcNow;
+                }
+                else
+                {
+                    _publisher.Schedule(
+                        new PublishBlogPostCommand
+                        {
+                            Id = request.Id,
+                            IsPublished = true,
+                            PublishDate = request.PublishDate
+                        },
+                        request.PublishDate.Value
+                    );
+                }
             }
             else
             {
-                _publisher.Schedule(
-                    new PublishBlogPostCommand
-                    {
-                        Id = request.Id,
-                        IsPublished = true,
-                        PublishDate = request.PublishDate
-                    },
-                    request.PublishDate.Value
-                );
+                post.IsPublished = false;
+                post.PublishedAt = null;
             }
+
+            await _repository.UpdateAsync(post, cancellationToken);
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+            return Result.Success();
         }
-        else
+        catch (Exception e)
         {
-            post.IsPublished = false;
-            post.PublishedAt = null;
+            _logger.LogError(e, "Error publishing blog post.");
+            return Result.Failure("Error publishing blog post.");       
         }
-
-        await _repository.UpdateAsync(post, cancellationToken);
-        await _unitOfWork.SaveChangesAsync(cancellationToken);
-
-        return Result.Success();
     }
 }

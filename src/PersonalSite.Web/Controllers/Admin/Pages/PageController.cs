@@ -4,6 +4,7 @@ using PersonalSite.Application.Features.Pages.Page.Commands.UpdatePage;
 using PersonalSite.Application.Features.Pages.Page.Dtos;
 using PersonalSite.Application.Features.Pages.Page.Queries.GetPageById;
 using PersonalSite.Application.Features.Pages.Page.Queries.GetPages;
+using PersonalSite.Domain.Common.Results;
 
 namespace PersonalSite.Web.Controllers.Admin.Pages;
 

@@ -1,3 +1,4 @@
+using PersonalSite.Domain.Common.Results;
 using PersonalSite.Domain.Entities.Contact;
 using PersonalSite.Domain.Interfaces.Repositories.Contact;
 
@@ -19,5 +20,23 @@ public class ContactMessageRepository : EfRepository<ContactMessage>, IContactMe
         return await DbContext.ContactMessages
             .Where(cm => requestIds.Contains(cm.Id))
             .ToListAsync(cancellationToken);   
+    }
+
+    public async Task<PaginatedResult<ContactMessage>> GetFilteredAsync(int page, int pageSize, bool? isReadFilter, CancellationToken cancellationToken = default)
+    {
+        var query = DbContext.ContactMessages.AsQueryable().AsNoTracking();
+
+        if (isReadFilter.HasValue)
+            query = query.Where(x => x.IsRead == isReadFilter.Value);
+
+        var total = await query.CountAsync(cancellationToken);
+
+        var entities = await query
+            .OrderByDescending(x => x.CreatedAt)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync(cancellationToken);
+        
+        return PaginatedResult<ContactMessage>.Success(entities, page, pageSize, total);   
     }
 }

@@ -32,4 +32,27 @@ public class SkillRepository : EfRepository<Skill>, ISkillRepository
                     .ThenInclude(t => t.Language)
             .FirstOrDefaultAsync(s => s.Id == id, cancellationToken);   
     }
+
+    public async Task<List<Skill>> GetFilteredAsync(Guid? categoryId, string? keyFilter, CancellationToken cancellationToken = default)
+    {
+        var query = DbContext.Skills.AsQueryable()
+            .Include(s => s.Category)
+                .ThenInclude(c => c.Translations.Where(t => !t.Language.IsDeleted))
+                    .ThenInclude(t => t.Language)
+            .Include(s => s.Translations.Where(t => !t.Language.IsDeleted))
+                .ThenInclude(t => t.Language)
+            .AsNoTracking();
+
+        if (categoryId.HasValue)
+            query = query.Where(s => s.CategoryId == categoryId.Value);
+
+        if (!string.IsNullOrWhiteSpace(keyFilter))
+            query = query.Where(s => s.Key.Contains(keyFilter));
+
+        var entities = await query
+            .OrderBy(s => s.Key)
+            .ToListAsync(cancellationToken);
+        
+        return entities; 
+    }
 }

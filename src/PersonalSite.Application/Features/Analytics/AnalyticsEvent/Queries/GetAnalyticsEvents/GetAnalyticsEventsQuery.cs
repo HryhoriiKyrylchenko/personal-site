@@ -1,4 +1,5 @@
 using PersonalSite.Application.Features.Analytics.AnalyticsEvent.Dtos;
+using PersonalSite.Domain.Common.Results;
 
 namespace PersonalSite.Application.Features.Analytics.AnalyticsEvent.Queries.GetAnalyticsEvents;
 

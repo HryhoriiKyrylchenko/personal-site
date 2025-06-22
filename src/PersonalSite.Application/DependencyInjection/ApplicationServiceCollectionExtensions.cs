@@ -1,4 +1,4 @@
-﻿using PersonalSite.Application.Features.Common.Language.Mappers;
+﻿using PersonalSite.Application.Features.Blogs.Blog.Mappers;
 using PersonalSite.Application.Features.Contact.ContactMessages.Commands.SendContactMessage;
 using PersonalSite.Application.Features.Pages.Page.Queries.GetHomePage;
 
@@ -16,7 +16,7 @@ public static class ApplicationServiceCollectionExtensions
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(GetHomePageQuery).Assembly));
         services.AddValidatorsFromAssembly(typeof(SendContactMessageCommandValidator).Assembly);
         
-        services.AddMappers(typeof(LanguageMapper).Assembly);
+        services.AddMappers(typeof(BlogPostMapper).Assembly);
         
         services.AddScoped<IBackgroundPublisher, BackgroundPublisher>();
         

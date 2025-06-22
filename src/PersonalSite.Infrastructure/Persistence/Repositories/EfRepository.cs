@@ -63,11 +63,6 @@ public class EfRepository<T> : IRepository<T> where T : class
         return await DbContext.Set<T>().AnyAsync(predicate, cancellationToken);
     }
 
-    public IQueryable<T> GetQueryable()
-    {
-        return DbContext.Set<T>().AsNoTracking();   
-    }
-
     public async Task AddAsync(T entity, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(entity);

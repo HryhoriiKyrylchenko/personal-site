@@ -1,4 +1,5 @@
 using PersonalSite.Application.Features.Common.LogEntries.Dtos;
+using PersonalSite.Domain.Common.Results;
 
 namespace PersonalSite.Application.Features.Common.LogEntries.Queries.GetLogEntries;
 

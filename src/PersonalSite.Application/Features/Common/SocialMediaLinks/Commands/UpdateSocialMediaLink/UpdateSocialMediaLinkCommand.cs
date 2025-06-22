@@ -1,3 +1,5 @@
+using PersonalSite.Domain.Common.Results;
+
 namespace PersonalSite.Application.Features.Common.SocialMediaLinks.Commands.UpdateSocialMediaLink;
 
 public record UpdateSocialMediaLinkCommand(

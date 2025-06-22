@@ -1,4 +1,6 @@
+using PersonalSite.Domain.Common.Results;
 using PersonalSite.Domain.Entities.Skills;
+using PersonalSite.Domain.Enums;
 using PersonalSite.Domain.Interfaces.Repositories.Skills;
 
 namespace PersonalSite.Infrastructure.Persistence.Repositories.Skills;
@@ -49,5 +51,30 @@ public class LearningSkillRepository : EfRepository<LearningSkill>, ILearningSki
         
         return await DbContext.LearningSkills
             .AnyAsync(ls => ls.SkillId == skillId, cancellationToken);   
+    }
+
+    public async Task<List<LearningSkill>> GetFilteredAsync(Guid? skillId, LearningStatus? status, CancellationToken cancellationToken = default)
+    {
+        var query = DbContext.LearningSkills.AsQueryable()
+            .Include(x => x.Skill)
+                .ThenInclude(s => s.Translations.Where(t => !t.Language.IsDeleted))
+                    .ThenInclude(t => t.Language)
+            .Include(x => x.Skill)
+                .ThenInclude(s => s.Category)
+                    .ThenInclude(c => c.Translations.Where(t => !t.Language.IsDeleted))
+                        .ThenInclude(t => t.Language)
+            .AsNoTracking();
+
+        if (skillId.HasValue)
+            query = query.Where(x => x.SkillId == skillId.Value);
+
+        if (status.HasValue)
+            query = query.Where(x => x.LearningStatus == status.Value);
+
+        var entities = await query
+            .OrderBy(s => s.Skill.Category.Key)
+            .ToListAsync(cancellationToken);
+        
+        return entities;   
     }
 }
