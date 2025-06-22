@@ -24,3 +24,5 @@ global using PersonalSite.Application.Features.Pages.Page.Queries.GetHomePage;
 global using PersonalSite.Application.Features.Pages.Page.Queries.GetPortfolioPage;
 global using PersonalSite.Application.Features.Contact.ContactMessages.Commands.SendContactMessage;
 global using PersonalSite.Application.Features.Analytics.AnalyticsEvent.Commands.TrackAnalyticsEvent;
+global using Amazon.S3;
+global using PersonalSite.Infrastructure.Storage;

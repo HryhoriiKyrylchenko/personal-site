@@ -4,13 +4,16 @@ public class GetBlogPostByIdHandler : IRequestHandler<GetBlogPostByIdQuery, Resu
 {
     private readonly IBlogPostRepository _repository;
     private readonly ILogger<GetBlogPostByIdHandler> _logger;
+    private readonly IAdminMapper<BlogPost, BlogPostAdminDto> _mapper;
 
     public GetBlogPostByIdHandler(
         IBlogPostRepository repository,
-        ILogger<GetBlogPostByIdHandler> logger)
+        ILogger<GetBlogPostByIdHandler> logger,
+        IAdminMapper<BlogPost, BlogPostAdminDto> mapper)
     {
         _repository = repository;
         _logger = logger;   
+        _mapper = mapper;
     }
     
     public async Task<Result<BlogPostAdminDto>> Handle(GetBlogPostByIdQuery request, CancellationToken cancellationToken)
@@ -25,7 +28,7 @@ public class GetBlogPostByIdHandler : IRequestHandler<GetBlogPostByIdQuery, Resu
                 return Result<BlogPostAdminDto>.Failure("Blog post not found.");
             }
             
-            var dto = BlogPostMapper.MapToAdminDto(blogPost);
+            var dto = _mapper.MapToAdminDto(blogPost);
             
             return Result<BlogPostAdminDto>.Success(dto);
         }

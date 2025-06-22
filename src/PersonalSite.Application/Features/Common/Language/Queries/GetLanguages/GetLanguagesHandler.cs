@@ -4,13 +4,17 @@ public class GetLanguagesHandler : IRequestHandler<GetLanguagesQuery, Result<Lis
 {
     private readonly ILanguageRepository _repository;
     private readonly ILogger<GetLanguagesHandler> _logger;   
+    private readonly IMapper<Domain.Entities.Common.Language, LanguageDto> _mapper;   
 
     public GetLanguagesHandler(
         ILanguageRepository repository,
-        ILogger<GetLanguagesHandler> logger)
+        ILogger<GetLanguagesHandler> logger,
+        IMapper<Domain.Entities.Common.Language, LanguageDto> mapper   
+        )
     {
         _repository = repository;
         _logger = logger;   
+        _mapper = mapper;  
     }
 
     public async Task<Result<List<LanguageDto>>> Handle(GetLanguagesQuery request, CancellationToken cancellationToken)
@@ -18,7 +22,7 @@ public class GetLanguagesHandler : IRequestHandler<GetLanguagesQuery, Result<Lis
         try
         {
             var languages = await _repository.ListAsync(cancellationToken);
-            var result = LanguageMapper.MapToDtoList(languages);
+            var result = _mapper.MapToDtoList(languages);
             return Result<List<LanguageDto>>.Success(result);
         }
         catch (Exception e)

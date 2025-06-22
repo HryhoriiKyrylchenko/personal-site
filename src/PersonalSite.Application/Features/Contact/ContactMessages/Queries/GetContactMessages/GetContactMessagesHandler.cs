@@ -4,13 +4,16 @@ public class GetContactMessagesHandler : IRequestHandler<GetContactMessagesQuery
 {
     private readonly IContactMessageRepository _repository;
     private readonly ILogger<GetContactMessagesHandler> _logger;
+    private readonly IMapper<ContactMessage, ContactMessageDto> _mapper;
 
     public GetContactMessagesHandler(
         IContactMessageRepository repository,
-        ILogger<GetContactMessagesHandler> logger)
+        ILogger<GetContactMessagesHandler> logger,
+        IMapper<ContactMessage, ContactMessageDto> mapper)
     {
         _repository = repository;
         _logger = logger;
+        _mapper = mapper;       
     }
 
     public async Task<PaginatedResult<ContactMessageDto>> Handle(GetContactMessagesQuery request, CancellationToken cancellationToken)
@@ -31,7 +34,7 @@ public class GetContactMessagesHandler : IRequestHandler<GetContactMessagesQuery
                 .AsNoTracking()
                 .ToListAsync(cancellationToken);
         
-            var items = ContactMessageMapper.MapToDtoList(entities);
+            var items = _mapper.MapToDtoList(entities);
 
             return PaginatedResult<ContactMessageDto>.Success(items, total, request.Page, request.PageSize);
         }

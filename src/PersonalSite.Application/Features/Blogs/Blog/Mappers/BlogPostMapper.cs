@@ -1,8 +1,22 @@
 namespace PersonalSite.Application.Features.Blogs.Blog.Mappers;
 
-public static class BlogPostMapper
+public class BlogPostMapper : ITranslatableMapper<BlogPost, BlogPostDto>, IAdminMapper<BlogPost, BlogPostAdminDto>
 {
-    public static BlogPostDto MapToDto(BlogPost entity, string languageCode)
+    private readonly IS3UrlBuilder _urlBuilder;
+    private readonly BlogPostTagMapper _tagMapper;
+    private readonly BlogPostTranslationMapper _translationMapper;
+
+    public BlogPostMapper(
+        IS3UrlBuilder urlBuilder,
+        BlogPostTagMapper tagMapper,
+        BlogPostTranslationMapper translationMapper)
+    {
+        _urlBuilder = urlBuilder;   
+        _tagMapper = tagMapper;  
+        _translationMapper = translationMapper; 
+    }
+    
+    public BlogPostDto MapToDto(BlogPost entity, string languageCode)
     {
         var translation = entity.Translations
             .FirstOrDefault(t => t.Language.Code.Equals(languageCode, StringComparison.OrdinalIgnoreCase));
@@ -11,7 +25,7 @@ public static class BlogPostMapper
         {
             Id = entity.Id,
             Slug = entity.Slug,
-            CoverImage = S3UrlHelper.BuildImageUrl(entity.CoverImage),
+            CoverImage = _urlBuilder.BuildUrl(entity.CoverImage),
             IsPublished = entity.IsPublished,
             PublishedAt = entity.PublishedAt,
                 
@@ -21,35 +35,36 @@ public static class BlogPostMapper
                 
             MetaTitle = translation?.MetaTitle ?? string.Empty,
             MetaDescription = translation?.MetaDescription ?? string.Empty,
-            OgImage = string.IsNullOrWhiteSpace(translation?.OgImage) ? string.Empty : S3UrlHelper.BuildImageUrl(translation.OgImage),
+            OgImage = string.IsNullOrWhiteSpace(translation?.OgImage) ? string.Empty 
+                : _urlBuilder.BuildUrl(translation.OgImage),
             
-            Tags = BlogPostTagMapper.MapToDtoList(entity.PostTags.Select(pt => pt.BlogPostTag))
+            Tags = _tagMapper.MapToDtoList(entity.PostTags.Select(pt => pt.BlogPostTag))
         };
     }
 
-    public static List<BlogPostDto> MapToDtoList(IEnumerable<BlogPost> entities, string languageCode)
+    public List<BlogPostDto> MapToDtoList(IEnumerable<BlogPost> entities, string languageCode)
     {
         return entities.Select(e => MapToDto(e, languageCode)).ToList();
     }
 
-    public static BlogPostAdminDto MapToAdminDto(BlogPost entity)
+    public BlogPostAdminDto MapToAdminDto(BlogPost entity)
     {
         return new BlogPostAdminDto
         {
             Id = entity.Id,
             Slug = entity.Slug,
-            CoverImage = entity.CoverImage,
+            CoverImage = _urlBuilder.BuildUrl(entity.CoverImage),
             CreatedAt = entity.CreatedAt,
             UpdatedAt = entity.UpdatedAt,
             IsDeleted = entity.IsDeleted,
             IsPublished = entity.IsPublished,
             PublishedAt = entity.PublishedAt,
-            Translations = BlogPostTranslationMapper.MapToDtoList(entity.Translations),
-            Tags = BlogPostTagMapper.MapToDtoList(entity.PostTags.Select(pt => pt.BlogPostTag))
+            Translations = _translationMapper.MapToDtoList(entity.Translations),
+            Tags = _tagMapper.MapToDtoList(entity.PostTags.Select(pt => pt.BlogPostTag))
         };
     }
 
-    public static List<BlogPostAdminDto> MapToAdminDtoList(IEnumerable<BlogPost> entities)
+    public List<BlogPostAdminDto> MapToAdminDtoList(IEnumerable<BlogPost> entities)
     {
         return entities.Select(MapToAdminDto).ToList();
     }

@@ -1,8 +1,8 @@
 namespace PersonalSite.Application.Features.Skills.SkillCategories.Mappers;
 
-public static class SkillCategoryTranslationMapper
+public class SkillCategoryTranslationMapper : IMapper<SkillCategoryTranslation, SkillCategoryTranslationDto>
 {
-    public static SkillCategoryTranslationDto MapToDto(SkillCategoryTranslation entity)
+    public SkillCategoryTranslationDto MapToDto(SkillCategoryTranslation entity)
     {
         return new SkillCategoryTranslationDto
         {
@@ -14,7 +14,7 @@ public static class SkillCategoryTranslationMapper
         };
     }
     
-    public static List<SkillCategoryTranslationDto> MapToDtoList(
+    public List<SkillCategoryTranslationDto> MapToDtoList(
         IEnumerable<SkillCategoryTranslation> entities)
     {
         return entities.Select(MapToDto).ToList();

@@ -1,4 +1,4 @@
-namespace PersonalSite.Infrastructure.BackgroundProcessing;
+namespace PersonalSite.Infrastructure.BackgroundProcessing.BackgroundQueue;
 
 public class BackgroundQueue : IBackgroundQueue
 {

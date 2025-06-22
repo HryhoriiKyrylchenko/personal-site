@@ -1,35 +1,48 @@
 namespace PersonalSite.Application.Features.Skills.UserSkills.Mappers;
 
-public static class UserSkillMapper
+public class UserSkillMapper 
+    : ITranslatableMapper<UserSkill, UserSkillDto>, 
+        IAdminMapper<UserSkill, UserSkillAdminDto>
 {
-    public static UserSkillDto MapToDto(UserSkill entity, string languageCode)
+    private readonly ITranslatableMapper<Skill, SkillDto> _skillMapper;
+    private readonly IAdminMapper<Skill, SkillAdminDto> _skillAdminMapper;
+    
+    public UserSkillMapper(
+        ITranslatableMapper<Skill, SkillDto> skillMapper,
+        IAdminMapper<Skill, SkillAdminDto> skillAdminMapper)
+    {
+        _skillMapper = skillMapper;
+        _skillAdminMapper = skillAdminMapper;
+    }
+    
+    public UserSkillDto MapToDto(UserSkill entity, string languageCode)
     {
         return new UserSkillDto
         {
             Id = entity.Id,
-            Skill = SkillMapper.MapToDto(entity.Skill, languageCode),
+            Skill = _skillMapper.MapToDto(entity.Skill, languageCode),
             Proficiency = entity.Proficiency,
         };
     }
     
-    public static List<UserSkillDto> MapToDtoList(IEnumerable<UserSkill> entities, string languageCode)
+    public List<UserSkillDto> MapToDtoList(IEnumerable<UserSkill> entities, string languageCode)
     {
         return entities.Select(e => MapToDto(e, languageCode)).ToList();
     }
     
-    public static UserSkillAdminDto MapToAdminDto(UserSkill entity)
+    public UserSkillAdminDto MapToAdminDto(UserSkill entity)
     {
         return new UserSkillAdminDto
         {
             Id = entity.Id,
-            Skill = SkillMapper.MapToAdminDto(entity.Skill),
+            Skill = _skillAdminMapper.MapToAdminDto(entity.Skill),
             Proficiency = entity.Proficiency,
             CreatedAt = entity.CreatedAt,
             UpdatedAt = entity.UpdatedAt
         };
     }
 
-    public static List<UserSkillAdminDto> MapToAdminDtoList(IEnumerable<UserSkill> entities)
+    public List<UserSkillAdminDto> MapToAdminDtoList(IEnumerable<UserSkill> entities)
     {
         return entities.Select(MapToAdminDto).ToList();
     }

@@ -1,8 +1,15 @@
 namespace PersonalSite.Application.Features.Projects.Project.Mappers;
 
-public static class ProjectTranslationMapper
+public class ProjectTranslationMapper : IMapper<ProjectTranslation, ProjectTranslationDto>
 {
-    public static ProjectTranslationDto MapToDto(ProjectTranslation entity)
+    private readonly IS3UrlBuilder _s3UrlBuilder;
+    
+    public ProjectTranslationMapper(IS3UrlBuilder s3UrlBuilder)
+    {
+        _s3UrlBuilder = s3UrlBuilder;   
+    }
+    
+    public ProjectTranslationDto MapToDto(ProjectTranslation entity)
     {
         return new ProjectTranslationDto
         {
@@ -14,11 +21,11 @@ public static class ProjectTranslationMapper
             DescriptionSections = entity.DescriptionSections,
             MetaTitle = entity.MetaTitle,
             MetaDescription = entity.MetaDescription,
-            OgImage = string.IsNullOrWhiteSpace(entity.OgImage) ? string.Empty : S3UrlHelper.BuildImageUrl(entity.OgImage)
+            OgImage = string.IsNullOrWhiteSpace(entity.OgImage) ? string.Empty : _s3UrlBuilder.BuildUrl(entity.OgImage)
         };
     }
     
-    public static List<ProjectTranslationDto> MapToDtoList(
+    public List<ProjectTranslationDto> MapToDtoList(
         IEnumerable<ProjectTranslation> entities)
     {
         return entities.Select(MapToDto).ToList();

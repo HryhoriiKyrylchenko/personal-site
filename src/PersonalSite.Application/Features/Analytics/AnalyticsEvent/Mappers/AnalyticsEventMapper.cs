@@ -1,8 +1,8 @@
 namespace PersonalSite.Application.Features.Analytics.AnalyticsEvent.Mappers;
 
-public static class AnalyticsEventMapper
+public class AnalyticsEventMapper : IMapper<Domain.Entities.Analytics.AnalyticsEvent, AnalyticsEventDto>
 {
-    public static AnalyticsEventDto MapToDto(Domain.Entities.Analytics.AnalyticsEvent entity)
+    public AnalyticsEventDto MapToDto(Domain.Entities.Analytics.AnalyticsEvent entity)
     {
         return new AnalyticsEventDto
         {
@@ -16,7 +16,7 @@ public static class AnalyticsEventMapper
         };
     }
     
-    public static List<AnalyticsEventDto> MapToDtoList(IEnumerable<Domain.Entities.Analytics.AnalyticsEvent> entities)
+    public List<AnalyticsEventDto> MapToDtoList(IEnumerable<Domain.Entities.Analytics.AnalyticsEvent> entities)
     {
         return entities.Select(MapToDto).ToList();
     }

@@ -1,8 +1,15 @@
 namespace PersonalSite.Application.Features.Blogs.Blog.Mappers;
 
-public static class BlogPostTranslationMapper
+public class BlogPostTranslationMapper : IMapper<BlogPostTranslation, BlogPostTranslationDto>
 {
-    public static BlogPostTranslationDto MapToDto(BlogPostTranslation entity)
+    private readonly IS3UrlBuilder _urlBuilder;
+
+    public BlogPostTranslationMapper(IS3UrlBuilder urlBuilder)
+    {
+        _urlBuilder = urlBuilder;   
+    }
+    
+    public BlogPostTranslationDto MapToDto(BlogPostTranslation entity)
     {
         return new BlogPostTranslationDto
         {
@@ -14,12 +21,11 @@ public static class BlogPostTranslationMapper
             Content = entity.Content,
             MetaTitle = entity.MetaTitle,
             MetaDescription = entity.MetaDescription,
-            OgImage = string.IsNullOrWhiteSpace(entity.OgImage) ? string.Empty : S3UrlHelper.BuildImageUrl(entity.OgImage)
+            OgImage = string.IsNullOrWhiteSpace(entity.OgImage) ? string.Empty : _urlBuilder.BuildUrl(entity.OgImage)
         };
     }
 
-    public static List<BlogPostTranslationDto> MapToDtoList(
-        IEnumerable<BlogPostTranslation> entities)
+    public List<BlogPostTranslationDto> MapToDtoList(IEnumerable<BlogPostTranslation> entities)
     {
         return entities.Select(MapToDto).ToList();
     }

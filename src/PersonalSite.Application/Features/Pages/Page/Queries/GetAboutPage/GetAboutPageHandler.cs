@@ -8,19 +8,28 @@ public class GetAboutPageHandler : IRequestHandler<GetAboutPageQuery, Result<Abo
     private readonly IUserSkillRepository _userSkillRepository;
     private readonly ILearningSkillRepository _learningSkillRepository;
     private readonly ILogger<GetAboutPageHandler> _logger;
+    private readonly ITranslatableMapper<Domain.Entities.Pages.Page, PageDto> _pageMapper;
+    private readonly ITranslatableMapper<LearningSkill, LearningSkillDto> _learningSkillMapper;
+    private readonly ITranslatableMapper<UserSkill, UserSkillDto> _userSkillMapper;
 
     public GetAboutPageHandler(
         LanguageContext language,
         IPageRepository pageRepository,
         IUserSkillRepository userSkillRepository,
         ILearningSkillRepository learningSkillRepository,
-        ILogger<GetAboutPageHandler> logger)
+        ILogger<GetAboutPageHandler> logger,
+        ITranslatableMapper<Domain.Entities.Pages.Page, PageDto> pageMapper,
+        ITranslatableMapper<LearningSkill, LearningSkillDto> learningSkillMapper,
+        ITranslatableMapper<UserSkill, UserSkillDto> userSkillMapper)
     {
         _language = language;
         _pageRepository = pageRepository;
         _userSkillRepository = userSkillRepository;
         _learningSkillRepository = learningSkillRepository;
         _logger = logger;
+        _pageMapper = pageMapper;  
+        _learningSkillMapper = learningSkillMapper;
+        _userSkillMapper = userSkillMapper;
     }
     
     public async Task<Result<AboutPageDto>> Handle(GetAboutPageQuery request, CancellationToken cancellationToken)
@@ -38,21 +47,21 @@ public class GetAboutPageHandler : IRequestHandler<GetAboutPageQuery, Result<Abo
                 _logger.LogWarning("Home page not found.");
                 return Result<AboutPageDto>.Failure("Home page not found.");
             }
-            var pageData = PageMapper.MapToDto(page, _language.LanguageCode);
+            var pageData = _pageMapper.MapToDto(page, _language.LanguageCode);
         
             var userSkills = await _userSkillRepository.GetAllActiveAsync(cancellationToken);
             if (userSkills.Count < 1)
             {
                 _logger.LogWarning("No skills found.");     
             }
-            var userSkillsData = UserSkillMapper.MapToDtoList(userSkills, _language.LanguageCode);
+            var userSkillsData = _userSkillMapper.MapToDtoList(userSkills, _language.LanguageCode);
         
             var learningSkills = await _learningSkillRepository.GetAllOrderedAsync(cancellationToken);
             if (learningSkills.Count < 1)
             {
                 _logger.LogWarning("No skills found.");     
             }
-            var learningSkillsData = LearningSkillMapper.MapToDtoList(learningSkills, _language.LanguageCode);
+            var learningSkillsData = _learningSkillMapper.MapToDtoList(learningSkills, _language.LanguageCode);
         
             var aboutPage = new AboutPageDto
             {

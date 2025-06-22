@@ -1,8 +1,8 @@
 namespace PersonalSite.Application.Features.Contact.ContactMessages.Mappers;
 
-public static class ContactMessageMapper
+public class ContactMessageMapper : IMapper<ContactMessage, ContactMessageDto>
 {
-    public static ContactMessageDto MapToDto(ContactMessage entity)
+    public ContactMessageDto MapToDto(ContactMessage entity)
     {
         return new ContactMessageDto
         {
@@ -16,7 +16,7 @@ public static class ContactMessageMapper
         };
     }
     
-    public static List<ContactMessageDto> MapToDtoList(IEnumerable<ContactMessage> entities)
+    public List<ContactMessageDto> MapToDtoList(IEnumerable<ContactMessage> entities)
     {
         return entities.Select(MapToDto).ToList();
     }

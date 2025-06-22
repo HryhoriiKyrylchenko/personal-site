@@ -6,16 +6,19 @@ public class GetContactPageHandler : IRequestHandler<GetContactPageQuery, Result
     private readonly LanguageContext _language;
     private readonly IPageRepository _pageRepository;
     private readonly ILogger<GetContactPageHandler> _logger;
+    private readonly ITranslatableMapper<Domain.Entities.Pages.Page, PageDto> _pageMapper;
     
     public GetContactPageHandler(
         LanguageContext language,
         IPageRepository pageRepository,
         IBlogPostRepository blogPostRepository,
-        ILogger<GetContactPageHandler> logger)
+        ILogger<GetContactPageHandler> logger,
+        ITranslatableMapper<Domain.Entities.Pages.Page, PageDto> pageMapper)
     {
         _language = language;
         _pageRepository = pageRepository;
         _logger = logger;
+        _pageMapper = pageMapper; 
     }
     
     public async Task<Result<ContactPageDto>> Handle(GetContactPageQuery request, CancellationToken cancellationToken)
@@ -33,7 +36,7 @@ public class GetContactPageHandler : IRequestHandler<GetContactPageQuery, Result
                 _logger.LogWarning("Contact page not found.");
                 return Result<ContactPageDto>.Failure("Contact page not found.");
             }
-            var pageData = PageMapper.MapToDto(page, _language.LanguageCode);
+            var pageData = _pageMapper.MapToDto(page, _language.LanguageCode);
         
             var contactPage = new ContactPageDto
             {

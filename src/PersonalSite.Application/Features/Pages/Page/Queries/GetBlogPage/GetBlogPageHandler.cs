@@ -7,17 +7,23 @@ public class GetBlogPageHandler : IRequestHandler<GetBlogPageQuery, Result<BlogP
     private readonly IPageRepository _pageRepository;
     private readonly IBlogPostRepository _blogPostRepository;
     private readonly ILogger<GetBlogPageHandler> _logger;
+    private readonly ITranslatableMapper<Domain.Entities.Pages.Page, PageDto> _pageMapper;
+    private readonly ITranslatableMapper<BlogPost, BlogPostDto> _blogPostMapper;
     
     public GetBlogPageHandler(
         LanguageContext language,
         IPageRepository pageRepository,
         IBlogPostRepository blogPostRepository,
-        ILogger<GetBlogPageHandler> logger)
+        ILogger<GetBlogPageHandler> logger,
+        ITranslatableMapper<Domain.Entities.Pages.Page, PageDto> pageMapper,
+        ITranslatableMapper<BlogPost, BlogPostDto> blogPostMapper)
     {
         _language = language;
         _pageRepository = pageRepository;
         _blogPostRepository = blogPostRepository;
         _logger = logger;
+        _pageMapper = pageMapper;
+        _blogPostMapper = blogPostMapper; 
     }
     
     public async Task<Result<BlogPageDto>> Handle(GetBlogPageQuery request, CancellationToken cancellationToken)
@@ -35,14 +41,14 @@ public class GetBlogPageHandler : IRequestHandler<GetBlogPageQuery, Result<BlogP
                 _logger.LogWarning("Blog page not found.");
                 return Result<BlogPageDto>.Failure("Blog page not found.");
             }
-            var pageData = PageMapper.MapToDto(page, _language.LanguageCode);
+            var pageData = _pageMapper.MapToDto(page, _language.LanguageCode);
         
             var blogPosts = await _blogPostRepository.GetPublishedPostsAsync(cancellationToken);
             if (blogPosts.Count < 1)
             {
                 _logger.LogWarning("No blog posts found.");     
             }
-            var blogPostsData = BlogPostMapper.MapToDtoList(blogPosts, _language.LanguageCode);
+            var blogPostsData = _blogPostMapper.MapToDtoList(blogPosts, _language.LanguageCode);
         
             var blogPage = new BlogPageDto
             {

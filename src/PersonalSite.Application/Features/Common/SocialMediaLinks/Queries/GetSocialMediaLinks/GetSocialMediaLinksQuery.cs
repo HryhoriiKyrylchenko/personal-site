@@ -5,4 +5,4 @@ namespace PersonalSite.Application.Features.Common.SocialMediaLinks.Queries.GetS
 public record GetSocialMediaLinksQuery(
     string? Platform = null,
     bool? IsActive = null
-) : IRequest<List<SocialMediaLinkDto>>;
+) : IRequest<Result<List<SocialMediaLinkDto>>>;

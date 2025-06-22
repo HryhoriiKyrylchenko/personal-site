@@ -12,5 +12,5 @@ public class ProjectAdminDto
     public DateTime? UpdatedAt { get; set; }
     
     public List<ProjectTranslationDto> Translations { get; set; } = [];
-    public List<SkillAdminDto> Skills { get; set; } = [];
+    public List<ProjectSkillAdminDto> Skills { get; set; } = [];
 }

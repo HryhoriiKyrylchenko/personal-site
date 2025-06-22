@@ -1,3 +1,5 @@
+using PersonalSite.Infrastructure.BackgroundProcessing.BackgroundQueue;
+
 namespace PersonalSite.Application.Features.Contact.ContactMessages.Events.ContactMessageCreated;
 
 public class ContactMessageCreatedHandler : INotificationHandler<ContactMessageCreatedEvent>
