@@ -1,3 +1,5 @@
+using PersonalSite.Application.Features.Contact.ContactMessages.Commands.SendContactMessage;
+
 namespace PersonalSite.Web.Controllers.Public;
 
 [ApiController]

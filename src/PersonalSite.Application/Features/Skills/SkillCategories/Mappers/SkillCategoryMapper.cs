@@ -1,3 +1,7 @@
+using PersonalSite.Application.Features.Skills.SkillCategories.Dtos;
+using PersonalSite.Domain.Entities.Skills;
+using PersonalSite.Domain.Entities.Translations;
+
 namespace PersonalSite.Application.Features.Skills.SkillCategories.Mappers;
 
 public class SkillCategoryMapper 

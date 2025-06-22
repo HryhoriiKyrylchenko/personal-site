@@ -1,3 +1,5 @@
+using PersonalSite.Domain.Interfaces.Repositories.Skills;
+
 namespace PersonalSite.Application.Features.Skills.UserSkills.Commands.UpdateUserSkill;
 
 public class UpdateUserSkillHandler : IRequestHandler<UpdateUserSkillCommand, Result>

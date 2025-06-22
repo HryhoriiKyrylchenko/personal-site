@@ -1,3 +1,5 @@
+using PersonalSite.Domain.Entities.Blog;
+
 namespace PersonalSite.Domain.Validation.Blog;
 
 public class BlogPostTagValidator : AbstractValidator<BlogPostTag>

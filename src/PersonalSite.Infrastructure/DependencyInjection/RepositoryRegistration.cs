@@ -1,22 +1,26 @@
-﻿namespace PersonalSite.Infrastructure;
+using PersonalSite.Domain.Interfaces.Repositories.Analytics;
+using PersonalSite.Domain.Interfaces.Repositories.Blog;
+using PersonalSite.Domain.Interfaces.Repositories.Common;
+using PersonalSite.Domain.Interfaces.Repositories.Contact;
+using PersonalSite.Domain.Interfaces.Repositories.Pages;
+using PersonalSite.Domain.Interfaces.Repositories.Projects;
+using PersonalSite.Domain.Interfaces.Repositories.Skills;
+using PersonalSite.Domain.Interfaces.Repositories.Translations;
+using PersonalSite.Infrastructure.Persistence.Repositories.Analytics;
+using PersonalSite.Infrastructure.Persistence.Repositories.Blog;
+using PersonalSite.Infrastructure.Persistence.Repositories.Common;
+using PersonalSite.Infrastructure.Persistence.Repositories.Contact;
+using PersonalSite.Infrastructure.Persistence.Repositories.Pages;
+using PersonalSite.Infrastructure.Persistence.Repositories.Projects;
+using PersonalSite.Infrastructure.Persistence.Repositories.Skills;
+using PersonalSite.Infrastructure.Persistence.Repositories.Translations;
 
-public static class InfrastructureServiceCollectionExtensions
+namespace PersonalSite.Infrastructure.DependencyInjection;
+
+public static class RepositoryRegistration
 {
-    public static IServiceCollection AddInfrastructureServices(this IServiceCollection services)
+    public static IServiceCollection AddRepositories(this IServiceCollection services)
     {
-        services.AddValidatorsFromAssembly(typeof(ContactMessageValidator).Assembly);
-        services.AddFluentValidationAutoValidation();
-        services.AddFluentValidationClientsideAdapters();
-        
-        services.AddSingleton<IBackgroundQueue, BackgroundQueue>();
-        services.AddHostedService<QueuedHostedService>();
-        
-        services.AddHostedService<S3OrphanFileCleanupJob>();
-        
-        services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
-        services.AddScoped(typeof(IReadOnlyRepository<>), typeof(EfRepository<>));
-        services.AddScoped<IUnitOfWork, EfUnitOfWork>();
-        
         services.AddScoped<IAnalyticsEventRepository, AnalyticsEventRepository>();
         services.AddScoped<IBlogPostRepository, BlogPostRepository>();
         services.AddScoped<IBlogPostTagRepository, BlogPostTagRepository>();
@@ -38,7 +42,7 @@ public static class InfrastructureServiceCollectionExtensions
         services.AddScoped<IProjectTranslationRepository, ProjectTranslationRepository>();
         services.AddScoped<ISkillCategoryTranslationRepository, SkillCategoryTranslationRepository>();
         services.AddScoped<ISkillTranslationRepository, SkillTranslationRepository>();
-        
+
         return services;
     }
 }

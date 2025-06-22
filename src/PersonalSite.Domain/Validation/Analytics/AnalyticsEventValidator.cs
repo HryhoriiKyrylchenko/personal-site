@@ -1,3 +1,5 @@
+using PersonalSite.Domain.Entities.Analytics;
+
 namespace PersonalSite.Domain.Validation.Analytics;
 
 public class AnalyticsEventValidator : AbstractValidator<AnalyticsEvent>

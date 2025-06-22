@@ -1,3 +1,5 @@
+using PersonalSite.Application.Features.Blogs.Blog.Commands.CreateBlogPost;
+
 namespace PersonalSite.Application.Features.Blogs.Blog.Commands.UpdateBlogPost;
 
 public class UpdateBlogPostCommandValidator : AbstractValidator<UpdateBlogPostCommand>

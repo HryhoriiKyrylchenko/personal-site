@@ -1,4 +1,11 @@
+using PersonalSite.Application.Features.Pages.Page.Dtos;
+using PersonalSite.Application.Features.Projects.Project.Dtos;
+using PersonalSite.Application.Features.Skills.UserSkills.Dtos;
 using PersonalSite.Domain.Entities.Projects;
+using PersonalSite.Domain.Entities.Skills;
+using PersonalSite.Domain.Interfaces.Repositories.Pages;
+using PersonalSite.Domain.Interfaces.Repositories.Projects;
+using PersonalSite.Domain.Interfaces.Repositories.Skills;
 
 namespace PersonalSite.Application.Features.Pages.Page.Queries.GetHomePage;
 

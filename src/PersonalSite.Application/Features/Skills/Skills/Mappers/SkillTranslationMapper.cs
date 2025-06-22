@@ -1,3 +1,6 @@
+using PersonalSite.Application.Features.Skills.Skills.Dtos;
+using PersonalSite.Domain.Entities.Translations;
+
 namespace PersonalSite.Application.Features.Skills.Skills.Mappers;
 
 public static class SkillTranslationMapper

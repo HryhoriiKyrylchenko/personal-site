@@ -1,3 +1,5 @@
+using PersonalSite.Application.Features.Common.Language.Dtos;
+
 namespace PersonalSite.Application.Features.Common.Language.Mappers;
 
 public class LanguageMapper : IMapper<Domain.Entities.Common.Language, LanguageDto>

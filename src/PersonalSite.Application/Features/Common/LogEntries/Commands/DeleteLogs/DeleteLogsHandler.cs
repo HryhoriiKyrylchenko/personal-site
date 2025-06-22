@@ -1,3 +1,5 @@
+using PersonalSite.Domain.Interfaces.Repositories.Common;
+
 namespace PersonalSite.Application.Features.Common.LogEntries.Commands.DeleteLogs;
 
 public class DeleteLogsHandler : IRequestHandler<DeleteLogsCommand, Result>

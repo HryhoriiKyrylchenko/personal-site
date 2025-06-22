@@ -1,3 +1,5 @@
+using PersonalSite.Application.Features.Skills.SkillCategories.Dtos;
+
 namespace PersonalSite.Application.Features.Skills.SkillCategories.Commands.CreateSkillCategory;
 
 public record CreateSkillCategoryCommand(

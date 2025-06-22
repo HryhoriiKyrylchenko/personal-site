@@ -1,3 +1,8 @@
+using PersonalSite.Domain.Entities.Translations;
+using PersonalSite.Domain.Interfaces.Repositories.Common;
+using PersonalSite.Domain.Interfaces.Repositories.Skills;
+using PersonalSite.Domain.Interfaces.Repositories.Translations;
+
 namespace PersonalSite.Application.Features.Skills.Skills.Commands.UpdateSkill;
 
 public class UpdateSkillHandler : IRequestHandler<UpdateSkillCommand, Result>

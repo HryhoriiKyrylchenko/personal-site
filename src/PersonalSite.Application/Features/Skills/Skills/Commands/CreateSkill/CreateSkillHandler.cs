@@ -1,3 +1,9 @@
+using PersonalSite.Domain.Entities.Skills;
+using PersonalSite.Domain.Entities.Translations;
+using PersonalSite.Domain.Interfaces.Repositories.Common;
+using PersonalSite.Domain.Interfaces.Repositories.Skills;
+using PersonalSite.Domain.Interfaces.Repositories.Translations;
+
 namespace PersonalSite.Application.Features.Skills.Skills.Commands.CreateSkill;
 
 public class CreateSkillHandler : IRequestHandler<CreateSkillCommand, Result<Guid>>

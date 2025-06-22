@@ -1,3 +1,6 @@
+using PersonalSite.Application.Features.Contact.ContactMessages.Dtos;
+using PersonalSite.Domain.Entities.Contact;
+
 namespace PersonalSite.Application.Features.Contact.ContactMessages.Mappers;
 
 public class ContactMessageMapper : IMapper<ContactMessage, ContactMessageDto>

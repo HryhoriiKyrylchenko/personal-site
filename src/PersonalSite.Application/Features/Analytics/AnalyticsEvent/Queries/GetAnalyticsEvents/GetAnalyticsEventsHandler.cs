@@ -1,3 +1,6 @@
+using PersonalSite.Application.Features.Analytics.AnalyticsEvent.Dtos;
+using PersonalSite.Domain.Interfaces.Repositories.Analytics;
+
 namespace PersonalSite.Application.Features.Analytics.AnalyticsEvent.Queries.GetAnalyticsEvents;
 
 public class GetAnalyticsEventsHandler : IRequestHandler<GetAnalyticsEventsQuery, PaginatedResult<AnalyticsEventDto>>

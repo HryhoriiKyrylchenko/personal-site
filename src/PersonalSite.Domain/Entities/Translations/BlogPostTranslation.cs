@@ -1,3 +1,5 @@
+using PersonalSite.Domain.Entities.Blog;
+
 namespace PersonalSite.Domain.Entities.Translations;
 
 [Table("BlogPostTranslations")]

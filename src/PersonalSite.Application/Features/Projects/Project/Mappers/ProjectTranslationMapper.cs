@@ -1,3 +1,6 @@
+using PersonalSite.Application.Features.Projects.Project.Dtos;
+using PersonalSite.Domain.Entities.Translations;
+
 namespace PersonalSite.Application.Features.Projects.Project.Mappers;
 
 public class ProjectTranslationMapper : IMapper<ProjectTranslation, ProjectTranslationDto>

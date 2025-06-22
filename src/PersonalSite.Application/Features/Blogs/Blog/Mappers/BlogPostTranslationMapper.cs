@@ -1,3 +1,6 @@
+using PersonalSite.Application.Features.Blogs.Blog.Dtos;
+using PersonalSite.Domain.Entities.Translations;
+
 namespace PersonalSite.Application.Features.Blogs.Blog.Mappers;
 
 public class BlogPostTranslationMapper : IMapper<BlogPostTranslation, BlogPostTranslationDto>

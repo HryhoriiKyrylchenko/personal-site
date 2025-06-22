@@ -1,3 +1,6 @@
+using PersonalSite.Domain.Entities.Common;
+using PersonalSite.Domain.Interfaces.Repositories.Common;
+
 namespace PersonalSite.Application.Features.Common.SocialMediaLinks.Commands.CreateSocialMediaLink;
 
 public class CreateSocialMediaLinkHandler : IRequestHandler<CreateSocialMediaLinkCommand, Result<Guid>>

@@ -1,3 +1,7 @@
+using PersonalSite.Application.Features.Common.LogEntries.Dtos;
+using PersonalSite.Domain.Entities.Common;
+using PersonalSite.Domain.Interfaces.Repositories.Common;
+
 namespace PersonalSite.Application.Features.Common.LogEntries.Queries.GetLogEntries;
 
 public class GetLogEntriesHandler : IRequestHandler<GetLogEntriesQuery, PaginatedResult<LogEntryDto>>

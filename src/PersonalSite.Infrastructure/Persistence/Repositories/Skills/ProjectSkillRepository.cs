@@ -1,3 +1,6 @@
+using PersonalSite.Domain.Entities.Skills;
+using PersonalSite.Domain.Interfaces.Repositories.Skills;
+
 namespace PersonalSite.Infrastructure.Persistence.Repositories.Skills;
 
 public class ProjectSkillRepository : EfRepository<ProjectSkill>, IProjectSkillRepository
@@ -15,46 +18,6 @@ public class ProjectSkillRepository : EfRepository<ProjectSkill>, IProjectSkillR
         
         return await DbContext.ProjectSkills
             .Where(ps => ps.ProjectId == projectId)
-            .Include(ps => ps.Skill)
-                .ThenInclude(s => s.Translations)
-            .Include(ps => ps.Skill)
-                .ThenInclude(s => s.Category)
-                    .ThenInclude(c => c.Translations)
-            .ToListAsync(cancellationToken);
-    }
-
-    public async Task<List<ProjectSkill>> GetBySkillIdAsync(Guid skillId, CancellationToken cancellationToken = default)
-    {
-        if (skillId == Guid.Empty)
-            throw new ArgumentException("Id cannot be empty", nameof(skillId));
-        
-        return await DbContext.ProjectSkills
-            .Where(ps => ps.SkillId == skillId)
-            .Include(ps => ps.Skill)
-                .ThenInclude(s => s.Translations)
-            .Include(ps => ps.Skill)
-                .ThenInclude(s => s.Category)
-                    .ThenInclude(c => c.Translations)
-            .ToListAsync(cancellationToken);
-    }
-
-    public async Task<ProjectSkill?> GetWithSkillDataById(Guid id, CancellationToken cancellationToken = default)
-    {
-        if (id == Guid.Empty)
-            throw new ArgumentException("Id cannot be empty", nameof(id));
-        
-        return await DbContext.ProjectSkills
-            .Include(ps => ps.Skill)
-                .ThenInclude(s => s.Translations)
-            .Include(ps => ps.Skill)
-                .ThenInclude(s => s.Category)
-                    .ThenInclude(c => c.Translations)
-            .FirstOrDefaultAsync(ps => ps.Id == id, cancellationToken);
-    }
-
-    public async Task<List<ProjectSkill>> GetAllWithSkillData(CancellationToken cancellationToken = default)
-    {
-        return await DbContext.ProjectSkills
             .Include(ps => ps.Skill)
                 .ThenInclude(s => s.Translations)
             .Include(ps => ps.Skill)

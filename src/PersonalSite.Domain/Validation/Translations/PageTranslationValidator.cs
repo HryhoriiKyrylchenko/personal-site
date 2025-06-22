@@ -1,3 +1,5 @@
+using PersonalSite.Domain.Entities.Translations;
+
 namespace PersonalSite.Domain.Validation.Translations;
 
 public class PageTranslationValidator : AbstractValidator<PageTranslation>

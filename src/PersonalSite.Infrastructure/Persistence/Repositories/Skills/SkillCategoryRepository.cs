@@ -1,3 +1,6 @@
+using PersonalSite.Domain.Entities.Skills;
+using PersonalSite.Domain.Interfaces.Repositories.Skills;
+
 namespace PersonalSite.Infrastructure.Persistence.Repositories.Skills;
 
 public class SkillCategoryRepository : EfRepository<SkillCategory>, ISkillCategoryRepository
@@ -8,23 +11,13 @@ public class SkillCategoryRepository : EfRepository<SkillCategory>, ISkillCatego
         IServiceProvider serviceProvider) 
         : base(context, logger, serviceProvider) { }
 
-
-    public async Task<List<SkillCategory>> GetAllOrderedAsync(CancellationToken cancellationToken = default)
-    {
-        return await DbContext.SkillCategories
-            .Include(sc => sc.Translations)
-                .ThenInclude(t => t.Language)
-            .OrderBy(sc => sc.DisplayOrder)
-            .ToListAsync(cancellationToken);
-    }
-
     public async Task<SkillCategory?> GetWithTranslationsByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
         if (id == Guid.Empty)
             throw new ArgumentException("Id cannot be empty", nameof(id));
         
         return await DbContext.SkillCategories
-            .Include(sc => sc.Translations)
+            .Include(sc => sc.Translations.Where(t => !t.Language.IsDeleted))
                 .ThenInclude(t => t.Language)
             .FirstOrDefaultAsync(sc => sc.Id == id, cancellationToken);
     }

@@ -1,3 +1,8 @@
+using PersonalSite.Domain.Entities.Translations;
+using PersonalSite.Domain.Interfaces.Repositories.Common;
+using PersonalSite.Domain.Interfaces.Repositories.Pages;
+using PersonalSite.Domain.Interfaces.Repositories.Translations;
+
 namespace PersonalSite.Application.Features.Pages.Page.Commands.UpdatePage;
 
 public class UpdatePageHandler : IRequestHandler<UpdatePageCommand, Result>

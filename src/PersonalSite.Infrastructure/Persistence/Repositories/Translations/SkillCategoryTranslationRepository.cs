@@ -1,3 +1,6 @@
+using PersonalSite.Domain.Entities.Translations;
+using PersonalSite.Domain.Interfaces.Repositories.Translations;
+
 namespace PersonalSite.Infrastructure.Persistence.Repositories.Translations;
 
 public class SkillCategoryTranslationRepository : EfRepository<SkillCategoryTranslation>, ISkillCategoryTranslationRepository

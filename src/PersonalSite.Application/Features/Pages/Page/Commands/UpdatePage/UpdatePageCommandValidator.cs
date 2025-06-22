@@ -1,3 +1,5 @@
+using PersonalSite.Application.Features.Pages.Page.Commands.CreatePage;
+
 namespace PersonalSite.Application.Features.Pages.Page.Commands.UpdatePage;
 
 public class UpdatePageCommandValidator : AbstractValidator<UpdatePageCommand>

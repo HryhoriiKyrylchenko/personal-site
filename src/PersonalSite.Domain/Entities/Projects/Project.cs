@@ -1,3 +1,7 @@
+using PersonalSite.Domain.Entities.Common;
+using PersonalSite.Domain.Entities.Skills;
+using PersonalSite.Domain.Entities.Translations;
+
 namespace PersonalSite.Domain.Entities.Projects;
 
 [Table("Projects")]

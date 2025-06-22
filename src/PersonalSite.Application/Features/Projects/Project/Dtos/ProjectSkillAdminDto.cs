@@ -1,3 +1,5 @@
+using PersonalSite.Application.Features.Skills.Skills.Dtos;
+
 namespace PersonalSite.Application.Features.Projects.Project.Dtos;
 
 public class ProjectSkillAdminDto

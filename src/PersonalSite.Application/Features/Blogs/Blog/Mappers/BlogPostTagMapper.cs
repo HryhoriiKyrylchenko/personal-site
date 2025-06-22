@@ -1,3 +1,6 @@
+using PersonalSite.Application.Features.Blogs.Blog.Dtos;
+using PersonalSite.Domain.Entities.Blog;
+
 namespace PersonalSite.Application.Features.Blogs.Blog.Mappers;
 
 public class BlogPostTagMapper : IMapper<BlogPostTag, BlogPostTagDto>

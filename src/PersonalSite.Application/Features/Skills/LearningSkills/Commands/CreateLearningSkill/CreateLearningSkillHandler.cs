@@ -1,3 +1,6 @@
+using PersonalSite.Domain.Entities.Skills;
+using PersonalSite.Domain.Interfaces.Repositories.Skills;
+
 namespace PersonalSite.Application.Features.Skills.LearningSkills.Commands.CreateLearningSkill;
 
 public class CreateLearningSkillHandler : IRequestHandler<CreateLearningSkillCommand, Result<Guid>>

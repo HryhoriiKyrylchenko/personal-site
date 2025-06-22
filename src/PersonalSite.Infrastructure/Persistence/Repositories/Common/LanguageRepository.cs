@@ -1,3 +1,6 @@
+using PersonalSite.Domain.Entities.Common;
+using PersonalSite.Domain.Interfaces.Repositories.Common;
+
 namespace PersonalSite.Infrastructure.Persistence.Repositories.Common;
 
 public class LanguageRepository : EfRepository<Language>, ILanguageRepository

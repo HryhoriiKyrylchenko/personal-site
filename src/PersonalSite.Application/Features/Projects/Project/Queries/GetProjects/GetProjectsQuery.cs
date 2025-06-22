@@ -1,3 +1,5 @@
+using PersonalSite.Application.Features.Projects.Project.Dtos;
+
 namespace PersonalSite.Application.Features.Projects.Project.Queries.GetProjects;
 
 public record GetProjectsQuery(

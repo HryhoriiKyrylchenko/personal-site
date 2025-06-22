@@ -1,4 +1,8 @@
-﻿namespace PersonalSite.Application;
+﻿using PersonalSite.Application.Features.Common.Language.Mappers;
+using PersonalSite.Application.Features.Contact.ContactMessages.Commands.SendContactMessage;
+using PersonalSite.Application.Features.Pages.Page.Queries.GetHomePage;
+
+namespace PersonalSite.Application.DependencyInjection;
 
 public static class ApplicationServiceCollectionExtensions
 {

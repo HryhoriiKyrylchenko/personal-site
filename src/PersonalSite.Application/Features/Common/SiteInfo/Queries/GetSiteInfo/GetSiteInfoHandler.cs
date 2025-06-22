@@ -1,3 +1,10 @@
+using PersonalSite.Application.Features.Common.Language.Dtos;
+using PersonalSite.Application.Features.Common.Resume.Dtos;
+using PersonalSite.Application.Features.Common.SiteInfo.Dtos;
+using PersonalSite.Application.Features.Common.SocialMediaLinks.Dtos;
+using PersonalSite.Domain.Entities.Common;
+using PersonalSite.Domain.Interfaces.Repositories.Common;
+
 namespace PersonalSite.Application.Features.Common.SiteInfo.Queries.GetSiteInfo;
 
 public class GetSiteInfoHandler : IRequestHandler<GetSiteInfoQuery, Result<SiteInfoDto>>

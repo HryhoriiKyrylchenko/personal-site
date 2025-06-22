@@ -1,3 +1,5 @@
+using PersonalSite.Domain.Entities.Projects;
+
 namespace PersonalSite.Domain.Interfaces.Repositories.Projects;
 
 public interface IProjectRepository : IRepository<Project>

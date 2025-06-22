@@ -1,3 +1,5 @@
+using PersonalSite.Application.Features.Blogs.Blog.Dtos;
+
 namespace PersonalSite.Application.Features.Blogs.Blog.Queries.GetBlogPosts;
 
 public record GetBlogPostsQuery(

@@ -1,3 +1,7 @@
+using PersonalSite.Application.Features.Skills.LearningSkills.Dtos;
+using PersonalSite.Application.Features.Skills.Skills.Dtos;
+using PersonalSite.Domain.Entities.Skills;
+
 namespace PersonalSite.Application.Features.Skills.LearningSkills.Mappers;
 
 public class LearningSkillMapper 

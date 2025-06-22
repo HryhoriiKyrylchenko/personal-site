@@ -1,3 +1,6 @@
+using PersonalSite.Application.Features.Skills.Skills.Dtos;
+using PersonalSite.Domain.Enums;
+
 namespace PersonalSite.Application.Features.Skills.LearningSkills.Dtos;
 
 public class LearningSkillAdminDto

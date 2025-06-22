@@ -1,3 +1,5 @@
+using PersonalSite.Domain.Interfaces.Repositories.Common;
+
 namespace PersonalSite.Application.Features.Common.SocialMediaLinks.Commands.UpdateSocialMediaLink;
 
 public class UpdateSocialMediaLinkHandler : IRequestHandler<UpdateSocialMediaLinkCommand, Result>
