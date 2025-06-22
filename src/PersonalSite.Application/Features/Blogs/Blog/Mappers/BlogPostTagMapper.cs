@@ -1,8 +1,8 @@
 namespace PersonalSite.Application.Features.Blogs.Blog.Mappers;
 
-public static class BlogPostTagMapper
+public class BlogPostTagMapper : IMapper<BlogPostTag, BlogPostTagDto>
 {
-    public static BlogPostTagDto MapToDto(BlogPostTag entity)
+    public BlogPostTagDto MapToDto(BlogPostTag entity)
     {
         return new BlogPostTagDto
         {
@@ -11,7 +11,7 @@ public static class BlogPostTagMapper
         };
     }
     
-    public static List<BlogPostTagDto> MapToDtoList(IEnumerable<BlogPostTag> entities)
+    public List<BlogPostTagDto> MapToDtoList(IEnumerable<BlogPostTag> entities)
     {
         return entities.Select(MapToDto).ToList();
     }

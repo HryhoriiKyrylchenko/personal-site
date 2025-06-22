@@ -13,8 +13,6 @@ public static class InfrastructureServiceCollectionExtensions
         
         services.AddHostedService<S3OrphanFileCleanupJob>();
         
-        services.AddScoped<IStorageService, S3StorageService>();
-        
         services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
         services.AddScoped(typeof(IReadOnlyRepository<>), typeof(EfRepository<>));
         services.AddScoped<IUnitOfWork, EfUnitOfWork>();

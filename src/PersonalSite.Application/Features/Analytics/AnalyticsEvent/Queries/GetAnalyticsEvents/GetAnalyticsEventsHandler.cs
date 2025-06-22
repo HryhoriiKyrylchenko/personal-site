@@ -4,12 +4,15 @@ public class GetAnalyticsEventsHandler : IRequestHandler<GetAnalyticsEventsQuery
 {
     private readonly IAnalyticsEventRepository _repository;
     private readonly ILogger<GetAnalyticsEventsHandler> _logger;
+    private readonly IMapper<Domain.Entities.Analytics.AnalyticsEvent, AnalyticsEventDto> _mapper;
 
     public GetAnalyticsEventsHandler(
         IAnalyticsEventRepository repository,
+        IMapper<Domain.Entities.Analytics.AnalyticsEvent, AnalyticsEventDto> mapper,
         ILogger<GetAnalyticsEventsHandler> logger)
     {
         _repository = repository;
+        _mapper = mapper;       
         _logger = logger;
     }
 
@@ -42,7 +45,7 @@ public class GetAnalyticsEventsHandler : IRequestHandler<GetAnalyticsEventsQuery
                 .AsNoTracking()
                 .ToListAsync(cancellationToken);
             
-            var items = AnalyticsEventMapper.MapToDtoList(entities);
+            var items = _mapper.MapToDtoList(entities);
 
             return PaginatedResult<AnalyticsEventDto>.Success(items, total, request.Page, request.PageSize);
 

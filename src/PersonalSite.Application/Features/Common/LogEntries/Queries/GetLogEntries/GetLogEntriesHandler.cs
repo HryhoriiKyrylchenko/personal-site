@@ -4,13 +4,16 @@ public class GetLogEntriesHandler : IRequestHandler<GetLogEntriesQuery, Paginate
 {
     private readonly ILogEntryRepository _repository;
     private readonly ILogger<GetLogEntriesHandler> _logger;
+    private readonly IMapper<LogEntry, LogEntryDto> _mapper;
 
     public GetLogEntriesHandler(
         ILogEntryRepository repository,
-        ILogger<GetLogEntriesHandler> logger)
+        ILogger<GetLogEntriesHandler> logger,
+        IMapper<LogEntry, LogEntryDto> mapper)
     {
         _repository = repository;
         _logger = logger;  
+        _mapper = mapper;       
     }
 
     public async Task<PaginatedResult<LogEntryDto>> Handle(GetLogEntriesQuery request, CancellationToken cancellationToken)
@@ -40,7 +43,7 @@ public class GetLogEntriesHandler : IRequestHandler<GetLogEntriesQuery, Paginate
                 .AsNoTracking()
                 .ToListAsync(cancellationToken);
         
-            var items = LogEntryMapper.MapToDtoList(entities);
+            var items = _mapper.MapToDtoList(entities);
 
             return PaginatedResult<LogEntryDto>.Success(items, total, request.Page, request.PageSize);
         }

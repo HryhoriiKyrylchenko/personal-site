@@ -7,17 +7,23 @@ public class GetPortfolioPageHandler : IRequestHandler<GetPortfolioPageQuery, Re
     private readonly IPageRepository _pageRepository;
     private readonly IProjectRepository _projectRepository;
     private readonly ILogger<GetPortfolioPageHandler> _logger;
+    private readonly ITranslatableMapper<Domain.Entities.Pages.Page, PageDto> _pageMapper;
+    private readonly ITranslatableMapper<Domain.Entities.Projects.Project, ProjectDto> _projectMapper;
     
     public GetPortfolioPageHandler(
         LanguageContext language,
         IPageRepository pageRepository,
         IProjectRepository projectRepository,
-        ILogger<GetPortfolioPageHandler> logger)
+        ILogger<GetPortfolioPageHandler> logger,
+        ITranslatableMapper<Domain.Entities.Pages.Page, PageDto> pageMapper,
+        ITranslatableMapper<Domain.Entities.Projects.Project, ProjectDto> projectMapper)
     {
         _language = language;
         _pageRepository = pageRepository;
         _projectRepository = projectRepository;
         _logger = logger;
+        _pageMapper = pageMapper;
+        _projectMapper = projectMapper;
     }
     
     public async Task<Result<PortfolioPageDto>> Handle(GetPortfolioPageQuery request, CancellationToken cancellationToken)
@@ -35,14 +41,14 @@ public class GetPortfolioPageHandler : IRequestHandler<GetPortfolioPageQuery, Re
                 _logger.LogWarning("Portfolio page not found.");
                 return Result<PortfolioPageDto>.Failure("Portfolio page not found.");
             }
-            var pageData = PageMapper.MapToDto(page, _language.LanguageCode);
+            var pageData = _pageMapper.MapToDto(page, _language.LanguageCode);
         
             var projects = await _projectRepository.GetAllWithFullDataAsync(cancellationToken);
             if (projects.Count < 1)
             {
                 _logger.LogWarning("No projects found.");     
             }
-            var projectsData = ProjectMapper.MapToDtoList(projects, _language.LanguageCode);
+            var projectsData = _projectMapper.MapToDtoList(projects, _language.LanguageCode);
         
             var portfolioPage = new PortfolioPageDto
             {

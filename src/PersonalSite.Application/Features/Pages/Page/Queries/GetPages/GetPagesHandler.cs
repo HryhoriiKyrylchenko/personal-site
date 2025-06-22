@@ -4,13 +4,16 @@ public class GetPagesHandler : IRequestHandler<GetPagesQuery, Result<List<PageAd
 {
     private readonly IPageRepository _repository;
     private readonly ILogger<GetPagesHandler> _logger;
+    private readonly IAdminMapper<Domain.Entities.Pages.Page, PageAdminDto> _pageMapper;
 
     public GetPagesHandler(
         IPageRepository repository,
-        ILogger<GetPagesHandler> logger)
+        ILogger<GetPagesHandler> logger,
+        IAdminMapper<Domain.Entities.Pages.Page, PageAdminDto> pageMapper)
     {
         _repository = repository;
         _logger = logger;
+        _pageMapper = pageMapper;
     }
 
     public async Task<Result<List<PageAdminDto>>> Handle(GetPagesQuery request, CancellationToken cancellationToken)
@@ -23,6 +26,6 @@ public class GetPagesHandler : IRequestHandler<GetPagesQuery, Result<List<PageAd
             return Result<List<PageAdminDto>>.Failure("No pages found.");
         }
 
-        return Result<List<PageAdminDto>>.Success(PageMapper.MapToAdminDtoList(pages));
+        return Result<List<PageAdminDto>>.Success(_pageMapper.MapToAdminDtoList(pages));
     }
 }

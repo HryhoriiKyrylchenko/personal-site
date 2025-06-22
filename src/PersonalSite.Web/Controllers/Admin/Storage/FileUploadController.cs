@@ -17,7 +17,7 @@ public class FileUploadController : ControllerBase
     [RequestSizeLimit(10_000_000)] // 10MB max size
     public async Task<IActionResult> Upload(
         [FromForm] IFormFile? file,
-        [FromQuery] string folder = "uploads",
+        [FromQuery] UploadFolder folder = UploadFolder.Uploads,
         CancellationToken cancellationToken = default)
     {
         if (file == null || file.Length == 0)
@@ -34,7 +34,15 @@ public class FileUploadController : ControllerBase
             await using var stream = file.OpenReadStream();
 
             var fileName = $"{Guid.NewGuid()}{extension}";
-            var url = await _storageService.UploadFileAsync(stream, fileName, file.ContentType, folder, cancellationToken);
+            
+            var normalizedFolder = folder.ToString().ToLowerInvariant();
+            
+            var url = await _storageService.UploadFileAsync(
+                stream, 
+                fileName, 
+                file.ContentType, 
+                normalizedFolder, 
+                cancellationToken);
 
             return Ok(new { url });
         }

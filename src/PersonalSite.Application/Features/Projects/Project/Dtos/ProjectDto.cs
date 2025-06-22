@@ -18,5 +18,5 @@ public class ProjectDto
     public string MetaDescription { get; set; } = string.Empty;
     public string OgImage { get; set; } = string.Empty;
     
-    public List<SkillDto> Skills { get; set; } = [];
+    public List<ProjectSkillDto> Skills { get; set; } = [];
 }

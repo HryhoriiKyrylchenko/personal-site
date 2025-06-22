@@ -1,8 +1,15 @@
 namespace PersonalSite.Application.Features.Pages.Page.Mappers;
 
-public static class PageTranslationMapper
+public class PageTranslationMapper : IMapper<PageTranslation, PageTranslationDto>
 {
-    public static PageTranslationDto MapToDto(PageTranslation entity)
+    private readonly IS3UrlBuilder _urlBuilder;
+
+    public PageTranslationMapper(IS3UrlBuilder urlBuilder)
+    {
+        _urlBuilder = urlBuilder;  
+    }
+    
+    public PageTranslationDto MapToDto(PageTranslation entity)
     {
         return new PageTranslationDto
         {
@@ -14,11 +21,11 @@ public static class PageTranslationMapper
             Description = entity.Description,
             MetaTitle = entity.MetaTitle,
             MetaDescription = entity.MetaDescription,
-            OgImage = string.IsNullOrWhiteSpace(entity.OgImage) ? string.Empty : S3UrlHelper.BuildImageUrl(entity.OgImage)
+            OgImage = string.IsNullOrWhiteSpace(entity.OgImage) ? string.Empty : _urlBuilder.BuildUrl(entity.OgImage)
         };
     }
     
-    public static List<PageTranslationDto> MapToDtoList(IEnumerable<PageTranslation> entities)
+    public List<PageTranslationDto> MapToDtoList(IEnumerable<PageTranslation> entities)
     {
         return entities.Select(MapToDto).ToList();
     }

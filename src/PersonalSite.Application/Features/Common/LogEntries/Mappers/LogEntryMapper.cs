@@ -1,8 +1,8 @@
 namespace PersonalSite.Application.Features.Common.LogEntries.Mappers;
 
-public static class LogEntryMapper
+public class LogEntryMapper : IMapper<LogEntry, LogEntryDto>
 {
-    public static LogEntryDto MapToDto(LogEntry entity)
+    public LogEntryDto MapToDto(LogEntry entity)
     {
         return new LogEntryDto
         {
@@ -17,7 +17,7 @@ public static class LogEntryMapper
         };
     }
     
-    public static List<LogEntryDto> MapToDtoList(IEnumerable<LogEntry> entities)
+    public List<LogEntryDto> MapToDtoList(IEnumerable<LogEntry> entities)
     {
         return entities.Select(MapToDto).ToList();
     }

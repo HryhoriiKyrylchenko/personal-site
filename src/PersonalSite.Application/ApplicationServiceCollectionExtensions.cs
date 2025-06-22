@@ -12,6 +12,8 @@ public static class ApplicationServiceCollectionExtensions
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(GetHomePageQuery).Assembly));
         services.AddValidatorsFromAssembly(typeof(SendContactMessageCommandValidator).Assembly);
         
+        services.AddMappers(typeof(LanguageMapper).Assembly);
+        
         services.AddScoped<IBackgroundPublisher, BackgroundPublisher>();
         
         services.AddScoped<ILanguageService, LanguageService>();

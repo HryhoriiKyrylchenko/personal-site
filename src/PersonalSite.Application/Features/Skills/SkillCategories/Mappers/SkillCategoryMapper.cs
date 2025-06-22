@@ -1,8 +1,17 @@
 namespace PersonalSite.Application.Features.Skills.SkillCategories.Mappers;
 
-public static class SkillCategoryMapper
+public class SkillCategoryMapper 
+    : ITranslatableMapper<SkillCategory, SkillCategoryDto>,
+        IAdminMapper<SkillCategory, SkillCategoryAdminDto>
 {
-    public static SkillCategoryDto MapToDto(SkillCategory entity, string languageCode)
+    private readonly IMapper<SkillCategoryTranslation, SkillCategoryTranslationDto> _translationMapper;
+    
+    public SkillCategoryMapper(IMapper<SkillCategoryTranslation, SkillCategoryTranslationDto> translationMapper)
+    {
+        _translationMapper = translationMapper;
+    }
+    
+    public SkillCategoryDto MapToDto(SkillCategory entity, string languageCode)
     {
         var translation = entity.Translations
             .FirstOrDefault(t => t.Language.Code.Equals(languageCode, 
@@ -18,24 +27,23 @@ public static class SkillCategoryMapper
         };
     }
 
-    public static List<SkillCategoryDto> MapToDtoList(IEnumerable<SkillCategory> entities,
-        string languageCode)
+    public List<SkillCategoryDto> MapToDtoList(IEnumerable<SkillCategory> entities, string languageCode)
     {
         return entities.Select(e => MapToDto(e, languageCode)).ToList();
     }
     
-    public static SkillCategoryAdminDto MapToAdminDto(SkillCategory entity)
+    public SkillCategoryAdminDto MapToAdminDto(SkillCategory entity)
     {
         return new SkillCategoryAdminDto
         {
             Id = entity.Id,
             Key = entity.Key,
             DisplayOrder = entity.DisplayOrder,
-            Translations = SkillCategoryTranslationMapper.MapToDtoList(entity.Translations)
+            Translations = _translationMapper.MapToDtoList(entity.Translations)
         };
     }
 
-    public static List<SkillCategoryAdminDto> MapToAdminDtoList(IEnumerable<SkillCategory> entities)
+    public List<SkillCategoryAdminDto> MapToAdminDtoList(IEnumerable<SkillCategory> entities)
     {
         return entities.Select(MapToAdminDto).ToList();
     }

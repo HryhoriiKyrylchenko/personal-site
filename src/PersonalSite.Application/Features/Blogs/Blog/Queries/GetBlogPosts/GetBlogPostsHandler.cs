@@ -4,13 +4,16 @@ public class GetBlogPostsHandler : IRequestHandler<GetBlogPostsQuery, PaginatedR
 {
     private readonly IBlogPostRepository _repository;
     private readonly ILogger<GetBlogPostsHandler> _logger;
+    private readonly IAdminMapper<BlogPost, BlogPostAdminDto> _mapper;   
 
     public GetBlogPostsHandler(
         IBlogPostRepository repository,
-        ILogger<GetBlogPostsHandler> logger)
+        ILogger<GetBlogPostsHandler> logger,
+        IAdminMapper<BlogPost, BlogPostAdminDto> mapper)
     {
         _repository = repository;
         _logger = logger;   
+        _mapper = mapper;   
     }
 
     public async Task<PaginatedResult<BlogPostAdminDto>> Handle(GetBlogPostsQuery request, CancellationToken cancellationToken)
@@ -38,7 +41,7 @@ public class GetBlogPostsHandler : IRequestHandler<GetBlogPostsQuery, PaginatedR
                 .Take(request.PageSize)
                 .ToListAsync(cancellationToken);
 
-            var items = BlogPostMapper.MapToAdminDtoList(entities);
+            var items = _mapper.MapToAdminDtoList(entities);
 
             return PaginatedResult<BlogPostAdminDto>.Success(items, total, request.Page, request.PageSize);
         }

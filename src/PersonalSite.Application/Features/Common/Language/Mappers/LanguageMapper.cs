@@ -1,8 +1,8 @@
 namespace PersonalSite.Application.Features.Common.Language.Mappers;
 
-public static class LanguageMapper
+public class LanguageMapper : IMapper<Domain.Entities.Common.Language, LanguageDto>
 {
-    public static LanguageDto MapToDto(Domain.Entities.Common.Language entity)
+    public LanguageDto MapToDto(Domain.Entities.Common.Language entity)
     {
         return new LanguageDto
         {
@@ -12,7 +12,7 @@ public static class LanguageMapper
         };
     }
 
-    public static List<LanguageDto> MapToDtoList(IEnumerable<Domain.Entities.Common.Language> entities)
+    public List<LanguageDto> MapToDtoList(IEnumerable<Domain.Entities.Common.Language> entities)
     {
         return entities.Select(MapToDto).ToList();
     }

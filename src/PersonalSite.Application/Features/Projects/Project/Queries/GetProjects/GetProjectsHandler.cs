@@ -4,13 +4,16 @@ public class GetProjectsHandler : IRequestHandler<GetProjectsQuery, PaginatedRes
 {
     private readonly IProjectRepository _projectRepository;
     private readonly ILogger<GetProjectsHandler> _logger;
+    private readonly IAdminMapper<Domain.Entities.Projects.Project, ProjectAdminDto> _projectMapper;
 
     public GetProjectsHandler(
         IProjectRepository projectRepository,
-        ILogger<GetProjectsHandler> logger)
+        ILogger<GetProjectsHandler> logger,
+        IAdminMapper<Domain.Entities.Projects.Project, ProjectAdminDto> projectMapper)
     {
         _projectRepository = projectRepository;
         _logger = logger;
+        _projectMapper = projectMapper;       
     }
 
     public async Task<PaginatedResult<ProjectAdminDto>> Handle(GetProjectsQuery request, CancellationToken cancellationToken)
@@ -42,7 +45,7 @@ public class GetProjectsHandler : IRequestHandler<GetProjectsQuery, PaginatedRes
                 .Take(request.PageSize)
                 .ToListAsync(cancellationToken);
 
-            var items = ProjectMapper.MapToAdminDtoList(entities);
+            var items = _projectMapper.MapToAdminDtoList(entities);
 
             return PaginatedResult<ProjectAdminDto>.Success(items, total, request.Page, request.PageSize);
         }

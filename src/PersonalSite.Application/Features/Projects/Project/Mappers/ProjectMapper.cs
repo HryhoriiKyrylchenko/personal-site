@@ -1,8 +1,27 @@
 namespace PersonalSite.Application.Features.Projects.Project.Mappers;
 
-public static class ProjectMapper
+public class ProjectMapper 
+    : ITranslatableMapper<Domain.Entities.Projects.Project, ProjectDto>, 
+    IAdminMapper<Domain.Entities.Projects.Project, ProjectAdminDto>
 {
-    public static ProjectDto MapToDto(Domain.Entities.Projects.Project entity, string languageCode)
+    private readonly IS3UrlBuilder _s3UrlBuilder;
+    private readonly ITranslatableMapper<ProjectSkill, ProjectSkillDto> _skillMapper;
+    private readonly IAdminMapper<ProjectSkill, ProjectSkillAdminDto> _skillAdminMapper;
+    private readonly IMapper<ProjectTranslation, ProjectTranslationDto> _translationMapper;
+
+    public ProjectMapper(
+        IS3UrlBuilder s3UrlBuilder,
+        ITranslatableMapper<ProjectSkill, ProjectSkillDto> skillMapper,
+        IAdminMapper<ProjectSkill, ProjectSkillAdminDto> skillAdminMapper,
+        IMapper<ProjectTranslation, ProjectTranslationDto> translationMapper)
+    {
+        _s3UrlBuilder = s3UrlBuilder;   
+        _skillMapper = skillMapper;   
+        _skillAdminMapper = skillAdminMapper; 
+        _translationMapper = translationMapper;  
+    }
+    
+    public ProjectDto MapToDto(Domain.Entities.Projects.Project entity, string languageCode)
     {
         var translation = entity.Translations
             .FirstOrDefault(t => t.Language.Code.Equals(languageCode, 
@@ -12,7 +31,7 @@ public static class ProjectMapper
         {
             Id = entity.Id,
             Slug = entity.Slug,
-            CoverImage = S3UrlHelper.BuildImageUrl(entity.CoverImage),
+            CoverImage = _s3UrlBuilder.BuildUrl(entity.CoverImage),
             DemoUrl = entity.DemoUrl,
             RepoUrl = entity.RepoUrl,
             Title = translation?.Title ?? string.Empty,
@@ -20,17 +39,19 @@ public static class ProjectMapper
             DescriptionSections = translation?.DescriptionSections ?? new Dictionary<string, string>(),
             MetaTitle = translation?.MetaTitle ?? string.Empty,
             MetaDescription = translation?.MetaDescription ?? string.Empty,
-            OgImage = string.IsNullOrWhiteSpace(translation?.OgImage) ? string.Empty : S3UrlHelper.BuildImageUrl(translation.OgImage),
-            Skills = SkillMapper.MapToDtoList(entity.ProjectSkills.Select(ps => ps.Skill), languageCode)
+            OgImage = string.IsNullOrWhiteSpace(translation?.OgImage) 
+                ? string.Empty 
+                : _s3UrlBuilder.BuildUrl(translation.OgImage),
+            Skills = _skillMapper.MapToDtoList(entity.ProjectSkills, languageCode)
         };
     }
     
-    public static List<ProjectDto> MapToDtoList(IEnumerable<Domain.Entities.Projects.Project> entities, string languageCode)
+    public List<ProjectDto> MapToDtoList(IEnumerable<Domain.Entities.Projects.Project> entities, string languageCode)
     {
         return entities.Select(e => MapToDto(e, languageCode)).ToList();
     }
     
-    public static ProjectAdminDto MapToAdminDto(Domain.Entities.Projects.Project entity)
+    public ProjectAdminDto MapToAdminDto(Domain.Entities.Projects.Project entity)
     {
         return new ProjectAdminDto
         {
@@ -41,12 +62,12 @@ public static class ProjectMapper
             RepoUrl = entity.RepoUrl,
             CreatedAt = entity.CreatedAt,
             UpdatedAt = entity.UpdatedAt,
-            Translations = ProjectTranslationMapper.MapToDtoList(entity.Translations),
-            Skills = SkillMapper.MapToAdminDtoList(entity.ProjectSkills.Select(ps => ps.Skill))
+            Translations = _translationMapper.MapToDtoList(entity.Translations),
+            Skills = _skillAdminMapper.MapToAdminDtoList(entity.ProjectSkills)
         };
     }
     
-    public static List<ProjectAdminDto> MapToAdminDtoList(IEnumerable<Domain.Entities.Projects.Project> entities)
+    public List<ProjectAdminDto> MapToAdminDtoList(IEnumerable<Domain.Entities.Projects.Project> entities)
     {
         return entities.Select(MapToAdminDto).ToList();
     }

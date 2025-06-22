@@ -4,11 +4,16 @@ public class GetSkillCategoriesHandler : IRequestHandler<GetSkillCategoriesQuery
 {
     private readonly ISkillCategoryRepository _repository;
     private readonly ILogger<GetSkillCategoriesHandler> _logger;
+    private readonly IAdminMapper<SkillCategory, SkillCategoryAdminDto> _mapper;
 
-    public GetSkillCategoriesHandler(ISkillCategoryRepository repository, ILogger<GetSkillCategoriesHandler> logger)
+    public GetSkillCategoriesHandler(
+        ISkillCategoryRepository repository, 
+        ILogger<GetSkillCategoriesHandler> logger,
+        IAdminMapper<SkillCategory, SkillCategoryAdminDto> mapper)
     {
         _repository = repository;
         _logger = logger;
+        _mapper = mapper;       
     }
 
     public async Task<Result<List<SkillCategoryAdminDto>>> Handle(GetSkillCategoriesQuery request, CancellationToken cancellationToken)
@@ -30,7 +35,7 @@ public class GetSkillCategoriesHandler : IRequestHandler<GetSkillCategoriesQuery
                 query = query.Where(x => x.DisplayOrder <= request.MaxDisplayOrder.Value);
 
             var entities = await query.OrderBy(sc => sc.DisplayOrder).ToListAsync(cancellationToken);
-            var items = SkillCategoryMapper.MapToAdminDtoList(entities);
+            var items = _mapper.MapToAdminDtoList(entities);
             return Result<List<SkillCategoryAdminDto>>.Success(items);           
         }
         catch (Exception ex)

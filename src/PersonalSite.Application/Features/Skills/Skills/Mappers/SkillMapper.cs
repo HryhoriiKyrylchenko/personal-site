@@ -1,8 +1,19 @@
 namespace PersonalSite.Application.Features.Skills.Skills.Mappers;
 
-public static class SkillMapper
+public class SkillMapper : ITranslatableMapper<Skill, SkillDto>, IAdminMapper<Skill, SkillAdminDto>
 {
-    public static SkillDto MapToDto(Skill entity, string languageCode)
+    private readonly ITranslatableMapper<SkillCategory, SkillCategoryDto> _categoryMapper;
+    private readonly IAdminMapper<SkillCategory, SkillCategoryAdminDto> _categoryAdminMapper;
+
+    public SkillMapper(
+        ITranslatableMapper<SkillCategory, SkillCategoryDto> categoryMapper,
+        IAdminMapper<SkillCategory, SkillCategoryAdminDto> categoryAdminMapper)
+    {
+        _categoryMapper = categoryMapper;   
+        _categoryAdminMapper = categoryAdminMapper;
+    }
+    
+    public SkillDto MapToDto(Skill entity, string languageCode)
     {
         var translation = entity.Translations
             .FirstOrDefault(t => t.Language.Code.Equals(languageCode, 
@@ -14,27 +25,27 @@ public static class SkillMapper
             Key = entity.Key,
             Name = translation?.Name ?? string.Empty,
             Description = translation?.Description ?? string.Empty,
-            Category = SkillCategoryMapper.MapToDto(entity.Category, languageCode)
+            Category = _categoryMapper.MapToDto(entity.Category, languageCode)
         };
     }
     
-    public static List<SkillDto> MapToDtoList(IEnumerable<Skill> entities, string languageCode)
+    public List<SkillDto> MapToDtoList(IEnumerable<Skill> entities, string languageCode)
     {
         return entities.Select(e => MapToDto(e, languageCode)).ToList();
     }
     
-    public static SkillAdminDto MapToAdminDto(Skill entity)
+    public SkillAdminDto MapToAdminDto(Skill entity)
     {
         return new SkillAdminDto
         {
             Id = entity.Id,
             Key = entity.Key,
             Translations = SkillTranslationMapper.MapToDtoList(entity.Translations),
-            Category = SkillCategoryMapper.MapToAdminDto(entity.Category)
+            Category = _categoryAdminMapper.MapToAdminDto(entity.Category)
         };
     }
 
-    public static List<SkillAdminDto> MapToAdminDtoList(IEnumerable<Skill> entities)
+    public List<SkillAdminDto> MapToAdminDtoList(IEnumerable<Skill> entities)
     {
         return entities.Select(MapToAdminDto).ToList();   
     }

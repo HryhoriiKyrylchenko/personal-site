@@ -4,11 +4,16 @@ public class GetSkillsHandler : IRequestHandler<GetSkillsQuery, Result<List<Skil
 {
     private readonly ISkillRepository _repository;
     private readonly ILogger<GetSkillsHandler> _logger;
+    private readonly IAdminMapper<Skill, SkillAdminDto> _skillAdminMapper;
 
-    public GetSkillsHandler(ISkillRepository repository, ILogger<GetSkillsHandler> logger)
+    public GetSkillsHandler(
+        ISkillRepository repository, 
+        ILogger<GetSkillsHandler> logger,
+        IAdminMapper<Skill, SkillAdminDto> skillAdminMapper)
     {
         _repository = repository;
         _logger = logger;
+        _skillAdminMapper = skillAdminMapper;   
     }
 
     public async Task<Result<List<SkillAdminDto>>> Handle(GetSkillsQuery request, CancellationToken cancellationToken)
@@ -33,7 +38,7 @@ public class GetSkillsHandler : IRequestHandler<GetSkillsQuery, Result<List<Skil
                 .OrderBy(s => s.Key)
                 .ToListAsync(cancellationToken);
 
-            var items = SkillMapper.MapToAdminDtoList(entities);
+            var items = _skillAdminMapper.MapToAdminDtoList(entities);
             
             return Result<List<SkillAdminDto>>.Success(items);
         }

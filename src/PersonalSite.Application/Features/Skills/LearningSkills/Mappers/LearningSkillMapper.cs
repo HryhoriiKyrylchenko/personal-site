@@ -1,35 +1,48 @@
 namespace PersonalSite.Application.Features.Skills.LearningSkills.Mappers;
 
-public static class LearningSkillMapper
+public class LearningSkillMapper 
+    : ITranslatableMapper<LearningSkill, LearningSkillDto>,
+        IAdminMapper<LearningSkill, LearningSkillAdminDto>
 {
-    public static LearningSkillDto MapToDto(LearningSkill entity, string languageCode)
+    private readonly ITranslatableMapper<Skill, SkillDto> _skillMapper;
+    private readonly IAdminMapper<Skill, SkillAdminDto> _skillAdminMapper;
+    
+    public LearningSkillMapper(
+        ITranslatableMapper<Skill, SkillDto> skillMapper,
+        IAdminMapper<Skill, SkillAdminDto> skillAdminMapper)
+    {
+        _skillMapper = skillMapper;   
+        _skillAdminMapper = skillAdminMapper;
+    }
+    
+    public LearningSkillDto MapToDto(LearningSkill entity, string languageCode)
     {
         return new LearningSkillDto
         {
             Id = entity.Id,
-            Skill = SkillMapper.MapToDto(entity.Skill, languageCode),
+            Skill = _skillMapper.MapToDto(entity.Skill, languageCode),
             LearningStatus = entity.LearningStatus.ToString(),
             DisplayOrder = entity.DisplayOrder
         };
     }
     
-    public static List<LearningSkillDto> MapToDtoList(IEnumerable<LearningSkill> entities, string languageCode)
+    public List<LearningSkillDto> MapToDtoList(IEnumerable<LearningSkill> entities, string languageCode)
     {
         return entities.Select(e => MapToDto(e, languageCode)).ToList();
     }
     
-    public static LearningSkillAdminDto MapToAdminDto(LearningSkill entity)
+    public LearningSkillAdminDto MapToAdminDto(LearningSkill entity)
     {
         return new LearningSkillAdminDto
         {
             Id = entity.Id,
-            Skill = SkillMapper.MapToAdminDto(entity.Skill),
+            Skill = _skillAdminMapper.MapToAdminDto(entity.Skill),
             LearningStatus = entity.LearningStatus,
             DisplayOrder = entity.DisplayOrder
         };
     }
 
-    public static List<LearningSkillAdminDto> MapToAdminDtoList(IEnumerable<LearningSkill> entities)
+    public List<LearningSkillAdminDto> MapToAdminDtoList(IEnumerable<LearningSkill> entities)
     {
         return entities.Select(MapToAdminDto).ToList();
     }

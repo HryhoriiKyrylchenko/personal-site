@@ -12,6 +12,8 @@ builder.Services.AddTransient<IEmailSender, SmtpEmailSender>();
 builder.Services.Configure<AwsS3Settings>(builder.Configuration.GetSection("AwsS3Settings"));
 builder.Services.AddAWSService<IAmazonS3>();
 
+builder.Services.AddScoped<IStorageService, S3StorageService>();
+builder.Services.AddSingleton<IS3UrlBuilder, S3UrlBuilder>();
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddInfrastructureServices();
