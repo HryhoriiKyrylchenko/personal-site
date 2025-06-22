@@ -1,3 +1,5 @@
+using PersonalSite.Domain.Interfaces.Repositories.Common;
+
 namespace PersonalSite.Application.Features.Common.Language.Commands.UpdateLanguage;
 
 public class UpdateLanguageHandler : IRequestHandler<UpdateLanguageCommand, Result>

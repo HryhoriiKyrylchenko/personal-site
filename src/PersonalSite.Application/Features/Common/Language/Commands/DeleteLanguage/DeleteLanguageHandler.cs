@@ -1,3 +1,5 @@
+using PersonalSite.Domain.Interfaces.Repositories.Common;
+
 namespace PersonalSite.Application.Features.Common.Language.Commands.DeleteLanguage;
 
 public class DeleteLanguageHandler : IRequestHandler<DeleteLanguageCommand, Result>

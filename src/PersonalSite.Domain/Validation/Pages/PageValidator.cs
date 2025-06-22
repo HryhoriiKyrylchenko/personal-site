@@ -1,3 +1,5 @@
+using PersonalSite.Domain.Entities.Pages;
+
 namespace PersonalSite.Domain.Validation.Pages;
 
 public class PageValidator : AbstractValidator<Page>

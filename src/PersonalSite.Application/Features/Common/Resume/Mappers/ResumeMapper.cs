@@ -1,3 +1,5 @@
+using PersonalSite.Application.Features.Common.Resume.Dtos;
+
 namespace PersonalSite.Application.Features.Common.Resume.Mappers;
 
 public class ResumeMapper : IMapper<Domain.Entities.Common.Resume, ResumeDto>

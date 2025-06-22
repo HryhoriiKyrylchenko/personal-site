@@ -1,3 +1,8 @@
+using PersonalSite.Application.Features.Pages.Page.Dtos;
+using PersonalSite.Application.Features.Projects.Project.Dtos;
+using PersonalSite.Domain.Interfaces.Repositories.Pages;
+using PersonalSite.Domain.Interfaces.Repositories.Projects;
+
 namespace PersonalSite.Application.Features.Pages.Page.Queries.GetPortfolioPage;
 
 public class GetPortfolioPageHandler : IRequestHandler<GetPortfolioPageQuery, Result<PortfolioPageDto>>

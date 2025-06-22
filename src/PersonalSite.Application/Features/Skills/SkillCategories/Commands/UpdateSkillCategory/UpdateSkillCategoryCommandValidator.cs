@@ -1,3 +1,5 @@
+using PersonalSite.Application.Features.Skills.SkillCategories.Commands.CreateSkillCategory;
+
 namespace PersonalSite.Application.Features.Skills.SkillCategories.Commands.UpdateSkillCategory;
 
 public class UpdateSkillCategoryCommandValidator : AbstractValidator<UpdateSkillCategoryCommand>

@@ -1,3 +1,6 @@
+using PersonalSite.Domain.Entities.Blog;
+using PersonalSite.Domain.Interfaces.Repositories.Blog;
+
 namespace PersonalSite.Infrastructure.Persistence.Repositories.Blog;
 
 public class BlogPostTagRepository : EfRepository<BlogPostTag>, IBlogPostTagRepository
@@ -15,12 +18,5 @@ public class BlogPostTagRepository : EfRepository<BlogPostTag>, IBlogPostTagRepo
         
         return await DbContext.BlogPostTags
             .FirstOrDefaultAsync(t => t.Name == name, cancellationToken);
-    }
-
-    public async Task<List<BlogPostTag>> GetAllSortedAsync(CancellationToken cancellationToken = default)
-    {
-        return await DbContext.BlogPostTags
-            .OrderBy(t => t.Name)
-            .ToListAsync(cancellationToken);
     }
 }

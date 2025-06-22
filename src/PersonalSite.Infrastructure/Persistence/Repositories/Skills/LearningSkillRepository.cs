@@ -1,3 +1,6 @@
+using PersonalSite.Domain.Entities.Skills;
+using PersonalSite.Domain.Interfaces.Repositories.Skills;
+
 namespace PersonalSite.Infrastructure.Persistence.Repositories.Skills;
 
 public class LearningSkillRepository : EfRepository<LearningSkill>, ILearningSkillRepository
@@ -7,14 +10,6 @@ public class LearningSkillRepository : EfRepository<LearningSkill>, ILearningSki
         ILogger<LearningSkillRepository> logger,
         IServiceProvider serviceProvider) 
         : base(context, logger, serviceProvider) { }
-
-    public async Task<List<LearningSkill>> GetByStatusAsync(LearningStatus status, CancellationToken cancellationToken = default)
-    {
-        return await DbContext.LearningSkills
-            .Where(ls => ls.LearningStatus == status && !ls.IsDeleted)
-            .OrderBy(ls => ls.DisplayOrder)
-            .ToListAsync(cancellationToken);
-    }
 
     public async Task<List<LearningSkill>> GetAllOrderedAsync(CancellationToken cancellationToken = default)
     {
@@ -38,10 +33,12 @@ public class LearningSkillRepository : EfRepository<LearningSkill>, ILearningSki
         
         return await DbContext.LearningSkills
             .Include(ls => ls.Skill)
-                .ThenInclude(s => s.Translations)
+                .ThenInclude(s => s.Translations.Where(t => !t.Language.IsDeleted))
+                    .ThenInclude(t => t.Language)
             .Include(ls => ls.Skill)
                 .ThenInclude(s => s.Category)
-                    .ThenInclude(c => c.Translations)
+                    .ThenInclude(c => c.Translations.Where(t => !t.Language.IsDeleted))
+                        .ThenInclude(t => t.Language)
             .FirstOrDefaultAsync(ls => ls.Id == id, cancellationToken);
     }
 

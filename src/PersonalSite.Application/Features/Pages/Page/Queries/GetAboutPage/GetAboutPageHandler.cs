@@ -1,3 +1,10 @@
+using PersonalSite.Application.Features.Pages.Page.Dtos;
+using PersonalSite.Application.Features.Skills.LearningSkills.Dtos;
+using PersonalSite.Application.Features.Skills.UserSkills.Dtos;
+using PersonalSite.Domain.Entities.Skills;
+using PersonalSite.Domain.Interfaces.Repositories.Pages;
+using PersonalSite.Domain.Interfaces.Repositories.Skills;
+
 namespace PersonalSite.Application.Features.Pages.Page.Queries.GetAboutPage;
 
 public class GetAboutPageHandler : IRequestHandler<GetAboutPageQuery, Result<AboutPageDto>>

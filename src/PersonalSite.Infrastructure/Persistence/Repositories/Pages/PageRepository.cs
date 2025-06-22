@@ -1,3 +1,6 @@
+using PersonalSite.Domain.Entities.Pages;
+using PersonalSite.Domain.Interfaces.Repositories.Pages;
+
 namespace PersonalSite.Infrastructure.Persistence.Repositories.Pages;
 
 public class PageRepository : EfRepository<Page>, IPageRepository

@@ -1,3 +1,5 @@
+using PersonalSite.Domain.Entities.Contact;
+
 namespace PersonalSite.Domain.Validation.Contact;
 
 public class ContactMessageValidator : AbstractValidator<ContactMessage>

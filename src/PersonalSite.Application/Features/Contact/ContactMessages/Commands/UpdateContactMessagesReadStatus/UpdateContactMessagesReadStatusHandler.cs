@@ -1,3 +1,5 @@
+using PersonalSite.Domain.Interfaces.Repositories.Contact;
+
 namespace PersonalSite.Application.Features.Contact.ContactMessages.Commands.UpdateContactMessagesReadStatus;
 
 public class UpdateContactMessagesReadStatusHandler : IRequestHandler<UpdateContactMessagesReadStatusCommand, Result>

@@ -1,3 +1,5 @@
+using PersonalSite.Domain.Entities.Skills;
+
 namespace PersonalSite.Domain.Entities.Translations;
 
 [Table("SkillTranslations")]

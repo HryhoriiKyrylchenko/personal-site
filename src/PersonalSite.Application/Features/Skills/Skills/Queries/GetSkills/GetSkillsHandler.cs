@@ -1,3 +1,7 @@
+using PersonalSite.Application.Features.Skills.Skills.Dtos;
+using PersonalSite.Domain.Entities.Skills;
+using PersonalSite.Domain.Interfaces.Repositories.Skills;
+
 namespace PersonalSite.Application.Features.Skills.Skills.Queries.GetSkills;
 
 public class GetSkillsHandler : IRequestHandler<GetSkillsQuery, Result<List<SkillAdminDto>>>

@@ -1,3 +1,5 @@
+using PersonalSite.Domain.Entities.Skills;
+
 namespace PersonalSite.Domain.Validation.Skills;
 
 public class LearningSkillValidator : AbstractValidator<LearningSkill>

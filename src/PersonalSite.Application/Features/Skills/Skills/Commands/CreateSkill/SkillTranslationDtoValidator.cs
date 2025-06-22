@@ -1,3 +1,5 @@
+using PersonalSite.Application.Features.Skills.Skills.Dtos;
+
 namespace PersonalSite.Application.Features.Skills.Skills.Commands.CreateSkill;
 
 public class SkillTranslationDtoValidator : AbstractValidator<SkillTranslationDto>

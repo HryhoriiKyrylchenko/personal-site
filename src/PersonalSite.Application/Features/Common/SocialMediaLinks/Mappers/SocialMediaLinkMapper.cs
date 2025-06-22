@@ -1,3 +1,6 @@
+using PersonalSite.Application.Features.Common.SocialMediaLinks.Dtos;
+using PersonalSite.Domain.Entities.Common;
+
 namespace PersonalSite.Application.Features.Common.SocialMediaLinks.Mappers;
 
 public class SocialMediaLinkMapper : IMapper<SocialMediaLink, SocialMediaLinkDto>

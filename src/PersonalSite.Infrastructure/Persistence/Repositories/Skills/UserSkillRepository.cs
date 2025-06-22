@@ -1,3 +1,6 @@
+using PersonalSite.Domain.Entities.Skills;
+using PersonalSite.Domain.Interfaces.Repositories.Skills;
+
 namespace PersonalSite.Infrastructure.Persistence.Repositories.Skills;
 
 public class UserSkillRepository : EfRepository<UserSkill>, IUserSkillRepository
@@ -7,17 +10,6 @@ public class UserSkillRepository : EfRepository<UserSkill>, IUserSkillRepository
         ILogger<UserSkillRepository> logger,
         IServiceProvider serviceProvider) 
         : base(context, logger, serviceProvider) { }
-
-    public async Task<List<UserSkill>> GetBySkillIdAsync(Guid skillId, CancellationToken cancellationToken = default)
-    {
-        if (skillId == Guid.Empty)
-            throw new ArgumentException("Id cannot be empty", nameof(skillId));
-        
-        return await DbContext.UserSkills
-            .Where(us => us.SkillId == skillId && !us.IsDeleted)
-            .Include(us => us.Skill)
-            .ToListAsync(cancellationToken);
-    }
 
     public async Task<List<UserSkill>> GetAllActiveAsync(CancellationToken cancellationToken = default)
     {
@@ -31,20 +23,6 @@ public class UserSkillRepository : EfRepository<UserSkill>, IUserSkillRepository
                     .ThenInclude(c => c.Translations.Where(t => !t.Language.IsDeleted))
                         .ThenInclude(t => t.Language)
             .ToListAsync(cancellationToken);
-    }
-
-    public async Task<UserSkill?> GetWithSkillDataById(Guid id, CancellationToken cancellationToken)
-    {
-        if (id == Guid.Empty)
-            throw new ArgumentException("Id cannot be empty", nameof(id));
-        
-        return await DbContext.UserSkills
-            .Include(us => us.Skill)
-                .ThenInclude(s => s.Translations)
-            .Include(us => us.Skill)
-                .ThenInclude(s => s.Category)
-                    .ThenInclude(c => c.Translations)
-            .FirstOrDefaultAsync(us => us.Id == id, cancellationToken);   
     }
 
     public async Task<bool> ExistsBySkillIdAsync(Guid requestSkillId, CancellationToken cancellationToken)

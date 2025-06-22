@@ -1,3 +1,5 @@
+using PersonalSite.Domain.Interfaces.Repositories.Contact;
+
 namespace PersonalSite.Application.Features.Contact.ContactMessages.Commands.DeleteContactMessages;
 
 public class DeleteContactMessagesHandler : IRequestHandler<DeleteContactMessagesCommand, Result>

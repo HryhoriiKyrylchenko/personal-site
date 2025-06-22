@@ -1,3 +1,7 @@
+using PersonalSite.Application.Features.Pages.Page.Dtos;
+using PersonalSite.Domain.Interfaces.Repositories.Blog;
+using PersonalSite.Domain.Interfaces.Repositories.Pages;
+
 namespace PersonalSite.Application.Features.Pages.Page.Queries.GetContactPage;
 
 public class GetContactPageHandler : IRequestHandler<GetContactPageQuery, Result<ContactPageDto>>

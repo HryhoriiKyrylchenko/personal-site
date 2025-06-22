@@ -1,3 +1,6 @@
+using PersonalSite.Application.Features.Common.Language.Dtos;
+using PersonalSite.Domain.Interfaces.Repositories.Common;
+
 namespace PersonalSite.Application.Features.Common.Language.Queries.GetLanguages;
 
 public class GetLanguagesHandler : IRequestHandler<GetLanguagesQuery, Result<List<LanguageDto>>>

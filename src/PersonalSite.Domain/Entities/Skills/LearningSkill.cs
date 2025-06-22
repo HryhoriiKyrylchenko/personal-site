@@ -1,3 +1,6 @@
+using PersonalSite.Domain.Entities.Common;
+using PersonalSite.Domain.Enums;
+
 namespace PersonalSite.Domain.Entities.Skills;
 
 [Table("LearningSkills")]

@@ -1,3 +1,7 @@
+using PersonalSite.Application.Features.Contact.ContactMessages.Dtos;
+using PersonalSite.Domain.Entities.Contact;
+using PersonalSite.Domain.Interfaces.Repositories.Contact;
+
 namespace PersonalSite.Application.Features.Contact.ContactMessages.Queries.GetContactMessages;
 
 public class GetContactMessagesHandler : IRequestHandler<GetContactMessagesQuery, PaginatedResult<ContactMessageDto>>

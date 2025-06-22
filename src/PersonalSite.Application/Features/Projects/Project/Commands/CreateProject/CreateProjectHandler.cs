@@ -1,3 +1,10 @@
+using PersonalSite.Domain.Entities.Skills;
+using PersonalSite.Domain.Entities.Translations;
+using PersonalSite.Domain.Interfaces.Repositories.Common;
+using PersonalSite.Domain.Interfaces.Repositories.Projects;
+using PersonalSite.Domain.Interfaces.Repositories.Skills;
+using PersonalSite.Domain.Interfaces.Repositories.Translations;
+
 namespace PersonalSite.Application.Features.Projects.Project.Commands.CreateProject;
 
 public class CreateProjectHandler : IRequestHandler<CreateProjectCommand, Result<Guid>>

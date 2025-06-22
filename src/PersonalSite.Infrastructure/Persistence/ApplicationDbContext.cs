@@ -1,3 +1,12 @@
+using PersonalSite.Domain.Entities.Analytics;
+using PersonalSite.Domain.Entities.Blog;
+using PersonalSite.Domain.Entities.Common;
+using PersonalSite.Domain.Entities.Contact;
+using PersonalSite.Domain.Entities.Pages;
+using PersonalSite.Domain.Entities.Projects;
+using PersonalSite.Domain.Entities.Skills;
+using PersonalSite.Domain.Entities.Translations;
+
 namespace PersonalSite.Infrastructure.Persistence;
 
 public class ApplicationDbContext : DbContext

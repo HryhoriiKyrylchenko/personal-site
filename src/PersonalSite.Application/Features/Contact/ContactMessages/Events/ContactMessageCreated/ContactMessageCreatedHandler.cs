@@ -1,3 +1,4 @@
+using PersonalSite.Domain.Entities.Contact;
 using PersonalSite.Infrastructure.BackgroundProcessing.BackgroundQueue;
 
 namespace PersonalSite.Application.Features.Contact.ContactMessages.Events.ContactMessageCreated;

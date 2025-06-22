@@ -1,3 +1,7 @@
+using PersonalSite.Application.Features.Skills.SkillCategories.Dtos;
+using PersonalSite.Application.Features.Skills.Skills.Dtos;
+using PersonalSite.Domain.Entities.Skills;
+
 namespace PersonalSite.Application.Features.Skills.Skills.Mappers;
 
 public class SkillMapper : ITranslatableMapper<Skill, SkillDto>, IAdminMapper<Skill, SkillAdminDto>

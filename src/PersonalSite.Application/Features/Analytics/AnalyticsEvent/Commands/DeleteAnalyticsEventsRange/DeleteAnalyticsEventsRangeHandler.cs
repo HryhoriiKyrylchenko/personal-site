@@ -1,3 +1,5 @@
+using PersonalSite.Domain.Interfaces.Repositories.Analytics;
+
 namespace PersonalSite.Application.Features.Analytics.AnalyticsEvent.Commands.DeleteAnalyticsEventsRange;
 
 public class DeleteAnalyticsEventsRangeHandler : IRequestHandler<DeleteAnalyticsEventsRangeCommand, Result>

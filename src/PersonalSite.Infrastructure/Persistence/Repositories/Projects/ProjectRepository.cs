@@ -1,3 +1,6 @@
+using PersonalSite.Domain.Entities.Projects;
+using PersonalSite.Domain.Interfaces.Repositories.Projects;
+
 namespace PersonalSite.Infrastructure.Persistence.Repositories.Projects;
 
 public class ProjectRepository : EfRepository<Project>, IProjectRepository
@@ -50,15 +53,16 @@ public class ProjectRepository : EfRepository<Project>, IProjectRepository
             throw new ArgumentException("Id cannot be empty", nameof(id));
         
         return await DbContext.Projects
-            .Include(p => p.Translations)
+            .Include(p => p.Translations.Where(t => !t.Language.IsDeleted))
                 .ThenInclude(t => t.Language)
             .Include(p => p.ProjectSkills)
                 .ThenInclude(ps => ps.Skill)
-                    .ThenInclude(s => s.Translations)
+                    .ThenInclude(s => s.Translations.Where(t => !t.Language.IsDeleted))
             .Include(p => p.ProjectSkills)
                 .ThenInclude(ps => ps.Skill)
                     .ThenInclude(s => s.Category)
-                        .ThenInclude(c => c.Translations)
+                        .ThenInclude(c => c.Translations.Where(t => !t.Language.IsDeleted))
+                            .ThenInclude(t => t.Language)
             .FirstOrDefaultAsync(p => p.Id == id, cancellationToken);
     }
 

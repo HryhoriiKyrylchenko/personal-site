@@ -1,3 +1,5 @@
+using PersonalSite.Domain.Entities.Common;
+
 namespace PersonalSite.Domain.Entities.Translations;
 
 [Table("Translations")]

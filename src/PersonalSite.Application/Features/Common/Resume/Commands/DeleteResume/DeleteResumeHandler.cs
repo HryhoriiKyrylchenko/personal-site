@@ -1,3 +1,5 @@
+using PersonalSite.Domain.Interfaces.Repositories.Common;
+
 namespace PersonalSite.Application.Features.Common.Resume.Commands.DeleteResume;
 
 public class DeleteResumeHandler : IRequestHandler<DeleteResumeCommand, Result>

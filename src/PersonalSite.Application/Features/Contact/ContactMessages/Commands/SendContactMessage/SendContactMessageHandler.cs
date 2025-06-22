@@ -1,4 +1,6 @@
 using PersonalSite.Application.Features.Contact.ContactMessages.Events.ContactMessageCreated;
+using PersonalSite.Domain.Entities.Contact;
+using PersonalSite.Domain.Interfaces.Repositories.Contact;
 
 namespace PersonalSite.Application.Features.Contact.ContactMessages.Commands.SendContactMessage;
 

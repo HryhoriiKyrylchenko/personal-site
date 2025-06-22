@@ -1,3 +1,6 @@
+using PersonalSite.Application.Features.Pages.Page.Dtos;
+using PersonalSite.Domain.Interfaces.Repositories.Pages;
+
 namespace PersonalSite.Application.Features.Pages.Page.Queries.GetPages;
 
 public class GetPagesHandler : IRequestHandler<GetPagesQuery, Result<List<PageAdminDto>>>

@@ -1,3 +1,5 @@
+using PersonalSite.Application.Features.Projects.Project.Commands.CreateProject;
+
 namespace PersonalSite.Application.Features.Projects.Project.Commands.UpdateProject;
 
 public class UpdateProjectCommandValidator : AbstractValidator<UpdateProjectCommand>

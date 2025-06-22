@@ -1,3 +1,5 @@
+using PersonalSite.Domain.Interfaces.Repositories.Blog;
+
 namespace PersonalSite.Application.Features.Blogs.Blog.Commands.DeleteBlogPost;
 
 public class DeleteBlogPostHandler : IRequestHandler<DeleteBlogPostCommand, Result>

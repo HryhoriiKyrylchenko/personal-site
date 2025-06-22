@@ -1,3 +1,5 @@
+using PersonalSite.Domain.Interfaces.Repositories.Pages;
+
 namespace PersonalSite.Application.Features.Pages.Page.Commands.DeletePage;
 
 public class DeletePageHandler : IRequestHandler<DeletePageCommand, Result>

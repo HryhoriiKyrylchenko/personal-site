@@ -1,3 +1,7 @@
+using PersonalSite.Application.Features.Projects.Project.Dtos;
+using PersonalSite.Application.Features.Skills.Skills.Dtos;
+using PersonalSite.Domain.Entities.Skills;
+
 namespace PersonalSite.Application.Features.Projects.Project.Mappers;
 
 public class ProjectSkillMapper 

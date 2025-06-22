@@ -1,3 +1,5 @@
+using PersonalSite.Application.Features.Analytics.AnalyticsEvent.Commands.TrackAnalyticsEvent;
+
 namespace PersonalSite.Web.Controllers.Public;
 
 [ApiController]

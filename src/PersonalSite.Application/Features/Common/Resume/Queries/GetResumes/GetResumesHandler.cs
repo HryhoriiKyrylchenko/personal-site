@@ -1,3 +1,6 @@
+using PersonalSite.Application.Features.Common.Resume.Dtos;
+using PersonalSite.Domain.Interfaces.Repositories.Common;
+
 namespace PersonalSite.Application.Features.Common.Resume.Queries.GetResumes;
 
 public class GetResumesHandler : IRequestHandler<GetResumesQuery, PaginatedResult<ResumeDto>>

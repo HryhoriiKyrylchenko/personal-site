@@ -1,3 +1,5 @@
+using PersonalSite.Domain.Entities.Contact;
+
 namespace PersonalSite.Domain.Interfaces.Repositories.Contact;
 
 public interface IContactMessageRepository : IRepository<ContactMessage>

@@ -1,3 +1,6 @@
+using PersonalSite.Domain.Entities.Skills;
+using PersonalSite.Domain.Interfaces.Repositories.Skills;
+
 namespace PersonalSite.Infrastructure.Persistence.Repositories.Skills;
 
 public class SkillRepository : EfRepository<Skill>, ISkillRepository
@@ -22,22 +25,11 @@ public class SkillRepository : EfRepository<Skill>, ISkillRepository
             throw new ArgumentException("Id cannot be empty", nameof(id));
         
         return await DbContext.Skills
-            .Include(s => s.Translations)
-            .Include(s => s.Category)
-                .ThenInclude(c => c.Translations)
-                    .ThenInclude(t => t.Language)
-            .FirstOrDefaultAsync(s => s.Id == id, cancellationToken);   
-    }
-
-    public async Task<List<Skill>> GetAllOrderedAsync(CancellationToken cancellationToken = default)
-    {
-        return await DbContext.Skills
-            .Include(s => s.Translations)
+            .Include(s => s.Translations.Where(t => !t.Language.IsDeleted))
                 .ThenInclude(t => t.Language)
             .Include(s => s.Category)
-                .ThenInclude(c => c.Translations)
+                .ThenInclude(c => c.Translations.Where(t => !t.Language.IsDeleted))
                     .ThenInclude(t => t.Language)
-            .OrderBy(s => s.CategoryId)
-            .ToListAsync(cancellationToken);
+            .FirstOrDefaultAsync(s => s.Id == id, cancellationToken);   
     }
 }

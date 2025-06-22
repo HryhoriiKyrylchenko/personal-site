@@ -1,3 +1,6 @@
+using PersonalSite.Application.Features.Common.LogEntries.Dtos;
+using PersonalSite.Domain.Entities.Common;
+
 namespace PersonalSite.Application.Features.Common.LogEntries.Mappers;
 
 public class LogEntryMapper : IMapper<LogEntry, LogEntryDto>

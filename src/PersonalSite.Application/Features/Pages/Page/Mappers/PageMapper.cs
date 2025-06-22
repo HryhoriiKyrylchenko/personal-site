@@ -1,3 +1,6 @@
+using PersonalSite.Application.Features.Pages.Page.Dtos;
+using PersonalSite.Domain.Entities.Translations;
+
 namespace PersonalSite.Application.Features.Pages.Page.Mappers;
 
 public class PageMapper 

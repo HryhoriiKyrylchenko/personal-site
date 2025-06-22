@@ -1,3 +1,6 @@
+using PersonalSite.Application.Features.Projects.Project.Commands.CreateProject;
+using PersonalSite.Domain.Interfaces.Repositories.Projects;
+
 namespace PersonalSite.Application.Features.Projects.Project.Commands.DeleteProject;
 
 public class DeleteProjectHandler : IRequestHandler<DeleteProjectCommand, Result>

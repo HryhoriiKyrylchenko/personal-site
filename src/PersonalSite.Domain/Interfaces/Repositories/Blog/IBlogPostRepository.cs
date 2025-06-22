@@ -1,3 +1,5 @@
+using PersonalSite.Domain.Entities.Blog;
+
 namespace PersonalSite.Domain.Interfaces.Repositories.Blog;
 
 public interface IBlogPostRepository : IRepository<BlogPost>

@@ -1,3 +1,9 @@
+using PersonalSite.Application.Features.Blogs.Blog.Dtos;
+using PersonalSite.Application.Features.Pages.Page.Dtos;
+using PersonalSite.Domain.Entities.Blog;
+using PersonalSite.Domain.Interfaces.Repositories.Blog;
+using PersonalSite.Domain.Interfaces.Repositories.Pages;
+
 namespace PersonalSite.Application.Features.Pages.Page.Queries.GetBlogPage;
 
 public class GetBlogPageHandler : IRequestHandler<GetBlogPageQuery, Result<BlogPageDto>>

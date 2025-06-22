@@ -1,3 +1,6 @@
+using PersonalSite.Domain.Entities.Contact;
+using PersonalSite.Domain.Interfaces.Repositories.Contact;
+
 namespace PersonalSite.Infrastructure.Persistence.Repositories.Contact;
 
 public class ContactMessageRepository : EfRepository<ContactMessage>, IContactMessageRepository

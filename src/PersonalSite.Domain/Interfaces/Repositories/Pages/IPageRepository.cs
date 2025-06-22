@@ -1,3 +1,5 @@
+using PersonalSite.Domain.Entities.Pages;
+
 namespace PersonalSite.Domain.Interfaces.Repositories.Pages;
 
 public interface IPageRepository : IRepository<Page>

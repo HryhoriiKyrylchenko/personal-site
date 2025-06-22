@@ -1,3 +1,6 @@
+using PersonalSite.Domain.Entities.Translations;
+using PersonalSite.Domain.Interfaces.Repositories.Translations;
+
 namespace PersonalSite.Infrastructure.Persistence.Repositories.Translations;
 
 public class SkillTranslationRepository : EfRepository<SkillTranslation>, ISkillTranslationRepository
@@ -18,12 +21,5 @@ public class SkillTranslationRepository : EfRepository<SkillTranslation>, ISkill
             .Where(t => t.SkillId == skillId)
             .Include(t => t.Language)
             .ToListAsync(cancellationToken);
-    }
-
-    public async Task<List<SkillTranslation>> ListWithLanguageAsync(CancellationToken cancellationToken)
-    {
-        return await DbContext.SkillTranslations
-            .Include(t => t.Language)
-            .ToListAsync(cancellationToken); 
     }
 }

@@ -1,3 +1,5 @@
+using PersonalSite.Application.Features.Analytics.AnalyticsEvent.Dtos;
+
 namespace PersonalSite.Application.Features.Analytics.AnalyticsEvent.Mappers;
 
 public class AnalyticsEventMapper : IMapper<Domain.Entities.Analytics.AnalyticsEvent, AnalyticsEventDto>

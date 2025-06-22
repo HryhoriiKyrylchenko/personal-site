@@ -1,3 +1,5 @@
+using PersonalSite.Domain.Interfaces.Repositories.Common;
+
 namespace PersonalSite.Application.Features.Common.Language.Commands.CreateLanguage;
 
 public class CreateLanguageHandler : IRequestHandler<CreateLanguageCommand, Result<Guid>>

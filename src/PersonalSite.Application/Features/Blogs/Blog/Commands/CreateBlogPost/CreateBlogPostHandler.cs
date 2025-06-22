@@ -1,3 +1,9 @@
+using PersonalSite.Domain.Entities.Blog;
+using PersonalSite.Domain.Entities.Translations;
+using PersonalSite.Domain.Interfaces.Repositories.Blog;
+using PersonalSite.Domain.Interfaces.Repositories.Common;
+using PersonalSite.Domain.Interfaces.Repositories.Translations;
+
 namespace PersonalSite.Application.Features.Blogs.Blog.Commands.CreateBlogPost;
 
 public class CreateBlogPostHandler : IRequestHandler<CreateBlogPostCommand, Result<Guid>>

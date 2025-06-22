@@ -1,3 +1,5 @@
+using PersonalSite.Domain.Interfaces.Repositories.Skills;
+
 namespace PersonalSite.Application.Features.Skills.Skills.Commands.DeleteSkill;
 
 public class DeleteSkillHandler : IRequestHandler<DeleteSkillCommand, Result>

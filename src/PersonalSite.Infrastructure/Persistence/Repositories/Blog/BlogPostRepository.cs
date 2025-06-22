@@ -1,3 +1,6 @@
+using PersonalSite.Domain.Entities.Blog;
+using PersonalSite.Domain.Interfaces.Repositories.Blog;
+
 namespace PersonalSite.Infrastructure.Persistence.Repositories.Blog;
 
 public class BlogPostRepository : EfRepository<BlogPost>, IBlogPostRepository

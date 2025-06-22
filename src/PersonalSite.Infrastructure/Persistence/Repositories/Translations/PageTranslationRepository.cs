@@ -1,3 +1,6 @@
+using PersonalSite.Domain.Entities.Translations;
+using PersonalSite.Domain.Interfaces.Repositories.Translations;
+
 namespace PersonalSite.Infrastructure.Persistence.Repositories.Translations;
 
 public class PageTranslationRepository : EfRepository<PageTranslation>, IPageTranslationRepository
@@ -15,23 +18,6 @@ public class PageTranslationRepository : EfRepository<PageTranslation>, IPageTra
         
         return await DbContext.PageTranslations
             .Where(p => p.Page.Key == pageKey)
-            .ToListAsync(cancellationToken);
-    }
-
-    public async Task<PageTranslation?> GetWithLanguageByIdAsync(Guid id, CancellationToken cancellationToken)
-    {
-        if (id == Guid.Empty)
-            throw new ArgumentException("Id cannot be empty", nameof(id));
-        
-        return await DbContext.PageTranslations
-            .Include(t => t.Language)
-            .FirstOrDefaultAsync(t => t.Id == id, cancellationToken);
-    }
-
-    public async Task<IEnumerable<PageTranslation>> ListWithLanguageAsync(CancellationToken cancellationToken)
-    {
-        return await DbContext.PageTranslations
-            .Include(t => t.Language)
             .ToListAsync(cancellationToken);
     }
 }

@@ -1,3 +1,5 @@
+using PersonalSite.Application.Features.Skills.Skills.Commands.CreateSkill;
+
 namespace PersonalSite.Application.Features.Skills.Skills.Commands.UpdateSkill;
 
 public class UpdateSkillCommandValidator : AbstractValidator<UpdateSkillCommand>

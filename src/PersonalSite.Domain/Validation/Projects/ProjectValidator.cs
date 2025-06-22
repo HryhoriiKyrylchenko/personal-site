@@ -1,3 +1,5 @@
+using PersonalSite.Domain.Entities.Projects;
+
 namespace PersonalSite.Domain.Validation.Projects;
 
 public class ProjectValidator : AbstractValidator<Project>

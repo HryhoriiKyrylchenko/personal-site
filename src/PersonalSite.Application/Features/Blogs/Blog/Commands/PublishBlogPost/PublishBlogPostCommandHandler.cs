@@ -1,3 +1,5 @@
+using PersonalSite.Domain.Interfaces.Repositories.Blog;
+
 namespace PersonalSite.Application.Features.Blogs.Blog.Commands.PublishBlogPost;
 
 public class PublishBlogPostCommandHandler : IRequestHandler<PublishBlogPostCommand, Result>

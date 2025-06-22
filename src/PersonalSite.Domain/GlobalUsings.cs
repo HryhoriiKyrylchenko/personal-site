@@ -1,13 +1,4 @@
 global using System.ComponentModel.DataAnnotations;
 global using System.ComponentModel.DataAnnotations.Schema;
 global using System.Linq.Expressions;
-global using PersonalSite.Domain.Enums;
-global using PersonalSite.Domain.Entities.Projects;
-global using PersonalSite.Domain.Entities.Skills;
-global using PersonalSite.Domain.Entities.Translations;
-global using PersonalSite.Domain.Entities.Blog;
-global using PersonalSite.Domain.Entities.Contact;
-global using PersonalSite.Domain.Entities.Common;
-global using PersonalSite.Domain.Entities.Analytics;
-global using PersonalSite.Domain.Entities.Pages;
 global using FluentValidation;

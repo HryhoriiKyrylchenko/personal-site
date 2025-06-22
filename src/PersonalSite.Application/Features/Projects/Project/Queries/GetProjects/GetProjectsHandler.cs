@@ -1,3 +1,6 @@
+using PersonalSite.Application.Features.Projects.Project.Dtos;
+using PersonalSite.Domain.Interfaces.Repositories.Projects;
+
 namespace PersonalSite.Application.Features.Projects.Project.Queries.GetProjects;
 
 public class GetProjectsHandler : IRequestHandler<GetProjectsQuery, PaginatedResult<ProjectAdminDto>>
