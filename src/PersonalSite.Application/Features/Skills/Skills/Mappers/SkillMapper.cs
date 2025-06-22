@@ -1,6 +1,7 @@
 using PersonalSite.Application.Features.Skills.SkillCategories.Dtos;
 using PersonalSite.Application.Features.Skills.Skills.Dtos;
 using PersonalSite.Domain.Entities.Skills;
+using PersonalSite.Domain.Entities.Translations;
 
 namespace PersonalSite.Application.Features.Skills.Skills.Mappers;
 
@@ -8,13 +9,16 @@ public class SkillMapper : ITranslatableMapper<Skill, SkillDto>, IAdminMapper<Sk
 {
     private readonly ITranslatableMapper<SkillCategory, SkillCategoryDto> _categoryMapper;
     private readonly IAdminMapper<SkillCategory, SkillCategoryAdminDto> _categoryAdminMapper;
+    private readonly IMapper<SkillTranslation, SkillTranslationDto> _skillTranslationMapper;
 
     public SkillMapper(
         ITranslatableMapper<SkillCategory, SkillCategoryDto> categoryMapper,
-        IAdminMapper<SkillCategory, SkillCategoryAdminDto> categoryAdminMapper)
+        IAdminMapper<SkillCategory, SkillCategoryAdminDto> categoryAdminMapper,
+        IMapper<SkillTranslation, SkillTranslationDto> skillTranslationMapper)
     {
         _categoryMapper = categoryMapper;   
         _categoryAdminMapper = categoryAdminMapper;
+        _skillTranslationMapper = skillTranslationMapper;   
     }
     
     public SkillDto MapToDto(Skill entity, string languageCode)
@@ -44,7 +48,7 @@ public class SkillMapper : ITranslatableMapper<Skill, SkillDto>, IAdminMapper<Sk
         {
             Id = entity.Id,
             Key = entity.Key,
-            Translations = SkillTranslationMapper.MapToDtoList(entity.Translations),
+            Translations = _skillTranslationMapper.MapToDtoList(entity.Translations),
             Category = _categoryAdminMapper.MapToAdminDto(entity.Category)
         };
     }

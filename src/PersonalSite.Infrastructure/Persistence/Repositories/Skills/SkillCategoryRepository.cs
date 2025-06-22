@@ -31,4 +31,26 @@ public class SkillCategoryRepository : EfRepository<SkillCategory>, ISkillCatego
         
         return await DbContext.SkillCategories.AnyAsync(sc => sc.Key == key, cancellationToken); 
     }
+
+    public async Task<List<SkillCategory>> GetFilteredAsync(string? keyFilter, short? minDisplayOrder, short? maxDisplayOrder,
+        CancellationToken cancellationToken = default)
+    {
+        var query = DbContext.SkillCategories.AsQueryable()
+            .Include(sc => sc.Translations.Where(t => !t.Language.IsDeleted))
+                .ThenInclude(t => t.Language)
+            .AsNoTracking();
+
+        if (!string.IsNullOrWhiteSpace(keyFilter))
+            query = query.Where(x => x.Key.Contains(keyFilter));
+
+        if (minDisplayOrder.HasValue)
+            query = query.Where(x => x.DisplayOrder >= minDisplayOrder.Value);
+
+        if (maxDisplayOrder.HasValue)
+            query = query.Where(x => x.DisplayOrder <= maxDisplayOrder.Value);
+
+        var entities = await query.OrderBy(sc => sc.DisplayOrder).ToListAsync(cancellationToken);
+        
+        return entities;  
+    }
 }

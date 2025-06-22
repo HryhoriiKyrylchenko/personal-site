@@ -1,3 +1,4 @@
+using PersonalSite.Domain.Common.Results;
 using PersonalSite.Domain.Entities.Blog;
 using PersonalSite.Domain.Interfaces.Repositories.Blog;
 
@@ -40,5 +41,33 @@ public class BlogPostRepository : EfRepository<BlogPost>, IBlogPostRepository
     public async Task<bool> IsSlugAvailableAsync(string slug, CancellationToken cancellationToken)
     {
         return await DbContext.BlogPosts.AllAsync(p => p.Slug != slug, cancellationToken);   
+    }
+
+    public async Task<PaginatedResult<BlogPost>> GetFilteredAsync(string? slugFilter, bool? isPublished, int page, 
+        int pageSize, CancellationToken cancellationToken = default)
+    {
+        var query = DbContext.BlogPosts
+            .Include(x => x.Translations.Where(t => !t.Language.IsDeleted))
+                .ThenInclude(t => t.Language)
+            .Include(x => x.PostTags)
+                .ThenInclude(pt => pt.BlogPostTag)
+            .AsQueryable()
+            .AsNoTracking();
+
+        if (!string.IsNullOrEmpty(slugFilter))
+            query = query.Where(x => x.Slug.Contains(slugFilter));
+
+        if (isPublished.HasValue)
+            query = query.Where(x => x.IsPublished == isPublished.Value);
+
+        var total = await query.CountAsync(cancellationToken);
+
+        var entities = await query
+            .OrderByDescending(x => x.CreatedAt)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync(cancellationToken);
+        
+        return PaginatedResult<BlogPost>.Success(entities, page, pageSize, total);
     }
 }

@@ -19,7 +19,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\tests\PersonalSite.Application.Tests\PersonalSite.Application.Tests.csproj" />
       <ProjectReference Include="..\PersonalSite.Domain\PersonalSite.Domain.csproj" />
     </ItemGroup>
 

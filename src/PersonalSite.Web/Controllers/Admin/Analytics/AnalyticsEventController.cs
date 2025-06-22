@@ -3,6 +3,7 @@ using PersonalSite.Application.Features.Analytics.AnalyticsEvent.Commands.Delete
 using PersonalSite.Application.Features.Analytics.AnalyticsEvent.Commands.TrackAnalyticsEvent;
 using PersonalSite.Application.Features.Analytics.AnalyticsEvent.Dtos;
 using PersonalSite.Application.Features.Analytics.AnalyticsEvent.Queries.GetAnalyticsEvents;
+using PersonalSite.Domain.Common.Results;
 
 namespace PersonalSite.Web.Controllers.Admin.Analytics;
 

@@ -1,3 +1,5 @@
+using PersonalSite.Domain.Common.Results;
+
 namespace PersonalSite.Application.Features.Analytics.AnalyticsEvent.Commands.TrackAnalyticsEvent;
 
 public record TrackAnalyticsEventCommand(

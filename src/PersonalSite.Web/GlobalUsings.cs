@@ -4,7 +4,6 @@ global using Microsoft.AspNetCore.Authorization;
 global using Microsoft.AspNetCore.Mvc;
 global using Microsoft.EntityFrameworkCore;
 global using PersonalSite.Application.Common.Localization;
-global using PersonalSite.Application.Common.Results;
 global using PersonalSite.Application.Services.Common;
 global using PersonalSite.Infrastructure.Email;
 global using PersonalSite.Infrastructure.Persistence;

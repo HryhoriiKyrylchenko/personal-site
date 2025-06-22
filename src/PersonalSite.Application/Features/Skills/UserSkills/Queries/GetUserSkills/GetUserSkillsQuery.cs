@@ -1,4 +1,5 @@
 using PersonalSite.Application.Features.Skills.UserSkills.Dtos;
+using PersonalSite.Domain.Common.Results;
 
 namespace PersonalSite.Application.Features.Skills.UserSkills.Queries.GetUserSkills;
 

@@ -4,6 +4,7 @@ using PersonalSite.Application.Features.Contact.ContactMessages.Commands.UpdateC
 using PersonalSite.Application.Features.Contact.ContactMessages.Dtos;
 using PersonalSite.Application.Features.Contact.ContactMessages.Queries.GetContactMessageById;
 using PersonalSite.Application.Features.Contact.ContactMessages.Queries.GetContactMessages;
+using PersonalSite.Domain.Common.Results;
 
 namespace PersonalSite.Web.Controllers.Admin.Contact;
 
