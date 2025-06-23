@@ -21,20 +21,28 @@ public class UpdateUserSkillCommandHandler : IRequestHandler<UpdateUserSkillComm
 
     public async Task<Result> Handle(UpdateUserSkillCommand request, CancellationToken cancellationToken)
     {
-        var entity = await _repository.GetByIdAsync(request.Id, cancellationToken);
-
-        if (entity == null)
+        try
         {
-            _logger.LogWarning($"User skill with id {request.Id} not found.");
-            return Result.Failure("User skill not found.");
+            var entity = await _repository.GetByIdAsync(request.Id, cancellationToken);
+
+            if (entity == null)
+            {
+                _logger.LogWarning($"User skill with id {request.Id} not found.");
+                return Result.Failure("User skill not found.");
+            }
+
+            entity.Proficiency = request.Proficiency;
+            entity.UpdatedAt = DateTime.UtcNow;
+
+            await _repository.UpdateAsync(entity, cancellationToken);
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+            return Result.Success();
         }
-
-        entity.Proficiency = request.Proficiency;
-        entity.UpdatedAt = DateTime.UtcNow;
-
-        await _repository.UpdateAsync(entity, cancellationToken);
-        await _unitOfWork.SaveChangesAsync(cancellationToken);
-
-        return Result.Success();
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Error updating user skill.");
+            return Result.Failure("Failed to update user skill.");       
+        }
     }
 }

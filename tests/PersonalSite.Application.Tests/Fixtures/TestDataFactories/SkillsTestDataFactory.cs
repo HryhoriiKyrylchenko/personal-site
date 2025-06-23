@@ -1,6 +1,7 @@
 using PersonalSite.Application.Features.Skills.LearningSkills.Dtos;
 using PersonalSite.Application.Features.Skills.SkillCategories.Dtos;
 using PersonalSite.Application.Features.Skills.Skills.Dtos;
+using PersonalSite.Application.Features.Skills.UserSkills.Dtos;
 using PersonalSite.Domain.Entities.Common;
 using PersonalSite.Domain.Entities.Skills;
 using PersonalSite.Domain.Entities.Translations;
@@ -203,6 +204,33 @@ public class SkillsTestDataFactory
             Skill = MapToAdminDto(entity.Skill),
             LearningStatus = entity.LearningStatus,
             DisplayOrder = entity.DisplayOrder
+        };
+    }
+    
+    public static UserSkill CreateUserSkill(Guid? id = null)
+    {
+        var skill = CreateSkillWithTranslationsAndCategory();
+
+        return new UserSkill
+        {
+            Id = id ?? Guid.NewGuid(),
+            SkillId = skill.Id,
+            Skill = skill,
+            Proficiency = 3,
+            CreatedAt = DateTime.UtcNow.AddDays(-1),
+            UpdatedAt = DateTime.UtcNow
+        };
+    }
+
+    public static UserSkillAdminDto MapUserSkillToAdminDto(UserSkill userSkill)
+    {
+        return new UserSkillAdminDto
+        {
+            Id = userSkill.Id,
+            Skill = MapToAdminDto(userSkill.Skill),
+            Proficiency = 3,
+            CreatedAt = DateTime.UtcNow.AddDays(-1),
+            UpdatedAt = DateTime.UtcNow
         };
     }
 }
