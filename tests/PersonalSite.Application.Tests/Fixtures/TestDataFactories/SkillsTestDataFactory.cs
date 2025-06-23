@@ -1,8 +1,10 @@
+using PersonalSite.Application.Features.Skills.LearningSkills.Dtos;
 using PersonalSite.Application.Features.Skills.SkillCategories.Dtos;
 using PersonalSite.Application.Features.Skills.Skills.Dtos;
 using PersonalSite.Domain.Entities.Common;
 using PersonalSite.Domain.Entities.Skills;
 using PersonalSite.Domain.Entities.Translations;
+using PersonalSite.Domain.Enums;
 
 namespace PersonalSite.Application.Tests.Fixtures.TestDataFactories;
 
@@ -177,6 +179,30 @@ public class SkillsTestDataFactory
                 Name = t.Name,
                 Description = t.Description
             }).ToList()
+        };
+    }
+    
+    public static LearningSkill CreateLearningSkillWithSkill()
+    {
+        var skill = CreateSkillWithTranslationsAndCategory(); 
+        return new LearningSkill
+        {
+            Id = Guid.NewGuid(),
+            Skill = skill,
+            SkillId = skill.Id,
+            LearningStatus = LearningStatus.InProgress, 
+            DisplayOrder = 1
+        };
+    }
+
+    public static LearningSkillAdminDto MapToLearningSkillAdminDto(LearningSkill entity)
+    {
+        return new LearningSkillAdminDto
+        {
+            Id = entity.Id,
+            Skill = MapToAdminDto(entity.Skill),
+            LearningStatus = entity.LearningStatus,
+            DisplayOrder = entity.DisplayOrder
         };
     }
 }
