@@ -1,0 +1,188 @@
+using PersonalSite.Application.Features.Pages.Page.Commands.UpdatePage;
+using PersonalSite.Application.Features.Pages.Page.Dtos;
+using PersonalSite.Application.Tests.Fixtures.TestDataFactories;
+using PersonalSite.Domain.Entities.Common;
+using PersonalSite.Domain.Interfaces.Repositories.Common;
+using PersonalSite.Domain.Interfaces.Repositories.Pages;
+using PersonalSite.Domain.Interfaces.Repositories.Translations;
+
+namespace PersonalSite.Application.Tests.Handlers.Pages.Page;
+
+public class UpdatePageCommandHandlerTests
+    {
+        private readonly Mock<IPageRepository> _pageRepositoryMock;
+        private readonly Mock<ILanguageRepository> _languageRepositoryMock;
+        private readonly Mock<IPageTranslationRepository> _translationRepositoryMock;
+        private readonly Mock<IUnitOfWork> _unitOfWorkMock;
+        private readonly Mock<ILogger<UpdatePageCommandHandler>> _loggerMock;
+        private readonly UpdatePageCommandHandler _handler;
+
+        public UpdatePageCommandHandlerTests()
+        {
+            _pageRepositoryMock = new Mock<IPageRepository>();
+            _languageRepositoryMock = new Mock<ILanguageRepository>();
+            _translationRepositoryMock = new Mock<IPageTranslationRepository>();
+            _unitOfWorkMock = new Mock<IUnitOfWork>();
+            _loggerMock = new Mock<ILogger<UpdatePageCommandHandler>>();
+
+            _handler = new UpdatePageCommandHandler(
+                _pageRepositoryMock.Object,
+                _languageRepositoryMock.Object,
+                _translationRepositoryMock.Object,
+                _unitOfWorkMock.Object,
+                _loggerMock.Object
+            );
+        }
+
+        [Fact]
+        public async Task Handle_PageExistsAndIsUpdatedSuccessfully_ReturnsSuccess()
+        {
+            // Arrange
+            var page = PageTestDataFactory.CreatePage();
+            var command = new UpdatePageCommand(
+                page.Id,
+                page.Key,
+                page.Translations.Select(t => new PageTranslationDto
+                {
+                    LanguageCode = t.Language.Code,
+                    Title = "Updated Title",
+                    Data = t.Data,
+                    Description = t.Description,
+                    MetaTitle = t.MetaTitle,
+                    MetaDescription = t.MetaDescription,
+                    OgImage = t.OgImage
+                }).ToList()
+            );
+
+            _pageRepositoryMock.Setup(r => r.GetWithTranslationByIdAsync(page.Id, It.IsAny<CancellationToken>()))
+                .ReturnsAsync(page);
+
+            _pageRepositoryMock.Setup(r => r.IsKeyAvailableAsync(page.Key, It.IsAny<CancellationToken>()))
+                .ReturnsAsync(true);
+
+            _translationRepositoryMock.Setup(r => r.GetAllByPageKeyAsync(page.Key, It.IsAny<CancellationToken>()))
+                .ReturnsAsync(page.Translations.ToList());
+
+            foreach (var translation in page.Translations)
+            {
+                _languageRepositoryMock
+                    .Setup(r => r.GetByCodeAsync(translation.Language.Code, It.IsAny<CancellationToken>()))
+                    .ReturnsAsync(translation.Language);
+            }
+
+            _unitOfWorkMock.Setup(u => u.SaveChangesAsync(It.IsAny<CancellationToken>()))
+                .ReturnsAsync(1);
+
+            // Act
+            var result = await _handler.Handle(command, CancellationToken.None);
+
+            // Assert
+            result.IsSuccess.Should().BeTrue();
+        }
+
+        [Fact]
+        public async Task Handle_PageNotFound_ReturnsFailure()
+        {
+            // Arrange
+            var command = new UpdatePageCommand(Guid.NewGuid(), "key", []);
+
+            _pageRepositoryMock.Setup(r => r.GetWithTranslationByIdAsync(command.Id, It.IsAny<CancellationToken>()))
+                .ReturnsAsync((Domain.Entities.Pages.Page?)null);
+
+            // Act
+            var result = await _handler.Handle(command, CancellationToken.None);
+
+            // Assert
+            result.IsSuccess.Should().BeFalse();
+            result.Error.Should().Be("Page not found.");
+        }
+
+        [Fact]
+        public async Task Handle_DuplicateKey_ReturnsFailure()
+        {
+            // Arrange
+            var page = PageTestDataFactory.CreatePage();
+            var newKey = "existing-key";
+            var command = new UpdatePageCommand(page.Id, newKey, []);
+
+            _pageRepositoryMock.Setup(r => r.GetWithTranslationByIdAsync(page.Id, It.IsAny<CancellationToken>()))
+                .ReturnsAsync(page);
+
+            _pageRepositoryMock.Setup(r => r.IsKeyAvailableAsync(newKey, It.IsAny<CancellationToken>()))
+                .ReturnsAsync(false);
+
+            // Act
+            var result = await _handler.Handle(command, CancellationToken.None);
+
+            // Assert
+            result.IsSuccess.Should().BeFalse();
+            result.Error.Should().Be("A page with this key already exists.");
+        }
+
+        [Fact]
+        public async Task Handle_LanguageNotFound_ReturnsFailure()
+        {
+            // Arrange
+            var page = PageTestDataFactory.CreatePage();
+            var dto = new PageTranslationDto
+            {
+                LanguageCode = "xx", // non-existent language
+                Title = "Title",
+                Data = new Dictionary<string, string>(),
+                Description = "desc",
+                MetaTitle = "meta",
+                MetaDescription = "meta-desc",
+                OgImage = "image.png"
+            };
+
+            var command = new UpdatePageCommand(page.Id, page.Key, [dto]);
+
+            _pageRepositoryMock.Setup(r => r.GetWithTranslationByIdAsync(page.Id, It.IsAny<CancellationToken>()))
+                .ReturnsAsync(page);
+
+            _pageRepositoryMock.Setup(r => r.IsKeyAvailableAsync(page.Key, It.IsAny<CancellationToken>()))
+                .ReturnsAsync(true);
+
+            _translationRepositoryMock.Setup(r => r.GetAllByPageKeyAsync(page.Key, It.IsAny<CancellationToken>()))
+                .ReturnsAsync([]);
+
+            _languageRepositoryMock.Setup(r => r.GetByCodeAsync("xx", It.IsAny<CancellationToken>()))
+                .ReturnsAsync((Language?)null);
+
+            // Act
+            var result = await _handler.Handle(command, CancellationToken.None);
+
+            // Assert
+            result.IsSuccess.Should().BeFalse();
+            result.Error.Should().Be("Language xx not found.");
+        }
+
+        [Fact]
+        public async Task Handle_ExceptionThrown_ReturnsFailure()
+        {
+            // Arrange
+            var page = PageTestDataFactory.CreatePage();
+            var command = new UpdatePageCommand(page.Id, page.Key, []);
+
+            _pageRepositoryMock.Setup(r => r.GetWithTranslationByIdAsync(page.Id, It.IsAny<CancellationToken>()))
+                .ThrowsAsync(new Exception("DB Failure"));
+
+            // Act
+            var result = await _handler.Handle(command, CancellationToken.None);
+
+            // Assert
+            result.IsSuccess.Should().BeFalse();
+            result.Error.Should().Be($"Error updating {page.Key} page.");
+
+            _loggerMock.Verify(
+                x => x.Log(
+                    LogLevel.Error,
+                    It.IsAny<EventId>(),
+                    It.Is<It.IsAnyType>((v, t) => v.ToString()!.Contains($"Error updating {page.Key} page.")),
+                    It.IsAny<Exception>(),
+                    It.IsAny<Func<It.IsAnyType, Exception?, string>>()
+                ),
+                Times.Once
+            );
+        }
+    }
