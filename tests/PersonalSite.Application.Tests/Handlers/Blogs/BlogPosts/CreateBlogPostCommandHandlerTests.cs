@@ -1,5 +1,6 @@
 using PersonalSite.Application.Features.Blogs.Blog.Commands.CreateBlogPost;
 using PersonalSite.Application.Features.Blogs.Blog.Dtos;
+using PersonalSite.Application.Tests.Fixtures.TestDataFactories;
 using PersonalSite.Domain.Entities.Blog;
 using PersonalSite.Domain.Entities.Common;
 using PersonalSite.Domain.Entities.Translations;
@@ -38,33 +39,7 @@ public class CreateBlogPostCommandHandlerTests
     public async Task Handle_ShouldCreateBlogPost_WhenRequestIsValid()
     {
         // Arrange
-        var request = new CreateBlogPostCommand(
-            Slug: "valid-slug",
-            CoverImage: "cover.jpg",
-            IsPublished: true,
-            Translations:
-            [
-                new BlogPostTranslationDto
-                {
-                    Id = Guid.NewGuid(),
-                    LanguageCode = "en",
-                    Title = "Title",
-                    Excerpt = "Excerpt",
-                    Content = "Content",
-                    MetaTitle = "MetaTitle",
-                    MetaDescription = "MetaDesc",
-                    OgImage = "og.jpg"
-                }
-            ],
-            Tags:
-            [
-                new BlogPostTagDto
-                {
-                    Id = Guid.NewGuid(),
-                    Name = "Tech",
-                }
-            ]
-        );
+        var request = BlogPostTestDataFactory.CreateValidCreateBlogPostCommand();
 
         _blogPostRepoMock.Setup(r => r.IsSlugAvailableAsync("valid-slug", It.IsAny<CancellationToken>()))
             .ReturnsAsync(true);
@@ -93,8 +68,8 @@ public class CreateBlogPostCommandHandlerTests
     public async Task Handle_ShouldFail_WhenSlugAlreadyExists()
     {
         // Arrange
-        var request = new CreateBlogPostCommand("existing-slug", "", false, [], []);
-
+        var request = BlogPostTestDataFactory.CreateValidCreateBlogPostCommand(slug: "existing-slug");
+        
         _blogPostRepoMock.Setup(r => r.IsSlugAvailableAsync("existing-slug", It.IsAny<CancellationToken>()))
             .ReturnsAsync(false);
 
@@ -109,26 +84,12 @@ public class CreateBlogPostCommandHandlerTests
     [Fact]
     public async Task Handle_ShouldFail_WhenLanguageNotFound()
     {
-        // Arrange
-        var request = new CreateBlogPostCommand(
-            Slug: "valid-slug",
-            CoverImage: "",
-            IsPublished: false,
-            Translations:
-            [
-                new BlogPostTranslationDto
-                {
-                    Id = Guid.NewGuid(),
-                    LanguageCode = "unknown",
-                    Title = "Title",
-                    Excerpt = "Excerpt",
-                    Content = "Content",
-                    MetaTitle = "MetaTitle",
-                    MetaDescription = "MetaDesc",
-                    OgImage = "og.jpg"
-                }
-            ],
-            Tags: []
+        //Arrange
+        var translation = BlogPostTestDataFactory.CreateTranslationDto("unknown");
+        var request = BlogPostTestDataFactory.CreateValidCreateBlogPostCommand(
+            slug: "valid-slug",
+            translations: [translation],
+            tags: []
         );
 
         _blogPostRepoMock.Setup(r => r.IsSlugAvailableAsync("valid-slug", It.IsAny<CancellationToken>()))
@@ -150,20 +111,14 @@ public class CreateBlogPostCommandHandlerTests
     {
         // Arrange
         var tagId = Guid.NewGuid();
-        var request = new CreateBlogPostCommand(
-            Slug: "post-with-tag",
-            CoverImage: "",
-            IsPublished: true,
-            Translations: [],
-            Tags: [
-                new BlogPostTagDto
-                {
-                    Id = tagId,
-                    Name = "Tech"
-                }
-            ]
-        );
+        var tagDto = BlogPostTestDataFactory.CreateTagDto(tagId, "Tech");
 
+        var request = BlogPostTestDataFactory.CreateValidCreateBlogPostCommand(
+            slug: "post-with-tag",
+            tags: [tagDto],
+            translations: []
+        );
+    
         _blogPostRepoMock.Setup(r => r.IsSlugAvailableAsync("post-with-tag", It.IsAny<CancellationToken>()))
             .ReturnsAsync(true);
 
@@ -177,14 +132,15 @@ public class CreateBlogPostCommandHandlerTests
         result.IsSuccess.Should().BeTrue();
         _tagRepoMock.Verify(r => r.AddAsync(It.IsAny<BlogPostTag>(), It.IsAny<CancellationToken>()), Times.Never);
     }
+    
 
     [Fact]
     public async Task Handle_ShouldReturnFailure_WhenExceptionThrown()
     {
         // Arrange
-        var request = new CreateBlogPostCommand("slug", "", false, [], []);
-
-        _blogPostRepoMock.Setup(r => r.IsSlugAvailableAsync("slug", It.IsAny<CancellationToken>()))
+        var request = BlogPostTestDataFactory.CreateValidCreateBlogPostCommand(slug: "fail");
+        
+        _blogPostRepoMock.Setup(r => r.IsSlugAvailableAsync("fail", It.IsAny<CancellationToken>()))
             .ThrowsAsync(new Exception("DB failure"));
 
         // Act
@@ -194,5 +150,4 @@ public class CreateBlogPostCommandHandlerTests
         result.IsSuccess.Should().BeFalse();
         result.Error.Should().Be("Error creating blog post.");
     }
-
 }

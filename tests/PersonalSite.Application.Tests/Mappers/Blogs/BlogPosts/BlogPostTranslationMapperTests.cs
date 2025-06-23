@@ -3,7 +3,7 @@ using PersonalSite.Domain.Entities.Common;
 using PersonalSite.Domain.Entities.Translations;
 using PersonalSite.Infrastructure.Storage;
 
-namespace PersonalSite.Application.Tests.Handlers.Blogs.BlogPosts.Mappers;
+namespace PersonalSite.Application.Tests.Mappers.Blogs.BlogPosts;
 
 public class BlogPostTranslationMapperTests
 {

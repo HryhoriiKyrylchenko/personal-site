@@ -1,5 +1,6 @@
 using PersonalSite.Application.Features.Blogs.Blog.Commands.UpdateBlogPost;
 using PersonalSite.Application.Features.Blogs.Blog.Dtos;
+using PersonalSite.Application.Tests.Fixtures.TestDataFactories;
 using PersonalSite.Domain.Entities.Blog;
 using PersonalSite.Domain.Entities.Common;
 using PersonalSite.Domain.Entities.Translations;
@@ -41,7 +42,7 @@ public class UpdateBlogPostCommandHandlerTests
         var blogPostId = Guid.NewGuid();
         var languageId = Guid.NewGuid();
         var existingTagId = Guid.NewGuid();
-
+    
         var blogPost = new BlogPost
         {
             Id = blogPostId,
@@ -50,9 +51,9 @@ public class UpdateBlogPostCommandHandlerTests
             IsDeleted = false,
             CreatedAt = DateTime.UtcNow.AddDays(-10)
         };
-
+    
         var language = new Language { Id = languageId, Code = "en" };
-
+    
         var translationDto = new BlogPostTranslationDto
         {
             Id = Guid.NewGuid(),
@@ -64,13 +65,13 @@ public class UpdateBlogPostCommandHandlerTests
             MetaDescription = "MetaDesc",
             OgImage = "og.jpg"
         };
-
+    
         var tagDto = new BlogPostTagDto
         {
             Id = existingTagId,
             Name = "Tech"
         };
-
+    
         var request = new UpdateBlogPostCommand(
             Id: blogPostId,
             Slug: "new-slug",
@@ -79,7 +80,7 @@ public class UpdateBlogPostCommandHandlerTests
             Translations: [translationDto],
             Tags: [tagDto]
         );
-
+    
         var existingTranslation = new BlogPostTranslation
         {
             Id = Guid.NewGuid(),
@@ -87,35 +88,35 @@ public class UpdateBlogPostCommandHandlerTests
             LanguageId = languageId,
             Language = language
         };
-
+    
         var existingPostTag = new PostTag
         {
             Id = Guid.NewGuid(),
             BlogPostId = blogPostId,
             BlogPostTagId = Guid.NewGuid()
         };
-
+    
         _blogPostRepoMock.Setup(r => r.GetByIdAsync(blogPostId, It.IsAny<CancellationToken>()))
             .ReturnsAsync(blogPost);
-
+    
         _blogPostRepoMock.Setup(r => r.IsSlugAvailableAsync("new-slug", It.IsAny<CancellationToken>()))
             .ReturnsAsync(true);
-
+    
         _languageRepoMock.Setup(r => r.GetByCodeAsync("en", It.IsAny<CancellationToken>()))
             .ReturnsAsync(language);
-
+    
         _translationRepoMock.Setup(r => r.GetByBlogPostIdAsync(blogPostId, It.IsAny<CancellationToken>()))
             .ReturnsAsync([existingTranslation]);
-
+    
         _postTagRepoMock.Setup(r => r.GetByBlogPostIdAsync(blogPostId, It.IsAny<CancellationToken>()))
             .ReturnsAsync([existingPostTag]);
-
+    
         _tagRepoMock.Setup(r => r.GetByIdAsync(existingTagId, It.IsAny<CancellationToken>()))
             .ReturnsAsync(new BlogPostTag { Id = existingTagId, Name = "Tech" });
-
+    
         // Act
         var result = await _handler.Handle(request, CancellationToken.None);
-
+    
         // Assert
         result.IsSuccess.Should().BeTrue();
         _blogPostRepoMock.Verify(r => r.UpdateAsync(It.IsAny<BlogPost>(), It.IsAny<CancellationToken>()), Times.Once);
@@ -123,7 +124,7 @@ public class UpdateBlogPostCommandHandlerTests
         _postTagRepoMock.Verify(r => r.AddAsync(It.IsAny<PostTag>(), It.IsAny<CancellationToken>()), Times.Once);
         _unitOfWorkMock.Verify(u => u.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
     }
-
+    
     [Fact]
     public async Task Handle_ShouldFail_WhenBlogPostDoesNotExist()
     {
@@ -309,5 +310,4 @@ public class UpdateBlogPostCommandHandlerTests
         result.IsSuccess.Should().BeFalse();
         result.Error.Should().Be("Error updating blog post.");
     }
-
 }

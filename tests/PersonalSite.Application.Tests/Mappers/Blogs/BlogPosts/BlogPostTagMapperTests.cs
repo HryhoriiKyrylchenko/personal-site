@@ -1,7 +1,7 @@
 using PersonalSite.Application.Features.Blogs.Blog.Mappers;
 using PersonalSite.Domain.Entities.Blog;
 
-namespace PersonalSite.Application.Tests.Handlers.Blogs.BlogPosts.Mappers;
+namespace PersonalSite.Application.Tests.Mappers.Blogs.BlogPosts;
 
 public class BlogPostTagMapperTests
 {

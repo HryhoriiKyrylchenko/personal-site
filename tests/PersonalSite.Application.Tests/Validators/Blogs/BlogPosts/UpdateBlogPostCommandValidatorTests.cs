@@ -2,7 +2,7 @@ using FluentValidation.TestHelper;
 using PersonalSite.Application.Features.Blogs.Blog.Commands.UpdateBlogPost;
 using PersonalSite.Application.Features.Blogs.Blog.Dtos;
 
-namespace PersonalSite.Application.Tests.Handlers.Blogs.BlogPosts.Validators;
+namespace PersonalSite.Application.Tests.Validators.Blogs.BlogPosts;
 
 public class UpdateBlogPostCommandValidatorTests
 {
