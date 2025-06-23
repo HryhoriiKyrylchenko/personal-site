@@ -18,13 +18,14 @@ public class CreateProjectCommandValidator : AbstractValidator<CreateProjectComm
         RuleFor(x => x.RepoUrl)
             .MaximumLength(255).WithMessage("RepoUrl must be 255 characters or fewer.")
             .Must(BeValidUrlOrEmpty).WithMessage("RepoUrl must be a valid URL or empty.");
-        
+
         RuleFor(x => x.Translations)
             .NotEmpty().WithMessage("At least one translation is required.");
-      
+
         RuleForEach(x => x.Translations).SetValidator(new ProjectTranslationDtoValidator());
-        
-        RuleForEach(x => x.SkillIds).NotEmpty().WithMessage("At least one skill is required.");
+
+        RuleFor(x => x.SkillIds)
+            .NotEmpty().WithMessage("At least one skill is required.");
     }
     
     private bool BeValidUrlOrEmpty(string url)
@@ -32,6 +33,7 @@ public class CreateProjectCommandValidator : AbstractValidator<CreateProjectComm
         if (string.IsNullOrWhiteSpace(url))
             return true;
 
-        return Uri.TryCreate(url, UriKind.Absolute, out _);
+        return Uri.TryCreate(url, UriKind.Absolute, out var result)
+               && (result.Scheme == Uri.UriSchemeHttp || result.Scheme == Uri.UriSchemeHttps);
     }
 }
