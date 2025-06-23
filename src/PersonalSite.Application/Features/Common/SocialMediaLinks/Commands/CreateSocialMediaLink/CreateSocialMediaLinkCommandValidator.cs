@@ -19,6 +19,12 @@ public class CreateSocialMediaLinkCommandValidator : AbstractValidator<CreateSoc
     
     private bool BeAValidUrl(string url)
     {
-        return Uri.TryCreate(url, UriKind.Absolute, out var _);
+        if (string.IsNullOrWhiteSpace(url))
+            return false;
+
+        if (!Uri.TryCreate(url, UriKind.Absolute, out var uriResult))
+            return false;
+
+        return uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps;
     }
 }
