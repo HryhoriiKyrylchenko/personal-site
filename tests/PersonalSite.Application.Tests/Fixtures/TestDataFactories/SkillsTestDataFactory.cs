@@ -139,7 +139,7 @@ public class SkillsTestDataFactory
         };
     }
 
-    public static SkillCategory CreateCategory()
+    public static SkillCategory CreateSkillCategory()
     {
         var language = CommonTestDataFactory.CreateLanguage();
         return new SkillCategory
@@ -159,6 +159,24 @@ public class SkillsTestDataFactory
                     Description = "Backend dev"
                 }
             ]
+        };
+    }
+    
+    public static SkillCategoryAdminDto MapToAdminDto(SkillCategory category)
+    {
+        return new SkillCategoryAdminDto
+        {
+            Id = category.Id,
+            Key = category.Key,
+            DisplayOrder = category.DisplayOrder,
+            Translations = category.Translations.Select(t => new SkillCategoryTranslationDto
+            {
+                Id = t.Id,
+                SkillCategoryId = t.SkillCategoryId,
+                LanguageCode = t.Language.Code,
+                Name = t.Name,
+                Description = t.Description
+            }).ToList()
         };
     }
 }
