@@ -37,6 +37,7 @@ public class UpdateProjectCommandValidator : AbstractValidator<UpdateProjectComm
         if (string.IsNullOrWhiteSpace(url))
             return true;
 
-        return Uri.TryCreate(url, UriKind.Absolute, out _);
+        return Uri.TryCreate(url, UriKind.Absolute, out var result)
+               && (result.Scheme == Uri.UriSchemeHttp || result.Scheme == Uri.UriSchemeHttps);
     }
 }
