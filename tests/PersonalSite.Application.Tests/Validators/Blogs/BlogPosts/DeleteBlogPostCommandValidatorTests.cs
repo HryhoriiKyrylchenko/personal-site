@@ -1,7 +1,7 @@
 using FluentValidation.TestHelper;
 using PersonalSite.Application.Features.Blogs.Blog.Commands.DeleteBlogPost;
 
-namespace PersonalSite.Application.Tests.Handlers.Blogs.BlogPosts.Validators;
+namespace PersonalSite.Application.Tests.Validators.Blogs.BlogPosts;
 
 public class DeleteBlogPostCommandValidatorTests
 {

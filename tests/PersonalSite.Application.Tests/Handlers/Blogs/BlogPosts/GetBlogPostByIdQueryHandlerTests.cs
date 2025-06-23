@@ -1,6 +1,8 @@
 using PersonalSite.Application.Common.Mapping;
 using PersonalSite.Application.Features.Blogs.Blog.Dtos;
 using PersonalSite.Application.Features.Blogs.Blog.Queries.GetBlogPostById;
+using PersonalSite.Application.Tests.Fixtures;
+using PersonalSite.Application.Tests.Fixtures.TestDataFactories;
 using PersonalSite.Domain.Entities.Blog;
 using PersonalSite.Domain.Interfaces.Repositories.Blog;
 
@@ -30,21 +32,15 @@ public class GetBlogPostByIdQueryHandlerTests
     public async Task Handle_ShouldReturnSuccess_WhenBlogPostFound()
     {
         // Arrange
-        var id = Guid.NewGuid();
-        var blogPost = new BlogPost { 
-            Id = id, 
-            Slug = "slug", 
-            CoverImage = "cover.jpg", 
-            CreatedAt = DateTime.UtcNow, 
-            UpdatedAt = DateTime.UtcNow };
-        var dto = new BlogPostAdminDto { Id = id, Slug = "slug" };
+        var blogPost = BlogPostTestDataFactory.CreateBlogPost();
+        var dto = BlogPostTestDataFactory.MapToAdminDto(blogPost);
 
-        _repositoryMock.Setup(r => r.GetByIdWithDataAsync(id, It.IsAny<CancellationToken>()))
+        _repositoryMock.Setup(r => r.GetByIdWithDataAsync(blogPost.Id, It.IsAny<CancellationToken>()))
             .ReturnsAsync(blogPost);
 
         _mapperMock.Setup(m => m.MapToAdminDto(blogPost)).Returns(dto);
 
-        var query = new GetBlogPostByIdQuery(id);
+        var query = new GetBlogPostByIdQuery(blogPost.Id);
 
         // Act
         var result = await _handler.Handle(query, CancellationToken.None);
