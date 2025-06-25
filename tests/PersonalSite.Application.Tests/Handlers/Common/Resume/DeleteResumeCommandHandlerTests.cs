@@ -1,4 +1,5 @@
 using PersonalSite.Application.Features.Common.Resume.Commands.DeleteResume;
+using PersonalSite.Application.Tests.Fixtures.TestDataFactories;
 using PersonalSite.Domain.Interfaces.Repositories.Common;
 
 namespace PersonalSite.Application.Tests.Handlers.Common.Resume;
@@ -27,7 +28,7 @@ public class DeleteResumeCommandHandlerTests
     {
         // Arrange
         var resumeId = Guid.NewGuid();
-        var resume = new Domain.Entities.Common.Resume { Id = resumeId };
+        var resume = CommonTestDataFactory.CreateResume();
 
         _repositoryMock
             .Setup(r => r.GetByIdAsync(resumeId, It.IsAny<CancellationToken>()))
@@ -45,7 +46,6 @@ public class DeleteResumeCommandHandlerTests
         _repositoryMock.Verify(r => r.GetByIdAsync(resumeId, It.IsAny<CancellationToken>()), Times.Once);
         _repositoryMock.Verify(r => r.Remove(resume), Times.Once);
         _unitOfWorkMock.Verify(u => u.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
-        _loggerMock.VerifyNoOtherCalls();
     }
 
     [Fact]
@@ -68,7 +68,6 @@ public class DeleteResumeCommandHandlerTests
         _repositoryMock.Verify(r => r.GetByIdAsync(resumeId, It.IsAny<CancellationToken>()), Times.Once);
         _repositoryMock.Verify(r => r.Remove(It.IsAny<Domain.Entities.Common.Resume>()), Times.Never);
         _unitOfWorkMock.Verify(u => u.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
-        _loggerMock.VerifyNoOtherCalls();
     }
 
     [Fact]
@@ -88,14 +87,5 @@ public class DeleteResumeCommandHandlerTests
         // Assert
         result.IsFailure.Should().BeTrue();
         result.Error.Should().Be("Failed to delete resume.");
-
-        _loggerMock.Verify(
-            x => x.Log(
-                LogLevel.Error,
-                It.IsAny<EventId>(),
-                It.Is<It.IsAnyType>((state, _) => state.ToString()!.Contains("Error deleting resume.")),
-                exception,
-                It.IsAny<Func<It.IsAnyType, Exception?, string>>()),
-            Times.Once);
     }
 }

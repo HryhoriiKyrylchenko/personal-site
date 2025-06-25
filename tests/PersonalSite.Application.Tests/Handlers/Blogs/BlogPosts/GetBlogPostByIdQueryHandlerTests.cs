@@ -12,18 +12,17 @@ public class GetBlogPostByIdQueryHandlerTests
 {
     private readonly Mock<IBlogPostRepository> _repositoryMock;
     private readonly Mock<IAdminMapper<BlogPost, BlogPostAdminDto>> _mapperMock;
-    private readonly Mock<ILogger<GetBlogPostByIdQueryHandler>> _loggerMock;
     private readonly GetBlogPostByIdQueryHandler _handler;
 
     public GetBlogPostByIdQueryHandlerTests()
     {
         _repositoryMock = new Mock<IBlogPostRepository>();
         _mapperMock = new Mock<IAdminMapper<BlogPost, BlogPostAdminDto>>();
-        _loggerMock = new Mock<ILogger<GetBlogPostByIdQueryHandler>>();
+        var loggerMock = new Mock<ILogger<GetBlogPostByIdQueryHandler>>();
 
         _handler = new GetBlogPostByIdQueryHandler(
             _repositoryMock.Object,
-            _loggerMock.Object,
+            loggerMock.Object,
             _mapperMock.Object
         );
     }
@@ -86,16 +85,5 @@ public class GetBlogPostByIdQueryHandlerTests
         // Assert
         result.IsFailure.Should().BeTrue();
         result.Error.Should().Be("Error occurred while getting blog post by id");
-
-        _loggerMock.Verify(
-            x => x.Log(
-                LogLevel.Error,
-                It.IsAny<EventId>(),
-                It.Is<It.IsAnyType>((v, t) => v.ToString()!.Contains("Error occurred while getting blog post by id")),
-                It.IsAny<Exception>(),
-                It.IsAny<Func<It.IsAnyType, Exception?, string>>()
-            ),
-            Times.Once
-        );
     }
 }

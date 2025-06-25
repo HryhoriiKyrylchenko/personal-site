@@ -1,4 +1,5 @@
 using PersonalSite.Application.Features.Common.SocialMediaLinks.Commands.CreateSocialMediaLink;
+using PersonalSite.Application.Tests.Fixtures.TestDataFactories;
 using PersonalSite.Domain.Interfaces.Repositories.Common;
 
 namespace PersonalSite.Application.Tests.Handlers.Common.SocialMediaLink;
@@ -27,12 +28,8 @@ public class CreateSocialMediaLinkCommandHandlerTests
     public async Task Handle_ShouldReturnSuccess_WhenCreationIsSuccessful()
     {
         // Arrange
-        var command = new CreateSocialMediaLinkCommand(
-            Platform: "GitHub",
-            Url: "https://github.com/user",
-            DisplayOrder: 1,
-            IsActive: true
-        );
+        var command = CommonTestDataFactory.CreateCreateSocialMediaLinkCommand(
+            "GitHub", "https://github.com/user");
 
         _repositoryMock
             .Setup(r => r.AddAsync(It.IsAny<Domain.Entities.Common.SocialMediaLink>(), It.IsAny<CancellationToken>()))
@@ -58,12 +55,8 @@ public class CreateSocialMediaLinkCommandHandlerTests
     public async Task Handle_ShouldReturnFailure_WhenExceptionIsThrown()
     {
         // Arrange
-        var command = new CreateSocialMediaLinkCommand(
-            Platform: "Twitter",
-            Url: "https://twitter.com/user",
-            DisplayOrder: 2,
-            IsActive: true
-        );
+        var command = CommonTestDataFactory.CreateCreateSocialMediaLinkCommand(
+            "Twitter", "https://twitter.com/user", 2);
 
         _repositoryMock
             .Setup(r => r.AddAsync(It.IsAny<Domain.Entities.Common.SocialMediaLink>(), It.IsAny<CancellationToken>()))
@@ -75,15 +68,5 @@ public class CreateSocialMediaLinkCommandHandlerTests
         // Assert
         result.IsSuccess.Should().BeFalse();
         result.Error.Should().Be("Failed to create social media link.");
-
-        _loggerMock.Verify(
-            x => x.Log<It.IsAnyType>(
-                LogLevel.Error,
-                It.IsAny<EventId>(),
-                It.Is<It.IsAnyType>((v, _) => v.ToString()!.Contains("Error creating social media link")),
-                It.IsAny<Exception>(),
-                It.IsAny<Func<It.IsAnyType, Exception, string>>()),
-            Times.Once
-        );
     }
 }

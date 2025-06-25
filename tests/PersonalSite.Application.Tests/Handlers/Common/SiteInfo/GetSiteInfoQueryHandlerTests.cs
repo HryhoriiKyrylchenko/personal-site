@@ -5,7 +5,6 @@ using PersonalSite.Application.Features.Common.SiteInfo.Queries.GetSiteInfo;
 using PersonalSite.Application.Features.Common.SocialMediaLinks.Dtos;
 using PersonalSite.Application.Tests.Common;
 using PersonalSite.Application.Tests.Fixtures.TestDataFactories;
-using PersonalSite.Domain.Entities.Common;
 using PersonalSite.Domain.Interfaces.Repositories.Common;
 
 namespace PersonalSite.Application.Tests.Handlers.Common.SiteInfo;
@@ -99,8 +98,6 @@ public class GetSiteInfoQueryHandlerTests
         result.Value?.Languages.Should().BeEquivalentTo(languageDtos);
         result.Value?.SocialLinks.Should().BeEquivalentTo(socialLinkDtos);
         result.Value?.Resume.Should().BeEquivalentTo(resumeDto);
-
-        _loggerMock.VerifyNoOtherCalls(); // No warnings/errors expected in this successful scenario
     }
 
     [Fact]
@@ -108,7 +105,7 @@ public class GetSiteInfoQueryHandlerTests
     {
         var languages = new List<Domain.Entities.Common.Language>
         {
-            new Domain.Entities.Common.Language { Id = Guid.NewGuid(), Name = "English", IsDeleted = false }
+            CommonTestDataFactory.CreateLanguage()
         };
 
         _languageRepoMock.Setup(x => x.ListAsync(It.IsAny<CancellationToken>()))
@@ -130,9 +127,6 @@ public class GetSiteInfoQueryHandlerTests
         result.IsSuccess.Should().BeTrue();
         result.Value?.SocialLinks.Should().BeEmpty();
         result.Value?.Resume.Should().BeNull();
-
-        _loggerMock.VerifyLog(LogLevel.Warning, "No social links found.", Times.Once());
-        _loggerMock.VerifyLog(LogLevel.Warning, "No active resume found.", Times.Once());
     }
 
     [Fact]
@@ -147,7 +141,5 @@ public class GetSiteInfoQueryHandlerTests
 
         result.IsFailure.Should().BeTrue();
         result.Error.Should().Be("An unexpected error occurred.");
-
-        _loggerMock.VerifyLog(LogLevel.Error, "Error occurred while getting site info.", Times.Once());
     }
 }

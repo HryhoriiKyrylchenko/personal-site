@@ -1,4 +1,5 @@
 using PersonalSite.Application.Features.Common.Language.Commands.CreateLanguage;
+using PersonalSite.Application.Tests.Fixtures.TestDataFactories;
 using PersonalSite.Domain.Interfaces.Repositories.Common;
 
 namespace PersonalSite.Application.Tests.Handlers.Common.Language;
@@ -19,7 +20,7 @@ public class CreateLanguageCommandHandlerTests
     public async Task Handle_ShouldCreateLanguage_WhenCodeDoesNotExist()
     {
         // Arrange
-        var command = new CreateLanguageCommand("en", "English");
+        var command = CommonTestDataFactory.CreateCreateLanguageCommand();
         _repositoryMock.Setup(r => r.ExistsByCodeAsync(command.Code, It.IsAny<CancellationToken>()))
             .ReturnsAsync(false);
         _repositoryMock.Setup(r => r.AddAsync(It.IsAny<Domain.Entities.Common.Language>(), It.IsAny<CancellationToken>()))
@@ -45,7 +46,7 @@ public class CreateLanguageCommandHandlerTests
     public async Task Handle_ShouldReturnFailure_WhenCodeAlreadyExists()
     {
         // Arrange
-        var command = new CreateLanguageCommand("en", "English");
+        var command = CommonTestDataFactory.CreateCreateLanguageCommand();
         _repositoryMock.Setup(r => r.ExistsByCodeAsync(command.Code, It.IsAny<CancellationToken>()))
             .ReturnsAsync(true);
 
@@ -73,7 +74,7 @@ public class CreateLanguageCommandHandlerTests
     public async Task Handle_ShouldReturnFailure_OnException()
     {
         // Arrange
-        var command = new CreateLanguageCommand("en", "English");
+        var command = CommonTestDataFactory.CreateCreateLanguageCommand();
         var exception = new Exception("Database failure");
         _repositoryMock.Setup(r => r.ExistsByCodeAsync(command.Code, It.IsAny<CancellationToken>()))
             .ThrowsAsync(exception);

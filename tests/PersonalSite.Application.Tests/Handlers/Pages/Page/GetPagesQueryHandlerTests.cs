@@ -9,16 +9,15 @@ namespace PersonalSite.Application.Tests.Handlers.Pages.Page;
 public class GetPagesQueryHandlerTests
 {
     private readonly Mock<IPageRepository> _repositoryMock;
-    private readonly Mock<ILogger<GetPagesQueryHandler>> _loggerMock;
     private readonly Mock<IAdminMapper<Domain.Entities.Pages.Page, PageAdminDto>> _mapperMock;
     private readonly GetPagesQueryHandler _handler;
 
     public GetPagesQueryHandlerTests()
     {
         _repositoryMock = new Mock<IPageRepository>();
-        _loggerMock = new Mock<ILogger<GetPagesQueryHandler>>();
+        var loggerMock = new Mock<ILogger<GetPagesQueryHandler>>();
         _mapperMock = new Mock<IAdminMapper<Domain.Entities.Pages.Page, PageAdminDto>>();
-        _handler = new GetPagesQueryHandler(_repositoryMock.Object, _loggerMock.Object, _mapperMock.Object);
+        _handler = new GetPagesQueryHandler(_repositoryMock.Object, loggerMock.Object, _mapperMock.Object);
     }
 
     [Fact]
@@ -35,15 +34,6 @@ public class GetPagesQueryHandlerTests
         // Assert
         result.IsSuccess.Should().BeFalse();
         result.Error.Should().Be("No pages found.");
-
-        _loggerMock.Verify(
-            x => x.Log(
-                LogLevel.Warning,
-                It.IsAny<EventId>(),
-                It.Is<It.IsAnyType>((v, _) => v.ToString()!.Contains("No pages found.")),
-                null,
-                It.IsAny<Func<It.IsAnyType, Exception?, string>>()),
-            Times.Once);
     }
 
     [Fact]

@@ -1,6 +1,5 @@
 using PersonalSite.Application.Features.Projects.Project.Commands.UpdateProject;
-using PersonalSite.Application.Features.Projects.Project.Dtos;
-using PersonalSite.Domain.Entities.Common;
+using PersonalSite.Application.Tests.Fixtures.TestDataFactories;
 using PersonalSite.Domain.Entities.Skills;
 using PersonalSite.Domain.Entities.Translations;
 using PersonalSite.Domain.Interfaces.Repositories.Common;
@@ -74,47 +73,22 @@ public class UpdateProjectCommandHandlerTests
     public async Task Handle_ShouldReturnSuccess_WhenUpdateSucceeds()
     {
         // Arrange
-        var projectId = Guid.NewGuid();
-        var skillId = Guid.NewGuid();
-        var languageId = Guid.NewGuid();
-
-        var command = new UpdateProjectCommand
-        {
-            Id = projectId,
-            Slug = "updated-slug",
-            CoverImage = "new-image.png",
-            DemoUrl = "demo.com",
-            RepoUrl = "repo.com",
-            SkillIds = [skillId],
-            Translations = [
-                new ProjectTranslationDto
-                {
-                    LanguageCode = "en",
-                    Title = "Title",
-                    ShortDescription = "Short desc",
-                    DescriptionSections = new(),
-                    MetaTitle = "Meta",
-                    MetaDescription = "Meta desc",
-                    OgImage = "og.png"
-                }
-            ]
-        };
-
-        var language = new Language { Id = languageId, Code = "en" };
-        var project = new Domain.Entities.Projects.Project { Id = projectId, Slug = "old-slug", ProjectSkills = [], Translations = [] };
-
-        _projectRepositoryMock.Setup(r => r.GetWithFullDataAsync(projectId, CancellationToken.None))
+        
+        var (command, project, language, skillId) = ProjectTestDataFactory.CreateValidUpdateProjectCommandAndEntities();
+        
+        _projectRepositoryMock.Setup(r => r.GetWithFullDataAsync(command.Id, CancellationToken.None))
             .ReturnsAsync(project);
-        _projectRepositoryMock.Setup(r => r.IsSlugAvailableAsync("updated-slug", CancellationToken.None))
+
+        _projectRepositoryMock.Setup(r => r.IsSlugAvailableAsync(command.Slug, CancellationToken.None))
             .ReturnsAsync(true);
 
-        _languageRepositoryMock.Setup(r => r.GetByCodeAsync("en", CancellationToken.None))
+        _languageRepositoryMock.Setup(r => r.GetByCodeAsync(language.Code, CancellationToken.None))
             .ReturnsAsync(language);
 
-        _translationRepositoryMock.Setup(r => r.GetByProjectIdAsync(projectId, CancellationToken.None))
+        _translationRepositoryMock.Setup(r => r.GetByProjectIdAsync(command.Id, CancellationToken.None))
             .ReturnsAsync(new List<ProjectTranslation>());
 
-        _projectSkillRepositoryMock.Setup(r => r.GetByProjectIdAsync(projectId, CancellationToken.None))
+        _projectSkillRepositoryMock.Setup(r => r.GetByProjectIdAsync(command.Id, CancellationToken.None))
             .ReturnsAsync(new List<ProjectSkill>());
 
         _skillRepositoryMock.Setup(r => r.GetByIdAsync(skillId, CancellationToken.None))

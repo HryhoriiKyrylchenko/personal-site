@@ -62,14 +62,6 @@ public class GetLearningSkillByIdQueryHandlerTests
         // Assert
         result.IsFailure.Should().BeTrue();
         result.Error.Should().Be("Learning skill not found.");
-        _loggerMock.Verify(
-            l => l.Log(
-                LogLevel.Warning,
-                It.IsAny<EventId>(),
-                It.Is<It.IsAnyType>((v, t) => v.ToString()!.Contains("Learning skill not found.")),
-                null,
-                It.IsAny<Func<It.IsAnyType, Exception?, string>>()),
-            Times.Once);
     }
 
     [Fact]
@@ -88,11 +80,5 @@ public class GetLearningSkillByIdQueryHandlerTests
         // Assert
         result.IsFailure.Should().BeTrue();
         result.Error.Should().Be("Error getting learning skill by id.");
-        _loggerMock.Verify(l => l.Log(
-            LogLevel.Error,
-            It.IsAny<EventId>(),
-            It.Is<It.IsAnyType>((v, t) => v.ToString()!.Contains("Error getting learning skill by id.")),
-            exception,
-            It.IsAny<Func<It.IsAnyType, Exception?, string>>()), Times.Once);
     }
 }

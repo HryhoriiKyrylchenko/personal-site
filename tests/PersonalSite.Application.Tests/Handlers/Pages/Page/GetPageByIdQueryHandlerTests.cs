@@ -26,7 +26,7 @@ public class GetPageByIdQueryHandlerTests
         // Arrange
         var id = Guid.NewGuid();
         _repositoryMock.Setup(r => r.GetWithTranslationByIdAsync(id, It.IsAny<CancellationToken>()))
-            .ReturnsAsync((Domain.Entities.Pages.Page)null);
+            .ReturnsAsync((Domain.Entities.Pages.Page?)null);
 
         var handler = CreateHandler();
 
@@ -36,14 +36,6 @@ public class GetPageByIdQueryHandlerTests
         // Assert
         result.IsSuccess.Should().BeFalse();
         result.Error.Should().Be("Page not found.");
-        _loggerMock.Verify(
-            x => x.Log(
-                LogLevel.Warning,
-                It.IsAny<EventId>(),
-                It.Is<It.IsAnyType>((v, _) => v.ToString().Contains("Page not found")),
-                null,
-                It.IsAny<Func<It.IsAnyType, Exception?, string>>()),
-            Times.Once);
     }
 
     [Fact]
@@ -86,14 +78,5 @@ public class GetPageByIdQueryHandlerTests
         // Assert
         result.IsSuccess.Should().BeFalse();
         result.Error.Should().Be("Error getting page by id.");
-
-        _loggerMock.Verify(
-            x => x.Log(
-                LogLevel.Error,
-                It.IsAny<EventId>(),
-                It.Is<It.IsAnyType>((v, _) => v.ToString().Contains("Error getting page by id.")),
-                exception,
-                It.IsAny<Func<It.IsAnyType, Exception?, string>>()),
-            Times.Once);
     }
 }

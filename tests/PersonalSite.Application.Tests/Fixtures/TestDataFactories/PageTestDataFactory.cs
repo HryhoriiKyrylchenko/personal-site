@@ -1,3 +1,5 @@
+using PersonalSite.Application.Features.Pages.Page.Commands.CreatePage;
+using PersonalSite.Application.Features.Pages.Page.Commands.UpdatePage;
 using PersonalSite.Application.Features.Pages.Page.Dtos;
 using PersonalSite.Domain.Entities.Pages;
 using PersonalSite.Domain.Entities.Translations;
@@ -87,5 +89,69 @@ public class PageTestDataFactory
         }
 
         return dto;
+    }
+
+    public static PageTranslationDto CreatePageTranslationDto(
+        string languageCode = "en",
+        string title = "Test",
+        string description = "Test description",
+        string metaTitle = "Test",
+        string metaDescription = "Test",
+        string ogImage = "image.png",
+        Dictionary<string, string>? data = null)
+    {
+        return new PageTranslationDto
+        {
+            Id = Guid.NewGuid(),
+            LanguageCode = languageCode,
+            Title = title,
+            Description = description,
+            MetaTitle = metaTitle,
+            MetaDescription = metaDescription,
+            OgImage = ogImage,
+            Data = data ?? new Dictionary<string, string>()
+        };
+    }
+    
+    
+    public static CreatePageCommand CreateCreatePageCommand(string key = "about") => new(
+        key,
+        [
+            new PageTranslationDto
+            {
+                LanguageCode = "en",
+                Title = "About",
+                Description = "About page",
+                MetaTitle = "About Meta",
+                MetaDescription = "About Meta Description",
+                OgImage = "og-about.png",
+                Data = new Dictionary<string, string> { ["content"] = "Welcome!" }
+            }
+        ]
+    );
+
+    public static UpdatePageCommand CreateUpdatePageCommand(Page page)
+    {
+        return new UpdatePageCommand(
+            page.Id,
+            page.Key,
+            page.Translations.Select(t => new PageTranslationDto
+            {
+                LanguageCode = t.Language.Code,
+                Title = "Updated Title",
+                Data = t.Data,
+                Description = t.Description,
+                MetaTitle = t.MetaTitle,
+                MetaDescription = t.MetaDescription,
+                OgImage = t.OgImage
+            }).ToList());
+    }
+
+    public static UpdatePageCommand CreateUpdatePageCommand(Guid id, string key, List<PageTranslationDto> translations)
+    {
+        return new UpdatePageCommand(
+            id,
+            key,
+            translations);       
     }
 }

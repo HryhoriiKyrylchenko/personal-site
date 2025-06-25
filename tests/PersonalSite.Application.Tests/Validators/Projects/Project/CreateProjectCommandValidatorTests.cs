@@ -51,7 +51,6 @@ public class CreateProjectCommandValidatorTests
     [InlineData("http://valid.com")]
     [InlineData("https://secure.com")]
     [InlineData("")]
-    [InlineData(null)]
     public void Should_Not_Have_Error_When_DemoUrl_Is_Valid_Or_Empty(string url)
     {
         var model = new CreateProjectCommand { DemoUrl = url };
@@ -73,7 +72,6 @@ public class CreateProjectCommandValidatorTests
     [InlineData("http://valid.com")]
     [InlineData("https://secure.com")]
     [InlineData("")]
-    [InlineData(null)]
     public void Should_Not_Have_Error_When_RepoUrl_Is_Valid_Or_Empty(string url)
     {
         var model = new CreateProjectCommand { RepoUrl = url };

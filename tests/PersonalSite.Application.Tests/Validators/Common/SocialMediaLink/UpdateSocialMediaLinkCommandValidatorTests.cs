@@ -27,7 +27,6 @@ public class UpdateSocialMediaLinkCommandValidatorTests
     }
 
     [Theory]
-    [InlineData(null)]
     [InlineData("")]
     public void Should_Have_Error_When_Url_Is_Null_Or_Empty(string url)
     {

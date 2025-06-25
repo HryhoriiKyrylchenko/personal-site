@@ -62,11 +62,12 @@ public class CreateSocialMediaLinkCommandValidatorTests
         var method = typeof(CreateSocialMediaLinkCommandValidator)
             .GetMethod("BeAValidUrl", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
 
-        var actual = (bool)method.Invoke(validator, new object[] { url });
+        Assert.NotNull(method); // This will fail the test early if the method is missing
+
+        var actual = (bool)method!.Invoke(validator, new object[] { url })!;
 
         Assert.Equal(expected, actual);
     }
-
 
     [Fact]
     public void Should_Have_Error_When_DisplayOrder_Is_Negative()

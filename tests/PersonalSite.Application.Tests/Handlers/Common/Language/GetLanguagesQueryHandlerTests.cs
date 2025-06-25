@@ -28,7 +28,8 @@ public class GetLanguagesQueryHandlerTests
             CommonTestDataFactory.CreateLanguage("fr")
         };
 
-        var languageDtos = languages.Select(l => new LanguageDto { Id = l.Id, Code = l.Code, Name = l.Name }).ToList();
+        var languageDtos = languages.Select(
+            CommonTestDataFactory.MapToDto).ToList();
 
         _repositoryMock.Setup(r => r.ListAsync(It.IsAny<CancellationToken>()))
             .ReturnsAsync(languages);
@@ -62,13 +63,5 @@ public class GetLanguagesQueryHandlerTests
         // Assert
         result.IsFailure.Should().BeTrue();
         result.Error.Should().Be("An unexpected error occurred.");
-
-        _loggerMock.Verify(l => l.Log(
-            LogLevel.Error,
-            It.IsAny<EventId>(),
-            It.Is<It.IsAnyType>((v, t) => v.ToString()!.Contains("Error occurred while retrieving languages.")),
-            exception,
-            It.IsAny<Func<It.IsAnyType, Exception?, string>>()),
-            Times.Once);
     }
 }

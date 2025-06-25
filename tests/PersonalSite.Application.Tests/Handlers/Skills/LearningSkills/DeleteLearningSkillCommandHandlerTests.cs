@@ -8,18 +8,17 @@ public class DeleteLearningSkillCommandHandlerTests
     {
         private readonly Mock<ILearningSkillRepository> _repositoryMock;
         private readonly Mock<IUnitOfWork> _unitOfWorkMock;
-        private readonly Mock<ILogger<DeleteLearningSkillCommandHandler>> _loggerMock;
         private readonly DeleteLearningSkillCommandHandler _handler;
 
         public DeleteLearningSkillCommandHandlerTests()
         {
             _repositoryMock = new Mock<ILearningSkillRepository>();
             _unitOfWorkMock = new Mock<IUnitOfWork>();
-            _loggerMock = new Mock<ILogger<DeleteLearningSkillCommandHandler>>();
+            var loggerMock = new Mock<ILogger<DeleteLearningSkillCommandHandler>>();
             _handler = new DeleteLearningSkillCommandHandler(
                 _repositoryMock.Object,
                 _unitOfWorkMock.Object,
-                _loggerMock.Object);
+                loggerMock.Object);
         }
 
         [Fact]

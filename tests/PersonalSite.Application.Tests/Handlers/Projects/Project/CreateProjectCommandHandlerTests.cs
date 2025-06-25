@@ -1,5 +1,6 @@
 using PersonalSite.Application.Features.Projects.Project.Commands.CreateProject;
 using PersonalSite.Application.Features.Projects.Project.Dtos;
+using PersonalSite.Application.Tests.Fixtures.TestDataFactories;
 using PersonalSite.Domain.Entities.Common;
 using PersonalSite.Domain.Entities.Skills;
 using PersonalSite.Domain.Interfaces.Repositories.Common;
@@ -50,18 +51,23 @@ public class CreateProjectCommandHandlerTests
     [Fact]
     public async Task Handle_ReturnsFailure_WhenLanguageNotFound()
     {
-        var command = new CreateProjectCommand
-        {
-            Slug = "new-slug",
-            Translations =
+        var command = ProjectTestDataFactory.CreateCreateProjectCommand
+        (
+            translations:
             [
-                new()
-                {
-                    LanguageCode = "en", Title = "Title", ShortDescription = "", DescriptionSections = new(),
-                    MetaTitle = "", MetaDescription = "", OgImage = ""
-                }
-            ]
-        };
+                ProjectTestDataFactory.CreateTranslationDto(
+                    id: Guid.NewGuid(), 
+                    projectId: Guid.NewGuid(),
+                    code: "en",
+                    title: "Title",
+                    shortDescription: "",
+                    descriptionSections: new(),
+                    metaTitle: "",
+                    metaDescription: "",
+                    ogImage: "")
+            ],
+            skillIds: [Guid.NewGuid()]
+        );
 
         _projectRepositoryMock.Setup(r => r.IsSlugAvailableAsync(command.Slug, It.IsAny<CancellationToken>()))
             .ReturnsAsync(true);
@@ -78,19 +84,23 @@ public class CreateProjectCommandHandlerTests
     [Fact]
     public async Task Handle_ReturnsFailure_WhenSkillNotFound()
     {
-        var command = new CreateProjectCommand
-        {
-            Slug = "new-slug",
-            Translations =
+        var command = ProjectTestDataFactory.CreateCreateProjectCommand
+        (
+            translations:
             [
-                new()
-                {
-                    LanguageCode = "en", Title = "Title", ShortDescription = "", DescriptionSections = new(),
-                    MetaTitle = "", MetaDescription = "", OgImage = ""
-                }
+                ProjectTestDataFactory.CreateTranslationDto(
+                    id: Guid.NewGuid(), 
+                    projectId: Guid.NewGuid(),
+                    code: "en",
+                    title: "Title",
+                    shortDescription: "",
+                    descriptionSections: new(),
+                    metaTitle: "",
+                    metaDescription: "",
+                    ogImage: "")
             ],
-            SkillIds = [Guid.NewGuid()]
-        };
+            skillIds: [Guid.NewGuid()]
+        );
 
         _projectRepositoryMock.Setup(r => r.IsSlugAvailableAsync(command.Slug, It.IsAny<CancellationToken>()))
             .ReturnsAsync(true);
@@ -111,19 +121,23 @@ public class CreateProjectCommandHandlerTests
     public async Task Handle_ReturnsSuccess_WhenValid()
     {
         var skillId = Guid.NewGuid();
-        var command = new CreateProjectCommand
-        {
-            Slug = "valid-slug",
-            Translations =
+        var command = ProjectTestDataFactory.CreateCreateProjectCommand
+        (
+            translations:
             [
-                new()
-                {
-                    LanguageCode = "en", Title = "Valid Title", ShortDescription = "", DescriptionSections = new(),
-                    MetaTitle = "", MetaDescription = "", OgImage = ""
-                }
+                ProjectTestDataFactory.CreateTranslationDto(
+                    id: Guid.NewGuid(), 
+                    projectId: Guid.NewGuid(),
+                    code: "en",
+                    title: "Title",
+                    shortDescription: "",
+                    descriptionSections: new(),
+                    metaTitle: "",
+                    metaDescription: "",
+                    ogImage: "")
             ],
-            SkillIds = [skillId]
-        };
+            skillIds: [skillId]
+        );
 
         _projectRepositoryMock.Setup(r => r.IsSlugAvailableAsync(command.Slug, It.IsAny<CancellationToken>()))
             .ReturnsAsync(true);

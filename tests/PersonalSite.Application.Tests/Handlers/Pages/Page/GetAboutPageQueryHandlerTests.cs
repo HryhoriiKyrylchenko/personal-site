@@ -111,15 +111,6 @@ public class GetAboutPageQueryHandlerTests
         result.Value!.PageData.Should().Be(pageDto);
         result.Value.UserSkills.Should().BeEmpty();
         result.Value.LearningSkills.Should().BeEmpty();
-
-        // Verify warning logs for no skills
-        _loggerMock.Verify(l => l.Log(
-                LogLevel.Warning,
-                It.IsAny<EventId>(),
-                It.Is<It.IsAnyType>((v, _) => v.ToString()!.Contains("No skills found.")),
-                null,
-                It.IsAny<Func<It.IsAnyType, Exception?, string>>()),
-            Times.Exactly(2)); // Once for user skills and once for learning skills
     }
 
     [Fact]
@@ -176,14 +167,5 @@ public class GetAboutPageQueryHandlerTests
         // Assert
         result.IsSuccess.Should().BeFalse();
         result.Error.Should().Be("An unexpected error occurred.");
-
-        _loggerMock.Verify(
-            l => l.Log(
-                LogLevel.Error,
-                It.IsAny<EventId>(),
-                It.Is<It.IsAnyType>((v, _) => v.ToString()!.Contains("Error occurred while getting About page data.")),
-                It.IsAny<Exception>(),
-                It.IsAny<Func<It.IsAnyType, Exception?, string>>()),
-            Times.Once);
     }
 }

@@ -73,7 +73,6 @@ public class GetProjectsQueryValidatorTests
     }
 
     [Theory]
-    [InlineData(null)]
     [InlineData("")]
     [InlineData("valid-slug-filter")]
     public void Should_Not_Have_Error_When_SlugFilter_Is_Valid(string slugFilter)

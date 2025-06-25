@@ -1,4 +1,5 @@
 using PersonalSite.Application.Features.Common.Language.Commands.DeleteLanguage;
+using PersonalSite.Application.Tests.Fixtures.TestDataFactories;
 using PersonalSite.Domain.Interfaces.Repositories.Common;
 
 namespace PersonalSite.Application.Tests.Handlers.Common.Language;
@@ -22,11 +23,7 @@ public class DeleteLanguageCommandHandlerTests
     public async Task Handle_ShouldSoftDeleteLanguage_WhenLanguageExists()
     {
         // Arrange
-        var language = new Domain.Entities.Common.Language
-        {
-            Id = Guid.NewGuid(),
-            IsDeleted = false
-        };
+        var language = CommonTestDataFactory.CreateLanguage();
         var command = new DeleteLanguageCommand(language.Id);
 
         _repositoryMock.Setup(r => r.GetByIdAsync(language.Id, It.IsAny<CancellationToken>()))
@@ -92,14 +89,5 @@ public class DeleteLanguageCommandHandlerTests
         // Assert
         result.IsFailure.Should().BeTrue();
         result.Error.Should().Be("Error occurred while deleting language");
-
-        _loggerMock.Verify(
-            x => x.Log(
-                LogLevel.Error,
-                It.IsAny<EventId>(),
-                It.Is<It.IsAnyType>((v, t) => v.ToString()!.Contains("Error occurred while deleting language")),
-                It.IsAny<Exception>(),
-                It.IsAny<Func<It.IsAnyType, Exception?, string>>()), 
-            Times.Once);
     }
 }

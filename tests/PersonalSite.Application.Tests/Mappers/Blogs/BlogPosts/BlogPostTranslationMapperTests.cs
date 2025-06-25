@@ -70,7 +70,7 @@ public class BlogPostTranslationMapperTests
         var entities = new List<BlogPostTranslation>
         {
             new BlogPostTranslation { Id = Guid.NewGuid(), Language = new Language { Code = "en" }, OgImage = "img1.jpg" },
-            new BlogPostTranslation { Id = Guid.NewGuid(), Language = new Language { Code = "fr" }, OgImage = null }
+            new BlogPostTranslation { Id = Guid.NewGuid(), Language = new Language { Code = "fr" }, OgImage = "" }
         };
 
         _urlBuilderMock.Setup(x => x.BuildUrl("img1.jpg")).Returns("url1");

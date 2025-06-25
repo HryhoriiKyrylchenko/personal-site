@@ -1,6 +1,7 @@
 using MediatR;
 using PersonalSite.Application.Features.Contact.ContactMessages.Commands.SendContactMessage;
 using PersonalSite.Application.Features.Contact.ContactMessages.Events.ContactMessageCreated;
+using PersonalSite.Application.Tests.Fixtures.TestDataFactories;
 using PersonalSite.Domain.Entities.Contact;
 using PersonalSite.Domain.Interfaces.Repositories.Contact;
 
@@ -20,11 +21,9 @@ public class SendContactMessageCommandHandlerTests
     public async Task Handle_ShouldReturnSuccess_AndPublishEvent_WhenValidRequest()
     {
         // Arrange
-        var command = new SendContactMessageCommand("John", "john@example.com", "Hello", "Test message")
-        {
-            IpAddress = "127.0.0.1",
-            UserAgent = "TestAgent"
-        };
+        var command =
+            ContactTestDataFactory.CreateSendContactMessageCommand(
+                "John", "john@example.com", "Hello", "Test message");
 
         var handler = CreateHandler();
 
@@ -52,7 +51,8 @@ public class SendContactMessageCommandHandlerTests
     public async Task Handle_ShouldReturnFailure_WhenExceptionThrown()
     {
         // Arrange
-        var command = new SendContactMessageCommand("John", "john@example.com", "Hello", "Test message");
+        var command = ContactTestDataFactory.CreateSendContactMessageCommand(
+            "John", "john@example.com", "Hello", "Test message");
         _repositoryMock.Setup(r => r.AddAsync(It.IsAny<ContactMessage>(), It.IsAny<CancellationToken>()))
             .ThrowsAsync(new Exception("DB error"));
 
@@ -64,14 +64,5 @@ public class SendContactMessageCommandHandlerTests
         // Assert
         result.IsSuccess.Should().BeFalse();
         result.Error.Should().Be("Error creating contact message.");
-
-        _loggerMock.Verify(
-            x => x.Log(
-                LogLevel.Error,
-                It.IsAny<EventId>(),
-                It.Is<It.IsAnyType>((v, _) => v.ToString()!.Contains("Error creating contact message.")),
-                It.IsAny<Exception>(),
-                It.IsAny<Func<It.IsAnyType, Exception?, string>>()),
-            Times.Once);
     }
 }

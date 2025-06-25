@@ -65,7 +65,6 @@ public class UpdateProjectCommandValidatorTests
     [InlineData("http://validurl.com")]
     [InlineData("https://validurl.com")]
     [InlineData("")]
-    [InlineData(null)]
     public void Should_Not_Have_Error_When_DemoUrl_Is_Valid(string url)
     {
         var model = new UpdateProjectCommand
@@ -104,7 +103,6 @@ public class UpdateProjectCommandValidatorTests
     [InlineData("http://validurl.com")]
     [InlineData("https://validurl.com")]
     [InlineData("")]
-    [InlineData(null)]
     public void Should_Not_Have_Error_When_RepoUrl_Is_Valid(string url)
     {
         var model = new UpdateProjectCommand

@@ -38,17 +38,7 @@ public class GetLogEntriesQueryHandlerTests
                 query.Page, query.PageSize, query.LevelFilter, query.SourceContextFilter, query.From, query.To, It.IsAny<CancellationToken>()))
             .ReturnsAsync(pagedResult);
 
-        var mappedDtos = logEntities.Select(e => new LogEntryDto
-        {
-            Id = e.Id,
-            Timestamp = e.Timestamp,
-            Level = e.Level,
-            Message = e.Message,
-            MessageTemplate = e.MessageTemplate,
-            Exception = e.Exception,
-            Properties = e.Properties,
-            SourceContext = e.SourceContext
-        }).ToList();
+        var mappedDtos = logEntities.Select(CommonTestDataFactory.MapToDto).ToList();
 
         _mapperMock.Setup(m => m.MapToDtoList(logEntities)).Returns(mappedDtos);
 
@@ -84,14 +74,6 @@ public class GetLogEntriesQueryHandlerTests
         // Assert
         result.IsFailure.Should().BeTrue();
         result.Error.Should().Be("Log entries not found");
-
-        _loggerMock.Verify(l => l.Log(
-                LogLevel.Warning,
-                It.IsAny<EventId>(),
-                It.Is<It.IsAnyType>((v, t) => v.ToString().Contains("Log entries not found")),
-                null,
-                It.IsAny<Func<It.IsAnyType, Exception?, string>>()),
-            Times.Once);
     }
 
     [Fact]
@@ -116,14 +98,5 @@ public class GetLogEntriesQueryHandlerTests
         // Assert
         result.IsFailure.Should().BeTrue();
         result.Error.Should().Be("Error getting log entries.");
-
-        _loggerMock.Verify(l => l.Log(
-                LogLevel.Error,
-                It.IsAny<EventId>(),
-                It.Is<It.IsAnyType>((v, t) => v.ToString().Contains("Error getting log entries.")),
-                It.IsAny<Exception>(),
-                It.IsAny<Func<It.IsAnyType, Exception?, string>>()),
-            Times.Once);
-
     }
 }

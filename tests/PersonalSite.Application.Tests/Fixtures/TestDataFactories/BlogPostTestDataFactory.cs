@@ -1,5 +1,7 @@
 using System.Globalization;
 using PersonalSite.Application.Features.Blogs.Blog.Commands.CreateBlogPost;
+using PersonalSite.Application.Features.Blogs.Blog.Commands.PublishBlogPost;
+using PersonalSite.Application.Features.Blogs.Blog.Commands.UpdateBlogPost;
 using PersonalSite.Application.Features.Blogs.Blog.Dtos;
 using PersonalSite.Domain.Entities.Blog;
 using PersonalSite.Domain.Entities.Common;
@@ -137,8 +139,8 @@ public static class BlogPostTestDataFactory
             Slug: slug,
             CoverImage: "cover.jpg",
             IsPublished: isPublished,
-            Translations: translations ?? new List<BlogPostTranslationDto>
-            {
+            Translations: translations ??
+            [
                 new BlogPostTranslationDto
                 {
                     Id = Guid.NewGuid(),
@@ -150,15 +152,15 @@ public static class BlogPostTestDataFactory
                     MetaDescription = "MetaDesc",
                     OgImage = "og.jpg"
                 }
-            },
-            Tags: tags ?? new List<BlogPostTagDto>
-            {
+            ],
+            Tags: tags ??
+            [
                 new BlogPostTagDto
                 {
                     Id = Guid.NewGuid(),
                     Name = "Tech"
                 }
-            }
+            ]
         );
     }
     
@@ -190,6 +192,82 @@ public static class BlogPostTestDataFactory
         {
             Id = id ?? Guid.NewGuid(),
             Name = name
+        };
+    }
+    
+    public static BlogPost CreateUnpublishedBlogPost(Guid? id = null)
+    {
+        return CreateBlogPost(
+            postId: id,
+            isPublished: false,
+            publishedAt: null
+        );
+    }
+
+    public static BlogPost CreatePublishedBlogPost(Guid? id = null, DateTime? publishedAt = null)
+    {
+        return CreateBlogPost(
+            postId: id,
+            isPublished: true,
+            publishedAt: publishedAt ?? DateTime.UtcNow
+        );
+    }
+    
+    public static PublishBlogPostCommand CreatePublishCommand(Guid id, bool isPublished = true, DateTime? publishDate = null)
+    {
+        return new PublishBlogPostCommand
+        {
+            Id = id,
+            IsPublished = isPublished,
+            PublishDate = publishDate ?? DateTime.UtcNow
+        };
+    }
+    
+    public static UpdateBlogPostCommand CreateValidUpdateCommand(
+        Guid id = default, 
+        string slug = "new-slug", 
+        Guid? tagId = null,
+        List<BlogPostTranslationDto>? translations = null)
+    {
+        translations ??= [CreateTranslationDto()];
+        
+        return new UpdateBlogPostCommand(
+            Id: id,
+            Slug: slug,
+            CoverImage: "new-cover.jpg",
+            IsDeleted: true,
+            Translations: translations,
+            Tags: [CreateTagDto(tagId ?? Guid.NewGuid())]
+        );
+    }
+
+    public static BlogPostTranslation CreateTranslation(string code, Guid blogPostId)
+    {
+        var language = CommonTestDataFactory.CreateLanguage(code);
+        return new BlogPostTranslation
+        {
+            Id = Guid.NewGuid(),
+            BlogPostId = blogPostId,
+            LanguageId = language.Id,
+            Language = language,
+            Title = $"Title {code}",
+            Excerpt = $"Excerpt {code}",
+            Content = $"Content {code}",
+            MetaTitle = $"Meta {code}",
+            MetaDescription = $"Desc {code}",
+            OgImage = $"og_{code}.jpg"
+        };
+    }
+
+    public static BlogPost CreateSimpleBlogPost(Guid? id = null, string slug = "old-slug")
+    {
+        return new BlogPost
+        {
+            Id = id ?? Guid.NewGuid(),
+            Slug = slug,
+            CoverImage = "old-cover.jpg",
+            IsDeleted = false,
+            CreatedAt = DateTime.UtcNow.AddDays(-10)
         };
     }
 }

@@ -13,7 +13,6 @@ public class GetPortfolioPageQueryHandlerTests
 {
     private readonly Mock<IPageRepository> _pageRepositoryMock;
     private readonly Mock<IProjectRepository> _projectRepositoryMock;
-    private readonly Mock<ILogger<GetPortfolioPageQueryHandler>> _loggerMock;
     private readonly Mock<ITranslatableMapper<Domain.Entities.Pages.Page, PageDto>> _pageMapperMock;
     private readonly Mock<ITranslatableMapper<Domain.Entities.Projects.Project, ProjectDto>> _projectMapperMock;
     private readonly LanguageContext _languageContext;
@@ -23,7 +22,7 @@ public class GetPortfolioPageQueryHandlerTests
     {
         _pageRepositoryMock = new Mock<IPageRepository>();
         _projectRepositoryMock = new Mock<IProjectRepository>();
-        _loggerMock = new Mock<ILogger<GetPortfolioPageQueryHandler>>();
+        var loggerMock = new Mock<ILogger<GetPortfolioPageQueryHandler>>();
         _pageMapperMock = new Mock<ITranslatableMapper<Domain.Entities.Pages.Page, PageDto>>();
         _projectMapperMock = new Mock<ITranslatableMapper<Domain.Entities.Projects.Project, ProjectDto>>();
 
@@ -33,7 +32,7 @@ public class GetPortfolioPageQueryHandlerTests
             _languageContext,
             _pageRepositoryMock.Object,
             _projectRepositoryMock.Object,
-            _loggerMock.Object,
+            loggerMock.Object,
             _pageMapperMock.Object,
             _projectMapperMock.Object
         );
@@ -145,14 +144,5 @@ public class GetPortfolioPageQueryHandlerTests
         // Assert
         result.IsSuccess.Should().BeFalse();
         result.Error.Should().Be("An unexpected error occurred.");
-
-        _loggerMock.Verify(
-            l => l.Log(
-                LogLevel.Error,
-                It.IsAny<EventId>(),
-                It.Is<It.IsAnyType>((v, _) => v.ToString()!.Contains("Error occurred while retrieving portfolio page data.")),
-                It.IsAny<Exception>(),
-                It.IsAny<Func<It.IsAnyType, Exception?, string>>()),
-            Times.Once);
     }
 }

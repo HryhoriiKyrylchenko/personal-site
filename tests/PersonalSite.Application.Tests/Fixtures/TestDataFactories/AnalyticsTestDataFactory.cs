@@ -1,3 +1,4 @@
+using PersonalSite.Application.Features.Analytics.AnalyticsEvent.Commands.TrackAnalyticsEvent;
 using PersonalSite.Application.Features.Analytics.AnalyticsEvent.Dtos;
 using PersonalSite.Domain.Entities.Analytics;
 
@@ -36,4 +37,20 @@ public static class AnalyticsTestDataFactory
         CreatedAt = e.CreatedAt,
         AdditionalDataJson = e.AdditionalDataJson
     };
+    
+    public static TrackAnalyticsEventCommand CreateTrackAnalyticsEventCommand(
+        string eventType = "PageView",
+        string pageSlug = "/home",
+        string? referrer = "https://google.com",
+        string? userAgent = "Mozilla/5.0",
+        string? additionalDataJson = "{\"source\":\"ad\"}")
+    {
+        return new TrackAnalyticsEventCommand(
+            EventType: eventType,
+            PageSlug: pageSlug,
+            Referrer: referrer,
+            UserAgent: userAgent,
+            AdditionalDataJson: additionalDataJson
+        );
+    }
 }

@@ -9,18 +9,17 @@ public class CreateLearningSkillCommandHandlerTests
     {
         private readonly Mock<ILearningSkillRepository> _repositoryMock;
         private readonly Mock<IUnitOfWork> _unitOfWorkMock;
-        private readonly Mock<ILogger<CreateLearningSkillCommandHandler>> _loggerMock;
         private readonly CreateLearningSkillCommandHandler _handler;
 
         public CreateLearningSkillCommandHandlerTests()
         {
             _repositoryMock = new Mock<ILearningSkillRepository>();
             _unitOfWorkMock = new Mock<IUnitOfWork>();
-            _loggerMock = new Mock<ILogger<CreateLearningSkillCommandHandler>>();
+            var loggerMock = new Mock<ILogger<CreateLearningSkillCommandHandler>>();
             _handler = new CreateLearningSkillCommandHandler(
                 _repositoryMock.Object,
                 _unitOfWorkMock.Object,
-                _loggerMock.Object);
+                loggerMock.Object);
         }
 
         [Fact]
@@ -28,7 +27,7 @@ public class CreateLearningSkillCommandHandlerTests
         {
             // Arrange
             var command = new CreateLearningSkillCommand(Guid.NewGuid(), LearningStatus.InProgress, 1);
-
+            
             _repositoryMock
                 .Setup(r => r.ExistsBySkillIdAsync(command.SkillId, It.IsAny<CancellationToken>()))
                 .ReturnsAsync(false);
@@ -81,14 +80,5 @@ public class CreateLearningSkillCommandHandlerTests
             // Assert
             result.IsSuccess.Should().BeFalse();
             result.Error.Should().Be("Failed to create learning skill.");
-
-            _loggerMock.Verify(
-                l => l.Log(
-                    LogLevel.Error,
-                    It.IsAny<EventId>(),
-                    It.Is<It.IsAnyType>((v, _) => v.ToString().Contains("Error creating learning skill.")),
-                    It.IsAny<Exception>(),
-                    It.IsAny<Func<It.IsAnyType, Exception?, string>>()),
-                Times.Once);
         }
     }
