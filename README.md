@@ -1,89 +1,178 @@
-# Forja Personal Website
+# 🌐 Personal Website & Portfolio
 
-Personal website and portfolio for Hryhorii Kyrylchenko — programmer’s portfolio, blog, and contact platform.
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
----
+> ⚠️ This project is currently under active development. Functionality is incomplete and evolving rapidly.
 
-## Overview
-
-This project is a multi-page responsive personal site built with:
-
-- **Backend:** .NET 9 (C#), REST API, clean architecture, PostgreSQL database
-- **Frontend:** React, responsive design, light/dark theme support, multi-language (EN, PL, UA, RU)
-- **Features:**
-  - Portfolio with project showcase
-  - Blog section with articles
-  - About page with skills, learning roadmap, and work experience
-  - Contact form and social links
-  - Admin panel for managing content (protected by AWS Cognito authentication)
-  - SEO and SMM readiness
-  - Localization with hybrid approach (static + database)
-  - Unit tests for core backend logic
+A modern, multi-language personal website and portfolio with a blog, contact form, project showcase, and secure admin panel.
 
 ---
 
-## Architecture
+## 🚀 Overview
 
-- Domain-Driven Design (DDD) + Clean Architecture pattern
-- Projects organized by layers: Domain, Application, Infrastructure, Web, Frontend
-- Uses MediatR for CQRS pattern in application layer
-- PostgreSQL for persistent data
-- Localization data partly stored in DB, partly static JSON files
-- Authentication for admin panel via AWS Cognito
+This full-stack site is built to showcase development projects, publish articles, and enable professional contact. It includes:
+
+- 🖥 **Backend**: .NET 9 (C#), REST API, PostgreSQL, Domain-Driven Design, Clean Architecture, Vertical Slice Architecture
+- 🌐 **Frontend**: Angular, responsive layout, light/dark themes, i18n (EN, PL, UA, RU)
+- 🔐 **Admin Panel**: AWS Cognito authentication for content management
+- 🌍 **Localization**: Hybrid static and dynamic translation system
+- 🧪 **Testing**: Unit tests for core business logic
 
 ---
 
-## Getting Started
+## ✨ Features
 
-### Prerequisites
+- 💼 Portfolio with project showcases
+- ✍️ Blog section with articles
+- 👤 About page with skills, roadmap, and experience
+- 📬 Contact form with email notifications
+- 🔗 Social media links
+- ⚙️ Admin panel for content management (Cognito-protected)
+- 📈 SEO and social media (SMM) metadata support
+- 🈳 Localization with JSON + database translations
+- 🧪 Unit testing with xUnit, Moq, and FluentAssertions
+
+---
+
+## 🧱 Architecture
+
+- **Architecture**: Clean Architecture + Domain-Driven Design (DDD) + Vertical Slice Architecture
+- **Structure**:
+    - Each feature is self-contained (vertical slices): commands, queries, handlers, validators, mappings
+    - Core layers:
+        - `Domain`: Business entities and rules
+        - `Application`: CQRS with MediatR, use cases
+        - `Infrastructure`: Persistence, email, external services
+        - `Web`: API endpoints (controllers)
+        - `Frontend`: Angular UI
+- **Data**: PostgreSQL, Entity Framework Core (Code First)
+- **Localization**:
+    - UI text in static JSON files
+    - Content translations in database
+
+---
+
+## 🛠 Getting Started
+
+### ✅ Prerequisites
 
 - [.NET 9 SDK](https://dotnet.microsoft.com/en-us/download)
 - [Node.js & npm](https://nodejs.org/)
-- PostgreSQL database
-- AWS account for Cognito (optional, for admin auth)
+- PostgreSQL
+- AWS account (for Cognito authentication)
 
-### Running Backend
+---
 
-1. Configure connection string in `appsettings.json`
-2. Run EF Core migrations:
-   ```bash
-   dotnet ef database update
-   ```
-3. Run the backend API:
-   ```bash
-   dotnet run --project src/PersonalSite.Web
-   ```
-   
-### Running Frontend
+### 🧩 Backend Setup
 
-1. Navigate to frontend folder:
-   ```bash
-   cd src/forja-frontend
-   ```
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-3. Start dev server:
-   ```bash
-   npm start
-   ```
+1. Configure the database connection string using one of the following:
 
-### Testing
+    - **Local development**: Use [`.NET user-secrets`](https://learn.microsoft.com/en-us/aspnet/core/security/app-secrets) to store sensitive values securely:
+
+      ```bash
+      dotnet user-secrets set "ConnectionStrings:DefaultConnection" "Host=...;Database=...;Username=...;Password=..."
+      ```
+
+    - **Production**: Store secrets in a secure store such as **AWS Systems Manager Parameter Store** or **AWS Secrets Manager** and load them at runtime.
+
+2. Apply EF Core migrations:
+
+    ```bash
+    dotnet ef database update
+    ```
+
+3. Run the API:
+
+    ```bash
+    dotnet run --project src/PersonalSite.Web
+    ```
+
+---
+
+### 🎨 Frontend Setup
+
+1. Public Site:
+
+    ```bash
+    cd src/frontend/public-site
+    npm install
+    npm start
+    ```
+
+2. Admin panel:
+
+    ```bash
+    cd src/frontend/admin-panel
+    npm install
+    npm start
+    ```
+
+---
+
+### 🧪 Running Tests
 
 - Run unit tests from the solution root:
    ```bash
    dotnet test
    ```
+  
+---
 
-### Localization
+### 🌍 Localization
 
-- Supports English, Polish, Ukrainian, and Russian with a hybrid localization approach:
+The application supports the following languages:
+- English (EN)
+- Polish (PL)
+- Ukrainian (UA)
+- Russian (RU)
 
-    - UI strings in JSON resource files
+**Localization Details:**
+- *Static UI strings* are stored in separate JSON files per language.
+- *Dynamic content* translations are maintained in the database.
 
-    - Dynamic content translations stored in the database
+---
 
-### Admin Panel
+### 🔐 Admin Panel
 
-- Protected by AWS Cognito authentication. Admin user created manually in AWS Cognito user pool. Only authorized users can manage portfolio projects, blog posts, and site content.
+The admin interface is secured using **AWS Cognito authentication**.
+
+**Access Control:**
+- Admin user accounts must be **manually created** in the AWS Cognito user pool.
+- Only **authenticated users** can manage:
+    - Portfolio projects
+    - Blog posts
+    - Page content and translations
+
+---
+
+## 📦 Technologies Used
+
+**Backend:**
+- .NET 9
+- C#
+- Entity Framework Core (EF Core)
+- MediatR
+- PostgreSQL
+
+**Frontend:**
+- Angular
+- SCSS
+- Angular Material
+
+**Cloud:**
+- AWS Cognito
+- AWS S3 *(planned)*
+- AWS SES / SQS *(optional)*
+
+**Tooling:**
+- xUnit
+- Moq
+- FluentAssertions
+- GitHub Actions *(planned)*
+
+---
+
+## 📄 License
+
+This project is licensed under the **MIT License**.  
+See the [LICENSE](./LICENSE) file for full details.
