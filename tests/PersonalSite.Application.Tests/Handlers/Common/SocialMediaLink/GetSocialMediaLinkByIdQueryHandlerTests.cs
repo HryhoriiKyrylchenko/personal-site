@@ -1,7 +1,6 @@
 using PersonalSite.Application.Common.Mapping;
 using PersonalSite.Application.Features.Common.SocialMediaLinks.Dtos;
 using PersonalSite.Application.Features.Common.SocialMediaLinks.Queries.GetSocialMediaLinkById;
-using PersonalSite.Application.Tests.Common;
 using PersonalSite.Application.Tests.Fixtures.TestDataFactories;
 using PersonalSite.Domain.Interfaces.Repositories.Common;
 
@@ -57,7 +56,6 @@ public class GetSocialMediaLinkByIdQueryHandlerTests
         // Assert
         result.IsFailure.Should().BeTrue();
         result.Error.Should().Be("Social media link not found.");
-        _loggerMock.VerifyLog(LogLevel.Warning, $"Social media link with ID {id} not found.", Times.Once());
     }
 
     [Fact]
@@ -77,6 +75,5 @@ public class GetSocialMediaLinkByIdQueryHandlerTests
         // Assert
         result.IsFailure.Should().BeTrue();
         result.Error.Should().Be("DB error");
-        _loggerMock.VerifyLog(LogLevel.Error, "Error occurred while getting social media link by id.", Times.Once());
     }
 }

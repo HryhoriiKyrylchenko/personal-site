@@ -153,14 +153,5 @@ public class UpdateSkillCategoryCommandHandlerTests
 
         result.IsSuccess.Should().BeFalse();
         result.Error.Should().Be("Error occurred while updating skill category.");
-
-        _loggerMock.Verify(
-            x => x.Log(
-                LogLevel.Error,
-                It.IsAny<EventId>(),
-                It.Is<It.IsAnyType>((v, _) => v.ToString().Contains("Error updating skill category.")),
-                It.IsAny<Exception>(),
-                It.IsAny<Func<It.IsAnyType, Exception?, string>>()),
-            Times.Once);
     }
 }

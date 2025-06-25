@@ -1,3 +1,5 @@
+using PersonalSite.Application.Features.Contact.ContactMessages.Commands.SendContactMessage;
+using PersonalSite.Application.Features.Contact.ContactMessages.Commands.UpdateContactMessagesReadStatus;
 using PersonalSite.Application.Features.Contact.ContactMessages.Dtos;
 using PersonalSite.Domain.Entities.Contact;
 
@@ -42,5 +44,24 @@ public class ContactTestDataFactory
             CreatedAt = entity.CreatedAt,
             IsRead = entity.IsRead
         };
+    }
+
+    public static SendContactMessageCommand CreateSendContactMessageCommand(
+        string name = "John", 
+        string email = "Doe", 
+        string subject = "Subject", 
+        string message = "Message")
+    {
+        return new SendContactMessageCommand(name, email, subject, message)
+        {
+            IpAddress = "127.0.0.1",
+            UserAgent = "TestAgent"       
+        };
+    }
+
+    public static UpdateContactMessagesReadStatusCommand CreateUpdateContactMessagesReadStatusCommand(
+        List<Guid> ids, bool isRead = true)
+    {
+        return new UpdateContactMessagesReadStatusCommand(ids, isRead);
     }
 }

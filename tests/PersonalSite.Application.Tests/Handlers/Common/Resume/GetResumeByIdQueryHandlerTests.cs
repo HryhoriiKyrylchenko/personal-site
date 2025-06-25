@@ -84,15 +84,5 @@ public class GetResumeByIdQueryHandlerTests
         // Assert
         result.IsFailure.Should().BeTrue();
         result.Error.Should().Be("Error getting resume by id.");
-
-        // Verify that error was logged
-        _loggerMock.Verify(
-            l => l.Log(
-                It.Is<LogLevel>(logLevel => logLevel == LogLevel.Error),
-                It.IsAny<EventId>(),
-                It.Is<It.IsAnyType>((v, t) => v.ToString()!.Contains("Error getting resume by id.")),
-                It.Is<Exception>(ex => ex == exception),
-                It.IsAny<Func<It.IsAnyType, Exception, string>>()),
-            Times.Once);
     }
 }

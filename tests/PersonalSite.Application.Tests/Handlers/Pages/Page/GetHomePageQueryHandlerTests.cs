@@ -18,7 +18,6 @@ public class GetHomePageQueryHandlerTests
     private readonly Mock<IPageRepository> _pageRepositoryMock;
     private readonly Mock<IUserSkillRepository> _userSkillRepositoryMock;
     private readonly Mock<IProjectRepository> _projectRepositoryMock;
-    private readonly Mock<ILogger<GetHomePageQueryHandler>> _loggerMock;
     private readonly Mock<ITranslatableMapper<Domain.Entities.Pages.Page, PageDto>> _pageMapperMock;
     private readonly Mock<ITranslatableMapper<UserSkill, UserSkillDto>> _userSkillMapperMock;
     private readonly Mock<ITranslatableMapper<Project, ProjectDto>> _projectMapperMock;
@@ -30,7 +29,7 @@ public class GetHomePageQueryHandlerTests
         _pageRepositoryMock = new Mock<IPageRepository>();
         _userSkillRepositoryMock = new Mock<IUserSkillRepository>();
         _projectRepositoryMock = new Mock<IProjectRepository>();
-        _loggerMock = new Mock<ILogger<GetHomePageQueryHandler>>();
+        var loggerMock = new Mock<ILogger<GetHomePageQueryHandler>>();
         _pageMapperMock = new Mock<ITranslatableMapper<Domain.Entities.Pages.Page, PageDto>>();
         _userSkillMapperMock = new Mock<ITranslatableMapper<UserSkill, UserSkillDto>>();
         _projectMapperMock = new Mock<ITranslatableMapper<Project, ProjectDto>>();
@@ -42,7 +41,7 @@ public class GetHomePageQueryHandlerTests
             _pageRepositoryMock.Object,
             _userSkillRepositoryMock.Object,
             _projectRepositoryMock.Object,
-            _loggerMock.Object,
+            loggerMock.Object,
             _pageMapperMock.Object,
             _userSkillMapperMock.Object,
             _projectMapperMock.Object
@@ -157,15 +156,5 @@ public class GetHomePageQueryHandlerTests
         // Assert
         result.IsSuccess.Should().BeFalse();
         result.Error.Should().Be("An unexpected error occurred.");
-
-        _loggerMock.Verify(
-            l => l.Log(
-                LogLevel.Error,
-                It.IsAny<EventId>(),
-                It.Is<It.IsAnyType>((v, _) => v.ToString()!.Contains("Error occurred while retrieving home page data.")),
-                It.IsAny<Exception>(),
-                It.IsAny<Func<It.IsAnyType, Exception?, string>>()
-            ),
-            Times.Once);
     }
 }

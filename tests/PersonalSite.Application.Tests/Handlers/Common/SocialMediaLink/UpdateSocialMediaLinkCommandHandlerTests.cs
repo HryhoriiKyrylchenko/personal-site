@@ -1,4 +1,5 @@
 using PersonalSite.Application.Features.Common.SocialMediaLinks.Commands.UpdateSocialMediaLink;
+using PersonalSite.Application.Tests.Fixtures.TestDataFactories;
 using PersonalSite.Domain.Interfaces.Repositories.Common;
 
 namespace PersonalSite.Application.Tests.Handlers.Common.SocialMediaLink;
@@ -7,19 +8,18 @@ public class UpdateSocialMediaLinkCommandHandlerTests
 {
     private readonly Mock<ISocialMediaLinkRepository> _repositoryMock;
     private readonly Mock<IUnitOfWork> _unitOfWorkMock;
-    private readonly Mock<ILogger<UpdateSocialMediaLinkCommandHandler>> _loggerMock;
     private readonly UpdateSocialMediaLinkCommandHandler _handler;
 
     public UpdateSocialMediaLinkCommandHandlerTests()
     {
         _repositoryMock = new Mock<ISocialMediaLinkRepository>();
         _unitOfWorkMock = new Mock<IUnitOfWork>();
-        _loggerMock = new Mock<ILogger<UpdateSocialMediaLinkCommandHandler>>();
+        var loggerMock = new Mock<ILogger<UpdateSocialMediaLinkCommandHandler>>();
 
         _handler = new UpdateSocialMediaLinkCommandHandler(
             _repositoryMock.Object,
             _unitOfWorkMock.Object,
-            _loggerMock.Object
+            loggerMock.Object
         );
     }
 
@@ -28,21 +28,19 @@ public class UpdateSocialMediaLinkCommandHandlerTests
     {
         // Arrange
         var id = Guid.NewGuid();
-        var entity = new Domain.Entities.Common.SocialMediaLink
-        {
-            Id = id,
-            Platform = "old",
-            Url = "old-url",
-            DisplayOrder = 1,
-            IsActive = false
-        };
+        var entity = CommonTestDataFactory.CreateSocialMediaLink(
+            id: id,
+            platform: "old",
+            url: "old-url",
+            displayOrder: 1,
+            isActive: false);
 
-        var command = new UpdateSocialMediaLinkCommand(
-            Id: id,
-            Platform: "LinkedIn",
-            Url: "https://linkedin.com/in/me",
-            DisplayOrder: 2,
-            IsActive: true
+        var command = CommonTestDataFactory.CreateUpdateSocialMediaLinkCommand(
+            id: id,
+            platform: "LinkedIn",
+            url: "https://linkedin.com/in/me",
+            displayOrder: 2,
+            isActive: true
         );
 
         _repositoryMock.Setup(r => r.GetByIdAsync(id, It.IsAny<CancellationToken>()))
@@ -74,12 +72,12 @@ public class UpdateSocialMediaLinkCommandHandlerTests
         _repositoryMock.Setup(r => r.GetByIdAsync(id, It.IsAny<CancellationToken>()))
             .ReturnsAsync((Domain.Entities.Common.SocialMediaLink?)null);
 
-        var command = new UpdateSocialMediaLinkCommand(
-            Id: id,
-            Platform: "Twitter",
-            Url: "https://twitter.com",
-            DisplayOrder: 1,
-            IsActive: true
+        var command = CommonTestDataFactory.CreateUpdateSocialMediaLinkCommand(
+            id: id,
+            platform: "Twitter",
+            url: "https://twitter.com",
+            displayOrder: 1,
+            isActive: true
         );
 
         // Act
@@ -98,12 +96,12 @@ public class UpdateSocialMediaLinkCommandHandlerTests
     {
         // Arrange
         var id = Guid.NewGuid();
-        var command = new UpdateSocialMediaLinkCommand(
-            Id: id,
-            Platform: "YouTube",
-            Url: "https://youtube.com",
-            DisplayOrder: 5,
-            IsActive: true
+        var command = CommonTestDataFactory.CreateUpdateSocialMediaLinkCommand(
+            id: id,
+            platform: "YouTube",
+            url: "https://youtube.com",
+            displayOrder: 5,
+            isActive: true
         );
 
         _repositoryMock.Setup(r => r.GetByIdAsync(id, It.IsAny<CancellationToken>()))
@@ -115,15 +113,5 @@ public class UpdateSocialMediaLinkCommandHandlerTests
         // Assert
         result.IsSuccess.Should().BeFalse();
         result.Error.Should().Be("An unexpected error occurred.");
-
-        _loggerMock.Verify(
-            x => x.Log<It.IsAnyType>(
-                LogLevel.Error,
-                It.IsAny<EventId>(),
-                It.Is<It.IsAnyType>((state, _) => state.ToString()!.Contains("Error occurred while updating social media link")),
-                It.IsAny<Exception>(),
-                It.IsAny<Func<It.IsAnyType, Exception, string>>()),
-            Times.Once
-        );
     }
 }

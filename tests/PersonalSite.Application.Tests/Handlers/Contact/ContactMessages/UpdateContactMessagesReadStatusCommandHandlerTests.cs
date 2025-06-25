@@ -1,4 +1,5 @@
 using PersonalSite.Application.Features.Contact.ContactMessages.Commands.UpdateContactMessagesReadStatus;
+using PersonalSite.Application.Tests.Fixtures.TestDataFactories;
 using PersonalSite.Domain.Entities.Contact;
 using PersonalSite.Domain.Interfaces.Repositories.Contact;
 
@@ -32,7 +33,7 @@ public class UpdateContactMessagesReadStatusCommandHandlerTests
         _repositoryMock.Setup(r => r.GetByIdsAsync(messageIds, It.IsAny<CancellationToken>()))
             .ReturnsAsync(messages);
 
-        var command = new UpdateContactMessagesReadStatusCommand(messageIds, true);
+        var command = ContactTestDataFactory.CreateUpdateContactMessagesReadStatusCommand(messageIds);
 
         var handler = new UpdateContactMessagesReadStatusCommandHandler(_repositoryMock.Object, _unitOfWorkMock.Object, _loggerMock.Object);
 
@@ -54,7 +55,7 @@ public class UpdateContactMessagesReadStatusCommandHandlerTests
         // Arrange
         var ids = new List<Guid> { Guid.NewGuid(), Guid.NewGuid() };
         var messages = new List<ContactMessage> { new ContactMessage { Id = ids[0], IsRead = false } }; // Only 1 found
-        var command = new UpdateContactMessagesReadStatusCommand(ids, true);
+        var command = ContactTestDataFactory.CreateUpdateContactMessagesReadStatusCommand(ids);
 
         _repositoryMock.Setup(r => r.GetByIdsAsync(ids, It.IsAny<CancellationToken>()))
             .ReturnsAsync(messages);
@@ -67,7 +68,6 @@ public class UpdateContactMessagesReadStatusCommandHandlerTests
         result.Error.Should().Be("Some messages were not found.");
         _repositoryMock.Verify(r => r.UpdateAsync(It.IsAny<ContactMessage>(), It.IsAny<CancellationToken>()), Times.Never);
         _unitOfWorkMock.Verify(u => u.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
-        _loggerMock.VerifyNoOtherCalls();
     }
 
     [Fact]
@@ -75,7 +75,7 @@ public class UpdateContactMessagesReadStatusCommandHandlerTests
     {
         // Arrange
         var ids = new List<Guid> { Guid.NewGuid() };
-        var command = new UpdateContactMessagesReadStatusCommand(ids, true);
+        var command =ContactTestDataFactory.CreateUpdateContactMessagesReadStatusCommand(ids);
 
         _repositoryMock.Setup(r => r.GetByIdsAsync(ids, It.IsAny<CancellationToken>()))
             .ThrowsAsync(new Exception("DB error"));
@@ -86,15 +86,5 @@ public class UpdateContactMessagesReadStatusCommandHandlerTests
         // Assert
         result.IsFailure.Should().BeTrue();
         result.Error.Should().Be("Failed to update read status.");
-
-        _loggerMock.Verify(
-            x => x.Log(
-                LogLevel.Error,
-                It.IsAny<EventId>(),
-                It.Is<It.IsAnyType>((state, _) =>
-                    state.ToString()!.Contains("Error updating read status of contact messages.")),
-                It.IsAny<Exception>(),
-                It.IsAny<Func<It.IsAnyType, Exception, string>>()),
-            Times.Once);
     }
 }

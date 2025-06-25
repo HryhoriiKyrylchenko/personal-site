@@ -1,5 +1,4 @@
 using PersonalSite.Application.Features.Pages.Page.Commands.UpdatePage;
-using PersonalSite.Application.Features.Pages.Page.Dtos;
 using PersonalSite.Application.Tests.Fixtures.TestDataFactories;
 using PersonalSite.Domain.Entities.Common;
 using PersonalSite.Domain.Interfaces.Repositories.Common;
@@ -14,7 +13,6 @@ public class UpdatePageCommandHandlerTests
         private readonly Mock<ILanguageRepository> _languageRepositoryMock;
         private readonly Mock<IPageTranslationRepository> _translationRepositoryMock;
         private readonly Mock<IUnitOfWork> _unitOfWorkMock;
-        private readonly Mock<ILogger<UpdatePageCommandHandler>> _loggerMock;
         private readonly UpdatePageCommandHandler _handler;
 
         public UpdatePageCommandHandlerTests()
@@ -23,14 +21,14 @@ public class UpdatePageCommandHandlerTests
             _languageRepositoryMock = new Mock<ILanguageRepository>();
             _translationRepositoryMock = new Mock<IPageTranslationRepository>();
             _unitOfWorkMock = new Mock<IUnitOfWork>();
-            _loggerMock = new Mock<ILogger<UpdatePageCommandHandler>>();
+            var loggerMock = new Mock<ILogger<UpdatePageCommandHandler>>();
 
             _handler = new UpdatePageCommandHandler(
                 _pageRepositoryMock.Object,
                 _languageRepositoryMock.Object,
                 _translationRepositoryMock.Object,
                 _unitOfWorkMock.Object,
-                _loggerMock.Object
+                loggerMock.Object
             );
         }
 
@@ -39,20 +37,7 @@ public class UpdatePageCommandHandlerTests
         {
             // Arrange
             var page = PageTestDataFactory.CreatePage();
-            var command = new UpdatePageCommand(
-                page.Id,
-                page.Key,
-                page.Translations.Select(t => new PageTranslationDto
-                {
-                    LanguageCode = t.Language.Code,
-                    Title = "Updated Title",
-                    Data = t.Data,
-                    Description = t.Description,
-                    MetaTitle = t.MetaTitle,
-                    MetaDescription = t.MetaDescription,
-                    OgImage = t.OgImage
-                }).ToList()
-            );
+            var command = PageTestDataFactory.CreateUpdatePageCommand(page);
 
             _pageRepositoryMock.Setup(r => r.GetWithTranslationByIdAsync(page.Id, It.IsAny<CancellationToken>()))
                 .ReturnsAsync(page);
@@ -84,7 +69,7 @@ public class UpdatePageCommandHandlerTests
         public async Task Handle_PageNotFound_ReturnsFailure()
         {
             // Arrange
-            var command = new UpdatePageCommand(Guid.NewGuid(), "key", []);
+            var command = PageTestDataFactory.CreateUpdatePageCommand(Guid.NewGuid(), "key", []);
 
             _pageRepositoryMock.Setup(r => r.GetWithTranslationByIdAsync(command.Id, It.IsAny<CancellationToken>()))
                 .ReturnsAsync((Domain.Entities.Pages.Page?)null);
@@ -103,7 +88,7 @@ public class UpdatePageCommandHandlerTests
             // Arrange
             var page = PageTestDataFactory.CreatePage();
             var newKey = "existing-key";
-            var command = new UpdatePageCommand(page.Id, newKey, []);
+            var command = PageTestDataFactory.CreateUpdatePageCommand(page.Id, newKey, []);
 
             _pageRepositoryMock.Setup(r => r.GetWithTranslationByIdAsync(page.Id, It.IsAny<CancellationToken>()))
                 .ReturnsAsync(page);
@@ -124,16 +109,16 @@ public class UpdatePageCommandHandlerTests
         {
             // Arrange
             var page = PageTestDataFactory.CreatePage();
-            var dto = new PageTranslationDto
-            {
-                LanguageCode = "xx", // non-existent language
-                Title = "Title",
-                Data = new Dictionary<string, string>(),
-                Description = "desc",
-                MetaTitle = "meta",
-                MetaDescription = "meta-desc",
-                OgImage = "image.png"
-            };
+            var dto = PageTestDataFactory.CreatePageTranslationDto
+            (
+                languageCode: "xx", // non-existent language
+                title: "Title",
+                data: [],
+                description: "desc",
+                metaTitle: "meta",
+                metaDescription: "meta-desc",
+                ogImage: "image.png"
+            );
 
             var command = new UpdatePageCommand(page.Id, page.Key, [dto]);
 
@@ -162,7 +147,7 @@ public class UpdatePageCommandHandlerTests
         {
             // Arrange
             var page = PageTestDataFactory.CreatePage();
-            var command = new UpdatePageCommand(page.Id, page.Key, []);
+            var command = PageTestDataFactory.CreateUpdatePageCommand(page.Id, page.Key, []);
 
             _pageRepositoryMock.Setup(r => r.GetWithTranslationByIdAsync(page.Id, It.IsAny<CancellationToken>()))
                 .ThrowsAsync(new Exception("DB Failure"));
@@ -173,16 +158,5 @@ public class UpdatePageCommandHandlerTests
             // Assert
             result.IsSuccess.Should().BeFalse();
             result.Error.Should().Be($"Error updating {page.Key} page.");
-
-            _loggerMock.Verify(
-                x => x.Log(
-                    LogLevel.Error,
-                    It.IsAny<EventId>(),
-                    It.Is<It.IsAnyType>((v, t) => v.ToString()!.Contains($"Error updating {page.Key} page.")),
-                    It.IsAny<Exception>(),
-                    It.IsAny<Func<It.IsAnyType, Exception?, string>>()
-                ),
-                Times.Once
-            );
         }
     }

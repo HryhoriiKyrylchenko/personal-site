@@ -1,5 +1,6 @@
 using PersonalSite.Application.Features.Blogs.Blog.Commands.PublishBlogPost;
 using PersonalSite.Application.Services.Common;
+using PersonalSite.Application.Tests.Fixtures.TestDataFactories;
 using PersonalSite.Domain.Entities.Blog;
 using PersonalSite.Domain.Interfaces.Repositories.Blog;
 
@@ -26,7 +27,7 @@ public class PublishBlogPostCommandHandlerTests
     [Fact]
     public async Task Handle_ShouldFail_WhenBlogPostNotFound()
     {
-        var request = new PublishBlogPostCommand { Id = Guid.NewGuid(), IsPublished = true, PublishDate = DateTime.UtcNow };
+        var request = BlogPostTestDataFactory.CreatePublishCommand(Guid.NewGuid());
 
         _repoMock.Setup(r => r.GetByIdAsync(request.Id, It.IsAny<CancellationToken>()))
             .ReturnsAsync((BlogPost?)null);
@@ -40,13 +41,8 @@ public class PublishBlogPostCommandHandlerTests
     [Fact]
     public async Task Handle_ShouldPublishImmediately_WhenDateIsNowOrPast()
     {
-        var post = new BlogPost { Id = Guid.NewGuid(), IsPublished = false };
-        var request = new PublishBlogPostCommand
-        {
-            Id = post.Id,
-            IsPublished = true,
-            PublishDate = DateTime.UtcNow.AddMinutes(-5)
-        };
+        var post = BlogPostTestDataFactory.CreateUnpublishedBlogPost();
+        var request = BlogPostTestDataFactory.CreatePublishCommand(post.Id, isPublished: true, publishDate: DateTime.UtcNow.AddMinutes(-5));
 
         _repoMock.Setup(r => r.GetByIdAsync(post.Id, It.IsAny<CancellationToken>()))
             .ReturnsAsync(post);
@@ -63,16 +59,10 @@ public class PublishBlogPostCommandHandlerTests
     [Fact]
     public async Task Handle_ShouldScheduleFuturePublish_WhenDateIsInFuture()
     {
-        var post = new BlogPost { Id = Guid.NewGuid(), IsPublished = false };
+        var post = BlogPostTestDataFactory.CreateUnpublishedBlogPost();
         var futureDate = DateTime.UtcNow.AddHours(2);
-
-        var request = new PublishBlogPostCommand
-        {
-            Id = post.Id,
-            IsPublished = true,
-            PublishDate = futureDate
-        };
-
+        var request = BlogPostTestDataFactory.CreatePublishCommand(post.Id, isPublished: true, publishDate: futureDate);
+        
         _repoMock.Setup(r => r.GetByIdAsync(post.Id, It.IsAny<CancellationToken>()))
             .ReturnsAsync(post);
 
@@ -88,8 +78,8 @@ public class PublishBlogPostCommandHandlerTests
     [Fact]
     public async Task Handle_ShouldUnpublishBlogPost_WhenIsPublishedIsFalse()
     {
-        var post = new BlogPost { Id = Guid.NewGuid(), IsPublished = true, PublishedAt = DateTime.UtcNow };
-        var request = new PublishBlogPostCommand { Id = post.Id, IsPublished = false };
+        var post = BlogPostTestDataFactory.CreatePublishedBlogPost();
+        var request = BlogPostTestDataFactory.CreatePublishCommand(post.Id, isPublished: false);
 
         _repoMock.Setup(r => r.GetByIdAsync(post.Id, It.IsAny<CancellationToken>()))
             .ReturnsAsync(post);
@@ -106,10 +96,12 @@ public class PublishBlogPostCommandHandlerTests
     public async Task Handle_ShouldReturnFailure_WhenExceptionIsThrown()
     {
         var id = Guid.NewGuid();
+        var request = BlogPostTestDataFactory.CreatePublishCommand(id, isPublished: true, publishDate: DateTime.UtcNow);
+
         _repoMock.Setup(r => r.GetByIdAsync(id, It.IsAny<CancellationToken>()))
             .ThrowsAsync(new Exception("DB error"));
 
-        var result = await _handler.Handle(new PublishBlogPostCommand { Id = id, IsPublished = true, PublishDate = DateTime.UtcNow }, CancellationToken.None);
+        var result = await _handler.Handle(request, CancellationToken.None);
 
         result.IsSuccess.Should().BeFalse();
         result.Error.Should().Be("Error publishing blog post."); 

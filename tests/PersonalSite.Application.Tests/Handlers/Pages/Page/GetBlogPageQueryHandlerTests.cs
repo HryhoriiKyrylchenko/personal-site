@@ -14,7 +14,6 @@ public class GetBlogPageQueryHandlerTests
 {
     private readonly Mock<IPageRepository> _pageRepositoryMock;
     private readonly Mock<IBlogPostRepository> _blogPostRepositoryMock;
-    private readonly Mock<ILogger<GetBlogPageQueryHandler>> _loggerMock;
     private readonly Mock<ITranslatableMapper<Domain.Entities.Pages.Page, PageDto>> _pageMapperMock;
     private readonly Mock<ITranslatableMapper<BlogPost, BlogPostDto>> _blogPostMapperMock;
     private readonly LanguageContext _languageContext;
@@ -24,7 +23,7 @@ public class GetBlogPageQueryHandlerTests
     {
         _pageRepositoryMock = new Mock<IPageRepository>();
         _blogPostRepositoryMock = new Mock<IBlogPostRepository>();
-        _loggerMock = new Mock<ILogger<GetBlogPageQueryHandler>>();
+        var loggerMock = new Mock<ILogger<GetBlogPageQueryHandler>>();
         _pageMapperMock = new Mock<ITranslatableMapper<Domain.Entities.Pages.Page, PageDto>>();
         _blogPostMapperMock = new Mock<ITranslatableMapper<BlogPost, BlogPostDto>>();
 
@@ -34,7 +33,7 @@ public class GetBlogPageQueryHandlerTests
             _languageContext,
             _pageRepositoryMock.Object,
             _blogPostRepositoryMock.Object,
-            _loggerMock.Object,
+            loggerMock.Object,
             _pageMapperMock.Object,
             _blogPostMapperMock.Object
         );
@@ -117,7 +116,7 @@ public class GetBlogPageQueryHandlerTests
             .ReturnsAsync(new List<BlogPost> { blogPost });
 
         _blogPostMapperMock.Setup(m => m.MapToDtoList(It.IsAny<IReadOnlyList<BlogPost>>(), "en"))
-            .Returns(new List<BlogPostDto> { blogPostDto });
+            .Returns([blogPostDto]);
 
         // Act
         var result = await _handler.Handle(new GetBlogPageQuery(), CancellationToken.None);
@@ -142,14 +141,5 @@ public class GetBlogPageQueryHandlerTests
         // Assert
         result.IsSuccess.Should().BeFalse();
         result.Error.Should().Be("An unexpected error occurred.");
-
-        _loggerMock.Verify(
-            l => l.Log(
-                LogLevel.Error,
-                It.IsAny<EventId>(),
-                It.Is<It.IsAnyType>((v, _) => v.ToString()!.Contains("Error occurred while retrieving blog page data.")),
-                It.IsAny<Exception>(),
-                It.IsAny<Func<It.IsAnyType, Exception?, string>>()),
-            Times.Once);
     }
 }

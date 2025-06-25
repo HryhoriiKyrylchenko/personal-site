@@ -1,4 +1,5 @@
 using PersonalSite.Application.Features.Analytics.AnalyticsEvent.Commands.TrackAnalyticsEvent;
+using PersonalSite.Application.Tests.Fixtures.TestDataFactories;
 using PersonalSite.Domain.Interfaces.Repositories.Analytics;
 
 namespace PersonalSite.Application.Tests.Handlers.Analytics.AnalyticsEvent;
@@ -24,13 +25,7 @@ public class TrackAnalyticsEventCommandHandlerTests
     public async Task Handle_ShouldTrackEvent_WhenDataIsValid()
     {
         // Arrange
-        var command = new TrackAnalyticsEventCommand(
-            EventType: "PageView",
-            PageSlug: "/home",
-            Referrer: "https://google.com",
-            UserAgent: "Mozilla/5.0",
-            AdditionalDataJson: "{\"source\":\"ad\"}"
-        );
+        var command = AnalyticsTestDataFactory.CreateTrackAnalyticsEventCommand();
 
         // Act
         var result = await _handler.Handle(command, CancellationToken.None);
@@ -53,12 +48,11 @@ public class TrackAnalyticsEventCommandHandlerTests
     public async Task Handle_ShouldReturnFailure_WhenExceptionIsThrown()
     {
         // Arrange
-        var command = new TrackAnalyticsEventCommand(
-            EventType: "PageView",
-            PageSlug: "/error",
-            Referrer: null,
-            UserAgent: null,
-            AdditionalDataJson: null
+        var command = AnalyticsTestDataFactory.CreateTrackAnalyticsEventCommand(
+            pageSlug: "/error",
+            referrer: null,
+            userAgent: null,
+            additionalDataJson: null
         );
 
         _repositoryMock.Setup(r => r.AddAsync(It.IsAny<Domain.Entities.Analytics.AnalyticsEvent>(), It.IsAny<CancellationToken>()))

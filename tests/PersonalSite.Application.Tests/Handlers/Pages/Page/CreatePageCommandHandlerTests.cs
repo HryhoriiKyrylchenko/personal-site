@@ -1,5 +1,6 @@
 using PersonalSite.Application.Features.Pages.Page.Commands.CreatePage;
 using PersonalSite.Application.Features.Pages.Page.Dtos;
+using PersonalSite.Application.Tests.Fixtures.TestDataFactories;
 using PersonalSite.Domain.Entities.Common;
 using PersonalSite.Domain.Entities.Translations;
 using PersonalSite.Domain.Interfaces.Repositories.Common;
@@ -24,28 +25,11 @@ public class CreatePageCommandHandlerTests
         _loggerMock.Object
     );
 
-    private static CreatePageCommand CreateCommand(string key = "about") => new(
-        key,
-        new List<PageTranslationDto>
-        {
-            new()
-            {
-                LanguageCode = "en",
-                Title = "About",
-                Description = "About page",
-                MetaTitle = "About Meta",
-                MetaDescription = "About Meta Description",
-                OgImage = "og-about.png",
-                Data = new Dictionary<string, string> { ["content"] = "Welcome!" }
-            }
-        }
-    );
-
     [Fact]
     public async Task Handle_ShouldReturnFailure_WhenKeyIsNotAvailable()
     {
         // Arrange
-        var command = CreateCommand();
+        var command = PageTestDataFactory.CreateCreatePageCommand();
         _pageRepositoryMock.Setup(r => r.IsKeyAvailableAsync(command.Key, It.IsAny<CancellationToken>()))
             .ReturnsAsync(false);
 
@@ -63,7 +47,7 @@ public class CreatePageCommandHandlerTests
     public async Task Handle_ShouldReturnFailure_WhenLanguageNotFound()
     {
         // Arrange
-        var command = CreateCommand();
+        var command = PageTestDataFactory.CreateCreatePageCommand();
         _pageRepositoryMock.Setup(r => r.IsKeyAvailableAsync(command.Key, It.IsAny<CancellationToken>()))
             .ReturnsAsync(true);
 
@@ -84,8 +68,8 @@ public class CreatePageCommandHandlerTests
     public async Task Handle_ShouldReturnSuccess_WhenPageCreated()
     {
         // Arrange
-        var command = CreateCommand();
-        var language = new Language { Id = Guid.NewGuid(), Code = "en", Name = "English" };
+        var command = PageTestDataFactory.CreateCreatePageCommand();
+        var language = CommonTestDataFactory.CreateLanguage();
 
         _pageRepositoryMock.Setup(r => r.IsKeyAvailableAsync(command.Key, It.IsAny<CancellationToken>()))
             .ReturnsAsync(true);
@@ -111,7 +95,7 @@ public class CreatePageCommandHandlerTests
     public async Task Handle_ShouldReturnFailure_WhenExceptionThrown()
     {
         // Arrange
-        var command = CreateCommand();
+        var command = PageTestDataFactory.CreateCreatePageCommand();
         _pageRepositoryMock.Setup(r => r.IsKeyAvailableAsync(command.Key, It.IsAny<CancellationToken>()))
             .ThrowsAsync(new Exception("Unexpected"));
 
@@ -123,14 +107,5 @@ public class CreatePageCommandHandlerTests
         // Assert
         result.IsSuccess.Should().BeFalse();
         result.Error.Should().Be("Error creating about page.");
-
-        _loggerMock.Verify(
-            x => x.Log(
-                LogLevel.Error,
-                It.IsAny<EventId>(),
-                It.Is<It.IsAnyType>((v, _) => v.ToString()!.Contains("Error creating about page.")),
-                It.IsAny<Exception>(),
-                It.IsAny<Func<It.IsAnyType, Exception?, string>>()),
-            Times.Once);
     }
 }

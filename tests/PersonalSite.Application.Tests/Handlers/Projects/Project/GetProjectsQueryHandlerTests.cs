@@ -10,19 +10,18 @@ namespace PersonalSite.Application.Tests.Handlers.Projects.Project;
 public class GetProjectsQueryHandlerTests
 {
     private readonly Mock<IProjectRepository> _projectRepositoryMock;
-    private readonly Mock<ILogger<GetProjectsQueryHandler>> _loggerMock;
     private readonly Mock<IAdminMapper<Domain.Entities.Projects.Project, ProjectAdminDto>> _mapperMock;
     private readonly GetProjectsQueryHandler _handler;
 
     public GetProjectsQueryHandlerTests()
     {
         _projectRepositoryMock = new Mock<IProjectRepository>();
-        _loggerMock = new Mock<ILogger<GetProjectsQueryHandler>>();
+        var loggerMock = new Mock<ILogger<GetProjectsQueryHandler>>();
         _mapperMock = new Mock<IAdminMapper<Domain.Entities.Projects.Project, ProjectAdminDto>>();
 
         _handler = new GetProjectsQueryHandler(
             _projectRepositoryMock.Object,
-            _loggerMock.Object,
+            loggerMock.Object,
             _mapperMock.Object);
     }
 

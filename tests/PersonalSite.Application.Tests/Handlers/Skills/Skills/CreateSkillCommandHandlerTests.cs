@@ -39,7 +39,7 @@ public class CreateSkillCommandHandlerTests
         var command = new CreateSkillCommand(
             Guid.NewGuid(),
             "csharp",
-            new List<SkillTranslationDto> { SkillsTestDataFactory.CreateTranslationDto() });
+            [SkillsTestDataFactory.CreateTranslationDto()]);
 
         _skillRepoMock.Setup(r => r.ExistsByKeyAsync(command.Key, It.IsAny<CancellationToken>()))
             .ReturnsAsync(false);

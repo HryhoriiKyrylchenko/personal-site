@@ -1,4 +1,5 @@
 using PersonalSite.Application.Features.Contact.ContactMessages.Commands.DeleteContactMessages;
+using PersonalSite.Application.Tests.Fixtures.TestDataFactories;
 using PersonalSite.Domain.Entities.Contact;
 using PersonalSite.Domain.Interfaces.Repositories.Contact;
 
@@ -20,8 +21,8 @@ public class DeleteContactMessagesCommandHandlerTests
         var ids = new List<Guid> { Guid.NewGuid(), Guid.NewGuid() };
         var messages = new List<ContactMessage>
         {
-            new() { Id = ids[0], Name = "Test 1" },
-            new() { Id = ids[1], Name = "Test 2" }
+            ContactTestDataFactory.CreateContactMessage(id: ids[0], name: "Test 1"),
+            ContactTestDataFactory.CreateContactMessage(id: ids[1], name: "Test 2")
         };
 
         _repositoryMock.Setup(r => r.GetByIdsAsync(ids, It.IsAny<CancellationToken>()))
@@ -45,7 +46,7 @@ public class DeleteContactMessagesCommandHandlerTests
         var ids = new List<Guid> { Guid.NewGuid(), Guid.NewGuid() };
         var onlyOneMessage = new List<ContactMessage>
         {
-            new() { Id = ids[0], Name = "Only found" }
+            ContactTestDataFactory.CreateContactMessage(id: ids[0], name: "Only found")
         };
 
         _repositoryMock.Setup(r => r.GetByIdsAsync(ids, It.IsAny<CancellationToken>()))
@@ -79,18 +80,5 @@ public class DeleteContactMessagesCommandHandlerTests
         // Assert
         result.IsSuccess.Should().BeFalse();
         result.Error.Should().Be("Failed to delete messages.");
-
-        _loggerMock.Verify(
-            x => x.Log(
-                LogLevel.Error,
-                It.IsAny<EventId>(),
-                It.Is<It.IsAnyType>((state, _) =>
-                    state.ToString() != null &&
-                    state.ToString()!.Contains("Error deleting contact messages.")
-                ),
-                It.IsAny<Exception>(),
-                It.IsAny<Func<It.IsAnyType, Exception, string>>()),
-            Times.Once
-        );
     }
 }

@@ -1,7 +1,13 @@
 using System.Globalization;
+using PersonalSite.Application.Features.Common.Language.Commands.CreateLanguage;
+using PersonalSite.Application.Features.Common.Language.Commands.UpdateLanguage;
 using PersonalSite.Application.Features.Common.Language.Dtos;
 using PersonalSite.Application.Features.Common.LogEntries.Dtos;
+using PersonalSite.Application.Features.Common.Resume.Commands.CreateResume;
+using PersonalSite.Application.Features.Common.Resume.Commands.UpdateResume;
 using PersonalSite.Application.Features.Common.Resume.Dtos;
+using PersonalSite.Application.Features.Common.SocialMediaLinks.Commands.CreateSocialMediaLink;
+using PersonalSite.Application.Features.Common.SocialMediaLinks.Commands.UpdateSocialMediaLink;
 using PersonalSite.Application.Features.Common.SocialMediaLinks.Dtos;
 using PersonalSite.Domain.Entities.Common;
 
@@ -27,6 +33,18 @@ public static class CommonTestDataFactory
             Code = language.Code,
             Name = language.Name
         };
+    }
+
+    public static CreateLanguageCommand CreateCreateLanguageCommand(string code = "en", string name = "English")
+    {
+        return new CreateLanguageCommand(code, name);
+    }
+
+    public static UpdateLanguageCommand CreateUpdateLanguageCommand(Guid id = default, string code = "en",
+        string name = "English")
+    {
+        if (id == Guid.Empty) id = Guid.NewGuid();
+        return new UpdateLanguageCommand(id, code, name);   
     }
     
     public static LogEntry CreateLogEntry(
@@ -90,14 +108,33 @@ public static class CommonTestDataFactory
             IsActive = entity.IsActive
         };
     }
+
+    public static CreateResumeCommand CreateCreateResumeCommand(string fileUrl = "https://example.com/resume.pdf",
+        string fileName = "resume.pdf", bool isActive = true)
+    {
+        return new CreateResumeCommand(fileUrl, fileName, isActive);
+    }
+
+    public static UpdateResumeCommand CreateUpdateResumeCommand(
+        Guid id = default, string fileUrl = "https://example.com/resume.pdf",
+        string fileName = "resume.pdf", bool isActive = true)
+    {
+        if (id == Guid.Empty) id = Guid.NewGuid();
+        return new UpdateResumeCommand(id, fileUrl, fileName, isActive);  
+    }
     
-    public static SocialMediaLink CreateSocialMediaLink(Guid? id = null) => new()
+    public static SocialMediaLink CreateSocialMediaLink(
+        Guid? id = null,
+        string platform = "Twitter",
+        string url = "https://twitter.com/example",
+        short displayOrder = 1,
+        bool isActive = true) => new()
     {
         Id = id ?? Guid.NewGuid(),
-        Platform = "Twitter",
-        Url = "https://twitter.com/example",
-        DisplayOrder = 1,
-        IsActive = true
+        Platform = platform,
+        Url = url,
+        DisplayOrder = displayOrder,
+        IsActive = isActive
     };
 
     public static SocialMediaLinkDto MapToDto(SocialMediaLink entity) => new()
@@ -108,4 +145,26 @@ public static class CommonTestDataFactory
         DisplayOrder = entity.DisplayOrder,
         IsActive = entity.IsActive
     };
+
+    public static CreateSocialMediaLinkCommand CreateCreateSocialMediaLinkCommand(
+        string platform = "Facebook",
+        string url = "https://facebook.com/example",
+        int displayOrder = 1,
+        bool isActive = true
+    )
+    {
+        return new CreateSocialMediaLinkCommand(platform, url, displayOrder, isActive);
+    }
+
+    public static UpdateSocialMediaLinkCommand CreateUpdateSocialMediaLinkCommand(
+        Guid id = default,
+        string platform = "Facebook",
+        string url = "https://facebook.com/example",
+        int displayOrder = 1,
+        bool isActive = true
+    )
+    {
+        if (id == Guid.Empty) id = Guid.NewGuid();
+        return new UpdateSocialMediaLinkCommand(id, platform, url, displayOrder, isActive);
+    }
 }

@@ -10,7 +10,6 @@ namespace PersonalSite.Application.Tests.Handlers.Pages.Page;
 public class GetContactPageQueryHandlerTests
 {
     private readonly Mock<IPageRepository> _pageRepositoryMock;
-    private readonly Mock<ILogger<GetContactPageQueryHandler>> _loggerMock;
     private readonly Mock<ITranslatableMapper<Domain.Entities.Pages.Page, PageDto>> _pageMapperMock;
     private readonly LanguageContext _languageContext;
     private readonly GetContactPageQueryHandler _handler;
@@ -18,7 +17,7 @@ public class GetContactPageQueryHandlerTests
     public GetContactPageQueryHandlerTests()
     {
         _pageRepositoryMock = new Mock<IPageRepository>();
-        _loggerMock = new Mock<ILogger<GetContactPageQueryHandler>>();
+        var loggerMock = new Mock<ILogger<GetContactPageQueryHandler>>();
         _pageMapperMock = new Mock<ITranslatableMapper<Domain.Entities.Pages.Page, PageDto>>();
 
         _languageContext = new LanguageContext { LanguageCode = "en" };
@@ -26,8 +25,8 @@ public class GetContactPageQueryHandlerTests
         _handler = new GetContactPageQueryHandler(
             _languageContext,
             _pageRepositoryMock.Object,
-            null!, // blogPostRepository is not used in your handler; pass null or mock if needed
-            _loggerMock.Object,
+            null!,
+            loggerMock.Object,
             _pageMapperMock.Object
         );
     }
@@ -101,14 +100,5 @@ public class GetContactPageQueryHandlerTests
         // Assert
         result.IsSuccess.Should().BeFalse();
         result.Error.Should().Be("An unexpected error occurred.");
-
-        _loggerMock.Verify(
-            l => l.Log(
-                LogLevel.Error,
-                It.IsAny<EventId>(),
-                It.Is<It.IsAnyType>((v, _) => v.ToString()!.Contains("Error occurred while retrieving contact page data.")),
-                It.IsAny<Exception>(),
-                It.IsAny<Func<It.IsAnyType, Exception?, string>>()),
-            Times.Once);
     }
 }

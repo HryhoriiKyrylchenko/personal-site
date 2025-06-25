@@ -1,5 +1,6 @@
 using PersonalSite.Application.Features.Projects.Project.Commands.CreateProject;
 using PersonalSite.Application.Features.Projects.Project.Commands.DeleteProject;
+using PersonalSite.Application.Tests.Fixtures.TestDataFactories;
 using PersonalSite.Domain.Interfaces.Repositories.Projects;
 
 namespace PersonalSite.Application.Tests.Handlers.Projects.Project;
@@ -44,7 +45,7 @@ public class DeleteProjectCommandHandlerTests
     {
         // Arrange
         var projectId = Guid.NewGuid();
-        var project = new Domain.Entities.Projects.Project { Id = projectId };
+        var project = ProjectTestDataFactory.CreateProject(projectId);
 
         _projectRepositoryMock.Setup(r => r.GetByIdAsync(projectId, It.IsAny<CancellationToken>()))
             .ReturnsAsync(project);

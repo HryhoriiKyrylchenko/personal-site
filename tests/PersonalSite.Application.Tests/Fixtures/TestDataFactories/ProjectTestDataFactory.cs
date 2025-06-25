@@ -1,3 +1,5 @@
+using PersonalSite.Application.Features.Projects.Project.Commands.CreateProject;
+using PersonalSite.Application.Features.Projects.Project.Commands.UpdateProject;
 using PersonalSite.Application.Features.Projects.Project.Dtos;
 using PersonalSite.Application.Features.Skills.SkillCategories.Dtos;
 using PersonalSite.Application.Features.Skills.Skills.Dtos;
@@ -152,5 +154,79 @@ public static class ProjectTestDataFactory
                 }
             }).ToList()
         };
+    }
+
+    public static ProjectTranslationDto CreateTranslationDto(
+        Guid? id,
+        Guid? projectId,
+        string code = "en",
+        string title = "Title",
+        string shortDescription = "Short description",
+        Dictionary<string, string>? descriptionSections = null,
+        string metaTitle = "Title",
+        string metaDescription = "Description",
+        string ogImage = "image.png")
+    {
+        return new ProjectTranslationDto
+        {
+            Id = id ?? Guid.NewGuid(),
+            LanguageCode = code,
+            ProjectId = projectId ?? Guid.NewGuid(),
+            Title = title,
+            ShortDescription = shortDescription,
+            DescriptionSections = descriptionSections ?? [],
+            MetaTitle = metaTitle,
+            MetaDescription = metaDescription,
+            OgImage = ogImage       
+        };
+    }
+
+    public static CreateProjectCommand CreateCreateProjectCommand(List<ProjectTranslationDto>? translations,
+        List<Guid>? skillIds, string slug = "sample-project") => new()
+    {
+        Slug = slug,
+        Translations = translations ?? new List<ProjectTranslationDto>(),
+        SkillIds = skillIds ?? new List<Guid>()       
+    };
+    
+    public static (
+        UpdateProjectCommand Command,
+        Project Project,
+        Language Language,
+        Guid SkillId) CreateValidUpdateProjectCommandAndEntities()
+    {
+        var projectId = Guid.NewGuid();
+        var skillId = Guid.NewGuid();
+        var language = CommonTestDataFactory.CreateLanguage();
+
+        var translationDto = ProjectTestDataFactory.CreateTranslationDto(
+            id: null,
+            projectId: projectId,
+            code: language.Code,
+            title: "Title",
+            shortDescription: "Short desc",
+            descriptionSections: new(),
+            metaTitle: "Meta",
+            metaDescription: "Meta desc",
+            ogImage: "og.png"
+        );
+
+        var command = new UpdateProjectCommand
+        {
+            Id = projectId,
+            Slug = "updated-slug",
+            CoverImage = "new-image.png",
+            DemoUrl = "demo.com",
+            RepoUrl = "repo.com",
+            SkillIds = [skillId],
+            Translations = [translationDto]
+        };
+
+        var project = ProjectTestDataFactory.CreateProject(id: projectId, lanuageCode: language.Code);
+        project.Slug = "old-slug";
+        project.ProjectSkills.Clear();
+        project.Translations.Clear();
+
+        return (command, project, language, skillId);
     }
 }

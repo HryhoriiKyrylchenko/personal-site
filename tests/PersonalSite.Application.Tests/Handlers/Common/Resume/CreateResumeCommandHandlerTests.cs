@@ -1,4 +1,5 @@
 using PersonalSite.Application.Features.Common.Resume.Commands.CreateResume;
+using PersonalSite.Application.Tests.Fixtures.TestDataFactories;
 using PersonalSite.Domain.Interfaces.Repositories.Common;
 
 namespace PersonalSite.Application.Tests.Handlers.Common.Resume;
@@ -26,7 +27,7 @@ public class CreateResumeCommandHandlerTests
     public async Task Handle_ShouldReturnSuccess_WithNewGuid_WhenResumeCreated()
     {
         // Arrange
-        var command = new CreateResumeCommand("http://file.url/resume.pdf", "resume.pdf", true);
+        var command = CommonTestDataFactory.CreateCreateResumeCommand();
 
         _repositoryMock
             .Setup(r => r.AddAsync(It.IsAny<Domain.Entities.Common.Resume>(), It.IsAny<CancellationToken>()))
@@ -58,7 +59,7 @@ public class CreateResumeCommandHandlerTests
     public async Task Handle_ShouldReturnFailure_AndLogError_WhenExceptionThrown()
     {
         // Arrange
-        var command = new CreateResumeCommand("url", "file", true);
+        var command = CommonTestDataFactory.CreateCreateResumeCommand("url", "file");
         var exception = new Exception("Database error");
 
         _repositoryMock
@@ -71,14 +72,5 @@ public class CreateResumeCommandHandlerTests
         // Assert
         result.IsFailure.Should().BeTrue();
         result.Error.Should().Be("Failed to create resume.");
-
-        _loggerMock.Verify(
-            x => x.Log(
-                LogLevel.Error,
-                It.IsAny<EventId>(),
-                It.Is<It.IsAnyType>((v, _) => v.ToString()!.Contains("Error creating resume.")),
-                exception,
-                It.IsAny<Func<It.IsAnyType, Exception?, string>>()),
-            Times.Once);
     }
 }

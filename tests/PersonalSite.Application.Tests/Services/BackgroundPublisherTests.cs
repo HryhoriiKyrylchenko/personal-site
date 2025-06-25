@@ -8,7 +8,6 @@ namespace PersonalSite.Application.Tests.Services;
 public class BackgroundPublisherTests
 {
     private readonly Mock<IBackgroundQueue> _queueMock;
-    private readonly Mock<IServiceProvider> _serviceProviderMock;
     private readonly Mock<IServiceScopeFactory> _scopeFactoryMock;
     private readonly Mock<IServiceScope> _scopeMock;
     private readonly Mock<IServiceProvider> _scopedServiceProviderMock;
@@ -19,14 +18,14 @@ public class BackgroundPublisherTests
     public BackgroundPublisherTests()
     {
         _queueMock = new Mock<IBackgroundQueue>();
-        _serviceProviderMock = new Mock<IServiceProvider>();
+        var serviceProviderMock = new Mock<IServiceProvider>();
         _scopeFactoryMock = new Mock<IServiceScopeFactory>();
         _scopeMock = new Mock<IServiceScope>();
         _scopedServiceProviderMock = new Mock<IServiceProvider>();
         _mediatorMock = new Mock<IMediator>();
 
         // Setup the IServiceProvider to return a scope factory
-        _serviceProviderMock
+        serviceProviderMock
             .Setup(sp => sp.GetService(typeof(IServiceScopeFactory)))
             .Returns(_scopeFactoryMock.Object);
 
@@ -45,46 +44,82 @@ public class BackgroundPublisherTests
             .Setup(sp => sp.GetService(typeof(IMediator)))
             .Returns(_mediatorMock.Object);
 
-        _publisher = new BackgroundPublisher(_queueMock.Object, _serviceProviderMock.Object);
+        _publisher = new BackgroundPublisher(_queueMock.Object, serviceProviderMock.Object);
     }
 
     [Fact]
-    public void Schedule_Should_Call_QueueSchedule_With_CorrectDelay_And_Send_Command()
+    public async Task Schedule_Should_Call_QueueSchedule_With_CorrectDelay_And_Send_Command()
     {
         // Arrange
+        // var testCommand = new TestCommand { Value = 42 };
+        // var executeAtUtc = DateTime.UtcNow.AddSeconds(value: 5);
+        // TimeSpan capturedDelay = TimeSpan.Zero;
+        // Func<CancellationToken, Task>? capturedFunc = null;
+        //
+        // _queueMock.Setup(expression: q => q.Schedule(It.IsAny<Func<CancellationToken, Task>>(), It.IsAny<TimeSpan>()))
+        //     .Callback<Func<CancellationToken, Task>, TimeSpan>(action: (func, delay) =>
+        //     {
+        //         capturedFunc = func;
+        //         capturedDelay = delay;
+        //     });
+        //
+        // // Act
+        // _publisher.Schedule(command: testCommand, executeAtUtc: executeAtUtc);
+        //
+        // // Assert delay is approximately correct (allow slight difference for test execution time)
+        // var expectedDelay = executeAtUtc - DateTime.UtcNow;
+        // if (expectedDelay < TimeSpan.Zero)
+        //     expectedDelay = TimeSpan.Zero;
+        //
+        // Assert.NotNull(@object: capturedFunc);
+        // Assert.InRange(actual: capturedDelay.TotalSeconds, low: expectedDelay.TotalSeconds - 1, high: expectedDelay.TotalSeconds + 1);
+        //
+        // // Now invoke the captured scheduled function and verify mediator.Send is called
+        // var cancellationToken = new CancellationToken();
+        //
+        // // Run the scheduled func
+        // var task = capturedFunc!(arg: cancellationToken);
+        // task.Wait();
+        //
+        // _mediatorMock.Verify(expression: m => m.Send(It.Is<TestCommand>(c => c.Value == testCommand.Value), cancellationToken), times: Times.Once);
+        
+        
+        // Arrange
         var testCommand = new TestCommand { Value = 42 };
-        var executeAtUtc = DateTime.UtcNow.AddSeconds(value: 5);
+        var executeAtUtc = DateTime.UtcNow.AddSeconds(5);
+
         TimeSpan capturedDelay = TimeSpan.Zero;
         Func<CancellationToken, Task>? capturedFunc = null;
 
-        _queueMock.Setup(expression: q => q.Schedule(It.IsAny<Func<CancellationToken, Task>>(), It.IsAny<TimeSpan>()))
-            .Callback<Func<CancellationToken, Task>, TimeSpan>(action: (func, delay) =>
+        _queueMock
+            .Setup(q => q.Schedule(It.IsAny<Func<CancellationToken, Task>>(), It.IsAny<TimeSpan>()))
+            .Callback<Func<CancellationToken, Task>, TimeSpan>((func, delay) =>
             {
                 capturedFunc = func;
                 capturedDelay = delay;
             });
 
         // Act
-        _publisher.Schedule(command: testCommand, executeAtUtc: executeAtUtc);
+        _publisher.Schedule(testCommand, executeAtUtc);
 
-        // Assert delay is approximately correct (allow slight difference for test execution time)
+        // Assert delay is approximately correct
         var expectedDelay = executeAtUtc - DateTime.UtcNow;
         if (expectedDelay < TimeSpan.Zero)
             expectedDelay = TimeSpan.Zero;
 
-        Assert.NotNull(@object: capturedFunc);
-        Assert.InRange(actual: capturedDelay.TotalSeconds, low: expectedDelay.TotalSeconds - 1, high: expectedDelay.TotalSeconds + 1);
+        Assert.NotNull(capturedFunc);
+        Assert.InRange(capturedDelay.TotalSeconds, expectedDelay.TotalSeconds - 1, expectedDelay.TotalSeconds + 1);
 
-        // Now invoke the captured scheduled function and verify mediator.Send is called
-        var cancellationToken = new CancellationToken();
+        // Act: execute the captured function
+        var cancellationToken = CancellationToken.None;
+        await capturedFunc!(cancellationToken);
 
-        // Run the scheduled func
-        var task = capturedFunc!(arg: cancellationToken);
-        task.Wait();
-
-        _mediatorMock.Verify(expression: m => m.Send(It.Is<TestCommand>(c => c.Value == testCommand.Value), cancellationToken), times: Times.Once);
+        // Assert mediator was called
+        _mediatorMock.Verify(
+            m => m.Send(It.Is<TestCommand>(c => c.Value == testCommand.Value), cancellationToken),
+            Times.Once);
     }
-
+    
     [Fact]
     public void Schedule_Should_Use_ZeroDelay_If_ExecuteAtUtc_Is_Past()
     {
@@ -94,7 +129,7 @@ public class BackgroundPublisherTests
         TimeSpan capturedDelay = TimeSpan.MaxValue;
 
         _queueMock.Setup(q => q.Schedule(It.IsAny<Func<CancellationToken, Task>>(), It.IsAny<TimeSpan>()))
-            .Callback<Func<CancellationToken, Task>, TimeSpan>((func, delay) =>
+            .Callback<Func<CancellationToken, Task>, TimeSpan>((_, delay) =>
             {
                 capturedDelay = delay;
             });
@@ -107,8 +142,8 @@ public class BackgroundPublisherTests
     }
 
     // Helper test command class for serialization
-    public class TestCommand
+    private class TestCommand
     {
-        public int Value { get; set; }
+        public int Value { get; init; }
     }
 }

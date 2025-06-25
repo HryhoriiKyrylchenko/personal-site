@@ -9,18 +9,17 @@ public class UpdateLearningSkillCommandHandlerTests
     {
         private readonly Mock<ILearningSkillRepository> _repositoryMock;
         private readonly Mock<IUnitOfWork> _unitOfWorkMock;
-        private readonly Mock<ILogger<UpdateLearningSkillCommandHandler>> _loggerMock;
         private readonly UpdateLearningSkillCommandHandler _handler;
 
         public UpdateLearningSkillCommandHandlerTests()
         {
             _repositoryMock = new Mock<ILearningSkillRepository>();
             _unitOfWorkMock = new Mock<IUnitOfWork>();
-            _loggerMock = new Mock<ILogger<UpdateLearningSkillCommandHandler>>();
+            var loggerMock = new Mock<ILogger<UpdateLearningSkillCommandHandler>>();
             _handler = new UpdateLearningSkillCommandHandler(
                 _repositoryMock.Object,
                 _unitOfWorkMock.Object,
-                _loggerMock.Object
+                loggerMock.Object
             );
         }
 

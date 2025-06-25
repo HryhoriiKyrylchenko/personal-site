@@ -10,18 +10,17 @@ public class GetProjectByIdQueryHandlerTests
 {
     private readonly Mock<IProjectRepository> _repositoryMock;
     private readonly Mock<IAdminMapper<Domain.Entities.Projects.Project, ProjectAdminDto>> _mapperMock;
-    private readonly Mock<ILogger<GetProjectByIdQueryHandler>> _loggerMock;
     private readonly GetProjectByIdQueryHandler _handler;
 
     public GetProjectByIdQueryHandlerTests()
     {
         _repositoryMock = new Mock<IProjectRepository>();
         _mapperMock = new Mock<IAdminMapper<Domain.Entities.Projects.Project, ProjectAdminDto>>();
-        _loggerMock = new Mock<ILogger<GetProjectByIdQueryHandler>>();
+        var loggerMock = new Mock<ILogger<GetProjectByIdQueryHandler>>();
 
         _handler = new GetProjectByIdQueryHandler(
             _repositoryMock.Object,
-            _loggerMock.Object,
+            loggerMock.Object,
             _mapperMock.Object);
     }
 

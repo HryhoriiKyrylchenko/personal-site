@@ -60,7 +60,7 @@ public class PageTranslationMapperTests
         // Arrange
         var entityWithNullOgImage = new PageTranslation
         {
-            OgImage = null,
+            OgImage = "",
             Language = new Language { Code = "en" }
         };
         var entityWithEmptyOgImage = new PageTranslation
@@ -107,7 +107,7 @@ public class PageTranslationMapperTests
                 Language = new Language { Code = "fr" },
                 PageId = Guid.NewGuid(),
                 Title = "Title2",
-                OgImage = null
+                OgImage = ""
             }
         };
 

@@ -10,18 +10,17 @@ namespace PersonalSite.Application.Tests.Handlers.Skills.LearningSkills;
 public class GetLearningSkillsQueryHandlerTests
 {
     private readonly Mock<ILearningSkillRepository> _repositoryMock;
-    private readonly Mock<ILogger<GetLearningSkillsQueryHandler>> _loggerMock;
     private readonly Mock<IAdminMapper<LearningSkill, LearningSkillAdminDto>> _mapperMock;
     private readonly GetLearningSkillsQueryHandler _handler;
 
     public GetLearningSkillsQueryHandlerTests()
     {
         _repositoryMock = new Mock<ILearningSkillRepository>();
-        _loggerMock = new Mock<ILogger<GetLearningSkillsQueryHandler>>();
+        var loggerMock = new Mock<ILogger<GetLearningSkillsQueryHandler>>();
         _mapperMock = new Mock<IAdminMapper<LearningSkill, LearningSkillAdminDto>>();
         _handler = new GetLearningSkillsQueryHandler(
             _repositoryMock.Object,
-            _loggerMock.Object,
+            loggerMock.Object,
             _mapperMock.Object);
     }
 
