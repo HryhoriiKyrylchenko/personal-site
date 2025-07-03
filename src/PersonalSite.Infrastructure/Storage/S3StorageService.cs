@@ -35,7 +35,7 @@ public class S3StorageService : IStorageService
 
             await fileTransferUtility.UploadAsync(uploadRequest, cancellationToken);
 
-            return $"https://{_settings.BucketName}.s3.{_settings.Region}.amazonaws.com/{key}";
+            return key;
         }
         catch (Exception e)
         {

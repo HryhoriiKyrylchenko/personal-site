@@ -1,11 +1,13 @@
+using PersonalSite.Infrastructure.Storage.S3ReferenceProviders;
+
 namespace PersonalSite.Infrastructure.BackgroundProcessing.OrphanFileCleanupJob;
 
 public class S3OrphanFileCleanupJob : IHostedService, IDisposable
 {
     private readonly IServiceScopeFactory _scopeFactory;
-    private readonly ILogger<S3OrphanFileCleanupJob> _logger;
     private readonly IAmazonS3 _s3Client;
     private readonly AwsS3Settings _settings;
+    private readonly ILogger<S3OrphanFileCleanupJob> _logger;
     private Timer? _timer;
 
     public S3OrphanFileCleanupJob(
@@ -44,30 +46,29 @@ public class S3OrphanFileCleanupJob : IHostedService, IDisposable
 
             var listedObjects = await _s3Client.ListObjectsV2Async(new ListObjectsV2Request
             {
-                BucketName = _settings.BucketName,
-                Prefix = "uploads/"
+                BucketName = _settings.BucketName
             });
 
-            var s3Keys = listedObjects.S3Objects
+            var s3Keys = (listedObjects.S3Objects ?? Enumerable.Empty<S3Object>())
                 .Where(o => o.LastModified < DateTime.UtcNow.AddDays(-1))
                 .Select(o => o.Key)
                 .ToList();
+            
+            if (s3Keys.Count == 0)
+            {
+                _logger.LogInformation("No S3 objects found for cleanup.");
+                return;
+            }
 
             using var scope = _scopeFactory.CreateScope();
-            var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+            var referenceProviders = scope.ServiceProvider.GetServices<IS3ReferenceProvider>();
 
-            var dbUrls = await dbContext.BlogPosts
-                .Select(bp => bp.CoverImage)
-                .Concat(dbContext.Projects.Select(p => p.CoverImage))
-                .Where(url => true)
-                .ToListAsync();
+            var usedKeys = new HashSet<string>(
+                await referenceProviders
+                    .SelectManyAsync(p => p.GetUsedS3UrlsAsync(CancellationToken.None))
+            );
 
-            var dbKeys = dbUrls
-                .Select(url => url.Split(".amazonaws.com/").LastOrDefault())
-                .Where(key => key != null)
-                .ToHashSet();
-
-            var orphanKeys = s3Keys.Except(dbKeys).ToList();
+            var orphanKeys = s3Keys.Except(usedKeys).ToList();
 
             foreach (var orphanKey in orphanKeys)
             {
