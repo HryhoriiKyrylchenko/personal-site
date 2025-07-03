@@ -16,10 +16,10 @@
       </PackageReference>
       <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.1" />
       <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.4" />
+      <PackageReference Include="Scrutor" Version="6.1.0" />
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\tests\PersonalSite.Application.Tests\PersonalSite.Application.Tests.csproj" />
       <ProjectReference Include="..\PersonalSite.Domain\PersonalSite.Domain.csproj" />
     </ItemGroup>
 

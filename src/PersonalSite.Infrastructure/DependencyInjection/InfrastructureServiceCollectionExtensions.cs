@@ -1,4 +1,6 @@
-﻿namespace PersonalSite.Infrastructure.DependencyInjection;
+﻿using PersonalSite.Infrastructure.Storage.S3ReferenceProviders;
+
+namespace PersonalSite.Infrastructure.DependencyInjection;
 
 public static class InfrastructureServiceCollectionExtensions
 {
@@ -10,6 +12,13 @@ public static class InfrastructureServiceCollectionExtensions
         
         services.AddSingleton<IBackgroundQueue, BackgroundQueue>();
         services.AddHostedService<QueuedHostedService>();
+        
+        services.Scan(scan => scan
+            .FromAssemblyOf<IS3ReferenceProvider>()
+            .AddClasses(classes => classes.AssignableTo<IS3ReferenceProvider>())
+            .AsImplementedInterfaces()
+            .WithScopedLifetime());
+
         
         services.AddHostedService<S3OrphanFileCleanupJob>();
         

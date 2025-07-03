@@ -4,6 +4,7 @@ using PersonalSite.Application.Features.Common.Resume.Commands.UpdateResume;
 using PersonalSite.Application.Features.Common.Resume.Dtos;
 using PersonalSite.Application.Features.Common.Resume.Queries.GetResumeById;
 using PersonalSite.Application.Features.Common.Resume.Queries.GetResumes;
+using PersonalSite.Domain.Common.Results;
 
 namespace PersonalSite.Web.Controllers.Admin.Common;
 

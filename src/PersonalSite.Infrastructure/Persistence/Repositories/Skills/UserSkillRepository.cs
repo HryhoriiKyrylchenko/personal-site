@@ -33,4 +33,33 @@ public class UserSkillRepository : EfRepository<UserSkill>, IUserSkillRepository
         return await DbContext.UserSkills
             .AnyAsync(us => us.SkillId == requestSkillId, cancellationToken);   
     }
+
+    public async Task<List<UserSkill>> GetFilteredAsync(Guid? skillId, short? minProficiency, short? maxProficiency,
+        CancellationToken cancellationToken = default)
+    {
+        var query = DbContext.UserSkills.AsQueryable()
+            .Include(x => x.Skill)
+                .ThenInclude(s => s.Translations.Where(t => !t.Language.IsDeleted))
+                    .ThenInclude(t => t.Language)
+            .Include(x => x.Skill)
+                .ThenInclude(s => s.Category)
+                    .ThenInclude(c => c.Translations.Where(t => !t.Language.IsDeleted))
+                        .ThenInclude(t => t.Language)
+            .AsNoTracking();
+
+        if (skillId.HasValue)
+            query = query.Where(x => x.SkillId == skillId.Value);
+
+        if (minProficiency.HasValue)
+            query = query.Where(x => x.Proficiency >= minProficiency.Value);
+
+        if (maxProficiency.HasValue)
+            query = query.Where(x => x.Proficiency <= maxProficiency.Value);
+
+        var entities = await query
+            .OrderBy(s => s.Skill.Category.Key)
+            .ToListAsync(cancellationToken);
+        
+        return entities;   
+    }
 }

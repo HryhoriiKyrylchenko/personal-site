@@ -1,6 +1,7 @@
 using PersonalSite.Application.Features.Common.LogEntries.Commands.DeleteLogs;
 using PersonalSite.Application.Features.Common.LogEntries.Dtos;
 using PersonalSite.Application.Features.Common.LogEntries.Queries.GetLogEntries;
+using PersonalSite.Domain.Common.Results;
 
 namespace PersonalSite.Web.Controllers.Admin.Common;
 

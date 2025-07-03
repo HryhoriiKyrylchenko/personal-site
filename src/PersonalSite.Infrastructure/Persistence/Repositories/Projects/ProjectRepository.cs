@@ -1,3 +1,4 @@
+using PersonalSite.Domain.Common.Results;
 using PersonalSite.Domain.Entities.Projects;
 using PersonalSite.Domain.Interfaces.Repositories.Projects;
 
@@ -69,5 +70,35 @@ public class ProjectRepository : EfRepository<Project>, IProjectRepository
     public async Task<bool> IsSlugAvailableAsync(string requestSlug, CancellationToken cancellationToken)
     {
         return await DbContext.Projects.AllAsync(p => p.Slug != requestSlug, cancellationToken);   
+    }
+
+    public async Task<PaginatedResult<Project>> GetFilteredAsync(int page, int pageSize, string? slugFilter, CancellationToken cancellationToken = default)
+    {
+        var query = DbContext.Projects.AsQueryable()
+            .Include(p => p.Translations.Where(t => !t.Language.IsDeleted))
+                .ThenInclude(t => t.Language)
+            .Include(p => p.ProjectSkills)
+                .ThenInclude(ps => ps.Skill)
+                    .ThenInclude(s => s.Translations.Where(t => !t.Language.IsDeleted))
+                        .ThenInclude(t => t.Language)
+            .Include(p => p.ProjectSkills)
+                .ThenInclude(ps => ps.Skill)
+                    .ThenInclude(s => s.Category)
+                        .ThenInclude(c => c.Translations.Where(t => !t.Language.IsDeleted))
+                            .ThenInclude(t => t.Language)
+            .AsNoTracking();
+
+        if (!string.IsNullOrWhiteSpace(slugFilter))
+            query = query.Where(p => p.Slug.Contains(slugFilter));
+
+        var total = await query.CountAsync(cancellationToken);
+
+        var entities = await query
+            .OrderByDescending(p => p.CreatedAt)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync(cancellationToken);
+        
+        return PaginatedResult<Project>.Success(entities, page, pageSize, total);  
     }
 }

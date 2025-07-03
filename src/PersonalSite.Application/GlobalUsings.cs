@@ -8,7 +8,6 @@ global using Microsoft.Extensions.DependencyInjection;
 global using Microsoft.Extensions.Logging;
 global using PersonalSite.Application.Common.Localization;
 global using PersonalSite.Application.Common.Mapping;
-global using PersonalSite.Application.Common.Results;
 global using PersonalSite.Application.DependencyInjection;
 global using PersonalSite.Application.Services.Common;
 global using PersonalSite.Domain.Interfaces;

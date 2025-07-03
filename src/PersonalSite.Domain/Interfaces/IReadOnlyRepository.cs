@@ -10,5 +10,4 @@ public interface IReadOnlyRepository<T> where T : class
     Task<bool> ExistsAsync(
         Expression<Func<T, bool>> predicate,
         CancellationToken cancellationToken = default);
-    IQueryable<T> GetQueryable();
 }
