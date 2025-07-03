@@ -1,0 +1,15 @@
+<header class="site-header">
+  <a routerLink="/">
+    <img [ngSrc]="logo" width="45" height="37" alt="Site logo" class="logo" />
+  </a>
+  <nav>
+    <ul>
+      @for (link of navLinks; track link.path) {
+        <li>
+          <a [routerLink]="link.path">{{ link.text }}</a>
+        </li>
+      }
+    </ul>
+  </nav>
+  <app-theme-toggle></app-theme-toggle>
+</header>

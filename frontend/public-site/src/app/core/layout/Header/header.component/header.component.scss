@@ -1,0 +1,29 @@
+.site-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+  background: var(--color-background);
+  color: var(--color-text-primary);
+
+  .logo {
+    width: 45px;
+    height: 37px;
+    color: var(--color-text-primary);
+  }
+
+  nav ul {
+    list-style: none;
+    display: flex;
+    gap: 2rem;
+
+    a {
+      text-decoration: none;
+      color: var(--color-link);
+
+      &:hover {
+        color: var(--color-link);
+      }
+    }
+  }
+}

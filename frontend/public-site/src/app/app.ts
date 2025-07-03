@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {RouterLink, RouterOutlet} from '@angular/router';
+import { RouterOutlet } from '@angular/router';
 
 import { inject, Injectable } from '@angular/core';
 import { Title } from '@angular/platform-browser';
@@ -9,7 +9,7 @@ import { filter } from 'rxjs/operators';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, RouterLink],
+  imports: [RouterOutlet],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
