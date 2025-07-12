@@ -1,28 +1,52 @@
 .site-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 1rem 2rem;
+  width: 100%;
+  padding: 0 6.25rem;
+  position: relative;
+  z-index: 10;
+
   background: var(--color-background);
   color: var(--color-text-primary);
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.25);
 
-  .logo {
-    width: 45px;
-    height: 37px;
-    color: var(--color-text-primary);
+  .header-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0;
+    height: 3.5rem;
+  }
+
+  .logo-icon {
+    width: 2.8125rem;
+    height: 2.3125rem;
+    flex-shrink: 0;
+  }
+
+  .header-toggles {
+    width: auto;
+    height: 1.8125rem;
+    flex-shrink: 0;
+    display: flex;
+    gap: 1.5rem;
   }
 
   nav ul {
+    width: auto;
+    height: 1.8125rem;
+    justify-content: space-between;
+    flex-shrink: 0;
     list-style: none;
     display: flex;
-    gap: 2rem;
+    gap: 3rem;
 
     a {
       text-decoration: none;
       color: var(--color-link);
+      text-align: center;
+      font-weight: 400;
 
       &:hover {
-        color: var(--color-link);
+        color: var(--color-text-primary);
       }
     }
   }

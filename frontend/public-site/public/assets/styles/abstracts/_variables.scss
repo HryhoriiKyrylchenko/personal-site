@@ -1,0 +1,23 @@
+:root {
+  --color-background: #F8F8F8;
+  --color-text-primary: #141414;
+  --color-link: #777;
+  --color-modal-background: #C5C5C5;
+  --color-modal-button: #3B3B3B;
+  --color-modal-text: #F8F8F8;
+
+  --color-hover: #41ECFF;
+  --color-active: #76FF9F;
+  --color-error: #FF9169;
+  --color-hover-text: #141414;
+  --color-active-text: #003316;
+  --color-error-text: #3D1100;
+}
+
+body[data-theme="dark"] {
+  --color-background: #282828;
+  --color-text-primary: #F8F8F8;
+  --color-modal-background: #4F4F4F;
+  --color-modal-button: #C5C5C5;
+  --color-modal-text: #141414;
+}

@@ -1,0 +1,23 @@
+<button
+  #btn
+  class="lang-switcher"
+  (click)="toggle()"
+  (keydown.enter)="toggle()"
+  (keydown.space)="toggle()"
+  [attr.aria-expanded]="open()"
+>
+  <svg class="switcher-img" viewBox="0 0 11 10" xmlns="http://www.w3.org/2000/svg">
+    <path d="M4.65865 10.0003L-0.000444412 0.852539L1.81774 0.852539L5.19842 7.86958L5.08478 7.81277L5.36887 7.81277L5.25524 7.86958L8.63592 0.852539L10.4541 0.852539L5.79501 10.0003L4.65865 10.0003Z" fill="currentColor"/>
+  </svg>
+  {{ currentLangName() }}
+</button>
+
+@if (open()) {
+  <ul class="lang-menu" [style.min-width.px]="buttonWidth()">
+    @for (lang of AVAILABLE_LANGS; track lang) {
+      <li (click)="select(lang)" (keydown.enter)="select(lang)" tabindex="0">
+        {{ currentLangNameFor(lang) }}
+      </li>
+    }
+  </ul>
+}

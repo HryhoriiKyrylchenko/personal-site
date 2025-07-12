@@ -14,10 +14,10 @@ import { FooterComponent } from '../../Footer/footer.component/footer.component'
 export class LayoutComponent {
   logo = '../logo.svg';
   links = [
-    { text: 'Home', path: '/' },
-    { text: 'About', path: '/about' },
-    { text: 'Portfolio', path: '/portfolio' },
-    { text: 'Blog', path: '/blog' },
-    { text: 'Contacts', path: '/contacts' },
+    { textKey: 'nav.home', path: '/' },
+    { textKey: 'nav.about', path: '/about' },
+    { textKey: 'nav.portfolio', path: '/portfolio' },
+    { textKey: 'nav.blog', path: '/blog' },
+    { textKey: 'nav.contacts', path: '/contacts' },
   ];
 }

@@ -1,0 +1,17 @@
+{
+  "home": {
+    "title": "Hryhorii Kyrylchenko"
+  },
+  "nav": {
+    "home": "Strona główna",
+    "about": "O mnie",
+    "portfolio": "Portfolio",
+    "blog": "Blog",
+    "contacts": "Kontakt"
+  },
+  "theme": {
+    "light": "Jasny",
+    "dark": "Ciemny"
+  }
+}
+
