@@ -7,17 +7,22 @@ import {
   inject,
   signal
 } from '@angular/core';
-import { TranslocoService } from '@ngneat/transloco';
+import { TranslocoService} from '@ngneat/transloco';
 import { AVAILABLE_LANGS, Language } from '../../../i18n/languages.enum';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { map } from 'rxjs';
 
 @Component({
   selector: 'app-language-switcher',
   standalone: true,
   templateUrl: './language-switcher.component.html',
-  styleUrls: ['./language-switcher.component.scss']
+  styleUrls: ['./language-switcher.component.scss'],
 })
 export class LanguageSwitcherComponent implements AfterViewInit {
   private trans = inject(TranslocoService);
+  private bp = inject(BreakpointObserver);
+
   AVAILABLE_LANGS = AVAILABLE_LANGS;
 
   current = signal<Language>(this.trans.getActiveLang() as Language);
@@ -25,6 +30,17 @@ export class LanguageSwitcherComponent implements AfterViewInit {
   buttonWidth = signal(0);
 
   @ViewChild('btn', { read: ElementRef }) btn?: ElementRef<HTMLButtonElement>;
+
+  isMobile = toSignal(
+    this.bp.observe([Breakpoints.HandsetPortrait])
+      .pipe(map(res => res.matches)),
+    { initialValue: false }
+  );
+
+  isMobileOrTablet = toSignal(
+    this.bp.observe([Breakpoints.HandsetPortrait, Breakpoints.HandsetLandscape, Breakpoints.TabletPortrait])
+      .pipe(map(res => res.matches)),
+  )
 
   ngAfterViewInit() {
     if (this.btn) {

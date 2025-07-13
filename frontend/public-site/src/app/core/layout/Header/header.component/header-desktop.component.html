@@ -8,11 +8,11 @@
     </a>
     <nav>
       <ul>
-          @for (link of navLinks; track link.path) {
-            <li>
-              <a [routerLink]="link.path">{{ link.textKey | transloco }}</a>
-            </li>
-          }
+        @for (link of navLinks; track link.path) {
+          <li>
+            <a [routerLink]="link.path">{{ link.textKey | transloco }}</a>
+          </li>
+        }
       </ul>
     </nav>
     <div class="header-toggles">

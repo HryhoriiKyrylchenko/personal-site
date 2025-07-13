@@ -7,12 +7,11 @@ import { FooterComponent } from '../../Footer/footer.component/footer.component'
 @Component({
   selector: 'app-layout',
   standalone: true,
-  imports: [RouterOutlet, HeaderComponent, FooterComponent],
+  imports: [RouterOutlet, HeaderComponent, FooterComponent, HeaderComponent],
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.scss'
 })
 export class LayoutComponent {
-  logo = '../logo.svg';
   links = [
     { textKey: 'nav.home', path: '/' },
     { textKey: 'nav.about', path: '/about' },
