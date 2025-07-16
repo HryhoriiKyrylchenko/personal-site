@@ -1,0 +1,39 @@
+.social-media-links-container {
+  display: flex;
+  align-items: center;
+  align-self: stretch;
+  gap: 1.25rem;
+}
+
+.social-media-links-container a {
+  display: inline-flex;
+  width: 3.5rem;
+  height: 3.5rem;
+  justify-content: center;
+  align-items: center;
+  vertical-align: middle;
+}
+.social-media-links-container svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.social-media-links-container a,
+.social-media-links-container svg {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+.outer-fill {
+  color: var(--color-social-link-outer);
+}
+
+.inner-fill {
+  color: var(--color-social-link-inner);
+}

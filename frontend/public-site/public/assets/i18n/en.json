@@ -1,6 +1,8 @@
 {
   "home": {
-    "title": "Hryhorii Kyrylchenko"
+    "title": "Hryhorii Kyrylchenko",
+    "button-back-to-top": "Back to top",
+    "rights-reserved": "All rights reserved."
   },
   "nav": {
     "home": "Home",
@@ -12,5 +14,9 @@
   "theme": {
     "light": "Light",
     "dark": "Dark"
+  },
+  "policy": {
+    "cookie": "Cookie Policy",
+    "privacy": "Privacy Policy"
   }
 }

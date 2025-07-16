@@ -1,5 +1,14 @@
+.app-root {
+  display:flex;
+  flex-direction:column;
+  flex:1 1 auto;
+  min-height: 0;
+}
+
 .site-layout {
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 auto;
   background: var(--color-background);
   color: var(--color-text-primary);
-  min-width: 480px;
 }
