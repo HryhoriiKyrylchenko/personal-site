@@ -16,3 +16,6 @@ app-root, app-layout {
   height: 100%;
   min-height: 100vh;
 }
+main {
+  flex: 1 0 auto;
+}

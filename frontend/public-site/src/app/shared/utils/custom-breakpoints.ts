@@ -1,5 +1,5 @@
 export const CustomBreakpoints = {
-  Mobile: '(max-width: 599px)',
-  Tablet: '(min-width: 600px) and (max-width: 959px)',
-  Desktop: '(min-width: 960px)',
+  Mobile: '(max-width: 639px)',
+  Tablet: '(min-width: 640px) and (max-width: 1007px)',
+  Desktop: '(min-width: 1008px)',
 };

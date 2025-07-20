@@ -18,6 +18,11 @@
   "policy": {
     "cookie": "Polityka plików cookie",
     "privacy": "Polityka prywatności"
+  },
+  "error": {
+    "title": "Błąd 404",
+    "text": "Wygląda na to, że ta strona się... pogubiła. \u2028Próbowaliśmy ją odnaleźć, przepisać, a nawet stworzyć nową — ale nic z tego.",
+    "button": "Odśwież stronę"
   }
 }
 

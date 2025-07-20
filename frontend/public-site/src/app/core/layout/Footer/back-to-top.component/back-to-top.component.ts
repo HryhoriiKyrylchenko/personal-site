@@ -1,4 +1,5 @@
-import { Component, HostListener } from '@angular/core';
+import {Component, HostListener, PLATFORM_ID, AfterViewInit, inject} from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import {TranslocoPipe} from '@ngneat/transloco';
 
 @Component({
@@ -9,17 +10,45 @@ import {TranslocoPipe} from '@ngneat/transloco';
   templateUrl: './back-to-top.component.html',
   styleUrl: './back-to-top.component.scss'
 })
-export class BackToTopComponent {
+export class BackToTopComponent implements AfterViewInit {
   visible = false;
+
+  private platformId = inject(PLATFORM_ID);
+
+  ngAfterViewInit() {
+    if (isPlatformBrowser(this.platformId)) {
+      this.updateVisibility();
+    }
+  }
+
+  @HostListener('window:resize')
+  onResize() {
+    if (isPlatformBrowser(this.platformId)) {
+      this.updateVisibility();
+    }
+  }
 
   @HostListener('window:scroll')
   onWindowScroll() {
-    const scrollPos = (window.pageYOffset || document.documentElement.scrollTop) + window.innerHeight;
-    const docHeight = document.documentElement.scrollHeight;
-    this.visible = scrollPos >= docHeight;
+    if (isPlatformBrowser(this.platformId)) {
+      this.updateVisibility();
+    }
+  }
+
+  private updateVisibility() {
+    const docHeight = Math.max(
+      document.body.scrollHeight,
+      document.documentElement.scrollHeight
+    );
+    const viewHeight = window.innerHeight;
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+    this.visible = docHeight > viewHeight && scrollTop > 50;
   }
 
   scrollToTop() {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (isPlatformBrowser(this.platformId)) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   }
 }

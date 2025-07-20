@@ -18,5 +18,10 @@
   "policy": {
     "cookie": "Cookie Policy",
     "privacy": "Privacy Policy"
+  },
+  "error": {
+    "title": "Error 404",
+    "text": "Looks like this page got... crumpled. \u2028We tried to smooth it out, rewrite it, even cut a new one — but nope.",
+    "button": "Reload Page"
   }
 }
