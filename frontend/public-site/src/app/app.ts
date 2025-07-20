@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-
 import { inject, Injectable } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
@@ -23,7 +22,7 @@ export class App {
   constructor() {
     this.router.events
       .pipe(
-        filter(event => event instanceof NavigationEnd) // ensure RxJS operator is imported
+        filter(event => event instanceof NavigationEnd)
       )
       .subscribe(() => {
         const route = this.getChild(this.activatedRoute);

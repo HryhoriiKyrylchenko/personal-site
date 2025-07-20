@@ -1,0 +1,35 @@
+.to-top {
+  display: inline-flex;
+  width: 100%;
+  padding: 1.25rem 6.25rem;
+  justify-content: center;
+  align-items: center;
+  gap: 56.25rem;
+  flex-shrink: 0;
+  border: none;
+  cursor: pointer;
+  border-radius: 0;
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.55);
+  background: var(--color-footer-background);
+  color: var(--color-link);
+  opacity: 0.8;
+  transition: opacity 0.2s;
+  position: relative;
+  z-index: 1;
+}
+.to-top:hover {
+  opacity: 1;
+  background: var(--color-hover);
+  color: var(--color-hover-text);
+}
+
+.to-top span {
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+@media (min-width: var(--bp-sm)) {
+  .to-top span {
+    font-size: 1.5rem;
+  }
+}

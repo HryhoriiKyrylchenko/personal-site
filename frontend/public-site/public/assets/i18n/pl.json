@@ -1,6 +1,8 @@
 {
   "home": {
-    "title": "Hryhorii Kyrylchenko"
+    "title": "Hryhorii Kyrylchenko",
+    "button-back-to-top": "Powrót do góry",
+    "rights-reserved": "Wszystkie prawa zastrzeżone."
   },
   "nav": {
     "home": "Strona główna",
@@ -12,6 +14,15 @@
   "theme": {
     "light": "Jasny",
     "dark": "Ciemny"
+  },
+  "policy": {
+    "cookie": "Polityka plików cookie",
+    "privacy": "Polityka prywatności"
+  },
+  "error": {
+    "title": "Błąd 404",
+    "text": "Wygląda na to, że ta strona się... pogubiła. \u2028Próbowaliśmy ją odnaleźć, przepisać, a nawet stworzyć nową — ale nic z tego.",
+    "button": "Odśwież stronę"
   }
 }
 

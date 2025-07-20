@@ -1,0 +1,29 @@
+.privacy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 3rem;
+}
+
+.privacy__link {
+  text-decoration: none;
+  color: var(--color-social-link-outer);
+  font-size: 0.8125rem;
+  font-weight: 400;
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+@media only screen and (max-width: 599px) {
+  .privacy {
+    gap: 1rem;
+  }
+}
+
+@media only screen and (min-width: 600px) {
+  .privacy {
+    flex-direction: row;
+  }
+}
