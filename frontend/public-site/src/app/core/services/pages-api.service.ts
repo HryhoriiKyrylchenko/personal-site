@@ -32,4 +32,12 @@ export class PagesApiService {
   getContactPage(): Observable<ContactPageDto> {
     return this.http.get<ContactPageDto>(`${this.baseUrl}/contacts`).pipe(take(1));
   }
+
+  getCookiesPage(): Observable<ContactPageDto> {
+    return this.http.get<ContactPageDto>(`${this.baseUrl}/cookies`).pipe(take(1));
+  }
+
+  getPrivacyPage(): Observable<ContactPageDto> {
+    return this.http.get<ContactPageDto>(`${this.baseUrl}/privacy`).pipe(take(1));
+  }
 }
