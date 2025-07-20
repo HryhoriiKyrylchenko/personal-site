@@ -6,7 +6,7 @@ import {HomeComponent} from './features/home/home.component/home.component';
 import {PortfolioComponent} from './features/portfolio/portfolio.component/portfolio.component';
 import {LayoutComponent} from './core/layout/Layout/layout.component/layout.component';
 import {PrivacyComponent} from './features/privacy/privacy.component/privacy.component';
-import {CookieComponent} from './features/cookie/cookie.component/cookie.component';
+import {CookiesComponent} from './features/cookies/cookies.component/cookies.component';
 import {ErrorComponent} from './features/error/error.component/error.component';
 
 export const routes: Routes = [
@@ -20,7 +20,7 @@ export const routes: Routes = [
       { path: 'blog', component: BlogComponent, data: { title: 'Blog'} },
       { path: 'contacts', component: ContactsComponent, data: { title: 'Contacts'} },
       { path: 'privacy', component: PrivacyComponent, data: { title: 'Privacy'} },
-      { path: 'cookie', component: CookieComponent, data: { title: 'Cookies'} },
+      { path: 'cookie', component: CookiesComponent, data: { title: 'Cookies'} },
       { path: '**', component: ErrorComponent, data: { title: 'Error'} }
     ]
   },

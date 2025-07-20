@@ -2,20 +2,20 @@ using PersonalSite.Application.Features.Pages.Page.Dtos;
 using PersonalSite.Domain.Common.Results;
 using PersonalSite.Domain.Interfaces.Repositories.Pages;
 
-namespace PersonalSite.Application.Features.Pages.Page.Queries.GetContactPage;
+namespace PersonalSite.Application.Features.Pages.Page.Queries.GetCookiesPage;
 
-public class GetContactPageQueryHandler : IRequestHandler<GetContactPageQuery, Result<ContactPageDto>>
+public class GetCookiesPageQueryHandler : IRequestHandler<GetCookiesPageQuery, Result<CookiesPageDto>>
 {
-    private const string Key = "contacts";
+    private const string Key = "cookies";
     private readonly LanguageContext _language;
     private readonly IPageRepository _pageRepository;
-    private readonly ILogger<GetContactPageQueryHandler> _logger;
+    private readonly ILogger<GetCookiesPageQueryHandler> _logger;
     private readonly ITranslatableMapper<Domain.Entities.Pages.Page, PageDto> _pageMapper;
     
-    public GetContactPageQueryHandler(
+    public GetCookiesPageQueryHandler(
         LanguageContext language,
         IPageRepository pageRepository,
-        ILogger<GetContactPageQueryHandler> logger,
+        ILogger<GetCookiesPageQueryHandler> logger,
         ITranslatableMapper<Domain.Entities.Pages.Page, PageDto> pageMapper)
     {
         _language = language;
@@ -24,34 +24,34 @@ public class GetContactPageQueryHandler : IRequestHandler<GetContactPageQuery, R
         _pageMapper = pageMapper; 
     }
     
-    public async Task<Result<ContactPageDto>> Handle(GetContactPageQuery request, CancellationToken cancellationToken)
+    public async Task<Result<CookiesPageDto>> Handle(GetCookiesPageQuery request, CancellationToken cancellationToken)
     {
         try
         {
             if (string.IsNullOrWhiteSpace(_language.LanguageCode))
             {
-                return Result<ContactPageDto>.Failure("Invalid language context.");
+                return Result<CookiesPageDto>.Failure("Invalid language context.");
             }
         
             var page = await _pageRepository.GetByKeyAsync(Key, cancellationToken);
             if (page == null)
             {
-                _logger.LogWarning("Contact page not found.");
-                return Result<ContactPageDto>.Failure("Contact page not found.");
+                _logger.LogWarning("Cookies page not found.");
+                return Result<CookiesPageDto>.Failure("Cookies page not found.");
             }
             var pageData = _pageMapper.MapToDto(page, _language.LanguageCode);
         
-            var contactPage = new ContactPageDto
+            var cookiesPage = new CookiesPageDto
             {
                 PageData = pageData
             };
         
-            return Result<ContactPageDto>.Success(contactPage);
+            return Result<CookiesPageDto>.Success(cookiesPage);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error occurred while retrieving contact page data.");
-            return Result<ContactPageDto>.Failure("An unexpected error occurred.");
+            _logger.LogError(ex, "Error occurred while retrieving cookies page data.");
+            return Result<CookiesPageDto>.Failure("An unexpected error occurred.");
         }
     }
 }
