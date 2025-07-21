@@ -7,12 +7,17 @@ import { Observable } from 'rxjs';
 import { TranslocoService } from '@ngneat/transloco';
 
 @Injectable()
-export class AcceptLanguageInterceptor implements HttpInterceptor {
+export class LocaleInterceptor implements HttpInterceptor {
   private transloco = inject(TranslocoService);
 
   intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
+    console.log('🏷️ LocaleInterceptor:', this.transloco.getActiveLang(), '->', req.url);
     const lang = this.transloco.getActiveLang();
-    const cloned = req.clone({ headers: req.headers.set('Accept-Language', lang) });
+    const cloned = req.clone({
+      headers: req.headers.set('X-Locale', lang),
+      withCredentials: true
+    });
+
     return next.handle(cloned);
   }
 }

@@ -10,17 +10,24 @@ import {provideTranslocoPersistLang, cookiesStorage} from '@ngneat/transloco-per
 import { StaticLoader } from './core/i18n/transloco.loader';
 import { routes } from './app.routes';
 import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
-import {HTTP_INTERCEPTORS, provideHttpClient, withFetch} from '@angular/common/http';
-import {AcceptLanguageInterceptor} from './core/interceptors/accept-language.interceptor';
+import {HTTP_INTERCEPTORS, provideHttpClient, withFetch, withInterceptorsFromDi} from '@angular/common/http';
 import {firstValueFrom, of} from 'rxjs';
 import {catchError} from 'rxjs/operators';
 import {LanguageService} from './core/services/language.service';
 import {isPlatformBrowser} from '@angular/common';
-
+import {LocaleInterceptor} from './interceptors/locale.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideHttpClient(withFetch()),
+    provideHttpClient(
+      withFetch(),
+      withInterceptorsFromDi()
+    ),
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: LocaleInterceptor,
+      multi: true
+    },
 
     provideBrowserGlobalErrorListeners(),
     provideZoneChangeDetection({ eventCoalescing: true }),
@@ -79,11 +86,6 @@ export const appConfig: ApplicationConfig = {
       storage: {
         useValue: cookiesStorage()
       }
-    }),
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: AcceptLanguageInterceptor,
-      multi: true
-    }
+    })
   ]
 };
