@@ -4,11 +4,15 @@ import { inject, Injectable } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
+import {
+  CookiesBannerComponent
+} from './shared/components/cookies-banner/cookies-banner.component/cookies-banner.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet],
+  imports: [CookiesBannerComponent,
+    RouterOutlet],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })

@@ -4,6 +4,7 @@ import {PagesApiService} from '../../../core/services/pages-api.service';
 
 @Component({
   selector: 'app-cookies',
+  standalone: true,
   templateUrl: './cookies.component.html',
   styleUrl: './cookies.component.scss'
 })

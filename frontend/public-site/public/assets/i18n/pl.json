@@ -23,6 +23,13 @@
     "title": "Błąd 404",
     "text": "Wygląda na to, że ta strona się... pogubiła. \u2028Próbowaliśmy ją odnaleźć, przepisać, a nawet stworzyć nową — ale nic z tego.",
     "button": "Odśwież stronę"
+  },
+  "cookies": {
+    "accept_button": "Akceptuj",
+    "learn_more": "Dowiedz Się Więcej O Ciasteczkach",
+    "title": "Używamy ciasteczek",
+    "start": "aby poprawić Twoje doświadczenia na naszej stronie.",
+    "end": "Korzystając dalej z naszej strony, wyrażasz na to zgodę."
   }
 }
 

@@ -70,7 +70,6 @@ export const appConfig: ApplicationConfig = {
       loader: StaticLoader,
       config: translocoConfig({
         availableLangs: ['en', 'pl', 'ru', 'uk'],
-        //defaultLang: 'en',
         fallbackLang: 'en',
         reRenderOnLangChange: true,
         prodMode: !isDevMode(),
