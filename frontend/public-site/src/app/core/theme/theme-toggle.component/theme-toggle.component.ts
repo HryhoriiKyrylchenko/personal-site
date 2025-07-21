@@ -1,9 +1,10 @@
 import { Component, inject, signal } from '@angular/core';
-import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { BreakpointObserver } from '@angular/cdk/layout';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ThemeService } from '../theme.service'
 import { TranslocoPipe } from '@ngneat/transloco';
 import {map} from 'rxjs';
+import {CustomBreakpoints} from '../../../shared/utils/custom-breakpoints';
 
 @Component({
   selector: 'app-theme-toggle',
@@ -19,7 +20,7 @@ export class ThemeToggleComponent {
   isDark = signal(false);
 
   isMobile = toSignal(
-    this.bp.observe([Breakpoints.HandsetPortrait])
+    this.bp.observe([CustomBreakpoints.Mobile])
       .pipe(map(res => res.matches)),
     { initialValue: false }
   );

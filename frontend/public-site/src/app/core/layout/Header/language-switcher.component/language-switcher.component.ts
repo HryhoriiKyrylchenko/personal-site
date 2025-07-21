@@ -9,9 +9,10 @@ import {
 } from '@angular/core';
 import { TranslocoService} from '@ngneat/transloco';
 import { AVAILABLE_LANGS, Language } from '../../../i18n/languages.enum';
-import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { BreakpointObserver } from '@angular/cdk/layout';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
+import {CustomBreakpoints} from '../../../../shared/utils/custom-breakpoints';
 
 @Component({
   selector: 'app-language-switcher',
@@ -32,13 +33,13 @@ export class LanguageSwitcherComponent implements AfterViewInit {
   @ViewChild('btn', { read: ElementRef }) btn?: ElementRef<HTMLButtonElement>;
 
   isMobile = toSignal(
-    this.bp.observe([Breakpoints.HandsetPortrait])
+    this.bp.observe([CustomBreakpoints.Mobile])
       .pipe(map(res => res.matches)),
     { initialValue: false }
   );
 
   isMobileOrTablet = toSignal(
-    this.bp.observe([Breakpoints.HandsetPortrait, Breakpoints.HandsetLandscape, Breakpoints.TabletPortrait])
+    this.bp.observe([CustomBreakpoints.Mobile, CustomBreakpoints.Tablet])
       .pipe(map(res => res.matches)),
   )
 
@@ -60,6 +61,7 @@ export class LanguageSwitcherComponent implements AfterViewInit {
     this.trans.setActiveLang(lang);
     this.current.set(lang);
     this.open.set(false);
+    location.reload()
   }
 
   currentLangName(): string {

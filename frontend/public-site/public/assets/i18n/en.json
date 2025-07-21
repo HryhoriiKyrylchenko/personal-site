@@ -23,5 +23,12 @@
     "title": "Error 404",
     "text": "Looks like this page got... crumpled. \u2028We tried to smooth it out, rewrite it, even cut a new one — but nope.",
     "button": "Reload Page"
+  },
+  "cookies": {
+    "accept_button": "Accept",
+    "learn_more": "Learn More About Cookies",
+    "title": "We use cookies",
+    "start": "to improve your experience on our site.",
+    "end": "By continuing to use our site, you agree to this."
   }
 }

@@ -1,3 +1,6 @@
+$footer-links-sm: 640px;
+$footer-links-lg: 1007px;
+
 .privacy {
   display: flex;
   flex-direction: column;
@@ -16,13 +19,13 @@
   }
 }
 
-@media only screen and (max-width: 599px) {
+@media only screen and (max-width: $footer-links-lg) {
   .privacy {
     gap: 1rem;
   }
 }
 
-@media only screen and (min-width: 600px) {
+@media only screen and (min-width: $footer-links-sm) {
   .privacy {
     flex-direction: row;
   }
