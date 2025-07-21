@@ -25,6 +25,6 @@ public class ContactController : ControllerBase
 
         return result.IsSuccess
             ? Ok(new { Message = "Your message has been sent successfully." })
-            : BadRequest(result.Error);
+            : BadRequest(new { error = result.Error });
     }
 }

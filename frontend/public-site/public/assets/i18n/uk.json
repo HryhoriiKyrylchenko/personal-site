@@ -16,7 +16,7 @@
     "dark": "Темна"
   },
   "policy": {
-    "cookie": "Політика файлів cookie",
+    "cookies": "Політика файлів cookie",
     "privacy": "Політика конфіденційності"
   },
   "error": {

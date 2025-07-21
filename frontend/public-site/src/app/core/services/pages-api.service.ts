@@ -2,16 +2,17 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { take } from 'rxjs/operators';
 import { Observable } from 'rxjs';
-import { HomePageDto } from '../../shared/models/page-dtos';
+import {CookiesPageDto, HomePageDto, PrivacyPageDto} from '../../shared/models/page-dtos';
 import { AboutPageDto } from '../../shared/models/page-dtos';
 import { PortfolioPageDto } from '../../shared/models/page-dtos';
 import { BlogPageDto } from '../../shared/models/page-dtos';
 import { ContactPageDto } from '../../shared/models/page-dtos';
+import {environment} from '../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class PagesApiService {
   private http = inject(HttpClient);
-  private baseUrl = '/api/pages';
+  private baseUrl = `${environment.apiUrl}/pages`;
 
   getHomePage(): Observable<HomePageDto> {
     return this.http.get<HomePageDto>(`${this.baseUrl}/home`).pipe(take(1));
@@ -33,11 +34,11 @@ export class PagesApiService {
     return this.http.get<ContactPageDto>(`${this.baseUrl}/contacts`).pipe(take(1));
   }
 
-  getCookiesPage(): Observable<ContactPageDto> {
-    return this.http.get<ContactPageDto>(`${this.baseUrl}/cookies`).pipe(take(1));
+  getCookiesPage(): Observable<CookiesPageDto> {
+    return this.http.get<CookiesPageDto>(`${this.baseUrl}/cookies`).pipe(take(1));
   }
 
-  getPrivacyPage(): Observable<ContactPageDto> {
-    return this.http.get<ContactPageDto>(`${this.baseUrl}/privacy`).pipe(take(1));
+  getPrivacyPage(): Observable<PrivacyPageDto> {
+    return this.http.get<PrivacyPageDto>(`${this.baseUrl}/privacy`).pipe(take(1));
   }
 }

@@ -1,8 +1,19 @@
+using Npgsql;
 using PersonalSite.Application.DependencyInjection;
 using PersonalSite.Infrastructure.DependencyInjection;
 using PersonalSite.Web.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend",
+        policy => policy
+            .WithOrigins("http://localhost:4200")
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials());
+});
 
 builder.Configuration
     .SetBasePath(Directory.GetCurrentDirectory())
@@ -12,7 +23,17 @@ builder.Configuration
 
 // Add services to the container.
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+{
+    var dataSourceBuilder = new NpgsqlDataSourceBuilder(
+        builder.Configuration.GetConnectionString("DefaultConnection")!
+    );
+    dataSourceBuilder.EnableDynamicJson();
+
+    var dataSource = dataSourceBuilder.Build();
+
+    options.UseNpgsql(dataSource);
+});
+    
 
 builder.Services.Configure<SmtpSettings>(builder.Configuration.GetSection("SmtpSettings"));
 
@@ -34,6 +55,11 @@ builder.Services.AddOpenApi();
 
 var app = builder.Build();
 
+app.UseHttpsRedirection();
+app.UseRouting();
+
+app.UseCors("AllowFrontend");
+
 app.UseMiddleware<LocalizationMiddleware>();
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 
@@ -42,8 +68,6 @@ if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
-
-app.UseHttpsRedirection();
 
 app.UseAuthorization();
 

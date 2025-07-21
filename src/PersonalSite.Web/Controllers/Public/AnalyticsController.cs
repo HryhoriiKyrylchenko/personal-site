@@ -28,6 +28,6 @@ public class AnalyticsController : ControllerBase
         var result = await _mediator.Send(command);
         return result.IsSuccess
             ? Ok(new { Message = "Analytics data saved successfully." })
-            : BadRequest(result.Error);
+            : BadRequest(new { error = result.Error });
     }
 }

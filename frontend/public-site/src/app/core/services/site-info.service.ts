@@ -7,7 +7,7 @@ import { Observable, map, shareReplay } from 'rxjs';
 export class SiteInfoService {
   private readonly http = inject(HttpClient);
   private siteInfo$ = this.http
-    .get<SiteInfoDto>('/api/site-info')
+    .get<SiteInfoDto>('${environment.apiUrl}/site-info')
     .pipe(shareReplay(1));
 
   private readonly allowedPlatforms = ['LinkedIn', 'Facebook', 'GitHub'];

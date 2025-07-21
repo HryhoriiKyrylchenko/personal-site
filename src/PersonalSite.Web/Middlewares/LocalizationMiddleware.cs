@@ -11,9 +11,11 @@ public class LocalizationMiddleware
 
     public async Task Invoke(HttpContext context, LanguageContext languageContext, ILanguageService languageService)
     {
-        var lang = context.Request.Headers["Accept-Language"].FirstOrDefault() ?? "en";
+        var langHeader = context.Request.Headers["Accept-Language"].FirstOrDefault() ?? "en";
 
-        var formattedLang = lang[..2].ToLower();
+        var formattedLang = langHeader.Length >= 2
+            ? langHeader[..2].ToLower()
+            : langHeader.ToLower();
 
         languageContext.LanguageCode = await languageService.IsSupportedAsync(formattedLang) ? formattedLang : "en";
 
