@@ -1,3 +1,4 @@
+using System.Text.Json;
 using PersonalSite.Application.Features.Pages.Page.Dtos;
 using PersonalSite.Application.Features.Pages.Page.Queries.GetAboutPage;
 using PersonalSite.Application.Features.Pages.Page.Queries.GetBlogPage;
@@ -25,48 +26,48 @@ public class PagesController : ControllerBase
     public async Task<ActionResult<HomePageDto>> GetHomePage(CancellationToken cancellationToken = default)
     {
         var result = await _mediator.Send(new GetHomePageQuery(), cancellationToken);
-        return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
+        return result.IsSuccess ? Ok(result.Value) : BadRequest(new { error = result.Error });
     }
 
     [HttpGet("about")]
     public async Task<ActionResult<AboutPageDto>> GetAboutPage(CancellationToken cancellationToken = default)
     {
         var result = await _mediator.Send(new GetAboutPageQuery(), cancellationToken);
-        return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
+        return result.IsSuccess ? Ok(result.Value) : BadRequest(new { error = result.Error });
     }
 
     [HttpGet("portfolio")]
     public async Task<ActionResult<PortfolioPageDto>> GetPortfolioPage(CancellationToken cancellationToken = default)
     {
         var result = await _mediator.Send(new GetPortfolioPageQuery(), cancellationToken);
-        return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
+        return result.IsSuccess ? Ok(result.Value) : BadRequest(new { error = result.Error });
     }
 
     [HttpGet("blog")]
     public async Task<ActionResult<BlogPageDto>> GetBlogPage(CancellationToken cancellationToken = default)
     {
         var result = await _mediator.Send(new GetBlogPageQuery(), cancellationToken);
-        return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
+        return result.IsSuccess ? Ok(result.Value) : BadRequest(new { error = result.Error });
     }
 
     [HttpGet("contacts")]
     public async Task<ActionResult<ContactPageDto>> GetContactPage(CancellationToken cancellationToken = default)
     {
         var result = await _mediator.Send(new GetContactPageQuery(), cancellationToken);
-        return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
+        return result.IsSuccess ? Ok(result.Value) : BadRequest(new { error = result.Error });
     }
     
     [HttpGet("cookies")]
-    public async Task<ActionResult<ContactPageDto>> GetCookiesPage(CancellationToken cancellationToken = default)
+    public async Task<ActionResult<CookiesPageDto>> GetCookiesPage(CancellationToken cancellationToken = default)
     {
         var result = await _mediator.Send(new GetCookiesPageQuery(), cancellationToken);
-        return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
+        return result.IsSuccess ? Ok(result.Value) : BadRequest(new { error = result.Error });
     }
     
     [HttpGet("privacy")]
-        public async Task<ActionResult<ContactPageDto>> GetPrivacyPage(CancellationToken cancellationToken = default)
-        {
-            var result = await _mediator.Send(new GetPrivacyPageQuery(), cancellationToken);
-            return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
-        }
+    public async Task<ActionResult<PrivacyPageDto>> GetPrivacyPage(CancellationToken cancellationToken = default)
+    {
+        var result = await _mediator.Send(new GetPrivacyPageQuery(), cancellationToken);
+        return result.IsSuccess ? Ok(result.Value) : BadRequest(new { error = result.Error });
+    }
 }

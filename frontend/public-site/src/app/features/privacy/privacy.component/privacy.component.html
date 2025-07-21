@@ -1,1 +1,6 @@
-<p>privacy.component works!</p>
+@if (page !== null) {
+  <div class="privacy-page">
+    <h4 class="title">{{ page.title }}</h4>
+    <div class="content" [innerHTML]="page.data['content']"></div>
+  </div>
+}

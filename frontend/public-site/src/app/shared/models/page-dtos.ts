@@ -1,5 +1,3 @@
-// page-dtos.ts
-
 export interface HomePageDto {
   pageData: PageDto;
   userSkills: UserSkillDto[];
@@ -15,6 +13,14 @@ export interface PageDto {
   metaTitle: string;
   metaDescription: string;
   ogImage: string;
+}
+
+export interface CookiesPageDto {
+  pageData: PageDto | null;
+}
+
+export interface PrivacyPageDto {
+  pageData: PageDto | null;
 }
 
 export interface UserSkillDto {
