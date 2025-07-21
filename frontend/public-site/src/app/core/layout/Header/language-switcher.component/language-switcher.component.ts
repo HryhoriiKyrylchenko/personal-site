@@ -11,7 +11,7 @@ import { TranslocoService} from '@ngneat/transloco';
 import { AVAILABLE_LANGS, Language } from '../../../i18n/languages.enum';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { map } from 'rxjs';
+import {map} from 'rxjs';
 import {CustomBreakpoints} from '../../../../shared/utils/custom-breakpoints';
 
 @Component({
@@ -61,7 +61,6 @@ export class LanguageSwitcherComponent implements AfterViewInit {
     this.trans.setActiveLang(lang);
     this.current.set(lang);
     this.open.set(false);
-    location.reload()
   }
 
   currentLangName(): string {
