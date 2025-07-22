@@ -11,7 +11,6 @@ export class LocaleInterceptor implements HttpInterceptor {
   private transloco = inject(TranslocoService);
 
   intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    console.log('🏷️ LocaleInterceptor:', this.transloco.getActiveLang(), '->', req.url);
     const lang = this.transloco.getActiveLang();
     const cloned = req.clone({
       headers: req.headers.set('X-Locale', lang),

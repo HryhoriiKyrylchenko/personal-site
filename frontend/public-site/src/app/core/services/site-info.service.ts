@@ -1,26 +1,19 @@
-import { Injectable, inject } from '@angular/core';
+import {Injectable, inject, signal} from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { SiteInfoDto, SocialMediaLinkDto } from '../../shared/models/site-info-dtos';
-import { Observable, map, shareReplay } from 'rxjs';
+import { SiteInfoDto } from '../../shared/models/site-info-dtos';
+import {environment} from '../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class SiteInfoService {
   private readonly http = inject(HttpClient);
-  private siteInfo$ = this.http
-    .get<SiteInfoDto>('${environment.apiUrl}/site-info')
-    .pipe(shareReplay(1));
+  private baseUrl = `${environment.apiUrl}/site-info`;
+  private _siteInfo = signal<SiteInfoDto | null>(null);
+  readonly siteInfo = this._siteInfo.asReadonly();
 
-  private readonly allowedPlatforms = ['LinkedIn', 'Facebook', 'GitHub'];
-
-  get socialMediaLinks$(): Observable<SocialMediaLinkDto[]> {
-    return this.siteInfo$.pipe(
-      map(info =>
-        info.socialLinks
-          .filter(link =>
-            link.isActive && this.allowedPlatforms.includes(link.platform)
-          )
-          .sort((a, b) => a.displayOrder - b.displayOrder)
-      )
-    );
+  loadSiteInfo() {
+    this.http.get<SiteInfoDto>(`${this.baseUrl}`).subscribe({
+      next: data => this._siteInfo.set(data),
+      error: err => console.error('SiteInfo load failed', err)
+    });
   }
 }

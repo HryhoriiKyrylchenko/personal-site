@@ -18,7 +18,7 @@ public class SocialMediaLinkMapper : IMapper<SocialMediaLink, SocialMediaLinkDto
         {
             Id = entity.Id,
             Platform = entity.Platform,
-            Url = _urlBuilder.BuildUrl(entity.Url),
+            Url = entity.Url,
             DisplayOrder = entity.DisplayOrder,
             IsActive = entity.IsActive
         };
