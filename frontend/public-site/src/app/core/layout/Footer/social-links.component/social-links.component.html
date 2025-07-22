@@ -1,7 +1,5 @@
 <div class="social-media-links-container">
-  <!--        @if (socialLinks$ | async; as links) {-->
-  <!--        @for (link of links; track link.id) {-->
-  @for (link of socialLinks; track link.id) {
+  @for (link of socialLinks(); track link.id) {
     <a [href]="link.url" target="_blank" rel="noopener">
       @switch (link.platform) {
         @case ('Facebook') {
@@ -69,5 +67,4 @@
       }
     </a>
   }
-  <!--        }-->
 </div>

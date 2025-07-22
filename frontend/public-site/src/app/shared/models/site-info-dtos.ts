@@ -1,5 +1,5 @@
 export interface LanguageDto {
-  id: string;           // GUID as string
+  id: string;           // GUID
   code: string;
   name: string;
 }

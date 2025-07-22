@@ -1,6 +1,6 @@
-@if (page !== null) {
+@if (page() !== null) {
   <div class="cookies-page">
-    <h4 class="title">{{ page.title }}</h4>
-    <div class="content" [innerHTML]="page.data['content']"></div>
+    <h4 class="title">{{ page().pageData?.title }}</h4>
+    <div class="content" [innerHTML]="page().pageData?.data?.['content']"></div>
   </div>
 }

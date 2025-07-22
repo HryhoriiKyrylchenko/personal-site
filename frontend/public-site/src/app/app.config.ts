@@ -16,6 +16,7 @@ import {catchError} from 'rxjs/operators';
 import {LanguageService} from './core/services/language.service';
 import {isPlatformBrowser} from '@angular/common';
 import {LocaleInterceptor} from './interceptors/locale.interceptor';
+import {SiteInfoService} from './core/services/site-info.service';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -55,6 +56,13 @@ export const appConfig: ApplicationConfig = {
         } as LanguageService;
       },
     },
+
+    provideAppInitializer(() => {
+      const svc = inject(SiteInfoService);
+      return svc.loadSiteInfo();
+    }),
+    provideHttpClient(),
+    SiteInfoService,
 
     provideAppInitializer(() => {
       const langService = inject(LanguageService);

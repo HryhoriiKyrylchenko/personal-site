@@ -5,14 +5,15 @@ import {
   HostListener,
   ViewChild,
   inject,
-  signal
+  signal, computed
 } from '@angular/core';
 import { TranslocoService} from '@ngneat/transloco';
-import { AVAILABLE_LANGS, Language } from '../../../i18n/languages.enum';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { toSignal } from '@angular/core/rxjs-interop';
 import {map} from 'rxjs';
 import {CustomBreakpoints} from '../../../../shared/utils/custom-breakpoints';
+import {SiteInfoService} from '../../../services/site-info.service';
+import {SUPPORTED_LANG_CODES} from '../../../i18n/transloco.config';
 
 @Component({
   selector: 'app-language-switcher',
@@ -23,10 +24,16 @@ import {CustomBreakpoints} from '../../../../shared/utils/custom-breakpoints';
 export class LanguageSwitcherComponent implements AfterViewInit {
   private trans = inject(TranslocoService);
   private bp = inject(BreakpointObserver);
+  private siteInfoSvc = inject(SiteInfoService);
+  private supportedCodes = [...SUPPORTED_LANG_CODES] as string[];
 
-  AVAILABLE_LANGS = AVAILABLE_LANGS;
+  languages = computed(() => {
+    const info = this.siteInfoSvc.siteInfo();
+    if (!info?.languages) return [];
+    return info.languages.filter(lang => this.supportedCodes.includes(lang.code));
+  });
 
-  current = signal<Language>(this.trans.getActiveLang() as Language);
+  current = signal(this.trans.getActiveLang() as string);
   open = signal(false);
   buttonWidth = signal(0);
 
@@ -57,30 +64,20 @@ export class LanguageSwitcherComponent implements AfterViewInit {
     }
   }
 
-  select(lang: Language) {
-    this.trans.setActiveLang(lang);
-    this.current.set(lang);
+  select(langCode: string) {
+    this.trans.setActiveLang(langCode);
+    this.current.set(langCode);
     this.open.set(false);
   }
 
   currentLangName(): string {
-    const map: Record<Language, string> = {
-      en: 'English',
-      pl: 'Polski',
-      ru: 'Русский',
-      uk: 'Українська'
-    };
-    return map[this.current()];
+    const lang = this.languages().find(l => l.code === this.current());
+    return lang ? lang.name : this.current();
   }
 
-  currentLangNameFor(lang: Language): string {
-    const map: Record<Language, string> = {
-      en: 'English',
-      pl: 'Polski',
-      ru: 'Русский',
-      uk: 'Українська'
-    };
-    return map[lang];
+  currentLangNameFor(code: string): string {
+    const lang = this.languages().find(l => l.code === code);
+    return lang ? lang.name : code;
   }
 
   @HostListener('document:click', ['$event'])

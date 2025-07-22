@@ -30,9 +30,9 @@
 @if (open()) {
   <div class="lang-menu-container">
     <ul class="lang-menu" [style.min-width.px]="buttonWidth()">
-      @for (lang of AVAILABLE_LANGS; track lang) {
-        <li (click)="select(lang)" (keydown.enter)="select(lang)" tabindex="0">
-          {{ currentLangNameFor(lang) }}
+      @for (lang of languages(); track lang.id) {
+        <li (click)="select(lang.code)" (keydown.enter)="select(lang.code)" tabindex="0">
+          {{ currentLangNameFor(lang.code) }}
         </li>
       }
       @if (isMobileOrTablet()) {
