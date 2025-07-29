@@ -30,6 +30,32 @@
     "title": "Używamy ciasteczek",
     "start": "aby poprawić Twoje doświadczenia na naszej stronie.",
     "end": "Korzystając dalej z naszej strony, wyrażasz na to zgodę."
+  },
+  "contacts": {
+    "form_title": "Formularz kontaktowy",
+    "form_name": "Imię",
+    "form_email": "Email",
+    "form_subject": "Temat",
+    "form_message": "Twoja wiadomość",
+    "form_button": "Wyślij",
+    "data_title": "Kontakt",
+    "data_name": "Imię i nazwisko:",
+    "data_email": "Email:",
+    "data_location": "Moja lokalizacja:",
+    "social_media_title": "Media społecznościowe",
+    "social_media_description": "kliknij, aby odwiedzić moje media społecznościowe"
+  },
+  "form": {
+    "success-title": "Wiadomość została wysłana!",
+    "success-message": "Skontaktujemy się z Tobą wkrótce.",
+    "error-title": "Coś poszło nie tak.",
+    "error-message": "Spróbuj ponownie później.",
+    "error": {
+      "name": "Imię jest wymagane",
+      "email": "Nieprawidłowy adres e-mail",
+      "subject": "Temat jest wymagany",
+      "message": "Wiadomość jest wymagana"
+    }
   }
 }
 

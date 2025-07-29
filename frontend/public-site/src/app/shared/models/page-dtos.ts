@@ -7,6 +7,7 @@ export interface HomePageDto {
 export interface PageDto {
   id: string;  // GUID
   key: string;
+  language: string;
   data: Record<string, string>;
   title: string;
   description: string;
@@ -16,11 +17,11 @@ export interface PageDto {
 }
 
 export interface CookiesPageDto {
-  pageData: PageDto | null;
+  pageData: PageDto;
 }
 
 export interface PrivacyPageDto {
-  pageData: PageDto | null;
+  pageData: PageDto;
 }
 
 export interface UserSkillDto {
@@ -80,7 +81,7 @@ export interface LearningSkillDto {
 }
 
 export interface PortfolioPageDto {
-  pageData: PageDto | null;
+  pageData: PageDto;
   projects: ProjectDto[];
 }
 

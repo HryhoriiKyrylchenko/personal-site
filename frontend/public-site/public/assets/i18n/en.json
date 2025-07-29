@@ -30,5 +30,31 @@
     "title": "We use cookies",
     "start": "to improve your experience on our site.",
     "end": "By continuing to use our site, you agree to this."
+  },
+  "contacts": {
+    "form_title": "Contact Form",
+    "form_name": "Name",
+    "form_email": "Email",
+    "form_subject": "Subject",
+    "form_message": "Your Message",
+    "form_button": "Send",
+    "data_title": "Contacts",
+    "data_name": "Name:",
+    "data_email": "Email:",
+    "data_location": "My Location:",
+    "social_media_title": "Social Media",
+    "social_media_description": "tap to visit my social media"
+  },
+  "form": {
+    "success-title": "Message sent successfully!",
+    "success-message": "We will get back to you soon.",
+    "error-title": "Something went wrong.",
+    "error-message": "Please try again later.",
+    "error": {
+      "name": "Name is required",
+      "email": "Incorrect email",
+      "subject": "Subject is required",
+      "message": "Message is required"
+    }
   }
 }

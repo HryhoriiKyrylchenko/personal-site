@@ -12,17 +12,19 @@ public class LocalizationMiddleware
     public async Task Invoke(HttpContext context, LanguageContext languageContext, ILanguageService languageService)
     {
         var header = context.Request.Headers["X-Locale"].FirstOrDefault()?.ToLower();
-        var cookie = context.Request.Cookies["translocoLang"];
+
+        string? lang = header;
         
-        var lang = header ?? ( !string.IsNullOrWhiteSpace(cookie) ? cookie.Substring(0,2).ToLower() : null );
-        if (lang == null) {
+        if (lang == null)
+        {
             var al = context.Request.Headers["Accept-Language"].ToString();
-            lang = al.Substring(0,2).ToLower();
+            if (!string.IsNullOrWhiteSpace(al) && al.Length >= 2)
+                lang = al.Substring(0, 2).ToLower();
         }
+
+        lang ??= "en";
         
-        languageContext.LanguageCode = await languageService.IsSupportedAsync(lang)
-            ? lang
-            : "en";
+        languageContext.LanguageCode = await languageService.IsSupportedAsync(lang) ? lang : "en";
 
         await _next(context);
     }

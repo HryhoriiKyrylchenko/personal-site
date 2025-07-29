@@ -39,15 +39,9 @@ app.use(
  * Handle all other requests by rendering the Angular application.
  */
 app.use((req, res, next) => {
-  const raw = req.headers['accept-language'] as string | undefined;
-  const first = raw?.split(',')[0].split('-')[0] ?? 'en';
-  const supported = ['en','pl','ru','uk'];
-  const chosen = supported.includes(first) ? first : 'en';
 
   angularApp
-    .handle(req, {
-      locale: chosen
-    })
+    .handle(req, { })
     .then((response) =>
       response ? writeResponseToNodeResponse(response, res) : next(),
     )
