@@ -14,7 +14,6 @@ export class SocialLinksComponent {
   @Input()
   set iconSize(size: string) {
     this._iconSize = size;
-    // optionally do extra logic here
   }
   get iconSize() {
     return this._iconSize;

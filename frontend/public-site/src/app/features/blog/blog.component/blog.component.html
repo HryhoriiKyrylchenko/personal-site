@@ -1,1 +1,23 @@
-<p>blog.component works!</p>
+@if (posts$ | async; as posts) {
+  <div class="blog-page">
+    @for (post of posts; track post.slug) {
+      <div class="blog-card">
+        <div class="blog-card-content">
+          <div class="blog-cover-img" [ngStyle]="{ 'background-image': 'url(' + post.coverImage + ')' }"></div>
+          <h6 class=" blog-detail-title">{{ post.title }}</h6>
+          <p class="blog-detail-description">{{ post.content }}</p>
+          <button
+            class="btn btn-primary"
+            (click)="onReadClick(post.slug)">
+            {{ 'blog.read' | transloco }}
+          </button>
+          <button
+            class="btn btn-secondary"
+            (click)="onShareClick(post)">
+            {{ 'blog.share' | transloco }}
+          </button>
+        </div>
+      </div>
+    }
+  </div>
+}

@@ -1,0 +1,11 @@
+<ng-container class="blog-detail-dialog">
+  <button mat-button (click)="onCloseClick()">Close</button>
+  <img ngSrc="{{ post.coverImage }}" alt="" fill class="blog-cover-img">
+  <h1 class="blog-title">{{ post.title }}</h1>
+  <article [innerHTML]="post.content"></article>
+  <app-share-links
+    [url]="currentUrl"
+    [label]="post.title"
+    [iconSize]="iconSize"
+  ></app-share-links>
+</ng-container>

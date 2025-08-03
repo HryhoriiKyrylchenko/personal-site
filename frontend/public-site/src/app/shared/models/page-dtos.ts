@@ -95,7 +95,7 @@ export interface BlogPostDto {
   slug: string;
   coverImage: string;
   isPublished: boolean;
-  publishedAt: string | null; // ISO 8601 date string
+  publishedAt: string | null;
   title: string;
   excerpt: string;
   content: string;

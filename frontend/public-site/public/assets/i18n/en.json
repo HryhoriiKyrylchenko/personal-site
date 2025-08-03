@@ -56,5 +56,9 @@
       "subject": "Subject is required",
       "message": "Message is required"
     }
+  },
+  "blog" : {
+    "read": "Read",
+    "share": "Share"
   }
 }

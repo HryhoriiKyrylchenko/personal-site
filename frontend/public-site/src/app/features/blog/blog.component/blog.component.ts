@@ -1,19 +1,32 @@
 import { Component, inject } from '@angular/core';
 import { PagesApiService } from '../../../core/services/pages-api.service';
-import { BlogPageDto } from '../../../shared/models/page-dtos';
+import {AsyncPipe, NgStyle} from '@angular/common';
+import {Router} from '@angular/router';
+import {TranslocoPipe} from '@ngneat/transloco';
+import {map} from 'rxjs';
+import {BlogPostDto} from '../../../shared/models/page-dtos';
 
 @Component({
   selector: 'app-blog',
   standalone: true,
-  imports: [],
+  imports: [
+    TranslocoPipe,
+    AsyncPipe,
+    NgStyle
+  ],
   templateUrl: './blog.component.html',
   styleUrl: './blog.component.scss'
 })
 export class BlogComponent {
-  private pagesApi = inject(PagesApiService);
-  data?: BlogPageDto;
+  readonly page$ = inject(PagesApiService).blogPage$;
+  readonly posts$ = this.page$.pipe(map(page => page.blogPosts));
+  private router = inject(Router);
 
-  constructor() {
-    //this.pagesApi.getBlogPage().subscribe(dto => (this.data = dto));
+  onReadClick(slug: string) {
+    void this.router.navigate([`/blog/${slug}`]);
+  }
+
+  onShareClick(post: BlogPostDto) {
+    return post; // Real sharing logic goes here
   }
 }
