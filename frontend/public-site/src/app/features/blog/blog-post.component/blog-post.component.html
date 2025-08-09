@@ -1,0 +1,21 @@
+@if (post$ | async; as post) {
+  <div class="blog-detail-dialog">
+    <button mat-button (click)="onCloseClick()">{{ 'blog.close' | transloco }}</button>
+
+    <div
+      class="blog-cover-img"
+      [ngStyle]="{ 'background-image': 'url(' + post.coverImage + ')' }"
+      aria-hidden="true"
+    ></div>
+
+    <h1 class="blog-title">{{ post.title }}</h1>
+
+    <p class="blog-content">{{ post.content }}</p>
+
+    <app-share-links
+      [url]="currentUrl()"
+      [label]="post.title"
+      [iconSize]="iconSize"
+    ></app-share-links>
+  </div>
+}

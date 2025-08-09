@@ -17,7 +17,17 @@ export const routes: Routes = [
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'about', component: AboutComponent, data: { title: 'About'} },
       { path: 'portfolio', component: PortfolioComponent, data: { title: 'Portfolio'} },
-      { path: 'blog', component: BlogComponent, data: { title: 'Blog'} },
+      {
+        path: 'blog',
+        component: BlogComponent,
+        data: { title: 'Blog'},
+        children: [
+          {
+            path: ':slug',
+            loadComponent: () => import('./features/blog/blog-post.component/blog-post.component').then(m => m.BlogPostComponent)
+          }
+        ]
+      },
       { path: 'contacts', component: ContactsComponent, data: { title: 'Contacts'} },
       { path: 'privacy', component: PrivacyComponent, data: { title: 'Privacy'} },
       { path: 'cookies', component: CookiesComponent, data: { title: 'Cookies'} },

@@ -56,6 +56,11 @@
       "subject": "Temat jest wymagany",
       "message": "Wiadomość jest wymagana"
     }
+  },
+  "blog": {
+    "read": "Czytaj",
+    "share": "Udostępnij",
+    "close": "Zamknij"
   }
 }
 
