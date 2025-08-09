@@ -59,7 +59,8 @@
   },
   "blog": {
     "read": "Czytaj",
-    "share": "Udostępnij"
+    "share": "Udostępnij",
+    "close": "Zamknij"
   }
 }
 

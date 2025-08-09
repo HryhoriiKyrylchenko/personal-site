@@ -1,10 +1,12 @@
-import { Component, inject } from '@angular/core';
+import {Component, DOCUMENT, inject, OnInit} from '@angular/core';
 import { PagesApiService } from '../../../core/services/pages-api.service';
 import {AsyncPipe, NgStyle} from '@angular/common';
-import {Router} from '@angular/router';
+import {ActivatedRoute, NavigationEnd, Router, RouterOutlet} from '@angular/router';
 import {TranslocoPipe} from '@ngneat/transloco';
 import {map} from 'rxjs';
+import {SharePopoverComponent} from '../share-popover.component/share-popover.component';
 import {BlogPostDto} from '../../../shared/models/page-dtos';
+import {filter} from 'rxjs/operators';
 
 @Component({
   selector: 'app-blog',
@@ -12,21 +14,45 @@ import {BlogPostDto} from '../../../shared/models/page-dtos';
   imports: [
     TranslocoPipe,
     AsyncPipe,
-    NgStyle
+    NgStyle,
+    SharePopoverComponent,
+    RouterOutlet
   ],
   templateUrl: './blog.component.html',
   styleUrl: './blog.component.scss'
 })
-export class BlogComponent {
+export class BlogComponent implements OnInit {
+  private router = inject(Router);
+  private route = inject(ActivatedRoute);
   readonly page$ = inject(PagesApiService).blogPage$;
   readonly posts$ = this.page$.pipe(map(page => page.blogPosts));
-  private router = inject(Router);
+  private document = inject(DOCUMENT);
 
-  onReadClick(slug: string) {
-    void this.router.navigate([`/blog/${slug}`]);
+  hasDetail = false;
+
+  ngOnInit() {
+    this.updateHasDetail();
+    this.router.events.pipe(filter(e => e instanceof NavigationEnd)).subscribe(() => {
+      this.updateHasDetail();
+    });
   }
 
-  onShareClick(post: BlogPostDto) {
-    return post; // Real sharing logic goes here
+  private updateHasDetail() {
+    const child = this.route.firstChild;
+    this.hasDetail = !!(child && child.snapshot.paramMap.get('slug'));
+  }
+
+  trackBySlug(_: number, post: BlogPostDto): string {
+    return post.slug;
+  }
+
+  onReadClick(slug: string) {
+    void this.router.navigate([slug], { relativeTo: this.route });
+  }
+
+  currentFullUrl(slug: string): string {
+    const urlTree = this.router.createUrlTree([slug], { relativeTo: this.route });
+    const path = this.router.serializeUrl(urlTree);
+    return `${this.document.location.origin}${path}`;
   }
 }

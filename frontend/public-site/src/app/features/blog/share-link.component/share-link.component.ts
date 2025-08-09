@@ -1,5 +1,6 @@
 import {Component, inject, Input} from '@angular/core';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import { Clipboard } from '@angular/cdk/clipboard';
 
 @Component({
   selector: 'app-share-links',
@@ -29,7 +30,7 @@ export class ShareLinkComponent {
     const textToCopy = this.label
       ? `${this.label} – ${this.url}`
       : this.url;
-    await this.clipboard.writeText(textToCopy);
+    this.clipboard.copy(textToCopy);
     this.snackBar.open(`Link copied!`, undefined, { duration: 2000 });
   }
 

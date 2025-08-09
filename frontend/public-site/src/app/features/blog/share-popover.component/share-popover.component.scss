@@ -1,0 +1,65 @@
+:host {
+  position: relative;
+  display: inline-block;
+}
+
+.share-trigger {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.share-panel {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  left: auto;
+  //transform: translateX(-50%);
+  margin-top: 0.3rem;
+  padding: 0.325rem 0.625rem;
+  border-radius: 0.875rem 0 0.875rem 0.875rem;
+  background: var(--color-modal-background);
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.25);
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+  z-index: 1000;
+}
+
+.share-panel-inner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.share-trigger,
+.share-btn,
+.close-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 0.6;
+  }
+}
+
+.outer-fill {
+  color: var(--color-social-link-outer);
+}
+
+.inner-fill {
+  color: var(--color-social-link-inner);
+}
+
+
+
+
