@@ -63,6 +63,8 @@
     "close": "Закрыть",
     "read_more": "Читать далее",
     "copied": "Ссылка скопирована!",
+    "repo": "Репозиторий",
+    "demo": "Демо",
     "tooltip": {
       "linkedin": "Поделиться в LinkedIn",
       "facebook": "Поделиться в Facebook",
