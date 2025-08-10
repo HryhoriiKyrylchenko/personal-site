@@ -56,6 +56,19 @@
       </div>
     }
 
+    <div class="project-links">
+      @if (project.repoUrl && project.repoUrl.length > 0) {
+        <a class="project-link link-primary" href="{{ project.repoUrl }}" target="_blank">
+          {{ 'button.repo' | transloco }}
+        </a>
+      }
+      @if (project.demoUrl && project.demoUrl.length > 0) {
+        <a class="project-link link-secondary" href="{{ project.demoUrl }}" target="_blank">
+          {{ 'button.demo' | transloco }}
+        </a>
+      }
+    </div>
+
     <app-share-links
       [url]="currentUrl()"
       [label]="project.title"
