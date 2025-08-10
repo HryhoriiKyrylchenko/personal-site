@@ -80,6 +80,8 @@
     "skills": "Навыки"
   },
   "skill": {
+    "title" : "Навыки",
+    "learning": "План обучения",
     "category": {
       "languages": "Языки",
       "frameworks": "Фреймворки",

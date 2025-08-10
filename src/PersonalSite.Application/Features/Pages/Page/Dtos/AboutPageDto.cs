@@ -5,6 +5,7 @@ namespace PersonalSite.Application.Features.Pages.Page.Dtos;
 
 public class AboutPageDto
 {
+    public string? ImageUrl { get; set; }
     public PageDto PageData { get; set; } = null!;
     public IReadOnlyList<UserSkillDto> UserSkills { get; set; } = null!;
     public IReadOnlyList<LearningSkillDto> LearningSkills { get; set; } = null!;

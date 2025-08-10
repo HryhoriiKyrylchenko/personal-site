@@ -1,0 +1,16 @@
+.skill-level {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+}
+
+.circle {
+  width: 1rem;
+  height: 1rem;
+  border-radius: 50%;
+  background-color: var(--color-skill-empty);
+}
+
+.circle.filled {
+  background-color: var(--color-skill-filled);
+}
