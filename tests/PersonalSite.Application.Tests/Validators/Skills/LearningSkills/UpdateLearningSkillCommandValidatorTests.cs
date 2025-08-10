@@ -26,7 +26,7 @@ public class UpdateLearningSkillCommandValidatorTests
         {
             var command = new UpdateLearningSkillCommand(
                 Guid.Empty,
-                LearningStatus.Practising,
+                LearningStatus.Practicing,
                 0);
 
             var result = _validator.TestValidate(command);
@@ -56,7 +56,7 @@ public class UpdateLearningSkillCommandValidatorTests
         {
             var command = new UpdateLearningSkillCommand(
                 Guid.NewGuid(),
-                LearningStatus.Planning,
+                LearningStatus.Planned,
                 displayOrder);
 
             var result = _validator.TestValidate(command);

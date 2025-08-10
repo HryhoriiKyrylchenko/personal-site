@@ -13,7 +13,7 @@ public class CreateLearningSkillCommandValidatorTests
             // Arrange
             var command = new CreateLearningSkillCommand(
                 SkillId: Guid.NewGuid(),
-                LearningStatus: LearningStatus.Practising,
+                LearningStatus: LearningStatus.Practicing,
                 DisplayOrder: 1);
 
             // Act
@@ -46,7 +46,7 @@ public class CreateLearningSkillCommandValidatorTests
             // Arrange
             var command = new CreateLearningSkillCommand(
                 SkillId: Guid.NewGuid(),
-                LearningStatus: LearningStatus.Planning,
+                LearningStatus: LearningStatus.Planned,
                 DisplayOrder: -1);
 
             // Act
@@ -63,7 +63,7 @@ public class CreateLearningSkillCommandValidatorTests
             // Arrange
             var command = new CreateLearningSkillCommand(
                 SkillId: Guid.Empty,
-                LearningStatus: LearningStatus.Planning,
+                LearningStatus: LearningStatus.Planned,
                 DisplayOrder: -10);
 
             // Act
