@@ -1,20 +1,70 @@
-import { Component, inject } from '@angular/core';
+import {Component, DOCUMENT, inject, OnInit} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PagesApiService } from '../../../core/services/pages-api.service';
-import { PortfolioPageDto } from '../../../shared/models/page-dtos';
+import {ActivatedRoute, NavigationEnd, Router, RouterOutlet} from '@angular/router';
+import {map} from 'rxjs';
+import {filter} from 'rxjs/operators';
+import {ProjectDto} from '../../../shared/models/page-dtos';
+import {TranslocoPipe} from '@ngneat/transloco';
+import {SkillComponent} from '../../../shared/components/skills/skill.component/skill.component';
 
 @Component({
   selector: 'app-portfolio',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, TranslocoPipe, RouterOutlet, SkillComponent],
   templateUrl: './portfolio.component.html',
   styleUrls: ['./portfolio.component.scss']
 })
-export class PortfolioComponent {
-  private pagesApi = inject(PagesApiService);
-  data?: PortfolioPageDto;
+export class PortfolioComponent implements OnInit {
+  private router = inject(Router);
+  private route = inject(ActivatedRoute);
+  readonly page$ = inject(PagesApiService).portfolioPage$;
+  readonly projects$ = this.page$.pipe(map(page => page.projects));
+  private document = inject(DOCUMENT);
 
-  constructor() {
-    //this.pagesApi.getPortfolioPage().subscribe(dto => { this.data = dto; });
+  hasDetail = false;
+
+  expandedProjectId?: string;
+  private hoverTimeout?: ReturnType<typeof setTimeout>;
+
+  onMouseEnter(projectId: string) {
+    this.hoverTimeout = setTimeout(() => {
+      this.expandedProjectId = projectId;
+    }, 1000);
+  }
+
+  onMouseLeave() {
+    if (this.hoverTimeout) {
+      clearTimeout(this.hoverTimeout);
+      this.hoverTimeout = undefined;
+    }
+    this.expandedProjectId = undefined;
+  }
+
+
+  ngOnInit() {
+    this.updateHasDetail();
+    this.router.events.pipe(filter(e => e instanceof NavigationEnd)).subscribe(() => {
+      this.updateHasDetail();
+    });
+  }
+
+  private updateHasDetail() {
+    const child = this.route.firstChild;
+    this.hasDetail = !!(child && child.snapshot.paramMap.get('slug'));
+  }
+
+  trackBySlug(_: number, project: ProjectDto): string {
+    return project.slug;
+  }
+
+  onReadClick(slug: string) {
+    void this.router.navigate([slug], { relativeTo: this.route });
+  }
+
+  currentFullUrl(slug: string): string {
+    const urlTree = this.router.createUrlTree([slug], { relativeTo: this.route });
+    const path = this.router.serializeUrl(urlTree);
+    return `${this.document.location.origin}${path}`;
   }
 }

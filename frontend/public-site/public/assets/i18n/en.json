@@ -57,9 +57,31 @@
       "message": "Message is required"
     }
   },
-  "blog" : {
+  "button": {
     "read": "Read",
     "share": "Share",
-    "close": "Close"
+    "close": "Close",
+    "read_more": "Read More",
+    "copied": "Link copied!",
+    "tooltip": {
+      "linkedin": "Share on LinkedIn",
+      "facebook": "Share on Facebook",
+      "copy_link": "Copy link"
+    }
+  },
+  "project": {
+    "overview": "Project overview",
+    "technologies": "Used technologies",
+    "features": "Main features",
+    "architecture": "Project architecture",
+    "deployment": "Deployment",
+    "skills": "Skills"
+  },
+  "skill": {
+    "category": {
+      "languages": "Languages",
+      "frameworks": "Frameworks",
+      "tools": "Tools"
+    }
   }
 }

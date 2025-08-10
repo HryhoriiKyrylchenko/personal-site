@@ -16,7 +16,17 @@ export const routes: Routes = [
     children: [
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'about', component: AboutComponent, data: { title: 'About'} },
-      { path: 'portfolio', component: PortfolioComponent, data: { title: 'Portfolio'} },
+      {
+        path: 'portfolio',
+        component: PortfolioComponent,
+        data: { title: 'Portfolio'},
+        children: [
+          {
+            path: ':slug',
+            loadComponent: () => import('./features/portfolio/project.component/project.component').then(m => m.ProjectComponent)
+          }
+        ]
+      },
       {
         path: 'blog',
         component: BlogComponent,

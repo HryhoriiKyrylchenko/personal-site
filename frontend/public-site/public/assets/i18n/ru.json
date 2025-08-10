@@ -57,9 +57,31 @@
       "message": "Сообщение обязательно для заполнения"
     }
   },
-  "blog": {
+  "button": {
     "read": "Читать",
     "share": "Поделиться",
-    "close": "Закрыть"
+    "close": "Закрыть",
+    "read_more": "Читать далее",
+    "copied": "Ссылка скопирована!",
+    "tooltip": {
+      "linkedin": "Поделиться в LinkedIn",
+      "facebook": "Поделиться в Facebook",
+      "copy_link": "Скопировать ссылку"
+    }
+  },
+  "project": {
+    "overview": "Обзор проекта",
+    "technologies": "Используемые технологии",
+    "features": "Основные функции",
+    "architecture": "Архитектура проекта",
+    "deployment": "Развертывание",
+    "skills": "Навыки"
+  },
+  "skill": {
+    "category": {
+      "languages": "Языки",
+      "frameworks": "Фреймворки",
+      "tools": "Инструменты"
+    }
   }
 }

@@ -1,1 +1,42 @@
-<p>portfolio.component works!</p>
+@if(!hasDetail)
+{
+  @if (projects$ | async; as projects) {
+    <div class="portfolio-page">
+      @for (project of projects; track trackBySlug($index, project)) {
+        <div class="project-card">
+          <div class="project-card-content">
+            <div
+              class="project-cover-img"
+              [ngStyle]="{ 'background-image': 'url(' + project.coverImage + ')' }"
+              aria-hidden="true"
+            ></div>
+
+            <h6 class=" project-title">{{ project.title }}</h6>
+
+            <div
+              class="project-skills"
+              [class.expanded]="expandedProjectId === project.id"
+              (mouseenter)="onMouseEnter(project.id)"
+              (mouseleave)="onMouseLeave()">
+              @for (skill of project.skills; track skill.skill.key) {
+                <app-skill [skill]="skill.skill"></app-skill>
+              }
+            </div>
+
+            <p class="project-description">{{ project.shortDescription }}</p>
+
+            <button
+              class="btn btn-primary"
+              (click)="onReadClick(project.slug)">
+              {{ 'button.read_more' | transloco }}
+            </button>
+          </div>
+        </div>
+      }
+    </div>
+  }
+} @else {
+  <div class="project-area">
+    <router-outlet></router-outlet>
+  </div>
+}

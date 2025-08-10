@@ -1,0 +1,65 @@
+@if (project$ | async; as project) {
+  <div class="project-dialog">
+    <button mat-button (click)="onCloseClick()">{{ 'button.close' | transloco }}</button>
+
+    <div
+      class="project-cover-img"
+      [ngStyle]="{ 'background-image': 'url(' + project.coverImage + ')' }"
+      aria-hidden="true"
+    ></div>
+
+    <h3 class="project-title">{{ project.title }}</h3>
+
+    <div class="project-description">
+      <h6 class="project-subtitle">{{ 'project.overview' | transloco }}</h6>
+      <p class="project-content">{{ project.descriptionSections['Overview'] }}</p>
+      <h6 class="project-subtitle">{{ 'project.technologies' | transloco }}</h6>
+      <p class="project-content">{{ project.descriptionSections['Technologies'] }}</p>
+      <h6 class="project-subtitle">{{ 'project.features' | transloco }}</h6>
+      <p class="project-content">{{ project.descriptionSections['Features'] }}</p>
+      <h6 class="project-subtitle">{{ 'project.architecture' | transloco }}</h6>
+      <p class="project-content">{{ project.descriptionSections['Architecture'] }}</p>
+      <h6 class="project-subtitle">{{ 'project.deployment' | transloco }}</h6>
+      <p class="project-content">{{ project.descriptionSections['Deployment'] }}</p>
+    </div>
+
+    @if (skillsByCategory$ | async; as skillsByCategory) {
+      <h4 class="project-skills-title">{{ 'project.skills' | transloco }}</h4>
+
+      <div class="project-skills">
+        <div class="skills-category-section">
+          <h5 class="skill-category">{{ 'skill.category.languages' | transloco }}</h5>
+          <div class="category-skills">
+            @for (skill of skillsByCategory['Languages']; track skill.skill.key)  {
+              <app-skill [skill]="skill.skill"></app-skill>
+            }
+          </div>
+        </div>
+
+        <div class="skills-category-section">
+          <h5 class="skill-category">{{ 'skill.category.frameworks' | transloco }}</h5>
+          <div class="category-skills">
+            @for (skill of skillsByCategory['Frameworks']; track skill.skill.key)  {
+              <app-skill [skill]="skill.skill"></app-skill>
+            }
+          </div>
+        </div>
+
+        <div class="skills-category-section">
+          <h5 class="skill-category">{{ 'skill.category.tools' | transloco }}</h5>
+          <div class="category-skills">
+            @for (skill of skillsByCategory['Tools']; track skill.skill.key)  {
+              <app-skill [skill]="skill.skill"></app-skill>
+            }
+          </div>
+        </div>
+      </div>
+    }
+
+    <app-share-links
+      [url]="currentUrl()"
+      [label]="project.title"
+      [iconSize]="iconSize"
+    ></app-share-links>
+  </div>
+}
