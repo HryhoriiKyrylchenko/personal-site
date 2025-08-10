@@ -1,0 +1,21 @@
+.skill-item {
+  display: flex;
+  padding: 0.625rem 1.25rem;
+  justify-content: center;
+  align-items: center;
+  gap: 0.625rem;
+  border-radius: 0.5625rem;
+  background: var(--color-skill-background);
+}
+
+.skill-name {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-self: stretch;
+  color: var(--color-skill-text);
+  font-size: 1rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}

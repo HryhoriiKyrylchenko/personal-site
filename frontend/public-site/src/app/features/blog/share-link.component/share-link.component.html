@@ -3,9 +3,12 @@
     type="button"
     aria-label="Share on LinkedIn"
     (click)="onShareLinkedIn()"
+    mat-icon-button
+    [matTooltip]="'button.tooltip.linkedin' | transloco"
+    matTooltipShowDelay="500"
     class="share-btn"
   >
-    <svg width="57" height="58" viewBox="0 0 57 58" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg width="57" height="58" viewBox="0 0 57 58" xmlns="http://www.w3.org/2000/svg">
       <g filter="url(#filter0_di_567_4880)">
         <rect x="4.88013" y="2.93985" width="48.1203" height="48.1203" rx="12.8" fill="#3B3B3B"/>
         <path d="M20.0463 43.156H12.7853V21.502H20.0463V43.156Z" fill="#C5C5C5"/>
@@ -36,9 +39,12 @@
     type="button"
     aria-label="Share on Facebook"
     (click)="onShareFacebook()"
+    mat-icon-button
+    [matTooltip]="'button.tooltip.facebook' | transloco"
+    matTooltipShowDelay="500"
     class="share-btn"
   >
-    <svg width="57" height="58" viewBox="0 0 57 58" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg width="57" height="58" viewBox="0 0 57 58" xmlns="http://www.w3.org/2000/svg">
       <g filter="url(#filter0_di_567_4878)">
         <rect x="4.75977" y="2.93985" width="48.1203" height="48.1203" rx="12.8" fill="#3B3B3B"/>
         <path d="M38.2977 33.3392L39.4367 26.1325H32.3114V21.4557C32.3114 19.4841 33.3067 17.5623 36.4981 17.5623H39.7378V11.4268C39.7378 11.4268 36.7977 10.9398 33.9868 10.9398C28.1185 10.9398 24.2829 14.3913 24.2829 20.6398V26.1325H17.7598V33.3392H24.2829L24.3118 50.6545H32.3403L32.3114 33.3392H38.2977Z" fill="#C5C5C5"/>
@@ -68,9 +74,12 @@
     type="button"
     aria-label="Copy link"
     (click)="onCopyLink()"
+    mat-icon-button
+    [matTooltip]="'button.tooltip.copy_link' | transloco"
+    matTooltipShowDelay="500"
     class="share-btn"
   >
-    <svg width="57" height="58" viewBox="0 0 57 58" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg width="57" height="58" viewBox="0 0 57 58" xmlns="http://www.w3.org/2000/svg">
       <g filter="url(#filter0_di_567_4882)">
         <rect x="4.00049" y="2.94" width="48.12" height="48.12" rx="12.8" fill="#3B3B3B"/>
         <path fill-rule="evenodd" clip-rule="evenodd" d="M36.6676 9.00055C36.6736 9.00055 36.6795 9.00194 36.6854 9.00215C36.8176 9.00292 36.9447 9.05248 37.0399 9.15835L42.9346 15.2204C43.0621 15.3465 43.1026 15.5291 43.0585 15.705V37.4652C43.0584 37.7287 42.8455 37.9394 42.5615 37.9394H36.8092V44.6166C36.7914 44.8624 36.5783 45.0906 36.2945 45.0908H13.4974C13.2135 45.0907 13.0006 44.8624 13.0005 44.599V16.6438C13.0005 16.3627 13.2312 16.152 13.4974 16.1519H19.2853V9.49237C19.2854 9.21129 19.5168 9.00055 19.7831 9.00055H36.6676ZM14.0122 44.0895H35.7967V23.18H29.9562C29.6722 23.18 29.4585 22.9517 29.4584 22.6882V17.118H14.0122V44.0895ZM20.2801 16.1519H29.8243C29.8664 16.1405 29.9111 16.1343 29.9562 16.1343C30.1459 16.1344 30.3036 16.2364 30.3876 16.3826L36.649 22.3542C36.7555 22.442 36.8092 22.5828 36.8092 22.7058V36.9557H42.0646V16.0462H36.6676C36.3835 16.0462 36.1698 15.8179 36.1698 15.5544V9.98419H20.2801V16.1519ZM30.4532 22.1964H35.061L30.4532 17.7964V22.1964ZM37.1646 15.045H41.3717L37.1646 10.7227V15.045Z" fill="#3B3B3B"/>

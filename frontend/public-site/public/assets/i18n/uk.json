@@ -57,9 +57,31 @@
       "message": "Повідомлення є обов’язковим"
     }
   },
-  "blog": {
+  "button": {
     "read": "Читати",
     "share": "Поділитися",
-    "close": "Закрити"
+    "close": "Закрити",
+    "read_more": "Читати далі",
+    "copied": "Посилання скопійовано!",
+    "tooltip": {
+      "linkedin": "Поділитися в LinkedIn",
+      "facebook": "Поділитися у Facebook",
+      "copy_link": "Скопіювати посилання"
+    }
+  },
+  "project": {
+    "overview": "Огляд проєкту",
+    "technologies": "Використані технології",
+    "features": "Основні функції",
+    "architecture": "Архітектура проєкту",
+    "deployment": "Розгортання",
+    "skills": "Навички"
+  },
+  "skill": {
+    "category": {
+      "languages": "Мови",
+      "frameworks": "Фреймворки",
+      "tools": "Інструменти"
+    }
   }
 }

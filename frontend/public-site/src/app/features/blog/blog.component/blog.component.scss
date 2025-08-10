@@ -162,11 +162,11 @@ $blog-lg: 1007px;
   }
 
   .btn-primary {
-    width: 9.5rem;
+    width: 9rem;
   }
 
   .btn-secondary {
-    width: 5.9375rem;
+    width: 6.5rem;
   }
 }
 
@@ -193,8 +193,14 @@ $blog-lg: 1007px;
     height: 15.875rem;
   }
 
+  .blog-detail-title {
+    width: 35.6875rem;
+    height: 3.75rem;
+  }
+
   .blog-detail-description {
     width: 35.6875rem;
+    height: 6.4375rem;
     -webkit-line-clamp: 4;
   }
 

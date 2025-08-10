@@ -1,10 +1,18 @@
 import {Component, inject, Input} from '@angular/core';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import { Clipboard } from '@angular/cdk/clipboard';
+import {TranslocoPipe, TranslocoService} from '@ngneat/transloco';
+import {MatIconButton} from '@angular/material/button';
+import {MatTooltip} from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-share-links',
-  imports: [],
+  standalone: true,
+  imports: [
+    MatIconButton,
+    MatTooltip,
+    TranslocoPipe
+  ],
   templateUrl: './share-link.component.html',
   styleUrl: './share-link.component.scss'
 })
@@ -15,6 +23,7 @@ export class ShareLinkComponent {
 
   private clipboard = inject(Clipboard);
   private snackBar = inject(MatSnackBar);
+  private transloco = inject(TranslocoService)
 
   onShareLinkedIn(): void {
     const shareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(this.url)}`;
@@ -31,7 +40,10 @@ export class ShareLinkComponent {
       ? `${this.label} – ${this.url}`
       : this.url;
     this.clipboard.copy(textToCopy);
-    this.snackBar.open(`Link copied!`, undefined, { duration: 2000 });
+    this.snackBar.open(
+      this.transloco.translate('button.copied'),
+      undefined,
+      { duration: 2000 });
   }
 
 

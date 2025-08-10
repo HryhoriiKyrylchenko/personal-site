@@ -57,10 +57,32 @@
       "message": "Wiadomość jest wymagana"
     }
   },
-  "blog": {
+  "button": {
     "read": "Czytaj",
     "share": "Udostępnij",
-    "close": "Zamknij"
+    "close": "Zamknij",
+    "read_more": "Czytaj więcej",
+    "copied": "Link skopiowany!",
+    "tooltip": {
+      "linkedin": "Udostępnij na LinkedIn",
+      "facebook": "Udostępnij na Facebooku",
+      "copy_link": "Skopiuj link"
+    }
+  },
+  "project": {
+    "overview": "Przegląd projektu",
+    "technologies": "Użyte technologie",
+    "features": "Główne funkcje",
+    "architecture": "Architektura projektu",
+    "deployment": "Wdrożenie",
+    "skills": "Umiejętności"
+  },
+  "skill": {
+    "category": {
+      "languages": "Języki",
+      "frameworks": "Frameworki",
+      "tools": "Narzędzia"
+    }
   }
 }
 
