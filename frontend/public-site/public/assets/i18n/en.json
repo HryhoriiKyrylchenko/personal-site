@@ -80,6 +80,8 @@
     "skills": "Skills"
   },
   "skill": {
+    "title": "Skills",
+    "learning": "Learning Roadmap",
     "category": {
       "languages": "Languages",
       "frameworks": "Frameworks",

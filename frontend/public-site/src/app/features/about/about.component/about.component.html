@@ -1,1 +1,77 @@
-<p>about.component works!</p>
+@if (page$ | async; as page) {
+  <div class="about-page">
+
+    <div class="about-content-container">
+        @if (page.imageUrl) {
+          <div
+            class="about-img"
+            [ngStyle]="{ 'background-image': 'url(' + page.imageUrl + ')' }"
+            aria-hidden="true"
+          ></div>
+        }
+      <div class="about-content-container-inner">
+        <h3 class="about-title">{{ page.pageData.title }}</h3>
+
+        <div class="about-content">
+          @if (contentParagraphs$ | async; as contentParagraphs) {
+            @for (paragraph of contentParagraphs; track paragraph) {
+              <p class="content-paragraph">{{ paragraph }}</p>
+            }
+          }
+        </div>
+      </div>
+    </div>
+
+    @if (skillsByCategory$ | async; as skillsByCategory) {
+      <h4 class="user-skills-title">{{ 'skill.title' | transloco }}</h4>
+
+      <div class="user-skills">
+        <div class="skills-category-section">
+          <h5 class="skill-category-title">{{ 'skill.category.languages' | transloco }}</h5>
+          <div class="category-skills">
+            @for (skill of skillsByCategory['Languages']; track skill.skill.key)  {
+              <div class="skill-item">
+                <app-skill [skill]="skill.skill"></app-skill>
+                <app-skill-level [level]="skill.proficiency"></app-skill-level>
+              </div>
+            }
+          </div>
+        </div>
+
+        <div class="skills-category-section">
+          <h5 class="skill-category-title">{{ 'skill.category.frameworks' | transloco }}</h5>
+          <div class="category-skills">
+            @for (skill of skillsByCategory['Frameworks']; track skill.skill.key)  {
+              <div class="skill-item">
+                <app-skill [skill]="skill.skill"></app-skill>
+                <app-skill-level [level]="skill.proficiency"></app-skill-level>
+              </div>
+            }
+          </div>
+        </div>
+
+        <div class="skills-category-section">
+          <h5 class="skill-category-title">{{ 'skill.category.tools' | transloco }}</h5>
+          <div class="category-skills">
+            @for (skill of skillsByCategory['Tools']; track skill.skill.key)  {
+              <div class="skill-item">
+                <app-skill [skill]="skill.skill"></app-skill>
+                <app-skill-level [level]="skill.proficiency"></app-skill-level>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+    }
+
+    @if (learningSkills$ | async; as learningSkills) {
+      <h4 class="learning-skills-title">{{ 'skill.learning' | transloco }}</h4>
+
+      <div class="learning-skills">
+        @for (skill of learningSkills; track skill.skill.key)  {
+          <app-learning-skill [name]="skill.skill.name" [status]="skill.learningStatus" [description]="skill.skill.description"></app-learning-skill>
+        }
+      </div>
+    }
+  </div>
+}

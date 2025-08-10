@@ -1,4 +1,5 @@
 export interface HomePageDto {
+  imageUrl: string | null;
   pageData: PageDto;
   userSkills: UserSkillDto[];
   lastProject: ProjectDto | null;
@@ -68,6 +69,7 @@ export interface ProjectSkillDto {
 }
 
 export interface AboutPageDto {
+  imageUrl: string | null;
   pageData: PageDto;
   userSkills: UserSkillDto[];
   learningSkills: LearningSkillDto[];

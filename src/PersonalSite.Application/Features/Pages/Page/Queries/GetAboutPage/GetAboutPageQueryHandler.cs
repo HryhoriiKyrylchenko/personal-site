@@ -19,6 +19,7 @@ public class GetAboutPageQueryHandler : IRequestHandler<GetAboutPageQuery, Resul
     private readonly ITranslatableMapper<Domain.Entities.Pages.Page, PageDto> _pageMapper;
     private readonly ITranslatableMapper<LearningSkill, LearningSkillDto> _learningSkillMapper;
     private readonly ITranslatableMapper<UserSkill, UserSkillDto> _userSkillMapper;
+    private readonly IS3UrlBuilder _urlBuilder;
 
     public GetAboutPageQueryHandler(
         LanguageContext language,
@@ -28,7 +29,8 @@ public class GetAboutPageQueryHandler : IRequestHandler<GetAboutPageQuery, Resul
         ILogger<GetAboutPageQueryHandler> logger,
         ITranslatableMapper<Domain.Entities.Pages.Page, PageDto> pageMapper,
         ITranslatableMapper<LearningSkill, LearningSkillDto> learningSkillMapper,
-        ITranslatableMapper<UserSkill, UserSkillDto> userSkillMapper)
+        ITranslatableMapper<UserSkill, UserSkillDto> userSkillMapper,
+        IS3UrlBuilder urlBuilder)
     {
         _language = language;
         _pageRepository = pageRepository;
@@ -38,6 +40,7 @@ public class GetAboutPageQueryHandler : IRequestHandler<GetAboutPageQuery, Resul
         _pageMapper = pageMapper;  
         _learningSkillMapper = learningSkillMapper;
         _userSkillMapper = userSkillMapper;
+        _urlBuilder = urlBuilder;
     }
     
     public async Task<Result<AboutPageDto>> Handle(GetAboutPageQuery request, CancellationToken cancellationToken)
@@ -73,6 +76,9 @@ public class GetAboutPageQueryHandler : IRequestHandler<GetAboutPageQuery, Resul
         
             var aboutPage = new AboutPageDto
             {
+                ImageUrl = string.IsNullOrWhiteSpace(pageData.Data["ImageUrl"]) 
+                    ? string.Empty 
+                    : _urlBuilder.BuildUrl(pageData.Data["ImageUrl"]),
                 PageData = pageData,
                 UserSkills = userSkillsData,
                 LearningSkills = learningSkillsData

@@ -1,6 +1,6 @@
 .skill-item {
   display: flex;
-  padding: 0.625rem 1.25rem;
+  padding: 0.625rem 1.125rem;
   justify-content: center;
   align-items: center;
   gap: 0.625rem;
@@ -18,4 +18,9 @@
   font-style: normal;
   font-weight: 400;
   line-height: normal;
+
+  white-space: normal;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  min-width: 0;
 }

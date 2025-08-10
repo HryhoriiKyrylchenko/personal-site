@@ -1,0 +1,45 @@
+.learning-skill {
+  display: flex;
+  padding: 0.825rem 1.275rem;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.1875rem;
+  align-self: stretch;
+  min-width: 12.5rem;
+  max-width: 12.5rem;
+
+  border-radius: 1.4375rem;
+  background: var(--color-learning-skill-background);
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.25) inset;
+}
+
+.skill-name {
+  color: var(--gray-0, #141414);
+  font-family: Inter, serif;
+  font-size: 1.325rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+
+.skill-status {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+}
+
+.status-circle {
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+  border-radius: 50%;
+}
+
+.status-text {
+  color: var(--color-text-primary);
+  font-family: Inter, serif;
+  font-size: 1.025rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}

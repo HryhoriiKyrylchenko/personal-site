@@ -80,6 +80,8 @@
     "skills": "Навички"
   },
   "skill": {
+    "title" : "Навички",
+    "learning": "Дорожня карта навчання",
     "category": {
       "languages": "Мови",
       "frameworks": "Фреймворки",

@@ -80,6 +80,8 @@
     "skills": "Umiejętności"
   },
   "skill": {
+    "title" : "Umiejętności",
+    "learning": "Plan nauki",
     "category": {
       "languages": "Języki",
       "frameworks": "Frameworki",

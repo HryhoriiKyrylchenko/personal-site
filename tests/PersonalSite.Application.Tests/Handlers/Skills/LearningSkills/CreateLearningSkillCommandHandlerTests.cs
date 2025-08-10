@@ -47,7 +47,7 @@ public class CreateLearningSkillCommandHandlerTests
         public async Task Handle_ShouldReturnFailureResult_WhenLearningSkillAlreadyExists()
         {
             // Arrange
-            var command = new CreateLearningSkillCommand(Guid.NewGuid(), LearningStatus.Planning, 2);
+            var command = new CreateLearningSkillCommand(Guid.NewGuid(), LearningStatus.Planned, 2);
 
             _repositoryMock
                 .Setup(r => r.ExistsBySkillIdAsync(command.SkillId, It.IsAny<CancellationToken>()))
@@ -68,7 +68,7 @@ public class CreateLearningSkillCommandHandlerTests
         public async Task Handle_ShouldReturnFailureResult_WhenExceptionIsThrown()
         {
             // Arrange
-            var command = new CreateLearningSkillCommand(Guid.NewGuid(), LearningStatus.Practising, 5);
+            var command = new CreateLearningSkillCommand(Guid.NewGuid(), LearningStatus.Practicing, 5);
 
             _repositoryMock
                 .Setup(r => r.ExistsBySkillIdAsync(command.SkillId, It.IsAny<CancellationToken>()))
