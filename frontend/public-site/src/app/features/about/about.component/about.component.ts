@@ -1,4 +1,7 @@
-import { Component, inject } from '@angular/core';
+import {
+  Component,
+  inject
+} from '@angular/core';
 import { PagesApiService } from '../../../core/services/pages-api.service';
 import {AsyncPipe, NgStyle} from '@angular/common';
 import {TranslocoPipe} from '@ngneat/transloco';

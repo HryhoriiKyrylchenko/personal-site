@@ -8,6 +8,7 @@ using PersonalSite.Application.Tests.Fixtures.TestDataFactories;
 using PersonalSite.Domain.Entities.Skills;
 using PersonalSite.Domain.Interfaces.Repositories.Pages;
 using PersonalSite.Domain.Interfaces.Repositories.Skills;
+using PersonalSite.Infrastructure.Storage;
 
 namespace PersonalSite.Application.Tests.Handlers.Pages.Page;
 
@@ -22,6 +23,7 @@ public class GetAboutPageQueryHandlerTests
     private readonly Mock<ITranslatableMapper<UserSkill, UserSkillDto>> _userSkillMapperMock;
     private readonly LanguageContext _languageContext;
     private readonly GetAboutPageQueryHandler _handler;
+    private readonly Mock<IS3UrlBuilder> _urlBuilderMock;
 
     public GetAboutPageQueryHandlerTests()
     {
@@ -32,6 +34,7 @@ public class GetAboutPageQueryHandlerTests
         _pageMapperMock = new Mock<ITranslatableMapper<Domain.Entities.Pages.Page, PageDto>>();
         _learningSkillMapperMock = new Mock<ITranslatableMapper<LearningSkill, LearningSkillDto>>();
         _userSkillMapperMock = new Mock<ITranslatableMapper<UserSkill, UserSkillDto>>();
+        _urlBuilderMock = new Mock<IS3UrlBuilder>();
 
         _languageContext = new LanguageContext { LanguageCode = "en" };
 
@@ -43,7 +46,8 @@ public class GetAboutPageQueryHandlerTests
             _loggerMock.Object,
             _pageMapperMock.Object,
             _learningSkillMapperMock.Object,
-            _userSkillMapperMock.Object
+            _userSkillMapperMock.Object,
+            _urlBuilderMock.Object
         );
     }
 
@@ -82,7 +86,11 @@ public class GetAboutPageQueryHandlerTests
     {
         // Arrange
         var page = PageTestDataFactory.CreatePage();
-        var pageDto = new PageDto { Title = "About" };
+        var pageDto = new PageDto
+        {
+            Title = "About",
+            Data = new Dictionary<string, string> { ["ImageUrl"] = "image-key" }
+        };
 
         _pageRepositoryMock.Setup(r => r.GetByKeyAsync("about", It.IsAny<CancellationToken>()))
             .ReturnsAsync(page);
@@ -118,7 +126,11 @@ public class GetAboutPageQueryHandlerTests
     {
         // Arrange
         var page = PageTestDataFactory.CreatePage();
-        var pageDto = new PageDto { Title = "About" };
+        var pageDto = new PageDto
+        {
+            Title = "About",
+            Data = new Dictionary<string, string> { ["ImageUrl"] = "image-key" }
+        };
 
         var userSkill = new UserSkill { Id = Guid.NewGuid() };
         var userSkillDto = new UserSkillDto { Id = userSkill.Id };

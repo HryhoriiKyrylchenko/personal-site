@@ -2,7 +2,8 @@
   "home": {
     "title": "Hryhorii Kyrylchenko",
     "button-back-to-top": "Powrót do góry",
-    "rights-reserved": "Wszystkie prawa zastrzeżone."
+    "rights-reserved": "Wszystkie prawa zastrzeżone.",
+    "project": "Ostatni projekt"
   },
   "nav": {
     "home": "Strona główna",
@@ -65,6 +66,9 @@
     "copied": "Link skopiowany!",
     "repo": "Repozytorium",
     "demo": "Demo",
+    "contact": "Skontaktuj się ze mną",
+    "download": "Pobierz CV",
+    "portfolio": "Zobacz portfolio",
     "tooltip": {
       "linkedin": "Udostępnij na LinkedIn",
       "facebook": "Udostępnij na Facebooku",

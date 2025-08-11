@@ -1,0 +1,413 @@
+$home-sm: 640px;
+$home-lg: 1007px;
+
+.home-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3rem;
+  max-width: 20rem;
+  width: 100%;
+  margin: 2rem auto;
+  background: var(--color-background);
+}
+
+.home-content-container {
+  gap: 1.25rem;
+  display: grid;
+  grid-template-areas:
+    "name name"
+    "image title"
+    "btn_contact btn_contact"
+    "skills skills"
+    "description description"
+    "btn_download btn_download"
+    "btn_portfolio btn_portfolio";
+
+  .home-image {
+    width: 8rem;
+    max-width: 8rem;
+    height: 10rem;
+    align-self: stretch;
+    background-size: cover;
+    background-position: center;
+    border-radius: 1.9375rem 0 0 1.9375rem;
+    grid-area: image;
+  }
+
+  .home-name {
+    width: 100%;
+    font-size: 2rem;
+    font-weight: 500;
+    color: var(--color-text-primary);
+    grid-area: name;
+  }
+
+  .home-title {
+    align-self: stretch;
+    font-size: 1.5rem;
+    font-weight: 400;
+    color: var(--color-text-primary);
+    grid-area: title;
+  }
+
+  .home-description {
+    display: -webkit-box;
+    width: 100%;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 7;
+
+    overflow: hidden;
+    color: var(--color-text-primary);
+    text-overflow: ellipsis;
+    font-size: 1rem;
+
+    grid-area: description;
+  }
+
+  .home-skills {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.625rem;
+    align-self: stretch;
+    grid-area: skills;
+
+    .home-skills-title {
+      font-size: 1.275rem;
+    }
+
+    .home-skills-list {
+      display: flex;
+      align-items: flex-start;
+      align-content: flex-start;
+      gap: 0.25rem;
+      align-self: stretch;
+      flex-wrap: wrap;
+    }
+  }
+
+  .btn-contact {
+    flex: 1 0 0;
+    grid-area: btn_contact;
+  }
+
+  .btn-download {
+    flex: 1 0 0;
+    grid-area: btn_download;
+  }
+
+  .btn-portfolio {
+    flex: 1 0 0;
+    grid-area: btn_portfolio;
+  }
+}
+
+.btn {
+  display: flex;
+  padding: 0.625rem 1.25rem;
+  justify-content: center;
+  align-items: center;
+  gap: 0.625rem;
+  align-self: stretch;
+  border-radius: 0.625rem;
+  box-shadow: 0 2px 4px 0 rgba(255, 255, 255, 0.10) inset, 0 2px 4px 0 rgba(0, 0, 0, 0.25);
+  color: var(--color-modal-text);
+  font-size: 1.125rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  text-transform: capitalize;
+
+  &:hover {
+    background: var(--color-hover);
+    color: var(--color-hover-text);
+  }
+
+
+}
+
+.btn-primary {
+  background: var(--color-modal-button);
+
+  &:active {
+    background: var(--color-active);
+    color: var(--color-active-text);
+  }
+}
+
+.btn-secondary {
+  background: var(--color-modal-button-secondary);
+
+  &:active {
+    background: var(--color-active);
+    color: var(--color-active-text);
+  }
+}
+
+.project-data-container {
+  display: flex;
+  flex-direction: column;
+
+  .project-data-title {
+    font-size: 1.275rem;
+    color: var(--color-text-primary);
+  }
+
+  .project-data-container-inner {
+    gap: 1rem;
+    display: flex;
+    flex-direction: column;
+
+    .project-data {
+      border-radius: 0.625rem;
+      box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.25);
+      background: var(--color-learning-skill-background);
+      padding: 0.625rem;
+      gap: 1rem;
+      display: grid;
+      grid-template-areas:
+        "project-image"
+        "project-title"
+        "project-skills"
+        "project-description";
+
+      .project-cover-img {
+        height: 10.54688rem;
+        aspect-ratio: 16/9;
+        background-size: cover;
+        align-self: stretch;
+        border-radius: 0.625rem;
+        grid-area: project-image;
+      }
+
+      .project-skills {
+        display: flex;
+        align-items: flex-start;
+        align-content: flex-start;
+        gap: 0.25rem;
+        align-self: stretch;
+        flex-wrap: wrap;
+        grid-area: project-skills;
+      }
+
+      .project-title {
+        font-size: 1.5rem;
+        font-weight: 500;
+        margin: 0;
+        color: var(--color-text-primary);
+        grid-area: project-title;
+      }
+
+      .project-description {
+        display: -webkit-box;
+        width: 100%;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 7;
+
+        overflow: hidden;
+        color: var(--color-text-primary);
+        text-overflow: ellipsis;
+        font-size: 1rem;
+        grid-area: project-description;
+      }
+    }
+
+    .project-buttons-container {
+      padding: 0.625rem;
+      gap: 1rem;
+      background: var(--color-learning-skill-background);
+      border-radius: 0.625rem;
+      box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.25);
+      display: grid;
+      grid-template-areas:
+        "btn_read btn_read"
+        "btn_repo btn_demo";
+
+      .btn-read {
+        grid-area: btn_read;
+      }
+
+      .btn-repo {
+        grid-area: btn_repo;
+      }
+
+      .btn-demo {
+        grid-area: btn_demo;
+      }
+    }
+  }
+}
+
+@media (min-width: $home-sm) {
+  .home-page {
+    max-width: 40rem;
+  }
+
+  .home-content-container {
+    gap: 1.25rem;
+    grid-template-areas:
+    "image name name"
+    "image title title"
+    "description description description"
+    "skills skills skills"
+    "btn_contact btn_portfolio btn_download";
+
+    .home-image {
+      width: 16rem;
+      max-width: 16rem;
+      height: 20rem;
+    }
+
+    .home-name {
+      font-size: 3.5rem;
+    }
+
+    .home-title {
+      font-size: 2rem;
+    }
+
+    .home-description {
+      font-size: 1.275rem;
+    }
+
+    .home-skills {
+      margin-bottom: 1.25rem;
+
+      .home-skills-title {
+        font-size: 2.5rem;
+      }
+
+      .home-skills-list {
+        gap: 0.625rem;
+      }
+    }
+  }
+
+  .project-data-container {
+
+    .project-data-title {
+      font-size: 2.5rem;
+    }
+
+    .project-data-container-inner {
+
+      .project-data {
+        grid-template-areas:
+        "project-image project-skills project-skills"
+        "project-title project-title project-title"
+        "project-description project-description project-description";
+
+        .project-cover-img {
+          height: 10.54688rem;
+        }
+      }
+
+      .project-buttons-container {
+        grid-template-areas:
+        "btn_read btn_repo btn_demo";
+
+        .btn-read {
+          width: 19rem;
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: $home-lg) {
+  .home-page {
+    max-width: 80rem;
+    margin: 4rem auto;
+  }
+
+  .home-content-container {
+    padding-bottom: 5rem;
+    grid-template-areas:
+    "image name name name"
+    "image title title title"
+    "image description description description"
+    "image skills skills skills"
+    "image btn_contact btn_portfolio btn_download";
+
+    position: relative;
+
+    &::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 2rem;
+      pointer-events: none;
+      background: linear-gradient(to top, #C5C5C5, transparent);
+    }
+
+    .home-image {
+      width: 35rem;
+      max-width: 35rem;
+      height: 44rem;
+      margin-right: 2rem;
+      filter: grayscale(100%);
+      transition: filter 0.3s ease;
+
+      &:hover {
+        filter: none;
+      }
+    }
+
+    .home-name {
+      margin-bottom: 0;
+    }
+
+    .home-title {
+      margin-bottom: 0;
+    }
+  }
+
+  .project-data-container {
+
+    .project-data-title {
+      font-size: 2.5rem;
+    }
+
+    .project-data-container-inner {
+      flex-direction: row;
+
+      .project-data {
+        grid-template-areas:
+        "project-image project-title"
+        "project-image project-description"
+        "project-image project-skills";
+
+
+        .project-cover-img {
+          width: 28rem;
+          height: auto;
+        }
+      }
+
+      .project-buttons-container {
+        padding: 2rem 0.625rem;
+        gap: 2rem;
+        justify-content: space-around;
+        grid-template-areas:
+        "btn_read"
+        "btn_repo"
+        "btn_demo";
+
+        .btn-read {
+          width: 15rem;
+        }
+
+        .btn-repo {
+          width: 15rem;
+        }
+
+        .btn-demo {
+          width: 15rem;
+        }
+      }
+    }
+  }
+}

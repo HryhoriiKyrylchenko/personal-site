@@ -41,7 +41,7 @@ public class LearningSkillMapperTests
 
         // Assert
         dto.Id.Should().Be(learningSkill.Id);
-        dto.LearningStatus.Should().Be("Planning");
+        dto.LearningStatus.Should().Be("Planned");
         dto.DisplayOrder.Should().Be(2);
         dto.Skill.Should().BeEquivalentTo(expectedSkillDto);
     }
@@ -66,7 +66,7 @@ public class LearningSkillMapperTests
 
         // Assert
         result.Should().HaveCount(1);
-        result[0].LearningStatus.Should().Be("Practising");
+        result[0].LearningStatus.Should().Be("Practicing");
     }
 
     [Fact]
