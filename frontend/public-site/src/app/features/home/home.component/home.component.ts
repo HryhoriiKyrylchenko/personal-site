@@ -28,7 +28,14 @@ export class HomeComponent {
   private router = inject(Router);
 
   readonly skills$ = this.page$.pipe(
-    map(page => page?.userSkills ?? [])
+    map(page =>
+      (page?.userSkills ?? []).slice().sort((a, b) => {
+        const orderDiff = a.skill.category.displayOrder - b.skill.category.displayOrder;
+        return orderDiff !== 0
+          ? orderDiff
+          : a.skill.name.localeCompare(b.skill.name);
+      })
+    )
   );
 
   readonly project$ = this.page$.pipe(
@@ -36,7 +43,14 @@ export class HomeComponent {
   );
 
   readonly projectSkills$ = this.project$.pipe(
-    map(project => project?.skills ?? [])
+    map(project =>
+      (project?.skills ?? []).slice().sort((a, b) => {
+        const orderDiff = a.skill.category.displayOrder - b.skill.category.displayOrder;
+        return orderDiff !== 0
+          ? orderDiff
+          : a.skill.name.localeCompare(b.skill.name);
+      })
+    )
   );
 
   private svc = inject(SiteInfoService);

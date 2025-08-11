@@ -29,7 +29,14 @@ export class AboutComponent {
   readonly page$ = inject(PagesApiService).aboutPage$;
 
   readonly skills$ = this.page$.pipe(
-    map(page => page?.userSkills ?? [])
+    map(page =>
+      (page?.userSkills ?? []).slice().sort((a, b) => {
+        const orderDiff = a.skill.category.displayOrder - b.skill.category.displayOrder;
+        return orderDiff !== 0
+          ? orderDiff
+          : a.skill.name.localeCompare(b.skill.name);
+      })
+    )
   );
 
   readonly skillsByCategory$ = this.skills$.pipe(
@@ -52,9 +59,7 @@ export class AboutComponent {
   );
 
   readonly learningSkills$ = this.page$.pipe(
-    map(page =>
-      (page?.learningSkills ?? []).slice().sort((a, b) => b.displayOrder - a.displayOrder)
-    )
+    map(page => page?.learningSkills ?? [])
   );
 
   readonly contentParagraphs$ = this.page$.pipe(

@@ -19,8 +19,21 @@ export class PortfolioComponent implements OnInit {
   private router = inject(Router);
   private route = inject(ActivatedRoute);
   readonly page$ = inject(PagesApiService).portfolioPage$;
-  readonly projects$ = this.page$.pipe(map(page => page.projects));
   private document = inject(DOCUMENT);
+
+  readonly projects$ = this.page$.pipe(
+    map(page =>
+      page.projects.map(project => ({
+        ...project,
+        skills: [...project.skills].sort((a, b) => {
+          const orderDiff = a.skill.category.displayOrder - b.skill.category.displayOrder;
+          return orderDiff !== 0
+            ? orderDiff
+            : a.skill.name.localeCompare(b.skill.name);
+        })
+      }))
+    )
+  );
 
   hasDetail = false;
 

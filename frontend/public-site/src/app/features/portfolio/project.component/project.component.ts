@@ -53,7 +53,14 @@ export class ProjectComponent {
   );
 
   readonly skills$ = this.project$.pipe(
-    map(project => project?.skills ?? [])
+    map(project =>
+      (project?.skills ?? []).slice().sort((a, b) => {
+        const orderDiff = a.skill.category.displayOrder - b.skill.category.displayOrder;
+        return orderDiff !== 0
+          ? orderDiff
+          : a.skill.name.localeCompare(b.skill.name);
+      })
+    )
   );
 
   readonly skillsByCategory$ = this.skills$.pipe(
