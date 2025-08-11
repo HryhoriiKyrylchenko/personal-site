@@ -18,10 +18,10 @@ import {TranslocoPipe} from '@ngneat/transloco';
 })
 export class CookiesBannerComponent implements OnInit {
   show = false;
-  private cookieName = 'cookie_consent';
-  private cookieService = inject(CookieService);
+  private readonly cookieName = 'cookie_consent';
+  private readonly cookieService = inject(CookieService);
 
-  ngOnInit() {
+  ngOnInit(): void {
     if (typeof window !== 'undefined') {
       Promise.resolve().then(() => {
         this.show = !this.cookieService.check(this.cookieName);
@@ -29,12 +29,12 @@ export class CookiesBannerComponent implements OnInit {
     }
   }
 
-  accept() {
+  accept(): void {
     this.cookieService.set(this.cookieName, 'yes', 365, '/');
     this.show = false;
   }
 
-  learnMore() {
+  learnMore(): void {
     this.accept();
   }
 }

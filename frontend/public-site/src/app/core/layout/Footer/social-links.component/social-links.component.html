@@ -1,6 +1,13 @@
-<div class="social-media-links-container" [style.--icon-size]="iconSize">
+<div
+  class="social-media-links-container"
+  [style.--icon-size]="iconSize"
+>
   @for (link of socialLinks(); track link.id) {
-    <a [href]="link.url" target="_blank" rel="noopener">
+    <a
+      [href]="link.url"
+      target="_blank"
+      rel="noopener"
+    >
       @switch (link.platform) {
         @case ('Facebook') {
           <svg viewBox="0 0 57 58" xmlns="http://www.w3.org/2000/svg">

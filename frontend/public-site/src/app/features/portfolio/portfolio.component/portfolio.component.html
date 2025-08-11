@@ -11,23 +11,29 @@
               aria-hidden="true"
             ></div>
 
-            <h6 class=" project-title">{{ project.title }}</h6>
+            <h6 class=" project-title">
+              {{ project.title }}
+            </h6>
 
             <div
               class="project-skills"
               [class.expanded]="expandedProjectId === project.id"
               (mouseenter)="onMouseEnter(project.id)"
-              (mouseleave)="onMouseLeave()">
+              (mouseleave)="onMouseLeave()"
+            >
               @for (skill of project.skills; track skill.skill.key) {
                 <app-skill [skill]="skill.skill"></app-skill>
               }
             </div>
 
-            <p class="project-description">{{ project.shortDescription }}</p>
+            <p class="project-description">
+              {{ project.shortDescription }}
+            </p>
 
             <button
               class="btn btn-primary"
-              (click)="onReadClick(project.slug)">
+              (click)="onReadClick(project.slug)"
+            >
               {{ 'button.read_more' | transloco }}
             </button>
           </div>

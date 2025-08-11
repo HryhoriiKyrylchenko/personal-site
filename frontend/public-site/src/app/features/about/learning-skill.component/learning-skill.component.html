@@ -1,9 +1,17 @@
 <div
   class="learning-skill"
-  [title]="description">
-  <div class="skill-name">{{ name }}</div>
+  [title]="description"
+>
+  <div class="skill-name">
+    {{ name }}
+  </div>
   <div class="skill-status">
-    <span class="status-circle" [style.background-color]="statusColor"></span>
-    <span class="status-text">{{ statusText }}</span>
+    <span
+      class="status-circle"
+      [style.background-color]="statusColor"
+    ></span>
+    <span class="status-text">
+      {{ statusText }}
+    </span>
   </div>
 </div>

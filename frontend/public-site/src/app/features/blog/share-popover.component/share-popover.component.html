@@ -13,138 +13,139 @@
 @if(open) {
   <div class="share-panel">
     <div class="share-panel-inner">
-        <button
-                type="button"
-                class="share-btn"
-                (click)="onShareLinkedIn()"
-                aria-label="Share on LinkedIn"
-        >
-            <svg width="57" height="58" viewBox="0 0 57 58" xmlns="http://www.w3.org/2000/svg">
-                <g filter="url(#filter0_di_567_4880)">
-                    <rect class="outer-fill" x="4.88013" y="2.93985" width="48.1203" height="48.1203" rx="12.8" fill="currentColor"/>
-                    <path class="inner-fill" d="M20.0463 43.156H12.7853V21.502H20.0463V43.156Z" fill="currentColor"/>
-                    <path class="inner-fill" d="M37.8859 20.9249C42.7269 20.9249 46.2365 24.0283 46.2366 30.6927V43.156H38.9755V31.5349C38.9755 28.6238 37.9344 26.7234 35.2961 26.7233C34.4796 26.7292 33.6842 26.9835 33.0177 27.4524C32.3513 27.9213 31.8454 28.582 31.5683 29.3453C31.3789 29.9107 31.2966 30.5065 31.326 31.1017V43.1317H24.0649V21.4778H31.326V24.5337C31.9857 23.396 32.9456 22.4588 34.1015 21.8229C35.2574 21.1869 36.5657 20.8764 37.8859 20.9249Z" fill="currentColor"/>
-                    <path class="inner-fill" d="M16.4162 10.9639C16.9478 10.904 17.4864 10.9561 17.9963 11.1174C18.5062 11.2786 18.9761 11.5451 19.3752 11.8994C19.7744 12.2537 20.0942 12.6885 20.3129 13.174C20.5315 13.6595 20.644 14.1856 20.644 14.7174C20.644 15.2493 20.5315 15.7754 20.3129 16.2609C20.0942 16.7464 19.7744 17.1805 19.3752 17.5348C18.9761 17.889 18.5062 18.1555 17.9963 18.3168C17.4864 18.478 16.9479 18.5301 16.4162 18.4702C15.4147 18.4702 14.4538 18.0749 13.7457 17.3711C13.0377 16.6672 12.64 15.7128 12.6399 14.7174C12.6399 13.722 13.0375 12.767 13.7457 12.0631C14.4538 11.3592 15.4147 10.9639 16.4162 10.9639Z" fill="currentColor"/>
-                </g>
-                <defs>
-                    <filter id="filter0_di_567_4880" x="0.880127" y="0.93985" width="56.1204" height="56.1203" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-                        <feFlood flood-opacity="0" result="BackgroundImageFix"/>
-                        <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
-                        <feOffset dy="2"/>
-                        <feGaussianBlur stdDeviation="2"/>
-                        <feComposite in2="hardAlpha" operator="out"/>
-                        <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/>
-                        <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_567_4880"/>
-                        <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_567_4880" result="shape"/>
-                        <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
-                        <feOffset dy="2"/>
-                        <feGaussianBlur stdDeviation="2"/>
-                        <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1"/>
-                        <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.1 0"/>
-                        <feBlend mode="normal" in2="shape" result="effect2_innerShadow_567_4880"/>
-                    </filter>
-                </defs>
-            </svg>
-        </button>
-        <button
-                type="button"
-                class="share-btn"
-                (click)="onShareFacebook()"
-                aria-label="Share on Facebook"
-        >
-            <svg width="57" height="58" viewBox="0 0 57 58" xmlns="http://www.w3.org/2000/svg">
-                <g filter="url(#filter0_di_567_4878)">
-                    <rect class="outer-fill" x="4.75977" y="2.93985" width="48.1203" height="48.1203" rx="12.8" fill="currentColor"/>
-                    <path class="inner-fill" d="M38.2977 33.3392L39.4367 26.1325H32.3114V21.4557C32.3114 19.4841 33.3067 17.5623 36.4981 17.5623H39.7378V11.4268C39.7378 11.4268 36.7977 10.9398 33.9868 10.9398C28.1185 10.9398 24.2829 14.3913 24.2829 20.6398V26.1325H17.7598V33.3392H24.2829L24.3118 50.6545H32.3403L32.3114 33.3392H38.2977Z" fill="currentColor"/>
-                </g>
-                <defs>
-                    <filter id="filter0_di_567_4878" x="0.759766" y="0.93985" width="56.1204" height="56.1203" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-                        <feFlood flood-opacity="0" result="BackgroundImageFix"/>
-                        <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
-                        <feOffset dy="2"/>
-                        <feGaussianBlur stdDeviation="2"/>
-                        <feComposite in2="hardAlpha" operator="out"/>
-                        <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/>
-                        <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_567_4878"/>
-                        <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_567_4878" result="shape"/>
-                        <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
-                        <feOffset dy="2"/>
-                        <feGaussianBlur stdDeviation="2"/>
-                        <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1"/>
-                        <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.1 0"/>
-                        <feBlend mode="normal" in2="shape" result="effect2_innerShadow_567_4878"/>
-                    </filter>
-                </defs>
-            </svg>
-        </button>
-        <button
-                type="button"
-                class="share-btn"
-                (click)="onCopyLink()"
-                aria-label="Copy link"
-        >
-            <svg width="57" height="58" viewBox="0 0 57 58" xmlns="http://www.w3.org/2000/svg">
-                <g filter="url(#filter0_di_567_4882)">
-                    <rect class="outer-fill" x="4.00049" y="2.94" width="48.12" height="48.12" rx="12.8" fill="currentColor"/>
-                    <path class="outer-fill" fill-rule="evenodd" clip-rule="evenodd" d="M36.6676 9.00055C36.6736 9.00055 36.6795 9.00194 36.6854 9.00215C36.8176 9.00292 36.9447 9.05248 37.0399 9.15835L42.9346 15.2204C43.0621 15.3465 43.1026 15.5291 43.0585 15.705V37.4652C43.0584 37.7287 42.8455 37.9394 42.5615 37.9394H36.8092V44.6166C36.7914 44.8624 36.5783 45.0906 36.2945 45.0908H13.4974C13.2135 45.0907 13.0006 44.8624 13.0005 44.599V16.6438C13.0005 16.3627 13.2312 16.152 13.4974 16.1519H19.2853V9.49237C19.2854 9.21129 19.5168 9.00055 19.7831 9.00055H36.6676ZM14.0122 44.0895H35.7967V23.18H29.9562C29.6722 23.18 29.4585 22.9517 29.4584 22.6882V17.118H14.0122V44.0895ZM20.2801 16.1519H29.8243C29.8664 16.1405 29.9111 16.1343 29.9562 16.1343C30.1459 16.1344 30.3036 16.2364 30.3876 16.3826L36.649 22.3542C36.7555 22.442 36.8092 22.5828 36.8092 22.7058V36.9557H42.0646V16.0462H36.6676C36.3835 16.0462 36.1698 15.8179 36.1698 15.5544V9.98419H20.2801V16.1519ZM30.4532 22.1964H35.061L30.4532 17.7964V22.1964ZM37.1646 15.045H41.3717L37.1646 10.7227V15.045Z" fill="currentColor"/>
-                    <path class="inner-fill" d="M14.0122 44.0895H35.7967V23.18H29.9562C29.6722 23.18 29.4585 22.9517 29.4584 22.6882V17.118H14.0122V44.0895Z" fill="currentColor"/>
-                    <path class="inner-fill" d="M20.2801 16.1519H29.8243C29.8664 16.1405 29.9111 16.1343 29.9562 16.1343C30.1459 16.1344 30.3036 16.2364 30.3876 16.3826L36.649 22.3542C36.7555 22.442 36.8092 22.5828 36.8092 22.7058V36.9557H42.0646V16.0462H36.6676C36.3835 16.0462 36.1698 15.8179 36.1698 15.5544V9.98419H20.2801V16.1519Z" fill="currentColor"/>
-                    <path class="outer-fill" d="M37.1646 15.045H41.3717L37.1646 10.7227V15.045Z" fill="currentColor"/>
-                    <path class="outer-fill" d="M30.4532 22.1964H35.061L30.4532 17.7964V22.1964Z" fill="currentColor"/>
-                </g>
-                <defs>
-                    <filter id="filter0_di_567_4882" x="0.000488281" y="0.940001" width="56.1201" height="56.12" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-                        <feFlood flood-opacity="0" result="BackgroundImageFix"/>
-                        <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
-                        <feOffset dy="2"/>
-                        <feGaussianBlur stdDeviation="2"/>
-                        <feComposite in2="hardAlpha" operator="out"/>
-                        <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/>
-                        <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_567_4882"/>
-                        <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_567_4882" result="shape"/>
-                        <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
-                        <feOffset dy="2"/>
-                        <feGaussianBlur stdDeviation="2"/>
-                        <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1"/>
-                        <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.1 0"/>
-                        <feBlend mode="normal" in2="shape" result="effect2_innerShadow_567_4882"/>
-                    </filter>
-                </defs>
-            </svg>
-        </button>
-    </div>
       <button
-              type="button"
-              class="close-btn"
-              (click)="onEscape()"
-              aria-label="Close">
-          <svg width="48" height="49" viewBox="0 0 48 49" xmlns="http://www.w3.org/2000/svg">
-              <g filter="url(#filter0_di_337_1294)">
-                  <rect class="outer-fill" x="4" y="2.07351" width="40" height="40" rx="8.076" fill="currentColor" shape-rendering="crispEdges"/>
-                  <path d="M24.18 32.431C21.57 32.431 18.96 31.441 16.98 29.451C15.06 27.531 14 24.971 14 22.251C14 19.531 15.06 16.971 16.98 15.051C20.95 11.081 27.41 11.081 31.38 15.051C35.35 19.021 35.35 25.481 31.38 29.451C29.4 31.431 26.79 32.431 24.18 32.431ZM24.18 12.641C21.72 12.641 19.25 13.581 17.38 15.451C15.56 17.271 14.56 19.681 14.56 22.251C14.56 24.821 15.56 27.231 17.38 29.051C21.13 32.801 27.23 32.801 30.98 29.051C34.73 25.301 34.73 19.201 30.98 15.451C29.11 13.571 26.64 12.641 24.18 12.641Z" fill="#F8F8F8"/>
-                  <path d="M20.0101 26.701C19.9401 26.701 19.86 26.671 19.81 26.621C19.7 26.511 19.7 26.331 19.81 26.221L28.05 17.981C28.16 17.871 28.34 17.871 28.45 17.981C28.56 18.091 28.56 18.271 28.45 18.381L20.21 26.621C20.16 26.671 20.0801 26.701 20.0101 26.701Z" fill="#F8F8F8"/>
-                  <path d="M28.25 26.701C28.18 26.701 28.1 26.671 28.05 26.621L19.81 18.381C19.7 18.271 19.7 18.091 19.81 17.981C19.92 17.871 20.1 17.871 20.21 17.981L28.45 26.221C28.56 26.331 28.56 26.511 28.45 26.621C28.4 26.671 28.32 26.701 28.25 26.701Z" fill="#F8F8F8"/>
-              </g>
-              <defs>
-                  <filter id="filter0_di_337_1294" x="0" y="0.0735092" width="48" height="48" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-                      <feFlood flood-opacity="0" result="BackgroundImageFix"/>
-                      <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
-                      <feOffset dy="2"/>
-                      <feGaussianBlur stdDeviation="2"/>
-                      <feComposite in2="hardAlpha" operator="out"/>
-                      <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/>
-                      <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_337_1294"/>
-                      <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_337_1294" result="shape"/>
-                      <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
-                      <feOffset dy="2"/>
-                      <feGaussianBlur stdDeviation="2"/>
-                      <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1"/>
-                      <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.1 0"/>
-                      <feBlend mode="normal" in2="shape" result="effect2_innerShadow_337_1294"/>
-                  </filter>
-              </defs>
-          </svg>
+        type="button"
+        class="share-btn"
+        (click)="onShareLinkedIn()"
+        aria-label="Share on LinkedIn"
+      >
+        <svg width="57" height="58" viewBox="0 0 57 58" xmlns="http://www.w3.org/2000/svg">
+          <g filter="url(#filter0_di_567_4880)">
+            <rect class="outer-fill" x="4.88013" y="2.93985" width="48.1203" height="48.1203" rx="12.8" fill="currentColor"/>
+            <path class="inner-fill" d="M20.0463 43.156H12.7853V21.502H20.0463V43.156Z" fill="currentColor"/>
+            <path class="inner-fill" d="M37.8859 20.9249C42.7269 20.9249 46.2365 24.0283 46.2366 30.6927V43.156H38.9755V31.5349C38.9755 28.6238 37.9344 26.7234 35.2961 26.7233C34.4796 26.7292 33.6842 26.9835 33.0177 27.4524C32.3513 27.9213 31.8454 28.582 31.5683 29.3453C31.3789 29.9107 31.2966 30.5065 31.326 31.1017V43.1317H24.0649V21.4778H31.326V24.5337C31.9857 23.396 32.9456 22.4588 34.1015 21.8229C35.2574 21.1869 36.5657 20.8764 37.8859 20.9249Z" fill="currentColor"/>
+            <path class="inner-fill" d="M16.4162 10.9639C16.9478 10.904 17.4864 10.9561 17.9963 11.1174C18.5062 11.2786 18.9761 11.5451 19.3752 11.8994C19.7744 12.2537 20.0942 12.6885 20.3129 13.174C20.5315 13.6595 20.644 14.1856 20.644 14.7174C20.644 15.2493 20.5315 15.7754 20.3129 16.2609C20.0942 16.7464 19.7744 17.1805 19.3752 17.5348C18.9761 17.889 18.5062 18.1555 17.9963 18.3168C17.4864 18.478 16.9479 18.5301 16.4162 18.4702C15.4147 18.4702 14.4538 18.0749 13.7457 17.3711C13.0377 16.6672 12.64 15.7128 12.6399 14.7174C12.6399 13.722 13.0375 12.767 13.7457 12.0631C14.4538 11.3592 15.4147 10.9639 16.4162 10.9639Z" fill="currentColor"/>
+          </g>
+          <defs>
+            <filter id="filter0_di_567_4880" x="0.880127" y="0.93985" width="56.1204" height="56.1203" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+              <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+              <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+              <feOffset dy="2"/>
+              <feGaussianBlur stdDeviation="2"/>
+              <feComposite in2="hardAlpha" operator="out"/>
+              <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/>
+              <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_567_4880"/>
+              <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_567_4880" result="shape"/>
+              <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+              <feOffset dy="2"/>
+              <feGaussianBlur stdDeviation="2"/>
+              <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1"/>
+              <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.1 0"/>
+              <feBlend mode="normal" in2="shape" result="effect2_innerShadow_567_4880"/>
+            </filter>
+          </defs>
+        </svg>
       </button>
+      <button
+        type="button"
+        class="share-btn"
+        (click)="onShareFacebook()"
+        aria-label="Share on Facebook"
+      >
+        <svg width="57" height="58" viewBox="0 0 57 58" xmlns="http://www.w3.org/2000/svg">
+          <g filter="url(#filter0_di_567_4878)">
+            <rect class="outer-fill" x="4.75977" y="2.93985" width="48.1203" height="48.1203" rx="12.8" fill="currentColor"/>
+            <path class="inner-fill" d="M38.2977 33.3392L39.4367 26.1325H32.3114V21.4557C32.3114 19.4841 33.3067 17.5623 36.4981 17.5623H39.7378V11.4268C39.7378 11.4268 36.7977 10.9398 33.9868 10.9398C28.1185 10.9398 24.2829 14.3913 24.2829 20.6398V26.1325H17.7598V33.3392H24.2829L24.3118 50.6545H32.3403L32.3114 33.3392H38.2977Z" fill="currentColor"/>
+          </g>
+          <defs>
+            <filter id="filter0_di_567_4878" x="0.759766" y="0.93985" width="56.1204" height="56.1203" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+              <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+              <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+              <feOffset dy="2"/>
+              <feGaussianBlur stdDeviation="2"/>
+              <feComposite in2="hardAlpha" operator="out"/>
+              <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/>
+              <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_567_4878"/>
+              <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_567_4878" result="shape"/>
+              <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+              <feOffset dy="2"/>
+              <feGaussianBlur stdDeviation="2"/>
+              <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1"/>
+              <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.1 0"/>
+              <feBlend mode="normal" in2="shape" result="effect2_innerShadow_567_4878"/>
+            </filter>
+          </defs>
+        </svg>
+      </button>
+      <button
+        type="button"
+        class="share-btn"
+        (click)="onCopyLink()"
+        aria-label="Copy link"
+      >
+        <svg width="57" height="58" viewBox="0 0 57 58" xmlns="http://www.w3.org/2000/svg">
+          <g filter="url(#filter0_di_567_4882)">
+            <rect class="outer-fill" x="4.00049" y="2.94" width="48.12" height="48.12" rx="12.8" fill="currentColor"/>
+            <path class="outer-fill" fill-rule="evenodd" clip-rule="evenodd" d="M36.6676 9.00055C36.6736 9.00055 36.6795 9.00194 36.6854 9.00215C36.8176 9.00292 36.9447 9.05248 37.0399 9.15835L42.9346 15.2204C43.0621 15.3465 43.1026 15.5291 43.0585 15.705V37.4652C43.0584 37.7287 42.8455 37.9394 42.5615 37.9394H36.8092V44.6166C36.7914 44.8624 36.5783 45.0906 36.2945 45.0908H13.4974C13.2135 45.0907 13.0006 44.8624 13.0005 44.599V16.6438C13.0005 16.3627 13.2312 16.152 13.4974 16.1519H19.2853V9.49237C19.2854 9.21129 19.5168 9.00055 19.7831 9.00055H36.6676ZM14.0122 44.0895H35.7967V23.18H29.9562C29.6722 23.18 29.4585 22.9517 29.4584 22.6882V17.118H14.0122V44.0895ZM20.2801 16.1519H29.8243C29.8664 16.1405 29.9111 16.1343 29.9562 16.1343C30.1459 16.1344 30.3036 16.2364 30.3876 16.3826L36.649 22.3542C36.7555 22.442 36.8092 22.5828 36.8092 22.7058V36.9557H42.0646V16.0462H36.6676C36.3835 16.0462 36.1698 15.8179 36.1698 15.5544V9.98419H20.2801V16.1519ZM30.4532 22.1964H35.061L30.4532 17.7964V22.1964ZM37.1646 15.045H41.3717L37.1646 10.7227V15.045Z" fill="currentColor"/>
+            <path class="inner-fill" d="M14.0122 44.0895H35.7967V23.18H29.9562C29.6722 23.18 29.4585 22.9517 29.4584 22.6882V17.118H14.0122V44.0895Z" fill="currentColor"/>
+            <path class="inner-fill" d="M20.2801 16.1519H29.8243C29.8664 16.1405 29.9111 16.1343 29.9562 16.1343C30.1459 16.1344 30.3036 16.2364 30.3876 16.3826L36.649 22.3542C36.7555 22.442 36.8092 22.5828 36.8092 22.7058V36.9557H42.0646V16.0462H36.6676C36.3835 16.0462 36.1698 15.8179 36.1698 15.5544V9.98419H20.2801V16.1519Z" fill="currentColor"/>
+            <path class="outer-fill" d="M37.1646 15.045H41.3717L37.1646 10.7227V15.045Z" fill="currentColor"/>
+            <path class="outer-fill" d="M30.4532 22.1964H35.061L30.4532 17.7964V22.1964Z" fill="currentColor"/>
+          </g>
+          <defs>
+            <filter id="filter0_di_567_4882" x="0.000488281" y="0.940001" width="56.1201" height="56.12" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+              <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+              <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+              <feOffset dy="2"/>
+              <feGaussianBlur stdDeviation="2"/>
+              <feComposite in2="hardAlpha" operator="out"/>
+              <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/>
+              <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_567_4882"/>
+              <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_567_4882" result="shape"/>
+              <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+              <feOffset dy="2"/>
+              <feGaussianBlur stdDeviation="2"/>
+              <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1"/>
+              <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.1 0"/>
+              <feBlend mode="normal" in2="shape" result="effect2_innerShadow_567_4882"/>
+            </filter>
+          </defs>
+        </svg>
+      </button>
+    </div>
+    <button
+      type="button"
+      class="close-btn"
+      (click)="onEscape()"
+      aria-label="Close"
+    >
+      <svg width="48" height="49" viewBox="0 0 48 49" xmlns="http://www.w3.org/2000/svg">
+        <g filter="url(#filter0_di_337_1294)">
+          <rect class="outer-fill" x="4" y="2.07351" width="40" height="40" rx="8.076" fill="currentColor" shape-rendering="crispEdges"/>
+          <path d="M24.18 32.431C21.57 32.431 18.96 31.441 16.98 29.451C15.06 27.531 14 24.971 14 22.251C14 19.531 15.06 16.971 16.98 15.051C20.95 11.081 27.41 11.081 31.38 15.051C35.35 19.021 35.35 25.481 31.38 29.451C29.4 31.431 26.79 32.431 24.18 32.431ZM24.18 12.641C21.72 12.641 19.25 13.581 17.38 15.451C15.56 17.271 14.56 19.681 14.56 22.251C14.56 24.821 15.56 27.231 17.38 29.051C21.13 32.801 27.23 32.801 30.98 29.051C34.73 25.301 34.73 19.201 30.98 15.451C29.11 13.571 26.64 12.641 24.18 12.641Z" fill="#F8F8F8"/>
+          <path d="M20.0101 26.701C19.9401 26.701 19.86 26.671 19.81 26.621C19.7 26.511 19.7 26.331 19.81 26.221L28.05 17.981C28.16 17.871 28.34 17.871 28.45 17.981C28.56 18.091 28.56 18.271 28.45 18.381L20.21 26.621C20.16 26.671 20.0801 26.701 20.0101 26.701Z" fill="#F8F8F8"/>
+          <path d="M28.25 26.701C28.18 26.701 28.1 26.671 28.05 26.621L19.81 18.381C19.7 18.271 19.7 18.091 19.81 17.981C19.92 17.871 20.1 17.871 20.21 17.981L28.45 26.221C28.56 26.331 28.56 26.511 28.45 26.621C28.4 26.671 28.32 26.701 28.25 26.701Z" fill="#F8F8F8"/>
+        </g>
+        <defs>
+          <filter id="filter0_di_337_1294" x="0" y="0.0735092" width="48" height="48" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+            <feOffset dy="2"/>
+            <feGaussianBlur stdDeviation="2"/>
+            <feComposite in2="hardAlpha" operator="out"/>
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/>
+            <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_337_1294"/>
+            <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_337_1294" result="shape"/>
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+            <feOffset dy="2"/>
+            <feGaussianBlur stdDeviation="2"/>
+            <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1"/>
+            <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.1 0"/>
+            <feBlend mode="normal" in2="shape" result="effect2_innerShadow_337_1294"/>
+          </filter>
+        </defs>
+      </svg>
+    </button>
   </div>
 }
 

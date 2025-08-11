@@ -1,6 +1,11 @@
 @if (post$ | async; as post) {
   <div class="blog-detail-dialog">
-    <button mat-button (click)="onCloseClick()">{{ 'button.close' | transloco }}</button>
+    <button
+      mat-button
+      (click)="onCloseClick()"
+    >
+      {{ 'button.close' | transloco }}
+    </button>
 
     <div
       class="blog-cover-img"

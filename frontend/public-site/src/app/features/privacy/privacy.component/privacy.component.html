@@ -1,6 +1,11 @@
 @if (page$ | async; as page) {
   <div class="privacy-page">
-    <h4 class="title">{{ page.pageData.title }}</h4>
-    <div class="content" [innerHTML]="page.pageData.data['content']"></div>
+    <h4 class="title">
+      {{ page.pageData.title }}
+    </h4>
+    <div
+      class="content"
+      [innerHTML]="page.pageData.data['content']"
+    ></div>
   </div>
 }
