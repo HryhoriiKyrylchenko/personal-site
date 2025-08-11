@@ -30,6 +30,11 @@ public class S3StorageService : IStorageService
                 BucketName = _settings.BucketName,
                 CannedACL = S3CannedACL.PublicRead 
             };
+            
+            if (string.Equals(Path.GetExtension(fileName), ".pdf", StringComparison.OrdinalIgnoreCase))
+            {
+                uploadRequest.Metadata["Content-Disposition"] = $"attachment; filename=\"{fileName}\"";
+            }
 
             var fileTransferUtility = new TransferUtility(_s3Client);
 

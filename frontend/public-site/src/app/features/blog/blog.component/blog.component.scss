@@ -109,12 +109,22 @@ $blog-lg: 1007px;
   background: var(--color-modal-button);
   grid-area: button_read;
   width: 18.725rem;
+
+  &:active {
+    background: var(--color-active);
+    color: var(--color-active-text);
+  }
 }
 
 .btn-secondary {
   background: var(--color-modal-button-secondary);
   grid-area: button_share;
   width: 18.725rem;
+
+  &:active {
+    background: var(--color-active);
+    color: var(--color-active-text);
+  }
 }
 
 @media (min-width: $blog-sm) {

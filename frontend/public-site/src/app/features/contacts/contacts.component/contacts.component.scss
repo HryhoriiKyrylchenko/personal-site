@@ -71,6 +71,11 @@ $contacts-lg: 1007px;
       background: var(--color-hover);
       color: var(--color-hover-text);
     }
+
+    &:active {
+      background: var(--color-active);
+      color: var(--color-active-text);
+    }
   }
 
   input.ng-invalid.ng-touched,

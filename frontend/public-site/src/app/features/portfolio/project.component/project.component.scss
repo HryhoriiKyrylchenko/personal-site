@@ -27,6 +27,11 @@
       background: var(--color-hover);
       color: var(--color-hover-text);
     }
+
+    &:active {
+      background: var(--color-active);
+      color: var(--color-active-text);
+    }
   }
 
   .project-cover-img {
@@ -146,6 +151,11 @@
       &:hover {
         background: var(--color-hover);
         color: var(--color-hover-text);
+      }
+
+      &:active {
+        background: var(--color-active);
+        color: var(--color-active-text);
       }
     }
   }

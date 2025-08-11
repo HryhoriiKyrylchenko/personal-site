@@ -10,6 +10,7 @@ using PersonalSite.Domain.Entities.Skills;
 using PersonalSite.Domain.Interfaces.Repositories.Pages;
 using PersonalSite.Domain.Interfaces.Repositories.Projects;
 using PersonalSite.Domain.Interfaces.Repositories.Skills;
+using PersonalSite.Infrastructure.Storage;
 
 namespace PersonalSite.Application.Tests.Handlers.Pages.Page;
 
@@ -23,6 +24,7 @@ public class GetHomePageQueryHandlerTests
     private readonly Mock<ITranslatableMapper<Project, ProjectDto>> _projectMapperMock;
     private readonly LanguageContext _languageContext;
     private readonly GetHomePageQueryHandler _handler;
+    private readonly Mock<IS3UrlBuilder> _urlBuilderMock;
 
     public GetHomePageQueryHandlerTests()
     {
@@ -33,6 +35,7 @@ public class GetHomePageQueryHandlerTests
         _pageMapperMock = new Mock<ITranslatableMapper<Domain.Entities.Pages.Page, PageDto>>();
         _userSkillMapperMock = new Mock<ITranslatableMapper<UserSkill, UserSkillDto>>();
         _projectMapperMock = new Mock<ITranslatableMapper<Project, ProjectDto>>();
+        _urlBuilderMock = new Mock<IS3UrlBuilder>();
 
         _languageContext = new LanguageContext { LanguageCode = "en" };
 
@@ -44,7 +47,8 @@ public class GetHomePageQueryHandlerTests
             loggerMock.Object,
             _pageMapperMock.Object,
             _userSkillMapperMock.Object,
-            _projectMapperMock.Object
+            _projectMapperMock.Object,
+            _urlBuilderMock.Object
         );
     }
 
@@ -83,7 +87,11 @@ public class GetHomePageQueryHandlerTests
     {
         // Arrange
         var page = PageTestDataFactory.CreatePage();
-        var pageDto = new PageDto { Title = "Home" };
+        var pageDto = new PageDto
+        {
+            Title = "Home",
+            Data = new Dictionary<string, string> { ["ImageUrl"] = "image-key" }
+        };
 
         _pageRepositoryMock.Setup(r => r.GetByKeyAsync("home", It.IsAny<CancellationToken>()))
             .ReturnsAsync(page);
@@ -112,7 +120,11 @@ public class GetHomePageQueryHandlerTests
     {
         // Arrange
         var page = PageTestDataFactory.CreatePage();
-        var pageDto = new PageDto { Title = "Home" };
+        var pageDto = new PageDto
+        {
+            Title = "Home",
+            Data = new Dictionary<string, string> { ["ImageUrl"] = "image-key" }
+        };
 
         var userSkill = new UserSkill { Id = Guid.NewGuid() };
         var userSkillDto = new UserSkillDto { Id = userSkill.Id };

@@ -144,6 +144,11 @@ $skill-item-height: 3rem;
   background: var(--color-modal-button);
   grid-area: button_read;
   width: 18.725rem;
+
+  &:active {
+    background: var(--color-active);
+    color: var(--color-active-text);
+  }
 }
 
 

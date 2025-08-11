@@ -2,7 +2,8 @@
   "home": {
     "title": "Григорий Кирильченко",
     "button-back-to-top": "Вернуться наверх",
-    "rights-reserved": "Все права защищены."
+    "rights-reserved": "Все права защищены.",
+    "project": "Последний проект"
   },
   "nav": {
     "home": "Главная",
@@ -65,6 +66,9 @@
     "copied": "Ссылка скопирована!",
     "repo": "Репозиторий",
     "demo": "Демо",
+    "contact": "Связаться со мной",
+    "download": "Скачать резюме",
+    "portfolio": "Посмотреть портфолио",
     "tooltip": {
       "linkedin": "Поделиться в LinkedIn",
       "facebook": "Поделиться в Facebook",
