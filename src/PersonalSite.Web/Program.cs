@@ -20,20 +20,20 @@ builder.Configuration
     .AddJsonFile("appsettings.json", optional: false)
     .AddUserSecrets<Program>()
     .AddEnvironmentVariables();
-
-// Add services to the container.
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    
+builder.Services.AddSingleton<NpgsqlDataSource>(_ =>
 {
-    var dataSourceBuilder = new NpgsqlDataSourceBuilder(
-        builder.Configuration.GetConnectionString("DefaultConnection")!
-    );
+    var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")!;
+    var dataSourceBuilder = new NpgsqlDataSourceBuilder(connectionString);
     dataSourceBuilder.EnableDynamicJson();
+    return dataSourceBuilder.Build();
+});
 
-    var dataSource = dataSourceBuilder.Build();
-
+builder.Services.AddDbContext<ApplicationDbContext>((sp, options) =>
+{
+    var dataSource = sp.GetRequiredService<NpgsqlDataSource>();
     options.UseNpgsql(dataSource);
 });
-    
 
 builder.Services.Configure<SmtpSettings>(builder.Configuration.GetSection("SmtpSettings"));
 

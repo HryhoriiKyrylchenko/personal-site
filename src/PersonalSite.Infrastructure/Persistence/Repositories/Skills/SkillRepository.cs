@@ -30,6 +30,7 @@ public class SkillRepository : EfRepository<Skill>, ISkillRepository
             .Include(s => s.Category)
                 .ThenInclude(c => c.Translations.Where(t => !t.Language.IsDeleted))
                     .ThenInclude(t => t.Language)
+            .AsSplitQuery()
             .FirstOrDefaultAsync(s => s.Id == id, cancellationToken);   
     }
 
@@ -41,6 +42,7 @@ public class SkillRepository : EfRepository<Skill>, ISkillRepository
                     .ThenInclude(t => t.Language)
             .Include(s => s.Translations.Where(t => !t.Language.IsDeleted))
                 .ThenInclude(t => t.Language)
+            .AsSplitQuery()
             .AsNoTracking();
 
         if (categoryId.HasValue)

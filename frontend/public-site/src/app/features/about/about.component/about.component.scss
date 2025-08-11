@@ -141,13 +141,6 @@ $about-lg: 1007px;
   .about-img {
     width: 40%;
     height: auto;
-
-    filter: grayscale(100%);
-    transition: filter 0.3s ease;
-
-    &:hover {
-      filter: none;
-    }
   }
 
   .about-content-container-inner {

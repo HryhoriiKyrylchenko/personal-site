@@ -19,6 +19,7 @@ public class PageRepository : EfRepository<Page>, IPageRepository
         return await DbContext.Pages
             .Include(p => p.Translations.Where(t => !t.Language.IsDeleted))
                 .ThenInclude(t => t.Language)
+            .AsSplitQuery()
             .FirstOrDefaultAsync(p => p.Key == key, cancellationToken);
     }
 
@@ -27,6 +28,7 @@ public class PageRepository : EfRepository<Page>, IPageRepository
         return await DbContext.Pages
             .Include(p => p.Translations.Where(t => !t.Language.IsDeleted))
                 .ThenInclude(t => t.Language)
+            .AsSplitQuery()
             .ToListAsync(cancellationToken);
     }
 
@@ -38,6 +40,7 @@ public class PageRepository : EfRepository<Page>, IPageRepository
         return await DbContext.Pages
             .Include(p => p.Translations.Where(t => !t.Language.IsDeleted))
                 .ThenInclude(t => t.Language)
+            .AsSplitQuery()
             .FirstOrDefaultAsync(p => p.Id == id, cancellationToken);
     }
 

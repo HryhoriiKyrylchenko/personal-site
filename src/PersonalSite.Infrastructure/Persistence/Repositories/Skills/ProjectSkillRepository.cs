@@ -23,6 +23,7 @@ public class ProjectSkillRepository : EfRepository<ProjectSkill>, IProjectSkillR
             .Include(ps => ps.Skill)
                 .ThenInclude(s => s.Category)
                     .ThenInclude(c => c.Translations)
+            .AsSplitQuery()
             .ToListAsync(cancellationToken);
     }
 }

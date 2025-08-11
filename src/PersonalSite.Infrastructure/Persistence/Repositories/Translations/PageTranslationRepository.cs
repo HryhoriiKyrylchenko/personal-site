@@ -18,6 +18,7 @@ public class PageTranslationRepository : EfRepository<PageTranslation>, IPageTra
         
         return await DbContext.PageTranslations
             .Where(p => p.Page.Key == pageKey)
+            .AsSplitQuery()
             .ToListAsync(cancellationToken);
     }
 }

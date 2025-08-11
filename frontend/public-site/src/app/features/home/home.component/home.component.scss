@@ -348,12 +348,6 @@ $home-lg: 1007px;
       max-width: 35rem;
       height: 44rem;
       margin-right: 2rem;
-      filter: grayscale(100%);
-      transition: filter 0.3s ease;
-
-      &:hover {
-        filter: none;
-      }
     }
 
     .home-name {
