@@ -1,9 +1,14 @@
 using Npgsql;
 using PersonalSite.Application.DependencyInjection;
 using PersonalSite.Infrastructure.DependencyInjection;
+using PersonalSite.Web.Configuration;
 using PersonalSite.Web.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
+
+SerilogConfigurator.Configure(builder.Configuration);
+
+builder.Host.UseSerilog();
 
 builder.Services.AddCors(options =>
 {

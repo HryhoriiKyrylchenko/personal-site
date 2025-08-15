@@ -8,7 +8,6 @@ public class SerilogConfigurator
 
         var columnWriters = new Dictionary<string, ColumnWriterBase>
         {
-            { "Id", new IdColumnWriter() },
             { "Timestamp", new TimestampColumnWriter() },
             { "Level", new LevelColumnWriter() },
             { "Message", new RenderedMessageColumnWriter() },
@@ -30,7 +29,7 @@ public class SerilogConfigurator
                 connectionString: connectionString,
                 tableName: "Logs",
                 columnOptions: columnWriters,
-                needAutoCreateTable: false,
+                needAutoCreateTable: true,
                 restrictedToMinimumLevel: LogEventLevel.Error
             )
             .CreateLogger();
