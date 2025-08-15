@@ -1,3 +1,4 @@
+using AspNetCoreRateLimit;
 using Npgsql;
 using PersonalSite.Application.DependencyInjection;
 using PersonalSite.Infrastructure.DependencyInjection;
@@ -19,6 +20,27 @@ builder.Services.AddCors(options =>
             .AllowAnyHeader()
             .AllowAnyMethod());
 });
+
+builder.Services.AddMemoryCache();
+
+builder.Services.Configure<IpRateLimitOptions>(options =>
+{
+    options.EnableEndpointRateLimiting = true;
+    options.StackBlockedRequests = false;
+    options.HttpStatusCode = 429;
+    options.GeneralRules =
+    [
+        new RateLimitRule
+        {
+            Endpoint = "*:/api/analytics/track",
+            Period = "1m",
+            Limit = 60
+        }
+    ];
+});
+
+builder.Services.AddInMemoryRateLimiting();
+builder.Services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
 
 builder.Configuration
     .SetBasePath(Directory.GetCurrentDirectory())
@@ -59,6 +81,8 @@ builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
 var app = builder.Build();
+
+app.UseIpRateLimiting();
 
 app.UseHttpsRedirection();
 app.UseRouting();

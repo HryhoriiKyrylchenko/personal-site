@@ -4,6 +4,7 @@ import { Clipboard } from '@angular/cdk/clipboard';
 import {TranslocoPipe, TranslocoService} from '@ngneat/transloco';
 import {MatIconButton} from '@angular/material/button';
 import {MatTooltip} from '@angular/material/tooltip';
+import {AnalyticsService} from '../../../core/services/analytics-service';
 
 @Component({
   selector: 'app-share-links',
@@ -25,14 +26,28 @@ export class ShareLinkComponent {
   private snackBar = inject(MatSnackBar);
   private transloco = inject(TranslocoService)
 
+  private analytics = inject(AnalyticsService);
+
   onShareLinkedIn(): void {
     const shareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(this.url)}`;
     window.open(shareUrl, '_blank', 'noopener,noreferrer');
+
+    this.analytics.trackEvent({
+      eventType: "share_link_click",
+      pageSlug: "",
+      additionalDataJson: "{}"
+    });
   }
 
   onShareFacebook(): void {
     const shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(this.url)}`;
     window.open(shareUrl, '_blank', 'noopener,noreferrer');
+
+    this.analytics.trackEvent({
+      eventType: "share_link_click",
+      pageSlug: "",
+      additionalDataJson: "{}"
+    });
   }
 
   async onCopyLink(): Promise<void> {
@@ -44,6 +59,12 @@ export class ShareLinkComponent {
       this.transloco.translate('button.copied'),
       undefined,
       { duration: 2000 });
+
+    this.analytics.trackEvent({
+      eventType: "share_link_copy",
+      pageSlug: "",
+      additionalDataJson: "{}"
+    }).subscribe();
   }
 
 

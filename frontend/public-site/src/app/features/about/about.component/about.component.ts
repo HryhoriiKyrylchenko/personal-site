@@ -1,6 +1,6 @@
 import {
   Component,
-  inject
+  inject, OnInit
 } from '@angular/core';
 import { PagesApiService } from '../../../core/services/pages-api.service';
 import {AsyncPipe, NgStyle} from '@angular/common';
@@ -10,6 +10,7 @@ import {map} from 'rxjs';
 import {UserSkillDto} from '../../../shared/models/page-dtos';
 import {SkillLevelComponent} from '../skill-level.component/skill-level.component';
 import {LearningSkillComponent} from '../learning-skill.component/learning-skill.component';
+import {AnalyticsService} from '../../../core/services/analytics-service';
 
 @Component({
   selector: 'app-about',
@@ -25,8 +26,18 @@ import {LearningSkillComponent} from '../learning-skill.component/learning-skill
   templateUrl: './about.component.html',
   styleUrl: './about.component.scss'
 })
-export class AboutComponent {
+export class AboutComponent implements OnInit {
   readonly page$ = inject(PagesApiService).aboutPage$;
+
+  private analytics = inject(AnalyticsService);
+
+  ngOnInit() {
+    this.analytics.trackEvent({
+      eventType: "page_view",
+      pageSlug: "about",
+      additionalDataJson: "{}"
+    }).subscribe();
+  }
 
   readonly skills$ = this.page$.pipe(
     map(page =>
