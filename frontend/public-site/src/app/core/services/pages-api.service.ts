@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import {filter, startWith, switchMap} from 'rxjs/operators';
+import {filter, finalize, startWith, switchMap} from 'rxjs/operators';
 import {CookiesPageDto, HomePageDto, PageDto, PrivacyPageDto} from '../../shared/models/page-dtos';
 import { AboutPageDto } from '../../shared/models/page-dtos';
 import { PortfolioPageDto } from '../../shared/models/page-dtos';
@@ -9,12 +9,14 @@ import { ContactPageDto } from '../../shared/models/page-dtos';
 import {environment} from '../../../environments/environment';
 import {TranslocoService} from '@ngneat/transloco';
 import {EMPTY, of} from 'rxjs';
+import {LoadingService} from './loading.service';
 
 @Injectable({ providedIn: 'root' })
 export class PagesApiService {
   private http = inject(HttpClient);
   private transloco = inject(TranslocoService);
   private baseUrl = `${environment.apiUrl}/pages`;
+  private loadingService = inject(LoadingService);
 
   private createPage$<T extends { pageData: PageDto }>(path: string) {
     return this.transloco.events$.pipe(
@@ -23,6 +25,8 @@ export class PagesApiService {
       switchMap(() => {
         const initialLang = this.transloco.getActiveLang();
         if (!initialLang) return EMPTY;
+
+        this.loadingService.show();
 
         return this.http.get<T>(`${this.baseUrl}/${path}`).pipe(
           switchMap(res => {
@@ -33,7 +37,8 @@ export class PagesApiService {
               }
             }
             return of(res);
-          })
+          }),
+          finalize(() => this.loadingService.hide())
         );
       })
     );
