@@ -6,10 +6,9 @@ import {
 } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import {provideTransloco, translocoConfig, TranslocoService} from '@ngneat/transloco';
-import {cookiesStorage, provideTranslocoPersistLang} from '@ngneat/transloco-persist-lang';
+import {provideTranslocoPersistLang} from '@ngneat/transloco-persist-lang';
 import { StaticLoader } from './core/i18n/transloco.loader';
 import { routes } from './app.routes';
-import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
 import {
   provideHttpClient,
   withFetch, withInterceptors
@@ -18,11 +17,12 @@ import {SiteInfoService} from './core/services/site-info.service';
 import {localeInterceptor} from './interceptors/locale.interceptor.fn';
 import {firstValueFrom} from 'rxjs';
 import {catchError, switchMap} from 'rxjs/operators';
+import {cookiesStorageRoot} from './shared/utils/cookie-storage.helper';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideTranslocoPersistLang({
-      storage: { useValue: cookiesStorage() },
+      storage: { useValue: cookiesStorageRoot() },
       getLangFn: ({ cachedLang, browserLang, cultureLang, defaultLang }) =>
         cachedLang || cultureLang || browserLang?.substring(0, 2) || defaultLang
     }),
@@ -55,6 +55,5 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }),
 
     provideRouter(routes),
-    provideClientHydration(withEventReplay())
   ]
 };
