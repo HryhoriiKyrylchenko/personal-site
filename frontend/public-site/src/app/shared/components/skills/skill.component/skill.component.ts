@@ -4,7 +4,6 @@ import {SkillDto} from '../../../models/page-dtos';
 @Component({
   selector: 'app-skill',
   standalone: true,
-  imports: [],
   templateUrl: './skill.component.html',
   styleUrl: './skill.component.scss'
 })

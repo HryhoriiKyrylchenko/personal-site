@@ -18,6 +18,7 @@ public class BlogPostTranslationRepository : EfRepository<BlogPostTranslation>, 
         
         return await DbContext.BlogPostTranslations
             .Where(t => t.BlogPostId == blogPostId)
+            .AsSplitQuery()
             .ToListAsync(cancellationToken);
     }
 }

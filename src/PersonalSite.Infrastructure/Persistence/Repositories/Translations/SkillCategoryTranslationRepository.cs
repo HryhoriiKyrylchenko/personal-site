@@ -20,6 +20,7 @@ public class SkillCategoryTranslationRepository : EfRepository<SkillCategoryTran
         return await DbContext.SkillCategoryTranslations
             .Where(t => t.SkillCategoryId == skillCategoryId)
             .Include(t => t.Language)
+            .AsSplitQuery()
             .ToListAsync(cancellationToken);
     }
 }

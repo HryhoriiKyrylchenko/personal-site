@@ -15,7 +15,8 @@
 
             <button
               class="btn btn-primary"
-              (click)="onReadClick(post.slug)">
+              (click)="onReadClick(post.slug)"
+            >
               {{ 'button.read' | transloco }}
             </button>
 
@@ -23,7 +24,10 @@
               [url]="currentFullUrl(post.slug)"
               [label]="post.title"
             >
-              <button class="btn btn-secondary" type="button">
+              <button
+                class="btn btn-secondary"
+                type="button"
+              >
                 {{ 'button.share' | transloco }}
               </button>
             </app-share-popover>
@@ -37,7 +41,11 @@
     @if (posts$ | async; as posts) {
       <div class="blog-thumbnail-page">
         @for (post of posts; track trackBySlug($index, post)) {
-          <div class="thumbnail-card" role="button" tabindex="0">
+          <div
+            class="thumbnail-card"
+            role="button"
+            tabindex="0"
+          >
             <div class="blog-thumbnail-card-content">
               <div
                 class="blog-thumbnail-cover-img"

@@ -2,7 +2,6 @@ using System.Globalization;
 using PersonalSite.Application.Features.Common.Language.Commands.CreateLanguage;
 using PersonalSite.Application.Features.Common.Language.Commands.UpdateLanguage;
 using PersonalSite.Application.Features.Common.Language.Dtos;
-using PersonalSite.Application.Features.Common.LogEntries.Dtos;
 using PersonalSite.Application.Features.Common.Resume.Commands.CreateResume;
 using PersonalSite.Application.Features.Common.Resume.Commands.UpdateResume;
 using PersonalSite.Application.Features.Common.Resume.Dtos;
@@ -45,44 +44,6 @@ public static class CommonTestDataFactory
     {
         if (id == Guid.Empty) id = Guid.NewGuid();
         return new UpdateLanguageCommand(id, code, name);   
-    }
-    
-    public static LogEntry CreateLogEntry(
-        Guid? id = null,
-        DateTime? timestamp = null,
-        string level = "Information",
-        string message = "Sample log message",
-        string messageTemplate = "{MessageTemplate}",
-        string? exception = null,
-        string? properties = null,
-        string? sourceContext = "DefaultContext")
-    {
-        return new LogEntry
-        {
-            Id = id ?? Guid.NewGuid(),
-            Timestamp = timestamp ?? DateTime.UtcNow,
-            Level = level,
-            Message = message,
-            MessageTemplate = messageTemplate,
-            Exception = exception,
-            Properties = properties,
-            SourceContext = sourceContext
-        };
-    }
-
-    public static LogEntryDto MapToDto(LogEntry log)
-    {
-        return new LogEntryDto
-        {
-            Id = log.Id,
-            Timestamp = log.Timestamp,
-            Level = log.Level,
-            Message = log.Message,
-            MessageTemplate = log.MessageTemplate,
-            Exception = log.Exception,
-            Properties = log.Properties,
-            SourceContext = log.SourceContext,
-        };
     }
     
     public static Resume CreateResume(Guid? id = null, string? fileUrl = null, string? fileName = null, bool isActive = true)

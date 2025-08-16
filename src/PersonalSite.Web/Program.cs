@@ -1,9 +1,15 @@
+using AspNetCoreRateLimit;
 using Npgsql;
 using PersonalSite.Application.DependencyInjection;
 using PersonalSite.Infrastructure.DependencyInjection;
+using PersonalSite.Web.Configuration;
 using PersonalSite.Web.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
+
+SerilogConfigurator.Configure(builder.Configuration);
+
+builder.Host.UseSerilog();
 
 builder.Services.AddCors(options =>
 {
@@ -15,25 +21,46 @@ builder.Services.AddCors(options =>
             .AllowAnyMethod());
 });
 
+builder.Services.AddMemoryCache();
+
+builder.Services.Configure<IpRateLimitOptions>(options =>
+{
+    options.EnableEndpointRateLimiting = true;
+    options.StackBlockedRequests = false;
+    options.HttpStatusCode = 429;
+    options.GeneralRules =
+    [
+        new RateLimitRule
+        {
+            Endpoint = "*:/api/analytics/track",
+            Period = "1m",
+            Limit = 60
+        }
+    ];
+});
+
+builder.Services.AddInMemoryRateLimiting();
+builder.Services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
+
 builder.Configuration
     .SetBasePath(Directory.GetCurrentDirectory())
     .AddJsonFile("appsettings.json", optional: false)
     .AddUserSecrets<Program>()
     .AddEnvironmentVariables();
-
-// Add services to the container.
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    
+builder.Services.AddSingleton<NpgsqlDataSource>(_ =>
 {
-    var dataSourceBuilder = new NpgsqlDataSourceBuilder(
-        builder.Configuration.GetConnectionString("DefaultConnection")!
-    );
+    var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")!;
+    var dataSourceBuilder = new NpgsqlDataSourceBuilder(connectionString);
     dataSourceBuilder.EnableDynamicJson();
+    return dataSourceBuilder.Build();
+});
 
-    var dataSource = dataSourceBuilder.Build();
-
+builder.Services.AddDbContext<ApplicationDbContext>((sp, options) =>
+{
+    var dataSource = sp.GetRequiredService<NpgsqlDataSource>();
     options.UseNpgsql(dataSource);
 });
-    
 
 builder.Services.Configure<SmtpSettings>(builder.Configuration.GetSection("SmtpSettings"));
 
@@ -54,6 +81,8 @@ builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
 var app = builder.Build();
+
+app.UseIpRateLimiting();
 
 app.UseHttpsRedirection();
 app.UseRouting();

@@ -1,9 +1,9 @@
 .skill-item {
   display: flex;
-  padding: 0.625rem 1.125rem;
   justify-content: center;
   align-items: center;
   gap: 0.625rem;
+  padding: 0.625rem 1.125rem;
   border-radius: 0.5625rem;
   background: var(--color-skill-background);
 }
@@ -13,14 +13,14 @@
   flex-direction: column;
   justify-content: center;
   align-self: stretch;
+  min-width: 0;
+
   color: var(--color-skill-text);
   font-size: 1rem;
-  font-style: normal;
   font-weight: 400;
   line-height: normal;
 
   white-space: normal;
   overflow-wrap: break-word;
   word-break: break-word;
-  min-width: 0;
 }

@@ -20,6 +20,7 @@ public class ProjectTranslationRepository : EfRepository<ProjectTranslation>, IP
         return await DbContext.ProjectTranslations
             .Where(t => t.ProjectId == projectId)
             .Include(t => t.Language)
+            .AsSplitQuery()
             .ToListAsync(cancellationToken);
     }
 }

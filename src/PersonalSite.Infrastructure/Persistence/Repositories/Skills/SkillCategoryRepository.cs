@@ -19,6 +19,7 @@ public class SkillCategoryRepository : EfRepository<SkillCategory>, ISkillCatego
         return await DbContext.SkillCategories
             .Include(sc => sc.Translations.Where(t => !t.Language.IsDeleted))
                 .ThenInclude(t => t.Language)
+            .AsSplitQuery()
             .FirstOrDefaultAsync(sc => sc.Id == id, cancellationToken);
     }
 
@@ -38,6 +39,7 @@ public class SkillCategoryRepository : EfRepository<SkillCategory>, ISkillCatego
         var query = DbContext.SkillCategories.AsQueryable()
             .Include(sc => sc.Translations.Where(t => !t.Language.IsDeleted))
                 .ThenInclude(t => t.Language)
+            .AsSplitQuery()
             .AsNoTracking();
 
         if (!string.IsNullOrWhiteSpace(keyFilter))

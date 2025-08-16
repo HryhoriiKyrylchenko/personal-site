@@ -7,6 +7,7 @@ import {filter} from 'rxjs/operators';
 import {ProjectDto} from '../../../shared/models/page-dtos';
 import {TranslocoPipe} from '@ngneat/transloco';
 import {SkillComponent} from '../../../shared/components/skills/skill.component/skill.component';
+import {AnalyticsService} from '../../../core/services/analytics-service';
 
 @Component({
   selector: 'app-portfolio',
@@ -19,8 +20,23 @@ export class PortfolioComponent implements OnInit {
   private router = inject(Router);
   private route = inject(ActivatedRoute);
   readonly page$ = inject(PagesApiService).portfolioPage$;
-  readonly projects$ = this.page$.pipe(map(page => page.projects));
   private document = inject(DOCUMENT);
+
+  private analytics = inject(AnalyticsService);
+
+  readonly projects$ = this.page$.pipe(
+    map(page =>
+      page.projects.map(project => ({
+        ...project,
+        skills: [...project.skills].sort((a, b) => {
+          const orderDiff = a.skill.category.displayOrder - b.skill.category.displayOrder;
+          return orderDiff !== 0
+            ? orderDiff
+            : a.skill.name.localeCompare(b.skill.name);
+        })
+      }))
+    )
+  );
 
   hasDetail = false;
 
@@ -47,6 +63,12 @@ export class PortfolioComponent implements OnInit {
     this.router.events.pipe(filter(e => e instanceof NavigationEnd)).subscribe(() => {
       this.updateHasDetail();
     });
+
+    this.analytics.trackEvent({
+      eventType: "page_view",
+      pageSlug: "portfolio",
+      additionalDataJson: "{}"
+    }).subscribe();
   }
 
   private updateHasDetail() {

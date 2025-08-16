@@ -29,14 +29,24 @@
 
 @if (open()) {
   <div class="lang-menu-container">
-    <ul class="lang-menu" [style.min-width.px]="buttonWidth()">
+    <ul
+      class="lang-menu"
+      [style.min-width.px]="buttonWidth()"
+    >
       @for (lang of languages(); track lang.id) {
-        <li (click)="select(lang.code)" (keydown.enter)="select(lang.code)" tabindex="0">
+        <li
+          (click)="select(lang.code)"
+          (keydown.enter)="select(lang.code)"
+          tabindex="0"
+        >
           {{ currentLangNameFor(lang.code) }}
         </li>
       }
       @if (isMobileOrTablet()) {
-        <button class="lang-close-btn" (click)="toggle()">
+        <button
+          class="lang-close-btn"
+          (click)="toggle()"
+        >
           <svg width="22" height="22" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg">
             <path d="M11.0013 21.1788C8.3913 21.1788 5.78128 20.1888 3.80128 18.1988C1.88128 16.2788 0.821289 13.7188 0.821289 10.9988C0.821289 8.27876 1.88128 5.71875 3.80128 3.79875C7.77129 -0.171253 14.2313 -0.171253 18.2013 3.79875C22.1713 7.76875 22.1713 14.2288 18.2013 18.1988C16.2213 20.1788 13.6113 21.1788 11.0013 21.1788ZM11.0013 1.38877C8.5413 1.38877 6.07129 2.32877 4.20129 4.19877C2.38129 6.01877 1.38129 8.42876 1.38129 10.9988C1.38129 13.5688 2.38129 15.9787 4.20129 17.7987C7.95129 21.5487 14.0513 21.5487 17.8013 17.7987C21.5513 14.0487 21.5513 7.94877 17.8013 4.19877C15.9313 2.31877 13.4613 1.38877 11.0013 1.38877Z" fill="currentColor"/>
             <path d="M6.83134 15.4487C6.76134 15.4487 6.68133 15.4187 6.63133 15.3687C6.52133 15.2587 6.52133 15.0787 6.63133 14.9688L14.8713 6.72876C14.9813 6.61876 15.1613 6.61876 15.2713 6.72876C15.3813 6.83876 15.3813 7.01872 15.2713 7.12872L7.03134 15.3687C6.98134 15.4187 6.90134 15.4487 6.83134 15.4487Z" fill="currentColor"/>

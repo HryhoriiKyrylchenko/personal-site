@@ -34,7 +34,7 @@ public class S3OrphanFileCleanupJob : IHostedService, IDisposable
             {
                _logger.LogError(e, "Error during S3 orphan file cleanup.");
             }
-        }, null, TimeSpan.FromMinutes(1), TimeSpan.FromHours(12));
+        }, null, TimeSpan.FromMinutes(5), TimeSpan.FromDays(7));
         return Task.CompletedTask;
     }
 
@@ -43,38 +43,6 @@ public class S3OrphanFileCleanupJob : IHostedService, IDisposable
         try
         {
             _logger.LogInformation("Running S3 orphan file cleanup...");
-
-            // var listedObjects = await _s3Client.ListObjectsV2Async(new ListObjectsV2Request
-            // {
-            //     BucketName = _settings.BucketName
-            // });
-            //
-            // var s3Keys = (listedObjects.S3Objects ?? Enumerable.Empty<S3Object>())
-            //     .Where(o => o.LastModified < DateTime.UtcNow.AddDays(-1))
-            //     .Select(o => o.Key)
-            //     .ToList();
-            //
-            // if (s3Keys.Count == 0)
-            // {
-            //     _logger.LogInformation("No S3 objects found for cleanup.");
-            //     return;
-            // }
-            //
-            // using var scope = _scopeFactory.CreateScope();
-            // var referenceProviders = scope.ServiceProvider.GetServices<IS3ReferenceProvider>();
-            //
-            // var usedKeys = new HashSet<string>(
-            //     await referenceProviders
-            //         .SelectManyAsync(p => p.GetUsedS3UrlsAsync(CancellationToken.None))
-            // );
-            //
-            // var orphanKeys = s3Keys.Except(usedKeys).ToList();
-            //
-            // foreach (var orphanKey in orphanKeys)
-            // {
-            //     await _s3Client.DeleteObjectAsync(_settings.BucketName, orphanKey);
-            //     _logger.LogInformation("Deleted orphaned S3 file: {Key}", orphanKey);
-            // }
 
             using var scope = _scopeFactory.CreateScope();
             var referenceProviders = scope.ServiceProvider.GetServices<IS3ReferenceProvider>();

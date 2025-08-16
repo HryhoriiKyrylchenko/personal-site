@@ -7,6 +7,7 @@ import {map} from 'rxjs';
 import {SharePopoverComponent} from '../share-popover.component/share-popover.component';
 import {BlogPostDto} from '../../../shared/models/page-dtos';
 import {filter} from 'rxjs/operators';
+import {AnalyticsService} from '../../../core/services/analytics-service';
 
 @Component({
   selector: 'app-blog',
@@ -30,11 +31,19 @@ export class BlogComponent implements OnInit {
 
   hasDetail = false;
 
+  private analytics = inject(AnalyticsService);
+
   ngOnInit() {
     this.updateHasDetail();
     this.router.events.pipe(filter(e => e instanceof NavigationEnd)).subscribe(() => {
       this.updateHasDetail();
     });
+
+    this.analytics.trackEvent({
+      eventType: "page_view",
+      pageSlug: "blog",
+      additionalDataJson: "{}"
+    }).subscribe();
   }
 
   private updateHasDetail() {

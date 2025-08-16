@@ -15,7 +15,6 @@ public class ApplicationDbContext : DbContext
     public DbSet<BlogPost> BlogPosts { get; set; }
     public DbSet<BlogPostTag> BlogPostTags { get; set; }
     public DbSet<PostTag> PostTags { get; set; }
-    public DbSet<LogEntry> Logs { get; set; }
     public DbSet<SocialMediaLink> SocialMediaLinks { get; set; }
     public DbSet<Resume> Resumes { get; set; }
     public DbSet<ContactMessage> ContactMessages { get; set; }
@@ -64,12 +63,6 @@ public class ApplicationDbContext : DbContext
         modelBuilder.Entity<PostTag>(entity =>
         {
             entity.HasIndex(e => new { e.BlogPostId, e.BlogPostTagId }).IsUnique();
-        });
-        
-        modelBuilder.Entity<LogEntry>(entity =>
-        {
-            entity.HasIndex(e => e.Timestamp);
-            entity.HasIndex(e => e.Level);
         });
 
         modelBuilder.Entity<SocialMediaLink>(entity =>

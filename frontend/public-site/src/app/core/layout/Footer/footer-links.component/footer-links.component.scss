@@ -1,5 +1,5 @@
-$footer-links-sm: 640px;
-$footer-links-lg: 1007px;
+$breakpoint-sm: 640px;
+$breakpoint-lg: 1007px;
 
 .privacy {
   display: flex;
@@ -10,22 +10,22 @@ $footer-links-lg: 1007px;
 
 .privacy__link {
   text-decoration: none;
-  color: var(--color-social-link-outer);
   font-size: 0.8125rem;
   font-weight: 400;
+  color: var(--color-social-link-outer);
 
   &:hover {
     opacity: 0.8;
   }
 }
 
-@media only screen and (max-width: $footer-links-lg) {
+@media only screen and (max-width: $breakpoint-sm) {
   .privacy {
     gap: 1rem;
   }
 }
 
-@media only screen and (min-width: $footer-links-sm) {
+@media only screen and (min-width: $breakpoint-lg) {
   .privacy {
     flex-direction: row;
   }

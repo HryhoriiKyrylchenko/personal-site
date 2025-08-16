@@ -1,7 +1,7 @@
 import {
   Component,
   computed,
-  inject
+  inject, OnInit
 } from '@angular/core';
 import { PagesApiService } from '../../../core/services/pages-api.service';
 import {map, take} from 'rxjs';
@@ -10,6 +10,7 @@ import {TranslocoPipe} from '@ngneat/transloco';
 import {SkillComponent} from '../../../shared/components/skills/skill.component/skill.component';
 import {Router} from '@angular/router';
 import {SiteInfoService} from '../../../core/services/site-info.service';
+import {AnalyticsService} from '../../../core/services/analytics-service';
 
 @Component({
   selector: 'app-home',
@@ -23,12 +24,29 @@ import {SiteInfoService} from '../../../core/services/site-info.service';
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
   readonly page$ = inject(PagesApiService).homePage$;
   private router = inject(Router);
 
+  private analytics = inject(AnalyticsService);
+
+  ngOnInit() {
+    this.analytics.trackEvent({
+      eventType: "page_view",
+      pageSlug: "home",
+      additionalDataJson: "{}"
+    }).subscribe();
+  }
+
   readonly skills$ = this.page$.pipe(
-    map(page => page?.userSkills ?? [])
+    map(page =>
+      (page?.userSkills ?? []).slice().sort((a, b) => {
+        const orderDiff = a.skill.category.displayOrder - b.skill.category.displayOrder;
+        return orderDiff !== 0
+          ? orderDiff
+          : a.skill.name.localeCompare(b.skill.name);
+      })
+    )
   );
 
   readonly project$ = this.page$.pipe(
@@ -36,7 +54,14 @@ export class HomeComponent {
   );
 
   readonly projectSkills$ = this.project$.pipe(
-    map(project => project?.skills ?? [])
+    map(project =>
+      (project?.skills ?? []).slice().sort((a, b) => {
+        const orderDiff = a.skill.category.displayOrder - b.skill.category.displayOrder;
+        return orderDiff !== 0
+          ? orderDiff
+          : a.skill.name.localeCompare(b.skill.name);
+      })
+    )
   );
 
   private svc = inject(SiteInfoService);
