@@ -7,7 +7,6 @@ import {filter} from 'rxjs/operators';
 import {ProjectDto} from '../../../shared/models/page-dtos';
 import {TranslocoPipe} from '@ngneat/transloco';
 import {SkillComponent} from '../../../shared/components/skills/skill.component/skill.component';
-import {AnalyticsService} from '../../../core/services/analytics-service';
 
 @Component({
   selector: 'app-portfolio',
@@ -21,8 +20,6 @@ export class PortfolioComponent implements OnInit {
   private route = inject(ActivatedRoute);
   readonly page$ = inject(PagesApiService).portfolioPage$;
   private document = inject(DOCUMENT);
-
-  private analytics = inject(AnalyticsService);
 
   readonly projects$ = this.page$.pipe(
     map(page =>
@@ -57,18 +54,11 @@ export class PortfolioComponent implements OnInit {
     this.expandedProjectId = undefined;
   }
 
-
   ngOnInit() {
     this.updateHasDetail();
     this.router.events.pipe(filter(e => e instanceof NavigationEnd)).subscribe(() => {
       this.updateHasDetail();
     });
-
-    this.analytics.trackEvent({
-      eventType: "page_view",
-      pageSlug: "portfolio",
-      additionalDataJson: "{}"
-    }).subscribe();
   }
 
   private updateHasDetail() {

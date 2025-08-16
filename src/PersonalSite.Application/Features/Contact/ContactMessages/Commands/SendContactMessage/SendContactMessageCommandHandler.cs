@@ -35,7 +35,6 @@ public class SendContactMessageCommandHandler : IRequestHandler<SendContactMessa
                 Email = request.Email,
                 Subject = request.Subject,
                 Message = request.Message,
-                IpAddress = request.IpAddress,
                 UserAgent = request.UserAgent,
                 CreatedAt = DateTime.UtcNow,
                 IsRead = false

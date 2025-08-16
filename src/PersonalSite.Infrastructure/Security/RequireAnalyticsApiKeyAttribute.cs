@@ -1,5 +1,6 @@
 namespace PersonalSite.Infrastructure.Security;
 
+[AttributeUsage(AttributeTargets.Method)]
 public class RequireAnalyticsApiKeyAttribute : Attribute, IAsyncActionFilter
 {
     private const string HeaderName = "X-Api-Key";

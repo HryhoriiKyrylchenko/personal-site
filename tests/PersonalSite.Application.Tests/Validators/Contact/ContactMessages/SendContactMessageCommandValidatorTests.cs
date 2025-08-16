@@ -79,19 +79,6 @@ public class SendContactMessageCommandValidatorTests
     }
 
     [Fact]
-    public void Should_Have_Error_When_IpAddress_Too_Long()
-    {
-        var longIp = new string('1', 51);
-        var command = new SendContactMessageCommand("Name", "test@example.com", "Subject", "Message")
-        {
-            IpAddress = longIp
-        };
-        var result = _validator.TestValidate(command);
-        result.ShouldHaveValidationErrorFor(c => c.IpAddress)
-            .WithErrorMessage("IpAddress must be 50 characters or fewer.");
-    }
-
-    [Fact]
     public void Should_Have_Error_When_UserAgent_Too_Long()
     {
         var longAgent = new string('a', 256);
@@ -109,7 +96,6 @@ public class SendContactMessageCommandValidatorTests
     {
         var command = new SendContactMessageCommand("Name", "test@example.com", "Subject", "Message")
         {
-            IpAddress = "127.0.0.1",
             UserAgent = "UnitTestAgent"
         };
         var result = _validator.TestValidate(command);

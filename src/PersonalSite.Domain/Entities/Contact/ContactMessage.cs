@@ -13,8 +13,6 @@ public class ContactMessage
     public string Subject { get; set; } = string.Empty;
     [Required]
     public string Message { get; set; } = string.Empty;
-    [MaxLength(50)]
-    public string IpAddress { get; set; } = string.Empty;
     [MaxLength(255)]
     public string UserAgent { get; set; } = string.Empty;
     public DateTime CreatedAt { get; set; }

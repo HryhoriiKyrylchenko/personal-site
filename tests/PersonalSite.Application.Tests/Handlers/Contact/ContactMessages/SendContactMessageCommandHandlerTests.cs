@@ -38,7 +38,6 @@ public class SendContactMessageCommandHandlerTests
             m.Email == "john@example.com" &&
             m.Subject == "Hello" &&
             m.Message == "Test message" &&
-            m.IpAddress == "127.0.0.1" &&
             m.UserAgent == "TestAgent" &&
             !m.IsRead
         ), It.IsAny<CancellationToken>()), Times.Once);

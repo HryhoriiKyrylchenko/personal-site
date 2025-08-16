@@ -1,4 +1,4 @@
-import {Component, DOCUMENT, inject, OnInit, PLATFORM_ID} from '@angular/core';
+import {Component, DOCUMENT, inject, PLATFORM_ID} from '@angular/core';
 import {Meta, Title} from '@angular/platform-browser';
 import {ActivatedRoute, Router} from '@angular/router';
 import {switchMap, tap} from 'rxjs/operators';
@@ -8,7 +8,6 @@ import {AsyncPipe, isPlatformBrowser, NgStyle} from '@angular/common';
 import {ShareLinkComponent} from '../share-link.component/share-link.component';
 import {map, of} from 'rxjs';
 import {TranslocoPipe} from '@ngneat/transloco';
-import {AnalyticsService} from '../../../core/services/analytics-service';
 
 @Component({
   selector: 'app-blog-post',
@@ -23,7 +22,7 @@ import {AnalyticsService} from '../../../core/services/analytics-service';
   templateUrl: './blog-post.component.html',
   styleUrl: './blog-post.component.scss'
 })
-export class BlogPostComponent implements OnInit {
+export class BlogPostComponent {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private api = inject(PagesApiService);
@@ -31,20 +30,6 @@ export class BlogPostComponent implements OnInit {
   private titleService = inject(Title);
   private platformId = inject(PLATFORM_ID);
   private document = inject(DOCUMENT);
-
-  private analytics = inject(AnalyticsService);
-
-  ngOnInit() {
-    this.post$.subscribe(post => {
-      if (!post) return;
-
-      this.analytics.trackEvent({
-        eventType: "page_view",
-        pageSlug: `blog/${post.slug}`,
-        additionalDataJson: "{}"
-      }).subscribe();
-    });
-  }
 
   readonly post$ = this.route.paramMap.pipe(
     switchMap(params => {

@@ -1,4 +1,4 @@
-import {Component, HostListener, inject, OnInit, ViewChild} from '@angular/core';
+import {Component, HostListener, inject, ViewChild} from '@angular/core';
 import {PagesApiService} from '../../../core/services/pages-api.service';
 import {TranslocoPipe} from '@ngneat/transloco';
 import {SocialLinksComponent} from '../../../core/layout/Footer/social-links.component/social-links.component';
@@ -7,7 +7,6 @@ import {AsyncPipe} from '@angular/common';
 import {FormBuilder, FormGroup, FormGroupDirective, ReactiveFormsModule, Validators} from '@angular/forms';
 import {ContactService, SendContactMessageCommand} from '../../../core/services/contact-api.service';
 import {ClickOutsideDirective} from '../../../shared/directives/click-outside.directive';
-import {AnalyticsService} from '../../../core/services/analytics-service';
 
 @Component({
   selector: 'app-contacts',
@@ -23,7 +22,7 @@ import {AnalyticsService} from '../../../core/services/analytics-service';
     ClickOutsideDirective
   ]
 })
-export class ContactsComponent implements OnInit {
+export class ContactsComponent {
   iconSize = '5.875rem';
   readonly page$ = inject(PagesApiService).contactsPage$;
   private fb = inject(FormBuilder);
@@ -35,16 +34,6 @@ export class ContactsComponent implements OnInit {
   submitted = false;
 
   @ViewChild('formDirective') formDirective!: FormGroupDirective;
-
-  private analytics = inject(AnalyticsService);
-
-  ngOnInit() {
-    this.analytics.trackEvent({
-      eventType: "page_view",
-      pageSlug: "contacts",
-      additionalDataJson: "{}"
-    }).subscribe();
-  }
 
   constructor() {
     this.contactForm = this.fb.group({
