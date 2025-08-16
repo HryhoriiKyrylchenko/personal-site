@@ -13,7 +13,6 @@ public class ContactTestDataFactory
         string? email = "john@example.com",
         string? subject = "Test Subject",
         string? message = "Test message content.",
-        string? ipAddress = "127.0.0.1",
         string? userAgent = "Mozilla/5.0",
         DateTime? createdAt = null,
         bool isRead = false)
@@ -25,7 +24,6 @@ public class ContactTestDataFactory
             Email = email!,
             Subject = subject!,
             Message = message!,
-            IpAddress = ipAddress!,
             UserAgent = userAgent!,
             CreatedAt = createdAt ?? DateTime.UtcNow,
             IsRead = isRead
@@ -54,7 +52,6 @@ public class ContactTestDataFactory
     {
         return new SendContactMessageCommand(name, email, subject, message)
         {
-            IpAddress = "127.0.0.1",
             UserAgent = "TestAgent"       
         };
     }

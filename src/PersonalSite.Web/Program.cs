@@ -89,6 +89,7 @@ app.UseRouting();
 
 app.UseCors("AllowFrontend");
 
+app.UseMiddleware<AnalyticsMiddleware>();
 app.UseMiddleware<LocalizationMiddleware>();
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 

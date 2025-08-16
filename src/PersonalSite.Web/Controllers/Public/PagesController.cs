@@ -1,4 +1,4 @@
-using System.Text.Json;
+using PersonalSite.Application.Features.Analytics.AnalyticsEvent.Commands.TrackAnalyticsEvent;
 using PersonalSite.Application.Features.Pages.Page.Dtos;
 using PersonalSite.Application.Features.Pages.Page.Queries.GetAboutPage;
 using PersonalSite.Application.Features.Pages.Page.Queries.GetBlogPage;
@@ -19,7 +19,6 @@ public class PagesController : ControllerBase
     public PagesController(IMediator mediator)
     {
         _mediator = mediator;
-
     }
 
     [HttpGet("home")]

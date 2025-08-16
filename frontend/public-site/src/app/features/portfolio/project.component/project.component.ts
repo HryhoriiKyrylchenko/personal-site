@@ -1,4 +1,4 @@
-import {Component, DOCUMENT, inject, OnInit, PLATFORM_ID} from '@angular/core';
+import {Component, DOCUMENT, inject, PLATFORM_ID} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {PagesApiService} from '../../../core/services/pages-api.service';
 import {Meta, Title} from '@angular/platform-browser';
@@ -10,7 +10,6 @@ import {ShareLinkComponent} from '../../blog/share-link.component/share-link.com
 import {TranslocoPipe} from '@ngneat/transloco';
 import {ProjectSkillDto} from '../../../shared/models/page-dtos';
 import {SkillComponent} from '../../../shared/components/skills/skill.component/skill.component';
-import {AnalyticsService} from '../../../core/services/analytics-service';
 
 @Component({
   selector: 'app-project',
@@ -26,7 +25,7 @@ import {AnalyticsService} from '../../../core/services/analytics-service';
   templateUrl: './project.component.html',
   styleUrl: './project.component.scss'
 })
-export class ProjectComponent implements OnInit {
+export class ProjectComponent {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private api = inject(PagesApiService);
@@ -34,8 +33,6 @@ export class ProjectComponent implements OnInit {
   private titleService = inject(Title);
   private platformId = inject(PLATFORM_ID);
   private document = inject(DOCUMENT);
-
-  private analytics = inject(AnalyticsService);
 
   readonly project$ = this.route.paramMap.pipe(
     switchMap(params => {
@@ -54,18 +51,6 @@ export class ProjectComponent implements OnInit {
       );
     })
   );
-
-  ngOnInit() {
-    this.project$.subscribe(project => {
-      if (!project) return;
-
-      this.analytics.trackEvent({
-        eventType: "page_view",
-        pageSlug: `portfolio/${project.slug}`,
-        additionalDataJson: "{}"
-      }).subscribe();
-    });
-  }
 
   readonly skills$ = this.project$.pipe(
     map(project =>
