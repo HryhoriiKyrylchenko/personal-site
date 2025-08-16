@@ -5,12 +5,14 @@ import { HeaderComponent } from '../../Header/header.component/header.component'
 import { FooterComponent } from '../../Footer/footer.component/footer.component';
 import {TranslocoService} from '@ngneat/transloco';
 import {first} from 'rxjs';
-
+import {
+  LoadingSpinnerComponent
+} from '../../../../shared/components/loading-spinner/loading-spinner.component/loading-spinner.component';
 
 @Component({
   selector: 'app-layout',
   standalone: true,
-  imports: [RouterOutlet, HeaderComponent, FooterComponent, HeaderComponent, CommonModule],
+  imports: [RouterOutlet, HeaderComponent, FooterComponent, HeaderComponent, CommonModule, LoadingSpinnerComponent],
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.scss'
 })

@@ -10,6 +10,7 @@ import {provideTranslocoPersistLang} from '@ngneat/transloco-persist-lang';
 import { StaticLoader } from './core/i18n/transloco.loader';
 import { routes } from './app.routes';
 import {
+  HTTP_INTERCEPTORS,
   provideHttpClient,
   withFetch, withInterceptors
 } from '@angular/common/http';
@@ -18,6 +19,7 @@ import {localeInterceptor} from './interceptors/locale.interceptor.fn';
 import {firstValueFrom} from 'rxjs';
 import {catchError, switchMap} from 'rxjs/operators';
 import {cookiesStorageRoot} from './shared/utils/cookie-storage.helper';
+import {LoadingInterceptor} from './interceptors/loading.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -55,5 +57,10 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }),
 
     provideRouter(routes),
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: LoadingInterceptor,
+      multi: true,
+    },
   ]
 };
