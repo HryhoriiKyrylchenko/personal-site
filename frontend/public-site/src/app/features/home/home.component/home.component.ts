@@ -1,7 +1,7 @@
 import {
   Component,
   computed,
-  inject
+  inject, OnInit
 } from '@angular/core';
 import { PagesApiService } from '../../../core/services/pages-api.service';
 import {map, take} from 'rxjs';
@@ -10,6 +10,7 @@ import {TranslocoPipe} from '@ngneat/transloco';
 import {SkillComponent} from '../../../shared/components/skills/skill.component/skill.component';
 import {Router} from '@angular/router';
 import {SiteInfoService} from '../../../core/services/site-info.service';
+import {MetaService} from '../../../core/services/meta.service';
 
 @Component({
   selector: 'app-home',
@@ -23,9 +24,10 @@ import {SiteInfoService} from '../../../core/services/site-info.service';
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
   readonly page$ = inject(PagesApiService).homePage$;
   private router = inject(Router);
+  private metaService = inject(MetaService);
 
   readonly skills$ = this.page$.pipe(
     map(page =>
@@ -55,6 +57,30 @@ export class HomeComponent {
 
   private svc = inject(SiteInfoService);
   resume = computed(() => this.svc.siteInfo()?.resume ?? null);
+
+  socialLinks = computed(() => this.svc.siteInfo()?.socialLinks ?? []);
+  private readonly sameAs = this.socialLinks()
+    .filter(link => link.isActive)
+    .map(link => link.url);
+
+  ngOnInit() {
+    this.page$.subscribe(page => {
+      this.metaService.setSeo({
+        title: page.pageData.metaTitle || 'Hryhorii Kyrylchenko',
+        description: page.pageData.metaDescription || 'Personal portfolio page',
+        imageUrl: page.pageData.ogImage || page.imageUrl || undefined,
+        url: window.location.href,
+        type: 'profile',
+        jsonLd: {
+          "@context": "https://schema.org",
+          "@type": "Person",
+          "name": "Hryhorii Kyrylchenko",
+          "url": window.location.href,
+          "sameAs": this.sameAs
+        }
+      });
+    });
+  }
 
   onContactClick() {
     void this.router.navigate(['/contacts']);

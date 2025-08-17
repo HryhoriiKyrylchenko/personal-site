@@ -1,4 +1,4 @@
-import {Component, HostListener, inject, ViewChild} from '@angular/core';
+import {Component, computed, HostListener, inject, OnInit, ViewChild} from '@angular/core';
 import {PagesApiService} from '../../../core/services/pages-api.service';
 import {TranslocoPipe} from '@ngneat/transloco';
 import {SocialLinksComponent} from '../../../core/layout/Footer/social-links.component/social-links.component';
@@ -7,6 +7,8 @@ import {AsyncPipe} from '@angular/common';
 import {FormBuilder, FormGroup, FormGroupDirective, ReactiveFormsModule, Validators} from '@angular/forms';
 import {ContactService, SendContactMessageCommand} from '../../../core/services/contact-api.service';
 import {ClickOutsideDirective} from '../../../shared/directives/click-outside.directive';
+import {SiteInfoService} from '../../../core/services/site-info.service';
+import {MetaService} from '../../../core/services/meta.service';
 
 @Component({
   selector: 'app-contacts',
@@ -22,13 +24,15 @@ import {ClickOutsideDirective} from '../../../shared/directives/click-outside.di
     ClickOutsideDirective
   ]
 })
-export class ContactsComponent {
+export class ContactsComponent implements OnInit {
   iconSize = '5.875rem';
   readonly page$ = inject(PagesApiService).contactsPage$;
   private fb = inject(FormBuilder);
   private contactService = inject(ContactService);
   showModal = false;
   modalType: 'success' | 'error' | null = null;
+
+  private metaService = inject(MetaService);
 
   contactForm: FormGroup;
   submitted = false;
@@ -41,6 +45,32 @@ export class ContactsComponent {
       email: ['', [Validators.required, Validators.email]],
       subject: ['', Validators.required],
       message: ['', Validators.required]
+    });
+  }
+
+  private svc = inject(SiteInfoService);
+
+  socialLinks = computed(() => this.svc.siteInfo()?.socialLinks ?? []);
+  private readonly sameAs = this.socialLinks()
+    .filter(link => link.isActive)
+    .map(link => link.url);
+
+  ngOnInit() {
+    this.page$.subscribe(page => {
+      this.metaService.setSeo({
+        title: page.pageData.metaTitle || 'Hryhorii Kyrylchenko | Contacts',
+        description: page.pageData.metaDescription || 'Personal portfolio contact page',
+        imageUrl: page.pageData.ogImage || undefined,
+        url: window.location.href,
+        type: 'profile',
+        jsonLd: {
+          "@context": "https://schema.org",
+          "@type": "Person",
+          "name": "Hryhorii Kyrylchenko",
+          "url": window.location.href,
+          "sameAs": this.sameAs
+        }
+      });
     });
   }
 

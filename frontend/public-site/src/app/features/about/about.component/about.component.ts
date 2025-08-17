@@ -1,6 +1,6 @@
 import {
-  Component,
-  inject
+  Component, computed,
+  inject, OnInit
 } from '@angular/core';
 import { PagesApiService } from '../../../core/services/pages-api.service';
 import {AsyncPipe, NgStyle} from '@angular/common';
@@ -10,6 +10,8 @@ import {map} from 'rxjs';
 import {UserSkillDto} from '../../../shared/models/page-dtos';
 import {SkillLevelComponent} from '../skill-level.component/skill-level.component';
 import {LearningSkillComponent} from '../learning-skill.component/learning-skill.component';
+import {MetaService} from '../../../core/services/meta.service';
+import {SiteInfoService} from '../../../core/services/site-info.service';
 
 @Component({
   selector: 'app-about',
@@ -25,8 +27,9 @@ import {LearningSkillComponent} from '../learning-skill.component/learning-skill
   templateUrl: './about.component.html',
   styleUrl: './about.component.scss'
 })
-export class AboutComponent {
+export class AboutComponent implements OnInit {
   readonly page$ = inject(PagesApiService).aboutPage$;
+  private metaService = inject(MetaService);
 
   readonly skills$ = this.page$.pipe(
     map(page =>
@@ -67,4 +70,30 @@ export class AboutComponent {
       (pageData?.pageData.data['Content'].split(/\n+/).map(p => p.trim()).filter(Boolean))
     )
   );
+
+  private svc = inject(SiteInfoService);
+
+  socialLinks = computed(() => this.svc.siteInfo()?.socialLinks ?? []);
+  private readonly sameAs = this.socialLinks()
+    .filter(link => link.isActive)
+    .map(link => link.url);
+
+  ngOnInit() {
+    this.page$.subscribe(page => {
+      this.metaService.setSeo({
+        title: page.pageData.metaTitle || 'Hryhorii Kyrylchenko | About',
+        description: page.pageData.metaDescription || 'Personal portfolio about page',
+        imageUrl: page.pageData.ogImage || page.imageUrl || undefined,
+        url: window.location.href,
+        type: 'profile',
+        jsonLd: {
+          "@context": "https://schema.org",
+          "@type": "Person",
+          "name": "Hryhorii Kyrylchenko",
+          "url": window.location.href,
+          "sameAs": this.sameAs
+        }
+      });
+    });
+  }
 }
