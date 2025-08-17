@@ -48,6 +48,12 @@
       <p class="project-content">
         {{ project.descriptionSections['Deployment'] }}
       </p>
+      <h6 class="project-subtitle">
+        {{ 'project.results' | transloco }}
+      </h6>
+      <p class="project-content">
+        {{ project.descriptionSections['Results'] }}
+      </p>
     </div>
 
     @if (skillsByCategory$ | async; as skillsByCategory) {
