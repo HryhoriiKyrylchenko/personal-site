@@ -1,4 +1,4 @@
-import {Component, DOCUMENT, inject, OnInit} from '@angular/core';
+import {Component, computed, DOCUMENT, inject, OnInit} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PagesApiService } from '../../../core/services/pages-api.service';
 import {ActivatedRoute, NavigationEnd, Router, RouterOutlet} from '@angular/router';
@@ -7,6 +7,8 @@ import {filter} from 'rxjs/operators';
 import {ProjectDto} from '../../../shared/models/page-dtos';
 import {TranslocoPipe} from '@ngneat/transloco';
 import {SkillComponent} from '../../../shared/components/skills/skill.component/skill.component';
+import {SiteInfoService} from '../../../core/services/site-info.service';
+import {MetaService} from '../../../core/services/meta.service';
 
 @Component({
   selector: 'app-portfolio',
@@ -20,6 +22,7 @@ export class PortfolioComponent implements OnInit {
   private route = inject(ActivatedRoute);
   readonly page$ = inject(PagesApiService).portfolioPage$;
   private document = inject(DOCUMENT);
+  private metaService = inject(MetaService);
 
   readonly projects$ = this.page$.pipe(
     map(page =>
@@ -40,6 +43,13 @@ export class PortfolioComponent implements OnInit {
   expandedProjectId?: string;
   private hoverTimeout?: ReturnType<typeof setTimeout>;
 
+  private svc = inject(SiteInfoService);
+
+  socialLinks = computed(() => this.svc.siteInfo()?.socialLinks ?? []);
+  private readonly sameAs = this.socialLinks()
+    .filter(link => link.isActive)
+    .map(link => link.url);
+
   onMouseEnter(projectId: string) {
     this.hoverTimeout = setTimeout(() => {
       this.expandedProjectId = projectId;
@@ -58,6 +68,23 @@ export class PortfolioComponent implements OnInit {
     this.updateHasDetail();
     this.router.events.pipe(filter(e => e instanceof NavigationEnd)).subscribe(() => {
       this.updateHasDetail();
+    });
+
+    this.page$.subscribe(page => {
+      this.metaService.setSeo({
+        title: page.pageData.metaTitle || 'Hryhorii Kyrylchenko | Portfolio',
+        description: page.pageData.metaDescription || 'Personal portfolio page',
+        imageUrl: page.pageData.ogImage || undefined,
+        url: window.location.href,
+        type: 'profile',
+        jsonLd: {
+          "@context": "https://schema.org",
+          "@type": "Person",
+          "name": "Hryhorii Kyrylchenko",
+          "url": window.location.href,
+          "sameAs": this.sameAs
+        }
+      });
     });
   }
 

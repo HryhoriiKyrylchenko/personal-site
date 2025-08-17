@@ -1,4 +1,4 @@
-import {Component, DOCUMENT, inject, PLATFORM_ID} from '@angular/core';
+import {Component, computed, DOCUMENT, inject, OnInit, PLATFORM_ID} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {PagesApiService} from '../../../core/services/pages-api.service';
 import {Meta, Title} from '@angular/platform-browser';
@@ -10,6 +10,8 @@ import {ShareLinkComponent} from '../../blog/share-link.component/share-link.com
 import {TranslocoPipe} from '@ngneat/transloco';
 import {ProjectSkillDto} from '../../../shared/models/page-dtos';
 import {SkillComponent} from '../../../shared/components/skills/skill.component/skill.component';
+import {MetaService} from '../../../core/services/meta.service';
+import {SiteInfoService} from '../../../core/services/site-info.service';
 
 @Component({
   selector: 'app-project',
@@ -25,7 +27,7 @@ import {SkillComponent} from '../../../shared/components/skills/skill.component/
   templateUrl: './project.component.html',
   styleUrl: './project.component.scss'
 })
-export class ProjectComponent {
+export class ProjectComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private api = inject(PagesApiService);
@@ -33,6 +35,15 @@ export class ProjectComponent {
   private titleService = inject(Title);
   private platformId = inject(PLATFORM_ID);
   private document = inject(DOCUMENT);
+
+  private metaService = inject(MetaService);
+
+  private svc = inject(SiteInfoService);
+
+  socialLinks = computed(() => this.svc.siteInfo()?.socialLinks ?? []);
+  private readonly sameAs = this.socialLinks()
+    .filter(link => link.isActive)
+    .map(link => link.url);
 
   readonly project$ = this.route.paramMap.pipe(
     switchMap(params => {
@@ -81,6 +92,25 @@ export class ProjectComponent {
       return grouped;
     })
   );
+
+  ngOnInit() {
+    this.project$.subscribe(project => {
+      this.metaService.setSeo({
+        title: project?.metaTitle || 'Hryhorii Kyrylchenko | Project',
+        description: project?.metaDescription || 'Personal portfolio project page',
+        imageUrl: project?.ogImage || project?.coverImage || undefined,
+        url: window.location.href,
+        type: 'article',
+        jsonLd: {
+          "@context": "https://schema.org",
+          "@type": "Person",
+          "name": "Hryhorii Kyrylchenko",
+          "url": window.location.href,
+          "sameAs": this.sameAs
+        }
+      });
+    });
+  }
 
   currentUrl(): string {
     if (isPlatformBrowser(this.platformId)) {
