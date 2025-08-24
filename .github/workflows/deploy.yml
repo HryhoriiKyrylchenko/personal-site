@@ -1,0 +1,54 @@
+name: Build & Deploy to EC2
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with: node-version: '20'
+
+      - name: Build frontend
+        working-directory: ./frontend
+        run: |
+          npm ci
+          npm run build -- --configuration production
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with: dotnet-version: '9.0.x'
+
+      - name: Publish backend
+        working-directory: ./backend
+        run: dotnet publish -c Release -o publish
+
+      - name: Archive artifacts
+        run: |
+          tar czf frontend.tar.gz -C frontend/dist/personal-site .
+          tar czf backend.tar.gz -C backend/publish .
+
+      - name: Deploy to EC2
+        uses: easingthemes/ssh-deploy@v2
+        with:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          REMOTE_HOST: ${{ secrets.EC2_IP }}
+          REMOTE_USER: ec2-user
+          SOURCE: "frontend.tar.gz,backend.tar.gz,deploy-scripts/*"
+          TARGET: "/home/ec2-user/deploy/"
+
+      - name: Run deploy script
+        uses: appleboy/ssh-action@v0.1.6
+        with:
+          host: ${{ secrets.EC2_IP }}
+          username: ec2-user
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd /home/ec2-user/deploy
+            sudo ./deploy.sh
+
