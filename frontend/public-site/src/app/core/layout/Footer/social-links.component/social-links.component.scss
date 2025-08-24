@@ -1,0 +1,41 @@
+:host {
+  --icon-size: 3.5rem;
+}
+
+.social-media-links-container {
+  display: flex;
+  align-items: center;
+  align-self: stretch;
+  gap: 1.25rem;
+}
+
+.social-media-links-container a {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  vertical-align: middle;
+}
+.social-media-links-container svg {
+  display: block;
+}
+
+.social-media-links-container a,
+.social-media-links-container svg {
+  width: var(--icon-size);
+  height: var(--icon-size);
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+.outer-fill {
+  color: var(--color-social-link-outer);
+}
+
+.inner-fill {
+  color: var(--color-social-link-inner);
+}

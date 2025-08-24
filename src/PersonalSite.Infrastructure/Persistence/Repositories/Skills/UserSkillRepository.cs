@@ -22,6 +22,7 @@ public class UserSkillRepository : EfRepository<UserSkill>, IUserSkillRepository
                 .ThenInclude(s => s.Category)
                     .ThenInclude(c => c.Translations.Where(t => !t.Language.IsDeleted))
                         .ThenInclude(t => t.Language)
+            .AsSplitQuery()
             .ToListAsync(cancellationToken);
     }
 
@@ -45,6 +46,7 @@ public class UserSkillRepository : EfRepository<UserSkill>, IUserSkillRepository
                 .ThenInclude(s => s.Category)
                     .ThenInclude(c => c.Translations.Where(t => !t.Language.IsDeleted))
                         .ThenInclude(t => t.Language)
+            .AsSplitQuery()
             .AsNoTracking();
 
         if (skillId.HasValue)

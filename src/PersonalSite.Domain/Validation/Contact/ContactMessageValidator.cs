@@ -24,9 +24,6 @@ public class ContactMessageValidator : AbstractValidator<ContactMessage>
         RuleFor(x => x.Message)
             .NotEmpty().WithMessage("Message is required.");
 
-        RuleFor(x => x.IpAddress)
-            .MaximumLength(50).WithMessage("IpAddress must be 50 characters or fewer.");
-
         RuleFor(x => x.UserAgent)
             .MaximumLength(255).WithMessage("UserAgent must be 255 characters or fewer.");
 

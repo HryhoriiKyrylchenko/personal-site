@@ -25,7 +25,6 @@ public class GetContactPageQueryHandlerTests
         _handler = new GetContactPageQueryHandler(
             _languageContext,
             _pageRepositoryMock.Object,
-            null!,
             loggerMock.Object,
             _pageMapperMock.Object
         );

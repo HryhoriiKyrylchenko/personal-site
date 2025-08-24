@@ -55,7 +55,6 @@ public class ContactMessageCreatedEventHandler : INotificationHandler<ContactMes
             <tr><td><strong>Email:</strong></td><td>{message.Email}</td></tr>
             <tr><td><strong>Subject:</strong></td><td>{message.Subject}</td></tr>
             <tr><td><strong>Message:</strong></td><td>{message.Message}</td></tr>
-            <tr><td><strong>IP Address:</strong></td><td>{message.IpAddress}</td></tr>
             <tr><td><strong>User Agent:</strong></td><td>{message.UserAgent}</td></tr>
         </table>
         <br/><p style="color: gray;">Received at {DateTime.UtcNow:yyyy-MM-dd HH:mm:ss} UTC</p>

@@ -28,6 +28,7 @@ public class PageMapper
         {
             Id = entity.Id,
             Key = entity.Key,
+            LanguageCode = translation?.Language.Code ?? string.Empty,
             Data = translation?.Data ?? new Dictionary<string, string>(),
             Title = translation?.Title ?? string.Empty,
             Description = translation?.Description ?? string.Empty,

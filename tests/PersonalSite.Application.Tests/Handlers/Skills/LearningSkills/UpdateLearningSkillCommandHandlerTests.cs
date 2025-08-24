@@ -31,11 +31,11 @@ public class UpdateLearningSkillCommandHandlerTests
             var learningSkill = new LearningSkill
             {
                 Id = id,
-                LearningStatus = LearningStatus.Planning,
+                LearningStatus = LearningStatus.Planned,
                 DisplayOrder = 1
             };
 
-            var command = new UpdateLearningSkillCommand(id, LearningStatus.Practising, 5);
+            var command = new UpdateLearningSkillCommand(id, LearningStatus.Practicing, 5);
 
             _repositoryMock
                 .Setup(r => r.GetByIdAsync(id, It.IsAny<CancellationToken>()))
@@ -46,7 +46,7 @@ public class UpdateLearningSkillCommandHandlerTests
 
             // Assert
             result.IsSuccess.Should().BeTrue();
-            learningSkill.LearningStatus.Should().Be(LearningStatus.Practising);
+            learningSkill.LearningStatus.Should().Be(LearningStatus.Practicing);
             learningSkill.DisplayOrder.Should().Be(5);
 
             _repositoryMock.Verify(r => r.UpdateAsync(learningSkill, It.IsAny<CancellationToken>()), Times.Once);

@@ -5,13 +5,11 @@ namespace PersonalSite.Application.Tests.Mappers.Common.SocialMediaLink;
 
 public class SocialMediaLinkMapperTests
     {
-        private readonly Mock<IS3UrlBuilder> _urlBuilderMock;
         private readonly SocialMediaLinkMapper _mapper;
 
         public SocialMediaLinkMapperTests()
         {
-            _urlBuilderMock = new Mock<IS3UrlBuilder>();
-            _mapper = new SocialMediaLinkMapper(_urlBuilderMock.Object);
+            _mapper = new SocialMediaLinkMapper();
         }
 
         [Fact]
@@ -27,10 +25,6 @@ public class SocialMediaLinkMapperTests
                 IsActive = true
             };
 
-            var expectedUrl = "https://cdn.site.com/media/twitter.png";
-
-            _urlBuilderMock.Setup(x => x.BuildUrl(entity.Url)).Returns(expectedUrl);
-
             // Act
             var dto = _mapper.MapToDto(entity);
 
@@ -38,7 +32,7 @@ public class SocialMediaLinkMapperTests
             dto.Should().NotBeNull();
             dto.Id.Should().Be(entity.Id);
             dto.Platform.Should().Be(entity.Platform);
-            dto.Url.Should().Be(expectedUrl);
+            dto.Url.Should().Be(entity.Url);
             dto.DisplayOrder.Should().Be(entity.DisplayOrder);
             dto.IsActive.Should().Be(entity.IsActive);
         }
@@ -67,17 +61,14 @@ public class SocialMediaLinkMapperTests
                 }
             };
 
-            _urlBuilderMock.Setup(x => x.BuildUrl(It.IsAny<string>()))
-                .Returns<string>(url => $"https://cdn.site.com/{url}");
-
             // Act
             var dtos = _mapper.MapToDtoList(entities);
 
             // Assert
             dtos.Should().HaveCount(2);
             dtos[0].Platform.Should().Be("LinkedIn");
-            dtos[0].Url.Should().Be("https://cdn.site.com/media/linkedin.png");
+            dtos[0].Url.Should().Be("media/linkedin.png");  // <-- raw url
             dtos[1].Platform.Should().Be("GitHub");
-            dtos[1].Url.Should().Be("https://cdn.site.com/media/github.png");
+            dtos[1].Url.Should().Be("media/github.png");    // <-- raw url
         }
     }

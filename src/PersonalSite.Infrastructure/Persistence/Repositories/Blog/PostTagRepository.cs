@@ -19,6 +19,7 @@ public class PostTagRepository : EfRepository<PostTag>, IPostTagRepository
         return await DbContext.PostTags
             .Include(pt => pt.BlogPostTag)
             .Where(pt => pt.BlogPostId == blogPostId)
+            .AsSplitQuery()
             .ToListAsync(cancellationToken);
     }
 }

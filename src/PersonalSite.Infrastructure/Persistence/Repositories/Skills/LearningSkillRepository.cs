@@ -25,6 +25,7 @@ public class LearningSkillRepository : EfRepository<LearningSkill>, ILearningSki
                     .ThenInclude(c => c.Translations.Where(t => !t.Language.IsDeleted))
                         .ThenInclude(t => t.Language)
             .OrderBy(ls => ls.DisplayOrder)
+            .AsSplitQuery()
             .ToListAsync(cancellationToken);
     }
 
@@ -41,6 +42,7 @@ public class LearningSkillRepository : EfRepository<LearningSkill>, ILearningSki
                 .ThenInclude(s => s.Category)
                     .ThenInclude(c => c.Translations.Where(t => !t.Language.IsDeleted))
                         .ThenInclude(t => t.Language)
+            .AsSplitQuery()
             .FirstOrDefaultAsync(ls => ls.Id == id, cancellationToken);
     }
 
@@ -63,6 +65,7 @@ public class LearningSkillRepository : EfRepository<LearningSkill>, ILearningSki
                 .ThenInclude(s => s.Category)
                     .ThenInclude(c => c.Translations.Where(t => !t.Language.IsDeleted))
                         .ThenInclude(t => t.Language)
+            .AsSplitQuery()
             .AsNoTracking();
 
         if (skillId.HasValue)

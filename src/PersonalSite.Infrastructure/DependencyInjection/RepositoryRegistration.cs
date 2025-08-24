@@ -25,7 +25,6 @@ public static class RepositoryRegistration
         services.AddScoped<IBlogPostRepository, BlogPostRepository>();
         services.AddScoped<IBlogPostTagRepository, BlogPostTagRepository>();
         services.AddScoped<IPostTagRepository, PostTagRepository>();
-        services.AddScoped<ILogEntryRepository, LogEntryRepository>();
         services.AddScoped<ISocialMediaLinkRepository, SocialMediaLinkRepository>();
         services.AddScoped<IResumeRepository, ResumeRepository>();
         services.AddScoped<IContactMessageRepository, ContactMessageRepository>();

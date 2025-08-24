@@ -11,11 +11,20 @@ public class LocalizationMiddleware
 
     public async Task Invoke(HttpContext context, LanguageContext languageContext, ILanguageService languageService)
     {
-        var lang = context.Request.Headers["Accept-Language"].FirstOrDefault() ?? "en";
+        var header = context.Request.Headers["X-Locale"].FirstOrDefault()?.ToLower();
 
-        var formattedLang = lang[..2].ToLower();
+        string? lang = header;
+        
+        if (lang == null)
+        {
+            var al = context.Request.Headers["Accept-Language"].ToString();
+            if (!string.IsNullOrWhiteSpace(al) && al.Length >= 2)
+                lang = al.Substring(0, 2).ToLower();
+        }
 
-        languageContext.LanguageCode = await languageService.IsSupportedAsync(formattedLang) ? formattedLang : "en";
+        lang ??= "en";
+        
+        languageContext.LanguageCode = await languageService.IsSupportedAsync(lang) ? lang : "en";
 
         await _next(context);
     }

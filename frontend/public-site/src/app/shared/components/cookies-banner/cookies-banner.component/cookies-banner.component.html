@@ -1,0 +1,32 @@
+@if(show) {
+  <div
+    class="cookie-backdrop"
+    role="button"
+    tabindex="0"
+    (click)="accept()"
+    (keydown.enter)="accept()"
+    (keydown.escape)="accept()"
+  >
+    <div class="cookie-banner">
+      <h4 class="title">{{ 'cookies.title' | transloco }}</h4>
+
+      <p class="text_start">{{ 'cookies.start' | transloco}}</p>
+      <p class="text_end">{{ 'cookies.end' | transloco}}</p>
+
+      <button
+        class="button_accept cookie-button"
+        (click)="accept()"
+      >
+        {{ 'cookies.accept_button' | transloco }}
+      </button>
+
+      <a
+        class="button_learn cookie-button"
+        routerLink="/cookies"
+        (click)="learnMore()"
+      >
+        {{ 'cookies.learn_more' | transloco }}
+      </a>
+    </div>
+  </div>
+}

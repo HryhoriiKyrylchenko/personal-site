@@ -1,0 +1,96 @@
+{
+  "home": {
+    "title": "Hryhorii Kyrylchenko",
+    "button-back-to-top": "Back to top",
+    "rights-reserved": "All rights reserved.",
+    "project": "Last Project"
+  },
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "portfolio": "Portfolio",
+    "blog": "Blog",
+    "contacts": "Contacts"
+  },
+  "theme": {
+    "light": "Light",
+    "dark": "Dark"
+  },
+  "policy": {
+    "cookies": "Cookie Policy",
+    "privacy": "Privacy Policy"
+  },
+  "error": {
+    "title": "Error 404",
+    "text": "Looks like this page got... crumpled. \u2028We tried to smooth it out, rewrite it, even cut a new one — but nope.",
+    "button": "Reload Page"
+  },
+  "cookies": {
+    "accept_button": "Accept",
+    "learn_more": "Learn More About Cookies",
+    "title": "We use cookies",
+    "start": "to improve your experience on our site.",
+    "end": "By continuing to use our site, you agree to this."
+  },
+  "contacts": {
+    "form_title": "Contact Form",
+    "form_name": "Name",
+    "form_email": "Email",
+    "form_subject": "Subject",
+    "form_message": "Your Message",
+    "form_button": "Send",
+    "data_title": "Contacts",
+    "data_name": "Name:",
+    "data_email": "Email:",
+    "data_location": "My Location:",
+    "social_media_title": "Social Media",
+    "social_media_description": "tap to visit my social media"
+  },
+  "form": {
+    "success-title": "Message sent successfully!",
+    "success-message": "We will get back to you soon.",
+    "error-title": "Something went wrong.",
+    "error-message": "Please try again later.",
+    "error": {
+      "name": "Name is required",
+      "email": "Incorrect email",
+      "subject": "Subject is required",
+      "message": "Message is required"
+    }
+  },
+  "button": {
+    "read": "Read",
+    "share": "Share",
+    "close": "Close",
+    "read_more": "Read More",
+    "copied": "Link copied!",
+    "repo": "Repository",
+    "demo": "Demo",
+    "contact": "Contact me",
+    "download": "Download CV",
+    "portfolio": "View Portfolio",
+    "tooltip": {
+      "linkedin": "Share on LinkedIn",
+      "facebook": "Share on Facebook",
+      "copy_link": "Copy link"
+    }
+  },
+  "project": {
+    "overview": "Project overview",
+    "technologies": "Used technologies",
+    "features": "Main features",
+    "architecture": "Project architecture",
+    "deployment": "Deployment",
+    "results": "Results",
+    "skills": "Skills"
+  },
+  "skill": {
+    "title": "Skills",
+    "learning": "Learning Roadmap",
+    "category": {
+      "languages": "Languages",
+      "frameworks": "Frameworks",
+      "tools": "Tools"
+    }
+  }
+}

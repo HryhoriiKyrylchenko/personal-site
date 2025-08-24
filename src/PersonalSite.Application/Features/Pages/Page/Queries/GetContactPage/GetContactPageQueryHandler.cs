@@ -1,6 +1,5 @@
 using PersonalSite.Application.Features.Pages.Page.Dtos;
 using PersonalSite.Domain.Common.Results;
-using PersonalSite.Domain.Interfaces.Repositories.Blog;
 using PersonalSite.Domain.Interfaces.Repositories.Pages;
 
 namespace PersonalSite.Application.Features.Pages.Page.Queries.GetContactPage;
@@ -16,7 +15,6 @@ public class GetContactPageQueryHandler : IRequestHandler<GetContactPageQuery, R
     public GetContactPageQueryHandler(
         LanguageContext language,
         IPageRepository pageRepository,
-        IBlogPostRepository blogPostRepository,
         ILogger<GetContactPageQueryHandler> logger,
         ITranslatableMapper<Domain.Entities.Pages.Page, PageDto> pageMapper)
     {

@@ -27,6 +27,7 @@ public class ProjectRepository : EfRepository<Project>, IProjectRepository
                         .ThenInclude(c => c.Translations.Where(t => !t.Language.IsDeleted))
                             .ThenInclude(t => t.Language)
             .OrderByDescending(p => p.CreatedAt)
+            .AsSplitQuery()
             .ToListAsync(cancellationToken);
     }
 
@@ -45,6 +46,7 @@ public class ProjectRepository : EfRepository<Project>, IProjectRepository
                         .ThenInclude(c => c.Translations.Where(t => !t.Language.IsDeleted))
                             .ThenInclude(t => t.Language)
             .OrderByDescending(p => p.CreatedAt)
+            .AsSplitQuery()
             .FirstOrDefaultAsync(cancellationToken);
     }
 
@@ -64,6 +66,7 @@ public class ProjectRepository : EfRepository<Project>, IProjectRepository
                     .ThenInclude(s => s.Category)
                         .ThenInclude(c => c.Translations.Where(t => !t.Language.IsDeleted))
                             .ThenInclude(t => t.Language)
+            .AsSplitQuery()
             .FirstOrDefaultAsync(p => p.Id == id, cancellationToken);
     }
 
@@ -86,6 +89,7 @@ public class ProjectRepository : EfRepository<Project>, IProjectRepository
                     .ThenInclude(s => s.Category)
                         .ThenInclude(c => c.Translations.Where(t => !t.Language.IsDeleted))
                             .ThenInclude(t => t.Language)
+            .AsSplitQuery()
             .AsNoTracking();
 
         if (!string.IsNullOrWhiteSpace(slugFilter))

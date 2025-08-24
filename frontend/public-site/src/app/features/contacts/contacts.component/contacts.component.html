@@ -1,0 +1,176 @@
+@if (page$ | async; as page) {
+  <div class="contacts-page">
+    <form
+      class="contact-form-container"
+      [formGroup]="contactForm"
+      #formDirective="ngForm"
+      (ngSubmit)="onSubmit()"
+    >
+      <h4>
+        {{ 'contacts.form_title' | transloco }}
+      </h4>
+
+      <input
+        class="form-group"
+        formControlName="name"
+        type="text"
+        placeholder="{{ 'contacts.form_name' | transloco }}"
+        required />
+      @if (contactForm.get('name')?.invalid && (contactForm.get('name')?.touched || submitted)) {
+        <small class="error-message">
+          {{ 'form.error.name' | transloco }}
+        </small>
+      }
+
+      <input
+        class="form-group"
+        formControlName="email"
+        type="email"
+        name="email"
+        autocomplete="email"
+        placeholder="{{ 'contacts.form_email' | transloco }}"
+        required />
+      @if (contactForm.get('email')?.invalid && (contactForm.get('email')?.touched || submitted)) {
+        <small class="error-message">
+          {{ 'form.error.email' | transloco }}
+        </small>
+      }
+
+      <input
+        class="form-group"
+        formControlName="subject"
+        type="text"
+        placeholder="{{ 'contacts.form_subject' | transloco }}"
+        required />
+      @if (contactForm.get('subject')?.invalid && (contactForm.get('subject')?.touched || submitted)) {
+        <small class="error-message">
+          {{ 'form.error.subject' | transloco }}
+        </small>
+      }
+
+      <textarea
+        class="form-group"
+        formControlName="message"
+        rows="1"
+        placeholder="{{ 'contacts.form_message' | transloco }}"
+        appAutoResize
+        required
+      ></textarea>
+      @if (contactForm.get('message')?.invalid && (contactForm.get('message')?.touched || submitted)) {
+        <small class="error-message">
+          {{ 'form.error.message' | transloco }}
+        </small>
+      }
+
+
+      <button
+        class="submit"
+        type="submit"
+        [disabled]="submitted
+        || contactForm.invalid"
+      >
+        {{ 'contacts.form_button' | transloco }}
+      </button>
+      @if (showModal && modalType === 'success') {
+        <div class="modal-overlay"
+             appClickOutside
+             (clickOutside)="closeModal()">
+          <div class="modal-content">
+            <h6 class="success">{{ 'form.success-title' | transloco }}</h6>
+            <p>{{ 'form.success-message' | transloco }}</p>
+            <button
+              class="close"
+              (click)="closeModal()"
+            >
+              <svg width="21" height="21" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+                <path d="M10.5013 20.6788C7.8913 20.6788 5.28128 19.6888 3.30128 17.6988C1.38128 15.7788 0.321289 13.2188 0.321289 10.4988C0.321289 7.7788 1.38128 5.21879 3.30128 3.29879C7.27129 -0.671211 13.7313 -0.671211 17.7013 3.29879C21.6713 7.26879 21.6713 13.7288 17.7013 17.6988C15.7213 19.6788 13.1113 20.6788 10.5013 20.6788ZM10.5013 0.888816C8.0413 0.888816 5.57129 1.82881 3.70129 3.69881C1.88129 5.51881 0.881287 7.9288 0.881287 10.4988C0.881287 13.0688 1.88129 15.4788 3.70129 17.2988C7.45129 21.0488 13.5513 21.0488 17.3013 17.2988C21.0513 13.5488 21.0513 7.44881 17.3013 3.69881C15.4313 1.81881 12.9613 0.888816 10.5013 0.888816Z" fill="currentColor"/>
+                <path d="M6.33134 14.9488C6.26134 14.9488 6.18133 14.9188 6.13133 14.8688C6.02133 14.7588 6.02133 14.5788 6.13133 14.4688L14.3713 6.2288C14.4813 6.1188 14.6613 6.1188 14.7713 6.2288C14.8813 6.3388 14.8813 6.51876 14.7713 6.62876L6.53134 14.8688C6.48134 14.9188 6.40134 14.9488 6.33134 14.9488Z" fill="currentColor"/>
+                <path d="M14.5713 14.9488C14.5013 14.9488 14.4213 14.9188 14.3713 14.8688L6.13133 6.62876C6.02133 6.51876 6.02133 6.3388 6.13133 6.2288C6.24133 6.1188 6.42134 6.1188 6.53134 6.2288L14.7713 14.4688C14.8813 14.5788 14.8813 14.7588 14.7713 14.8688C14.7213 14.9188 14.6413 14.9488 14.5713 14.9488Z" fill="currentColor"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      } @else if (showModal && modalType === 'error') {
+        <div
+          class="modal-overlay"
+          appClickOutside
+          (clickOutside)="closeModal()"
+        >
+          <div class="modal-content">
+            <h6 class="error">
+              {{ 'form.error-title' | transloco }}
+            </h6>
+            <p>
+              {{ 'form.error-message' | transloco }}
+            </p>
+            <button
+              class="retry"
+              type="submit"
+              (click)="closeModal()"
+            >
+              <svg width="19" height="21" viewBox="0 0 19 21" xmlns="http://www.w3.org/2000/svg">
+              <path d="M9.51516 18.7788C5.9864 18.7788 2.67871 16.7358 1.1487 13.4724C0.105103 11.2437 -0.0187086 8.732 0.821474 6.41486C1.66166 4.09773 3.35087 2.24046 5.57956 1.19687C10.1873 -0.969921 15.6971 1.01999 17.8551 5.62773C19.6504 9.44835 18.6245 13.9854 15.3787 16.6651C15.2726 16.7535 15.1134 16.7358 15.025 16.6297C14.9365 16.5236 14.9542 16.3644 15.0604 16.276C18.1292 13.7377 19.0932 9.44834 17.404 5.83998C15.361 1.47987 10.1519 -0.403894 5.79181 1.64792C3.67809 2.63845 2.07732 4.38958 1.29021 6.5829C0.494244 8.77622 0.609221 11.1464 1.59975 13.2601C3.24474 16.7712 7.07419 18.7876 10.9037 18.1686C11.0363 18.142 11.169 18.2393 11.1955 18.372C11.2221 18.5047 11.1248 18.6373 10.9921 18.6638C10.488 18.7346 10.0016 18.7788 9.51516 18.7788Z" fill="currentColor"/>
+              <path d="M8.53344 20.6803C8.45385 20.6803 8.38309 20.6449 8.33002 20.5742C8.25043 20.4592 8.26814 20.3088 8.38311 20.2204L10.8064 18.434L8.36541 16.6651C8.25043 16.5856 8.2239 16.4263 8.31234 16.3114C8.39194 16.1964 8.55113 16.1699 8.6661 16.2583L11.3901 18.2305C11.452 18.2747 11.4962 18.3544 11.4962 18.434C11.4962 18.5135 11.4608 18.5931 11.3901 18.6373L8.69263 20.6361C8.63957 20.6626 8.58651 20.6803 8.53344 20.6803Z" fill="currentColor"/>
+            </svg>
+            </button>
+            <button
+              class="close"
+              (click)="closeModal()"
+            >
+              <svg width="21" height="21" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+                <path d="M10.5013 20.6788C7.8913 20.6788 5.28128 19.6888 3.30128 17.6988C1.38128 15.7788 0.321289 13.2188 0.321289 10.4988C0.321289 7.7788 1.38128 5.21879 3.30128 3.29879C7.27129 -0.671211 13.7313 -0.671211 17.7013 3.29879C21.6713 7.26879 21.6713 13.7288 17.7013 17.6988C15.7213 19.6788 13.1113 20.6788 10.5013 20.6788ZM10.5013 0.888816C8.0413 0.888816 5.57129 1.82881 3.70129 3.69881C1.88129 5.51881 0.881287 7.9288 0.881287 10.4988C0.881287 13.0688 1.88129 15.4788 3.70129 17.2988C7.45129 21.0488 13.5513 21.0488 17.3013 17.2988C21.0513 13.5488 21.0513 7.44881 17.3013 3.69881C15.4313 1.81881 12.9613 0.888816 10.5013 0.888816Z" fill="currentColor"/>
+                <path d="M6.33134 14.9488C6.26134 14.9488 6.18133 14.9188 6.13133 14.8688C6.02133 14.7588 6.02133 14.5788 6.13133 14.4688L14.3713 6.2288C14.4813 6.1188 14.6613 6.1188 14.7713 6.2288C14.8813 6.3388 14.8813 6.51876 14.7713 6.62876L6.53134 14.8688C6.48134 14.9188 6.40134 14.9488 6.33134 14.9488Z" fill="currentColor"/>
+                <path d="M14.5713 14.9488C14.5013 14.9488 14.4213 14.9188 14.3713 14.8688L6.13133 6.62876C6.02133 6.51876 6.02133 6.3388 6.13133 6.2288C6.24133 6.1188 6.42134 6.1188 6.53134 6.2288L14.7713 14.4688C14.8813 14.5788 14.8813 14.7588 14.7713 14.8688C14.7213 14.9188 14.6413 14.9488 14.5713 14.9488Z" fill="currentColor"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      }
+    </form>
+
+    <div class="contact-data-container">
+      <h4>
+        {{ 'contacts.data_title' | transloco }}
+      </h4>
+      <dl class="contact-data-list">
+        <dt>
+          {{ 'contacts.data_name' | transloco }}
+        </dt>
+        <dd>
+          {{ page.pageData.data['name'] }}
+        </dd>
+
+        <dt>
+          {{ 'contacts.data_email' | transloco }}
+        </dt>
+        <dd>
+          <a [href]="'mailto:' + (page.pageData.data['email'] || '')">
+            {{ page.pageData.data['email'] }}
+          </a>
+        </dd>
+
+        <dt>
+          {{ 'contacts.data_location' | transloco }}
+        </dt>
+        <dd>
+          <svg width="22" height="36" viewBox="0 0 22 36" xmlns="http://www.w3.org/2000/svg">
+            <path d="M20.3417 5.55496C18.4163 2.52969 15.2431 0.70083 11.6062 0.512819C11.1962 0.495727 10.804 0.495727 10.3939 0.512819C6.75705 0.683738 3.58367 2.52969 1.65827 5.55496C-0.302786 8.6486 -0.534521 12.443 1.01649 15.7246L10.5365 35.2265C10.6256 35.3974 10.8039 35.5 11 35.5C11.1961 35.5 11.3744 35.3974 11.4635 35.2265L20.9835 15.7246C22.5345 12.443 22.3028 8.63151 20.3417 5.55496ZM20.0744 15.2973L11.0178 33.8592L1.96131 15.2973C0.535088 12.3233 0.766879 8.85372 2.54966 6.05064C4.29678 3.29884 7.18488 1.64088 10.4652 1.46996C10.6431 1.45291 10.8388 1.45291 11.0167 1.45291H11.0178H11.0189C11.1969 1.45291 11.3926 1.45291 11.5705 1.46996C14.8686 1.62379 17.7567 3.29884 19.486 6.05064C21.2688 8.87081 21.4828 12.3233 20.0744 15.2973Z" fill="currentColor"/>
+            <path d="M10.9998 5.29855C7.66602 5.29855 4.97402 7.89648 4.97402 11.0756C4.97402 14.2718 7.68385 16.8698 10.9998 16.8698C14.3336 16.8698 17.0256 14.2718 17.0256 11.0756C17.0434 7.89648 14.3336 5.29855 10.9998 5.29855ZM10.9998 15.9126C8.23651 15.9126 5.97237 13.759 5.97237 11.0927C5.97237 8.44344 8.21868 6.27275 10.9998 6.27275C13.7809 6.27275 16.0273 8.42635 16.0273 11.0927C16.0273 13.7419 13.7809 15.9126 10.9998 15.9126Z" fill="currentColor"/>
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M20.0744 15.2973L11.0178 33.8592L1.96131 15.2973C0.535088 12.3233 0.766879 8.85372 2.54966 6.05064C4.29678 3.29884 7.18488 1.64088 10.4652 1.46996C10.6431 1.45291 10.8388 1.45291 11.0167 1.45291H11.0178H11.0189C11.1969 1.45291 11.3926 1.45291 11.5705 1.46996C14.8686 1.62379 17.7567 3.29884 19.486 6.05064C21.2688 8.87081 21.4828 12.3233 20.0744 15.2973ZM4.97402 11.0756C4.97402 7.89648 7.66602 5.29855 10.9998 5.29855C14.3336 5.29855 17.0434 7.89648 17.0256 11.0756C17.0256 14.2718 14.3336 16.8698 10.9998 16.8698C7.68385 16.8698 4.97402 14.2718 4.97402 11.0756Z" fill="currentColor"/>
+          </svg>
+          {{ page.pageData.data['address'] }}
+        </dd>
+      </dl>
+    </div>
+
+    <div class="social-media-links-container">
+      <h4 class="title">
+        {{ 'contacts.social_media_title' | transloco }}
+      </h4>
+      <app-social-links [iconSize]="iconSize"></app-social-links>
+      <p class="description">
+        {{ 'contacts.social_media_description' | transloco }}
+      </p>
+    </div>
+  </div>
+}

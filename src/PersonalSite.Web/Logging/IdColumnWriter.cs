@@ -1,11 +1,11 @@
+using NpgsqlTypes;
+
 namespace PersonalSite.Web.Logging;
 
-public class IdColumnWriter : ColumnWriterBase
+public class IdColumnWriter(NpgsqlDbType dbType = NpgsqlDbType.Uuid) : ColumnWriterBase(dbType)
 {
-    public IdColumnWriter() : base(dbType: NpgsqlTypes.NpgsqlDbType.Uuid) { }
-
     public override object GetValue(LogEvent logEvent, IFormatProvider? formatProvider = null)
     {
-        return Guid.NewGuid();
+        return (object) Guid.NewGuid();
     }
 }

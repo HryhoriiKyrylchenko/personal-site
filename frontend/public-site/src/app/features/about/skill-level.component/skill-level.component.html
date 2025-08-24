@@ -1,0 +1,8 @@
+<div class="skill-level">
+  @for (circle of circles; track $index) {
+    <div
+      class="circle"
+      [class.filled]="circle <= level"
+    ></div>
+  }
+</div>

@@ -9,6 +9,5 @@ public record SendContactMessageCommand(
     string Message
 ) : IRequest<Result>
 {
-    public string IpAddress { get; set; } = string.Empty;
     public string UserAgent { get; set; } = string.Empty;
 }

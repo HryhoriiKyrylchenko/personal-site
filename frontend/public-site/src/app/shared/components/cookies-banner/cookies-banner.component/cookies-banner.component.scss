@@ -1,0 +1,133 @@
+$breakpoint-sm: 640px;
+$breakpoint-lg: 1007px;
+
+.cookie-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.cookie-banner {
+  display: grid;
+  gap: 0.5rem;
+  align-items: center;
+  justify-items: center;
+  padding: 1rem;
+  width: 100%;
+  background: var(--color-background);
+  color: var(--color-text-primary);
+  text-align: center;
+
+  grid-template-areas:
+    "title"
+    "text_start"
+    "text_end"
+    "button_accept"
+    "button_learn";
+
+  button {
+    margin: 0 1rem;
+  }
+}
+
+.title {
+  grid-area: title;
+  margin: 0;
+  font-weight: 500;
+  color: var(--color-title);
+}
+
+.text_start,
+.text_end {
+  width: 20rem;
+  font-size: 1.25rem;
+}
+
+.text_start {
+  grid-area: text_start;
+}
+
+.text_end {
+  grid-area: text_end;
+}
+
+.cookie-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.625rem;
+  width: 20rem;
+  margin: 0.5rem;
+  padding: 0.625rem 1rem;
+  font-size: 1rem;
+  font-weight: 400;
+  color: var(--color-modal-text);
+  border: none;
+  border-radius: 0.5625rem;
+  box-shadow:
+    0 2px 4px 0 rgba(255, 255, 255, 0.10) inset,
+    0 2px 4px 0 rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+
+  &:hover {
+    background: var(--color-hover);
+    color: var(--color-hover-text);
+  }
+}
+
+.button_accept {
+  grid-area: button_accept;
+  background: var(--color-modal-button);
+}
+
+.button_learn {
+  grid-area: button_learn;
+  background: var(--color-modal-button-secondary);
+}
+
+@media (min-width: $breakpoint-sm) {
+  .cookie-banner {
+    max-width: 40rem;
+    grid-template-areas:
+      "title title"
+      "text_start text_start"
+      "text_end text_end"
+      "button_accept button_learn";
+    grid-template-columns: auto 1fr;
+  }
+
+  .text_start,
+  .text_end {
+    width: 35rem;
+  }
+
+  .cookie-button {
+    width: 17rem;
+    margin: 0 auto;
+  }
+}
+
+@media (min-width: $breakpoint-lg) {
+  .cookie-banner {
+    max-width: 100%;
+    grid-template-areas:
+      "title button_accept button_learn"
+      "text_start button_accept button_learn"
+      "text_end button_accept button_learn";
+    grid-template-columns: auto;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .cookie-button {
+    width: 17rem;
+  }
+
+  .button_accept {
+    width: 8rem;
+  }
+}

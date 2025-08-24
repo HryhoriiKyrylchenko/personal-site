@@ -23,6 +23,7 @@ public class BlogPostRepository : EfRepository<BlogPost>, IBlogPostRepository
                 .ThenInclude(t => t.Language)
             .Include(p => p.PostTags)
                 .ThenInclude(pt => pt.BlogPostTag)
+            .AsSplitQuery()
             .FirstOrDefaultAsync(p => p.Id == id, cancellationToken);
     }
 
@@ -35,6 +36,7 @@ public class BlogPostRepository : EfRepository<BlogPost>, IBlogPostRepository
             .Include(p => p.PostTags)
                 .ThenInclude(pt => pt.BlogPostTag)
             .OrderByDescending(p => p.PublishedAt)
+            .AsSplitQuery()
             .ToListAsync(cancellationToken);
     }
 
@@ -52,6 +54,7 @@ public class BlogPostRepository : EfRepository<BlogPost>, IBlogPostRepository
             .Include(x => x.PostTags)
                 .ThenInclude(pt => pt.BlogPostTag)
             .AsQueryable()
+            .AsSplitQuery()
             .AsNoTracking();
 
         if (!string.IsNullOrEmpty(slugFilter))
@@ -66,6 +69,7 @@ public class BlogPostRepository : EfRepository<BlogPost>, IBlogPostRepository
             .OrderByDescending(x => x.CreatedAt)
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
+            .AsSplitQuery()
             .ToListAsync(cancellationToken);
         
         return PaginatedResult<BlogPost>.Success(entities, page, pageSize, total);

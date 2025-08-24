@@ -18,7 +18,7 @@ namespace PersonalSite.Infrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.5")
+                .HasAnnotation("ProductVersion", "9.0.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -142,45 +142,30 @@ namespace PersonalSite.Infrastructure.Migrations
                     b.ToTable("PostTags");
                 });
 
-            modelBuilder.Entity("PersonalSite.Domain.Entities.Common.LogEntry", b =>
+            modelBuilder.Entity("PersonalSite.Domain.Entities.Common.Language", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<string>("Exception")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Level")
+                    b.Property<string>("Code")
                         .IsRequired()
-                        .HasMaxLength(128)
-                        .HasColumnType("character varying(128)");
+                        .HasMaxLength(2)
+                        .HasColumnType("character varying(2)");
 
-                    b.Property<string>("Message")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
 
-                    b.Property<string>("MessageTemplate")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
-
-                    b.Property<string>("Properties")
-                        .HasColumnType("jsonb");
-
-                    b.Property<string>("SourceContext")
-                        .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
-
-                    b.Property<DateTime>("Timestamp")
-                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Level");
+                    b.HasIndex("Code")
+                        .IsUnique();
 
-                    b.HasIndex("Timestamp");
-
-                    b.ToTable("Logs");
+                    b.ToTable("Languages");
                 });
 
             modelBuilder.Entity("PersonalSite.Domain.Entities.Common.Resume", b =>
@@ -255,11 +240,6 @@ namespace PersonalSite.Infrastructure.Migrations
                         .HasMaxLength(150)
                         .HasColumnType("character varying(150)");
 
-                    b.Property<string>("IpAddress")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
-
                     b.Property<bool>("IsRead")
                         .HasColumnType("boolean");
 
@@ -298,6 +278,9 @@ namespace PersonalSite.Infrastructure.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
 
                     b.Property<string>("Key")
                         .IsRequired()
@@ -419,6 +402,9 @@ namespace PersonalSite.Infrastructure.Migrations
                     b.Property<Guid>("CategoryId")
                         .HasColumnType("uuid");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
                     b.Property<string>("Key")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -484,29 +470,6 @@ namespace PersonalSite.Infrastructure.Migrations
                     b.HasIndex("SkillId");
 
                     b.ToTable("UserSkills");
-                });
-
-            modelBuilder.Entity("PersonalSite.Domain.Entities.Translations.Language", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .HasMaxLength(2)
-                        .HasColumnType("character varying(2)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Code")
-                        .IsUnique();
-
-                    b.ToTable("Languages");
                 });
 
             modelBuilder.Entity("PersonalSite.Domain.Entities.Translations.Translation", b =>
@@ -766,7 +729,7 @@ namespace PersonalSite.Infrastructure.Migrations
 
             modelBuilder.Entity("PersonalSite.Domain.Entities.Translations.Translation", b =>
                 {
-                    b.HasOne("PersonalSite.Domain.Entities.Translations.Language", "Language")
+                    b.HasOne("PersonalSite.Domain.Entities.Common.Language", "Language")
                         .WithMany()
                         .HasForeignKey("LanguageId")
                         .OnDelete(DeleteBehavior.Restrict)

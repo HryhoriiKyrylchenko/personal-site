@@ -29,7 +29,7 @@ public class LearningSkillMapperTests
         {
             Id = Guid.NewGuid(),
             Skill = skill,
-            LearningStatus = LearningStatus.Planning,
+            LearningStatus = LearningStatus.Planned,
             DisplayOrder = 2
         };
 
@@ -41,7 +41,7 @@ public class LearningSkillMapperTests
 
         // Assert
         dto.Id.Should().Be(learningSkill.Id);
-        dto.LearningStatus.Should().Be("Planning");
+        dto.LearningStatus.Should().Be("Planned");
         dto.DisplayOrder.Should().Be(2);
         dto.Skill.Should().BeEquivalentTo(expectedSkillDto);
     }
@@ -54,7 +54,7 @@ public class LearningSkillMapperTests
         var skill = new Skill { Id = Guid.NewGuid(), Key = "test" };
         var learningSkills = new List<LearningSkill>
         {
-            new() { Id = Guid.NewGuid(), Skill = skill, LearningStatus = LearningStatus.Practising, DisplayOrder = 1 }
+            new() { Id = Guid.NewGuid(), Skill = skill, LearningStatus = LearningStatus.Practicing, DisplayOrder = 1 }
         };
 
         _skillMapperMock
@@ -66,7 +66,7 @@ public class LearningSkillMapperTests
 
         // Assert
         result.Should().HaveCount(1);
-        result[0].LearningStatus.Should().Be("Practising");
+        result[0].LearningStatus.Should().Be("Practicing");
     }
 
     [Fact]
@@ -102,7 +102,7 @@ public class LearningSkillMapperTests
         var skill = new Skill { Id = Guid.NewGuid(), Key = "admin" };
         var learningSkills = new List<LearningSkill>
         {
-            new() { Id = Guid.NewGuid(), Skill = skill, LearningStatus = LearningStatus.Planning, DisplayOrder = 0 }
+            new() { Id = Guid.NewGuid(), Skill = skill, LearningStatus = LearningStatus.Planned, DisplayOrder = 0 }
         };
 
         _skillAdminMapperMock

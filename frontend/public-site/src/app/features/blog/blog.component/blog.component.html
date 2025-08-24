@@ -1,0 +1,67 @@
+@if(!hasDetail)
+{
+  @if (posts$ | async; as posts) {
+    <div class="blog-page">
+      @for (post of posts; track trackBySlug($index, post)) {
+        <div class="blog-card">
+          <div class="blog-card-content">
+            <div
+              class="blog-cover-img"
+              [ngStyle]="{ 'background-image': 'url(' + post.coverImage + ')' }"
+              aria-hidden="true"
+            ></div>
+            <h6 class=" blog-detail-title">{{ post.title }}</h6>
+            <p class="blog-detail-description">{{ post.excerpt }}</p>
+
+            <button
+              class="btn btn-primary"
+              (click)="onReadClick(post.slug)"
+            >
+              {{ 'button.read' | transloco }}
+            </button>
+
+            <app-share-popover
+              [url]="currentFullUrl(post.slug)"
+              [label]="post.title"
+            >
+              <button
+                class="btn btn-secondary"
+                type="button"
+              >
+                {{ 'button.share' | transloco }}
+              </button>
+            </app-share-popover>
+          </div>
+        </div>
+      }
+    </div>
+  }
+} @else {
+  <div class="blog-container">
+    @if (posts$ | async; as posts) {
+      <div class="blog-thumbnail-page">
+        @for (post of posts; track trackBySlug($index, post)) {
+          <div
+            class="thumbnail-card"
+            role="button"
+            tabindex="0"
+          >
+            <div class="blog-thumbnail-card-content">
+              <div
+                class="blog-thumbnail-cover-img"
+                (click)="onReadClick(post.slug)"
+                [ngStyle]="{ 'background-image': 'url(' + post.coverImage + ')' }"
+                [title]="post.title"
+                aria-hidden="true"
+              ></div>
+
+            </div>
+          </div>
+        }
+      </div>
+    }
+    <div class="blog-post-area">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+}

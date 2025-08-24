@@ -1,0 +1,64 @@
+$privacy-sm: 640px;
+$privacy-lg: 1007px;
+
+.privacy-page {
+  display: flex;
+  width: 100%;
+  max-width: 20rem;
+  padding: 2rem 1.25rem 6.25rem 1.25rem;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.625rem;
+  background: var(--color-background);
+  color: var(--color-text-primary);
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.title {
+  align-self: center;
+}
+
+:host ::ng-deep .content {
+  align-self: stretch;
+
+  h4 {
+    font-size: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  p {
+    font-size: 1rem;
+  }
+
+  li {
+    font-size: 1rem;
+  }
+
+  a {
+    font-size: 1rem;
+    text-decoration-line: underline;
+    text-decoration-style: solid;
+    text-decoration-skip-ink: auto;
+    text-decoration-thickness: auto;
+    text-underline-offset: auto;
+    text-underline-position: from-font;
+
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+}
+
+@media (min-width: $privacy-sm) {
+  .privacy-page {
+    max-width: 48rem;
+  }
+}
+
+@media (min-width: $privacy-lg) {
+  .privacy-page {
+    max-width: 80rem;
+  }
+}

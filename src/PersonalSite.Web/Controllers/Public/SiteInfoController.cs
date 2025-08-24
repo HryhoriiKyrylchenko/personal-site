@@ -18,6 +18,6 @@ public class SiteInfoController : ControllerBase
     public async Task<ActionResult<SiteInfoDto>> GetSiteInfo(CancellationToken cancellationToken)
     {
         var result = await _mediator.Send(new GetSiteInfoQuery(), cancellationToken);
-        return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
+        return result.IsSuccess ? Ok(result.Value) : BadRequest(new { error = result.Error });
     }
 }

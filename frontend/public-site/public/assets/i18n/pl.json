@@ -1,0 +1,97 @@
+{
+  "home": {
+    "title": "Hryhorii Kyrylchenko",
+    "button-back-to-top": "Powrót do góry",
+    "rights-reserved": "Wszystkie prawa zastrzeżone.",
+    "project": "Ostatni projekt"
+  },
+  "nav": {
+    "home": "Strona główna",
+    "about": "O mnie",
+    "portfolio": "Portfolio",
+    "blog": "Blog",
+    "contacts": "Kontakt"
+  },
+  "theme": {
+    "light": "Jasny",
+    "dark": "Ciemny"
+  },
+  "policy": {
+    "cookies": "Polityka plików cookie",
+    "privacy": "Polityka prywatności"
+  },
+  "error": {
+    "title": "Błąd 404",
+    "text": "Wygląda na to, że ta strona się... pogubiła. \u2028Próbowaliśmy ją odnaleźć, przepisać, a nawet stworzyć nową — ale nic z tego.",
+    "button": "Odśwież stronę"
+  },
+  "cookies": {
+    "accept_button": "Akceptuj",
+    "learn_more": "Dowiedz Się Więcej O Ciasteczkach",
+    "title": "Używamy ciasteczek",
+    "start": "aby poprawić Twoje doświadczenia na naszej stronie.",
+    "end": "Korzystając dalej z naszej strony, wyrażasz na to zgodę."
+  },
+  "contacts": {
+    "form_title": "Formularz kontaktowy",
+    "form_name": "Imię",
+    "form_email": "Email",
+    "form_subject": "Temat",
+    "form_message": "Twoja wiadomość",
+    "form_button": "Wyślij",
+    "data_title": "Kontakt",
+    "data_name": "Imię i nazwisko:",
+    "data_email": "Email:",
+    "data_location": "Moja lokalizacja:",
+    "social_media_title": "Media społecznościowe",
+    "social_media_description": "kliknij, aby odwiedzić moje media społecznościowe"
+  },
+  "form": {
+    "success-title": "Wiadomość została wysłana!",
+    "success-message": "Skontaktujemy się z Tobą wkrótce.",
+    "error-title": "Coś poszło nie tak.",
+    "error-message": "Spróbuj ponownie później.",
+    "error": {
+      "name": "Imię jest wymagane",
+      "email": "Nieprawidłowy adres e-mail",
+      "subject": "Temat jest wymagany",
+      "message": "Wiadomość jest wymagana"
+    }
+  },
+  "button": {
+    "read": "Czytaj",
+    "share": "Udostępnij",
+    "close": "Zamknij",
+    "read_more": "Czytaj więcej",
+    "copied": "Link skopiowany!",
+    "repo": "Repozytorium",
+    "demo": "Demo",
+    "contact": "Skontaktuj się ze mną",
+    "download": "Pobierz CV",
+    "portfolio": "Zobacz portfolio",
+    "tooltip": {
+      "linkedin": "Udostępnij na LinkedIn",
+      "facebook": "Udostępnij na Facebooku",
+      "copy_link": "Skopiuj link"
+    }
+  },
+  "project": {
+    "overview": "Przegląd projektu",
+    "technologies": "Użyte technologie",
+    "features": "Główne funkcje",
+    "architecture": "Architektura projektu",
+    "deployment": "Wdrożenie",
+    "results": "Wyniki",
+    "skills": "Umiejętności"
+  },
+  "skill": {
+    "title" : "Umiejętności",
+    "learning": "Plan nauki",
+    "category": {
+      "languages": "Języki",
+      "frameworks": "Frameworki",
+      "tools": "Narzędzia"
+    }
+  }
+}
+

@@ -2,7 +2,7 @@ namespace PersonalSite.Domain.Enums;
 
 public enum LearningStatus
 {
-    Planning,
+    Planned,
     InProgress,
-    Practising
+    Practicing
 }

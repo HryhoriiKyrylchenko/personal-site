@@ -1,0 +1,113 @@
+@if (page$ | async; as page) {
+  <div class="home-page">
+    <div class="home-content-container">
+      <div
+        class="home-image"
+        [ngStyle]="{ 'background-image': 'url(' + page.imageUrl + ')' }"
+      ></div>
+
+      <h2 class="home-name">
+        {{ 'home.title' | transloco }}
+      </h2>
+
+      <h4 class="home-title">
+        {{ page.pageData.title }}
+      </h4>
+
+      <p class="home-description">
+        {{ page.pageData.description }}
+      </p>
+
+      @if (skills$ | async; as skills) {
+        <div class="home-skills">
+          <h5 class="home-skills-title">
+            {{ 'skill.title' | transloco }}
+          </h5>
+
+          <div class="home-skills-list">
+            @for (skill of skills; track skill.skill.key) {
+              <app-skill [skill]="skill.skill"></app-skill>
+            }
+          </div>
+        </div>
+      }
+
+      <button
+        class="btn btn-primary btn-contact"
+        (click)="onContactClick()"
+      >
+        {{ 'button.contact' | transloco }}
+      </button>
+
+      <button
+        class="btn btn-secondary btn-download"
+        (click)="onDownloadClick()"
+      >
+        {{ 'button.download' | transloco }}
+      </button>
+
+      <button
+        class="btn btn-secondary btn-portfolio"
+        (click)="onPortfolioClick()"
+      >
+        {{ 'button.portfolio' | transloco }}
+      </button>
+    </div>
+
+    @if (project$ | async; as project) {
+      <div class="project-data-container">
+        <h4 class="project-data-title">
+          {{ 'home.project' | transloco }}
+        </h4>
+
+        <div class="project-data-container-inner">
+          <div class="project-data">
+            <div
+              class="project-cover-img"
+              [ngStyle]="{ 'background-image': 'url(' + project.coverImage + ')' }"
+            ></div>
+
+            @if (projectSkills$ | async; as projectSkills) {
+              <div class="project-skills">
+                @for (skill of projectSkills; track skill.skill.key) {
+                  <app-skill [skill]="skill.skill"></app-skill>
+                }
+              </div>
+            }
+
+            <h5 class="project-title">
+              {{ project.title }}
+            </h5>
+
+            <p class="project-description">
+              {{ project.shortDescription }}
+            </p>
+          </div>
+
+          <div class="project-buttons-container">
+            <button
+              class="btn btn-primary btn-read"
+              (click)="onReadClick()"
+            >
+              {{ 'button.read_more' | transloco }}
+            </button>
+
+            <button
+              class="btn btn-secondary btn-repo"
+              (click)="onRepoClick()"
+            >
+              {{ 'button.repo' | transloco }}
+            </button>
+
+            <button
+              class="btn btn-secondary btn-demo"
+              (click)="onDemoClick()"
+            >
+              {{ 'button.demo' | transloco }}
+            </button>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+}
