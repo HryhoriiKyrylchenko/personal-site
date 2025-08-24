@@ -21,7 +21,7 @@ jobs:
         working-directory: ./frontend
         run: |
           if [ -f package-lock.json ]; then
-      	    npm ci
+            npm ci
           else
             npm install
           fi
