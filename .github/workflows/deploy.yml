@@ -48,7 +48,7 @@ jobs:
           mv frontend.tar.gz backend.tar.gz deploy-scripts deploy-package/
           ls -la deploy-package
 
-      - name: Debug: show workspace before deploy
+      - name: show workspace before deploy
         run: |
           echo "GITHUB_WORKSPACE: $GITHUB_WORKSPACE"
           pwd
@@ -60,8 +60,11 @@ jobs:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           REMOTE_HOST: ${{ secrets.EC2_IP }}
           REMOTE_USER: ec2-user
-          SOURCE: frontend.tar.gz backend.tar.gz deploy-scripts/*
+          SOURCE: deploy-package/
           TARGET: "/home/ec2-user/deploy/"
+          SCRIPT_BEFORE: |
+            echo "remote before rsync:"
+            ls -la /home/ec2-user/deploy || true
 
       - name: Run deploy script
         uses: appleboy/ssh-action@v0.1.6
