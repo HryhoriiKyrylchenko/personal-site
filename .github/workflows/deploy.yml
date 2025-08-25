@@ -73,6 +73,14 @@ jobs:
           username: ec2-user
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
+            set -e
             cd /home/ec2-user/deploy
-            sudo ./deploy.sh
-
+            echo "PWD: $(pwd)"
+            ls -la
+            if [ -f deploy-scripts/deploy.sh ]; then
+              echo "Found script, executing with full path"
+              sudo bash /home/ec2-user/deploy/deploy-scripts/deploy.sh
+            else
+              echo "ERROR: deploy.sh not found"
+              exit 1
+            fi
