@@ -38,8 +38,21 @@ jobs:
 
       - name: Archive artifacts
         run: |
+          ls -la frontend/public-site/dist || true
+          ls -la src/PersonalSite.Web/publish || true
+
           tar czf frontend.tar.gz -C frontend/public-site/dist/public-site .
           tar czf backend.tar.gz -C src/PersonalSite.Web/publish .
+
+          mkdir -p deploy-package
+          mv frontend.tar.gz backend.tar.gz deploy-scripts deploy-package/
+          ls -la deploy-package
+
+      - name: Debug: show workspace before deploy
+        run: |
+          echo "GITHUB_WORKSPACE: $GITHUB_WORKSPACE"
+          pwd
+          ls -la
 
       - name: Deploy to EC2
         uses: easingthemes/ssh-deploy@v2
