@@ -40,6 +40,14 @@ jobs:
         run: |
           tar czf frontend.tar.gz -C frontend/public-site/dist/public-site .
           tar czf backend.tar.gz -C src/PersonalSite.Web/publish .
+          
+      - name: Debug: list artifacts
+        run: |
+          echo "PWD: $PWD"
+          ls -la frontend.tar.gz || true
+          ls -la backend.tar.gz || true
+          ls -la deploy-scripts || true
+
 
       - name: Deploy to EC2
         uses: easingthemes/ssh-deploy@v2
@@ -47,7 +55,7 @@ jobs:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           REMOTE_HOST: ${{ secrets.EC2_IP }}
           REMOTE_USER: ec2-user
-          SOURCE: "frontend.tar.gz backend.tar.gz deploy-scripts/*"
+          SOURCE: frontend.tar.gz backend.tar.gz deploy-scripts/*
           TARGET: "/home/ec2-user/deploy/"
 
       - name: Run deploy script
