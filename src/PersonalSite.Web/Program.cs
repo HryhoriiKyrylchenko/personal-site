@@ -80,7 +80,7 @@ builder.Host.UseSerilog();
 // -------------------------
 // CORS
 // -------------------------
-var allowedOriginsPublic = builder.Configuration.GetSection("AllowedOrigins:Public").Get<string[]>() ?? [];
+var allowedOriginsPublic = builder.Configuration["AllowedOrigins:Public"]?.Split(",") ?? [];
 var allowedOriginsAdmin = builder.Configuration["AllowedOrigins:Admin"]?.Split(",") ?? [];
 
 var combinedOrigins = allowedOriginsPublic.Concat(allowedOriginsAdmin).Distinct().ToArray();
