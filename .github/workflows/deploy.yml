@@ -47,7 +47,7 @@ jobs:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           REMOTE_HOST: ${{ secrets.EC2_IP }}
           REMOTE_USER: ec2-user
-          SOURCE: "frontend.tar.gz,backend.tar.gz,deploy-scripts/*"
+          SOURCE: "frontend.tar.gz backend.tar.gz deploy-scripts/*"
           TARGET: "/home/ec2-user/deploy/"
 
       - name: Run deploy script
