@@ -18,7 +18,7 @@ jobs:
           node-version: '24'
 
       - name: Build frontend
-        working-directory: ./frontend
+        working-directory: frontend/public-site
         run: |
           if [ -f package-lock.json ]; then
             npm ci
@@ -33,7 +33,7 @@ jobs:
           dotnet-version: '9.0.x'
 
       - name: Publish backend
-        working-directory: ./backend
+        working-directory: src/PersonalSite.Web
         run: dotnet publish -c Release -o publish
 
       - name: Archive artifacts
