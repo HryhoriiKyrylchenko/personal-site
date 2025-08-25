@@ -25,8 +25,19 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideTranslocoPersistLang({
       storage: { useValue: cookiesStorageRoot() },
-      getLangFn: ({ cachedLang, browserLang, cultureLang, defaultLang }) =>
-        cachedLang || cultureLang || browserLang?.substring(0, 2) || defaultLang
+      getLangFn: ({ cachedLang, browserLang, cultureLang, defaultLang }) => {
+        const mapLang = (lang?: string) => {
+          if (!lang) return undefined;
+          lang = lang.toLowerCase();
+          if (lang.startsWith('en')) return 'en';
+          if (lang.startsWith('pl')) return 'pl';
+          if (lang.startsWith('ru')) return 'ru';
+          if (lang.startsWith('uk')) return 'uk';
+          return 'en';
+        };
+
+        return cachedLang || mapLang(cultureLang) || mapLang(browserLang) || defaultLang;
+      }
     }),
     provideTransloco({
       loader: StaticLoader,
