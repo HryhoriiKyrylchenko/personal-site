@@ -28,7 +28,6 @@ This full-stack site is built to showcase development projects, publish articles
 - 📬 Contact form with email notifications
 - 🔗 Social media links
 - ⚙️ Admin panel for content management (Cognito-protected)
-- 📈 SEO and social media (SMM) metadata support
 - 🈳 Localization with JSON + database translations
 - 🧪 Unit testing with xUnit, Moq, and FluentAssertions
 
@@ -157,18 +156,17 @@ The admin interface is secured using **AWS Cognito authentication**.
 **Frontend:**
 - Angular
 - SCSS
-- Angular Material
 
 **Cloud:**
-- AWS Cognito
-- AWS S3 *(planned)*
+- AWS Cognito *(planned)*
+- AWS S3 
 - AWS SES / SQS *(optional)*
 
 **Tooling:**
 - xUnit
 - Moq
 - FluentAssertions
-- GitHub Actions *(planned)*
+- GitHub Actions
 
 ---
 
