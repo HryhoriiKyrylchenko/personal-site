@@ -1,0 +1,140 @@
+$error-sm: 640px;
+$error-lg: 1007px;
+
+.error-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 1rem;
+  background-color: var(--color-background);
+  color: var(--color-text-primary);
+  width: 100%;
+  max-width: 20rem;
+}
+
+.container {
+  display: grid;
+  grid-template-areas:
+    "icon"
+    "title"
+    "text"
+    "button";
+  gap: 1rem;
+  align-items: center;
+  justify-items: center;
+}
+
+.icon {
+  width: 100%;
+  height: auto;
+  max-width: 161px;
+  grid-area: icon;
+}
+
+.title {
+  color: var(--color-modal-button);
+  font-weight: 500;
+  grid-area: title;
+  margin: 0;
+}
+
+.text {
+  width: 20rem;
+  font-size: 1.5rem;
+  grid-area: text;
+}
+
+.reload-button {
+  border: none;
+  display: inline-flex;
+  width: 100%;
+  height: 3.0625rem;
+  padding: 0.625rem;
+  justify-content: center;
+  align-items: center;
+  gap: 0.625rem;
+  flex-shrink: 0;
+  border-radius: 0.5625rem;
+  background: var(--color-modal-button);
+  box-shadow: 0 2px 4px 0 rgba(255, 255, 255, 0.10) inset, 0 2px 4px 0 rgba(0, 0, 0, 0.25);
+  color: var(--color-modal-text);
+  font-size: 1.5rem;
+  font-weight: 400;
+  grid-area: button;
+
+  &:hover {
+    background: var(--color-hover);
+    color: var(--color-hover-text);
+  }
+
+  &:active {
+    background: var(--color-active);
+    color: var(--color-active-text);
+  }
+}
+
+@media (min-width: $error-sm) {
+  .error-page {
+    gap: 2rem;
+    max-width: 48rem;
+  }
+
+  .container {
+    grid-template-areas:
+      "icon title"
+      "text text"
+      "button button";
+    grid-template-columns: auto 1fr;
+    align-items: baseline;
+  }
+
+  .icon {
+    max-width: 275px;
+    width: 275px;
+    height: 229px;
+  }
+
+  .title {
+    font-size: 3rem;
+  }
+
+  .text {
+    width: 37rem;
+    font-size: 2rem;
+  }
+
+  .reload-button {
+    width: fit-content;
+    padding: 1rem;
+  }
+}
+
+@media (min-width: $error-lg) {
+  .error-page {
+    max-width: 80rem;
+    text-align: left;
+  }
+
+  .container {
+    grid-template-columns: auto 1fr;
+    grid-template-areas:
+      "icon title"
+      "icon text"
+      "icon button";
+    justify-items: start;
+    align-items: start;
+  }
+
+  .icon {
+    max-width: 387px;
+    width: 387px;
+    height: 322px;
+    margin-right: 0;
+  }
+
+  .title, .text, .reload-button {
+    margin-left: 2.5rem;
+  }
+}

@@ -1,0 +1,33 @@
+/* Font stacks */
+$font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+$font-heading: 'Poppins', sans-serif;
+
+/* Base font sizes */
+html {
+  font-size: 16px;
+}
+body {
+  font-family: $font-primary;
+  font-style: normal;
+  line-height: normal;
+  color: var(--color-text-primary);
+}
+
+/* Headings */
+h1 { font-family: $font-heading; font-size: 4rem; font-weight: 500; margin-bottom: 0.5em; }
+h2 { font-family: $font-heading; font-size: 3rem; font-weight: 500; margin-bottom: 0.5em; }
+h3 { font-family: $font-heading; font-size: 3rem; font-weight: 400; margin-bottom: 0.5em; }
+h4 { font-family: $font-heading; font-size: 2.25rem; font-weight: 400; margin-bottom: 0.5em; }
+h5 { font-family: $font-heading; font-size: 2rem; font-weight: 350; margin-bottom: 0.5em; }
+h6 { font-family: $font-heading; margin-bottom: 0.5em; }
+
+/* Paragraphs + lists */
+p, ul, ol {
+  font-size: 1.5rem;
+  font-weight: 400;
+  color: var(--color-text-primary);
+}
+
+/* Helper classes */
+.text-center { text-align: center; }
+.text-right { text-align: right; }

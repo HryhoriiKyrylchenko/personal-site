@@ -1,0 +1,52 @@
+:root {
+  --color-background: #F8F8F8;
+  --color-text-primary: #141414;
+  --color-link: #777;
+  --color-modal-background: #C5C5C5;
+  --color-modal-button: #3B3B3B;
+  --color-modal-button-secondary: #636363;
+  --color-modal-text: #F8F8F8;
+  --color-footer-background: #D9D9D9;
+  //--color-social-link-outer: #3B3B3B;
+  //--color-social-link-inner: #D9D9D9;
+  //--color-title: #3B3B3B;
+  //--color-text-grey: #8A8A8A;
+  //--color-skill-background: #8A8A8A;
+  //--color-skill-text: #F8F8F8;
+  //--color-skill-filled: #3B3B3B;
+  //--color-skill-empty: #F8F8F8;
+  //--color-learning-skill-background: #D9D9D9;
+  //--color-about-skills-background: #D9D9D9;
+  //--color-skill-border: #636363;
+  --color-spinner: #3B3B3B;
+
+  --color-hover: #41ECFF;
+  --color-active: #76FF9F;
+  --color-error: #FF9169;
+  --color-hover-text: #141414;
+  --color-active-text: #003316;
+  --color-error-text: #3D1100;
+
+  --bp-sm: 640px;
+  --bp-lg: 1007px;
+}
+
+body[data-theme="dark"] {
+  --color-background: #282828;
+  --color-text-primary: #F8F8F8;
+  --color-modal-background: #4F4F4F;
+  --color-modal-button: #C5C5C5;
+  --color-modal-button-secondary: #8A8A8A;
+  --color-modal-text: #141414;
+  --color-footer-background: #3B3B3B;
+  //--color-social-link-outer: #C5C5C5;
+  //--color-social-link-inner: #3B3B3B;
+  //--color-title: #F8F8F8;
+  //--color-skill-background: #636363;
+  //--color-skill-filled: #8A8A8A;
+  //--color-skill-empty: #282828;
+  //--color-learning-skill-background: #3B3B3B;
+  //--color-about-skills-background: #282828;
+  //--color-skill-border: #8A8A8A;
+  --color-spinner: #C5C5C5;
+}
