@@ -7,7 +7,16 @@
       </svg>
     </a>
     <nav>
-
+      <ul>
+        @for (link of navLinks; track link.path) {
+          <li>
+            <a [routerLink]="link.path">{{ link.text }}</a>
+          </li>
+        }
+      </ul>
     </nav>
+    <div class="header-toggles">
+      <app-theme-toggle></app-theme-toggle>
+    </div>
   </div>
 </header>

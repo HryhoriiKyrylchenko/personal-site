@@ -1,0 +1,15 @@
+.theme-toggle {
+  display: inline-flex;
+  align-self: auto;
+  height: 1.8125rem;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  font-weight: 400;
+  cursor: pointer;
+  color: var(--color-text-primary);
+
+  &:hover {
+    color: var(--color-link);
+  }
+}

@@ -17,6 +17,4 @@ import {FooterComponent} from '../../Footer/footer.component/footer.component';
 })
 export class LayoutComponent {
 
-
-
 }

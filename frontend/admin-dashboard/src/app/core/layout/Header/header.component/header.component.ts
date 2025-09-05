@@ -20,18 +20,25 @@ import {CustomBreakpoints} from '../../../../shared/utils/custom-breakpoints';
   template: `
     @switch (screenSize$ | async) {
       @case ('mobile') {
-        <app-header-mobile></app-header-mobile>
+        <app-header-mobile [navLinks]="navLinks"></app-header-mobile>
       }
       @case ('tablet') {
-        <app-header-tablet></app-header-tablet>
+        <app-header-tablet [navLinks]="navLinks"></app-header-tablet>
       }
       @case ('desktop') {
-        <app-header-desktop></app-header-desktop>
+        <app-header-desktop [navLinks]="navLinks"></app-header-desktop>
       }
     }
   `
 })
 export class HeaderComponent {
+  public navLinks: { text: string; path: string }[] = [
+    { text: 'Analytics', path: '/' },
+    { text: 'Blog', path: '/blog' },
+    { text: 'Portfolio', path: '/portfolio' },
+    { text: 'General', path: '/general' },
+  ];
+
   private bp = inject(BreakpointObserver);
 
   screenSize$ = this.bp.observe([
