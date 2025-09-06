@@ -1,5 +1,5 @@
-$privacy-sm: 640px;
-$privacy-lg: 1007px;
+$privacy-sm: 700px;
+$privacy-lg: 1400px;
 
 .privacy-page {
   display: flex;
@@ -53,12 +53,12 @@ $privacy-lg: 1007px;
 
 @media (min-width: $privacy-sm) {
   .privacy-page {
-    max-width: 48rem;
+    max-width: 44rem;
   }
 }
 
 @media (min-width: $privacy-lg) {
   .privacy-page {
-    max-width: 80rem;
+    max-width: 87.5rem;
   }
 }

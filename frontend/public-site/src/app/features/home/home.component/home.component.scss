@@ -1,12 +1,13 @@
-$home-sm: 640px;
-$home-lg: 1007px;
+$home-sm: 700px;
+$home-lg: 1400px;
 
 .home-page {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 3rem;
-  max-width: 20rem;
+  max-width: 22.5rem;
+  padding: 0 1rem;
   width: 100%;
   margin: 2rem auto;
   background: var(--color-background);
@@ -45,7 +46,7 @@ $home-lg: 1007px;
 
   .home-title {
     align-self: stretch;
-    font-size: 1.5rem;
+    font-size: 1.725rem;
     font-weight: 400;
     color: var(--color-text-primary);
     grid-area: title;
@@ -60,7 +61,7 @@ $home-lg: 1007px;
     overflow: hidden;
     color: var(--color-text-primary);
     text-overflow: ellipsis;
-    font-size: 1rem;
+    font-size: 1.25rem;
 
     grid-area: description;
   }
@@ -74,7 +75,7 @@ $home-lg: 1007px;
     grid-area: skills;
 
     .home-skills-title {
-      font-size: 1.275rem;
+      font-size: 1.5rem;
     }
 
     .home-skills-list {
@@ -113,7 +114,7 @@ $home-lg: 1007px;
   border-radius: 0.625rem;
   box-shadow: 0 2px 4px 0 rgba(255, 255, 255, 0.10) inset, 0 2px 4px 0 rgba(0, 0, 0, 0.25);
   color: var(--color-modal-text);
-  font-size: 1.125rem;
+  font-size: 1.5rem;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
@@ -150,7 +151,7 @@ $home-lg: 1007px;
   flex-direction: column;
 
   .project-data-title {
-    font-size: 1.275rem;
+    font-size: 1.5rem;
     color: var(--color-text-primary);
   }
 
@@ -192,7 +193,7 @@ $home-lg: 1007px;
       }
 
       .project-title {
-        font-size: 1.5rem;
+        font-size: 1.75rem;
         font-weight: 500;
         margin: 0;
         color: var(--color-text-primary);
@@ -208,7 +209,7 @@ $home-lg: 1007px;
         overflow: hidden;
         color: var(--color-text-primary);
         text-overflow: ellipsis;
-        font-size: 1rem;
+        font-size: 1.25rem;
         grid-area: project-description;
       }
     }
@@ -241,7 +242,7 @@ $home-lg: 1007px;
 
 @media (min-width: $home-sm) {
   .home-page {
-    max-width: 40rem;
+    max-width: 44rem;
   }
 
   .home-content-container {
@@ -260,22 +261,23 @@ $home-lg: 1007px;
     }
 
     .home-name {
-      font-size: 3.5rem;
+      font-size: 4rem;
+      margin: 0;
     }
 
     .home-title {
-      font-size: 2rem;
+      font-size: 2.25rem;
     }
 
     .home-description {
-      font-size: 1.275rem;
+      font-size: 1.5rem;
     }
 
     .home-skills {
       margin-bottom: 1.25rem;
 
       .home-skills-title {
-        font-size: 2.5rem;
+        font-size: 3rem;
       }
 
       .home-skills-list {
@@ -287,7 +289,7 @@ $home-lg: 1007px;
   .project-data-container {
 
     .project-data-title {
-      font-size: 2.5rem;
+      font-size: 3rem;
     }
 
     .project-data-container-inner {
@@ -297,6 +299,14 @@ $home-lg: 1007px;
         "project-image project-skills project-skills"
         "project-title project-title project-title"
         "project-description project-description project-description";
+
+        .project-title {
+          font-size: 3rem;
+        }
+
+        .project-description {
+          font-size: 1.5rem;
+        }
 
         .project-cover-img {
           height: 10.54688rem;
@@ -317,11 +327,12 @@ $home-lg: 1007px;
 
 @media (min-width: $home-lg) {
   .home-page {
-    max-width: 80rem;
+    max-width: 87.5rem;
     margin: 4rem auto;
   }
 
   .home-content-container {
+    gap: 1rem;
     padding-bottom: 5rem;
     grid-template-areas:
     "image name name name"
@@ -343,6 +354,10 @@ $home-lg: 1007px;
       background: linear-gradient(to top, #C5C5C5, transparent);
     }
 
+    .home-skills-title {
+      font-size: 3rem;
+    }
+
     .home-image {
       width: 35rem;
       max-width: 35rem;
@@ -352,6 +367,7 @@ $home-lg: 1007px;
 
     .home-name {
       margin-bottom: 0;
+      margin-top: 0;
     }
 
     .home-title {
@@ -362,7 +378,7 @@ $home-lg: 1007px;
   .project-data-container {
 
     .project-data-title {
-      font-size: 2.5rem;
+      font-size: 3rem;
     }
 
     .project-data-container-inner {
@@ -376,8 +392,18 @@ $home-lg: 1007px;
 
 
         .project-cover-img {
-          width: 28rem;
+          width: 25rem;
           height: auto;
+        }
+
+        .project-title {
+          font-size: 2rem;
+          margin: 0;
+        }
+
+        .project-description {
+          font-size: 1.25rem;
+          margin: 0;
         }
       }
 
