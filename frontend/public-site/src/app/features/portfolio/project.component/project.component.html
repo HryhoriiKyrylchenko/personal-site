@@ -1,6 +1,7 @@
 @if (project$ | async; as project) {
   <div class="project-dialog">
     <button
+      class="btn"
       mat-button
       (click)="onCloseClick()"
     >
@@ -100,7 +101,7 @@
     <div class="project-links">
       @if (project.repoUrl && project.repoUrl.length > 0) {
         <a
-          class="project-link link-primary"
+          class="btn project-link link-primary"
           href="{{ project.repoUrl }}"
           target="_blank"
         >
@@ -109,7 +110,7 @@
       }
       @if (project.demoUrl && project.demoUrl.length > 0) {
         <a
-          class="project-link link-secondary"
+          class="btn project-link link-secondary"
           href="{{ project.demoUrl }}"
           target="_blank"
         >

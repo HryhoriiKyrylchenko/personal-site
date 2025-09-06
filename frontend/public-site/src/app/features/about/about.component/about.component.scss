@@ -1,5 +1,5 @@
-$about-sm: 640px;
-$about-lg: 1007px;
+$about-sm: 700px;
+$about-lg: 1400px;
 
 .about-page {
   display: flex;
@@ -32,14 +32,14 @@ $about-lg: 1007px;
 
 .about-title {
   color: var(--color-text-primary);
-  font-size: 2.1125rem;
+  font-size: 3rem;
 }
 
 .about-content {
   color: var(--color-text-primary);
 
   .content-paragraph {
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
     font-size: 1.25rem;
   }
 }
@@ -117,17 +117,33 @@ $about-lg: 1007px;
 
 @media (min-width: $about-sm) {
   .about-page {
-    max-width: 40rem;
+    max-width: 44rem;
+  }
+
+  .about-content {
+    .content-paragraph {
+      font-size: 2rem;
+    }
+  }
+
+  .user-skills-title {
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .learning-skills-title {
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
   }
 
   .learning-skills {
-    justify-content: flex-start;
+    justify-content: center;
   }
 }
 
 @media (min-width: $about-lg) {
   .about-page {
-    max-width: 80rem;
+    max-width: 87.5rem;
     width: 100%;
   }
 
@@ -137,14 +153,34 @@ $about-lg: 1007px;
     gap: 2.5rem;
   }
 
-  .about-img {
-    width: 40%;
+  .about-img-container {
+    width: 45%;
     height: auto;
+    overflow: hidden;
+    border-top-right-radius: 3rem;
+    border-bottom-right-radius: 3rem;
+  }
+
+  .about-img {
+    width: 250%;
+    height: 100%;
+    background-size: cover;
+    background-position: 40% 50%;
+  }
+
+  .about-title {
+    font-size: 3.2rem;
+  }
+
+  .about-content {
+    margin-left: 4rem;
+    .content-paragraph {
+      font-size: 1.85rem;
+    }
   }
 
   .about-content-container-inner {
-    max-width: 40rem;
-    width: 60%;
+    width: 55%;
   }
 
   .user-skills {
@@ -158,5 +194,9 @@ $about-lg: 1007px;
     align-self: flex-start;
     flex: 1;
     max-width: none;
+  }
+
+  .learning-skills {
+    justify-content: flex-start;
   }
 }

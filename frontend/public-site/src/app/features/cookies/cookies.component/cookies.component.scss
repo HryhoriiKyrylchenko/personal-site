@@ -1,5 +1,5 @@
-$cookie-sm: 640px;
-$cookie-lg: 1007px;
+$cookie-sm: 700px;
+$cookie-lg: 1400px;
 
 .cookies-page {
   display: flex;
@@ -53,12 +53,12 @@ $cookie-lg: 1007px;
 
 @media (min-width: $cookie-sm) {
   .cookies-page {
-    max-width: 48rem;
+    max-width: 44rem;
   }
 }
 
 @media (min-width: $cookie-lg) {
   .cookies-page {
-    max-width: 80rem;
+    max-width: 87.5rem;
   }
 }
