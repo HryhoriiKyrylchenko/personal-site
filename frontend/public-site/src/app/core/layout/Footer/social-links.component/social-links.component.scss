@@ -1,12 +1,27 @@
+$links-sm: 700px;
+$links-lg: 1400px;
+
 :host {
-  --icon-size: 3.5rem;
+  --icon-size: 2.5rem;
+
+  @media (min-width: $links-sm) {
+    --icon-size: 3.5rem;
+  }
 }
 
 .social-media-links-container {
   display: flex;
   align-items: center;
   align-self: stretch;
-  gap: 1.25rem;
+  gap: 0.3rem;
+
+  @media (min-width: $links-sm) {
+    gap: 1rem;
+  }
+
+  @media (min-width: $links-sm) {
+    gap: 1.5rem;
+  }
 }
 
 .social-media-links-container a {

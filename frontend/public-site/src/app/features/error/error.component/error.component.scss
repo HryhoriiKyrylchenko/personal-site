@@ -1,5 +1,5 @@
-$error-sm: 640px;
-$error-lg: 1007px;
+$error-sm: 700px;
+$error-lg: 1400px;
 
 .error-page {
   display: flex;
@@ -73,7 +73,7 @@ $error-lg: 1007px;
 @media (min-width: $error-sm) {
   .error-page {
     gap: 2rem;
-    max-width: 48rem;
+    max-width: 44rem;
   }
 
   .container {
@@ -108,7 +108,7 @@ $error-lg: 1007px;
 
 @media (min-width: $error-lg) {
   .error-page {
-    max-width: 80rem;
+    max-width: 87.5rem;
     text-align: left;
   }
 

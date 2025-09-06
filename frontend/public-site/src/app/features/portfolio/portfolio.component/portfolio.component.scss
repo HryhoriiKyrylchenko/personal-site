@@ -1,5 +1,5 @@
-$portfolio-sm: 640px;
-$portfolio-lg: 1007px;
+$portfolio-sm: 700px;
+$portfolio-lg: 1400px;
 
 $skill-item-height: 3rem;
 
@@ -183,7 +183,7 @@ $skill-item-height: 3rem;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 2rem;
-    max-width: 80rem;
+    max-width: 87.5rem;
   }
 
   .project-title {

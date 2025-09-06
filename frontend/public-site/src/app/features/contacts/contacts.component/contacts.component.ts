@@ -111,6 +111,6 @@ export class ContactsComponent implements OnInit {
   @HostListener('window:resize')
   onResize(): void {
     const width = window.innerWidth;
-    this.iconSize = width >= 640 ? '7.8125rem' : '5.875rem';
+    this.iconSize = width >= 1400 ? '7.8125rem' : '5.875rem';
   }
 }

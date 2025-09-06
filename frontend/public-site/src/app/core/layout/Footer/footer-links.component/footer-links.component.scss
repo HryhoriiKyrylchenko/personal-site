@@ -1,16 +1,16 @@
-$breakpoint-sm: 640px;
-$breakpoint-lg: 1007px;
+$breakpoint-sm: 700px;
+$breakpoint-lg: 1400px;
 
 .privacy {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 3rem;
+  gap: 1rem;
 }
 
 .privacy__link {
   text-decoration: none;
-  font-size: 0.8125rem;
+  font-size: 0.625rem;
   font-weight: 400;
   color: var(--color-social-link-outer);
 
@@ -19,14 +19,19 @@ $breakpoint-lg: 1007px;
   }
 }
 
-@media only screen and (max-width: $breakpoint-sm) {
+@media only screen and (min-width: $breakpoint-sm) {
   .privacy {
-    gap: 1rem;
+    gap: 3rem;
+    flex-direction: row;
+  }
+
+  .privacy__link {
+    font-size: 1rem;
   }
 }
 
 @media only screen and (min-width: $breakpoint-lg) {
-  .privacy {
-    flex-direction: row;
+  .privacy__link {
+    font-size: 1.25rem;
   }
 }

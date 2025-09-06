@@ -1,5 +1,5 @@
-$breakpoint-sm: 640px;
-$breakpoint-lg: 1007px;
+$breakpoint-sm: 699px;
+$breakpoint-lg: 1399px;
 
 .cookie-backdrop {
   position: fixed;
@@ -91,13 +91,16 @@ $breakpoint-lg: 1007px;
 
 @media (min-width: $breakpoint-sm) {
   .cookie-banner {
-    max-width: 40rem;
+    width: 100vw;
+    max-width: 100%;
     grid-template-areas:
       "title title"
       "text_start text_start"
       "text_end text_end"
       "button_accept button_learn";
-    grid-template-columns: auto 1fr;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    justify-content: center;
   }
 
   .text_start,

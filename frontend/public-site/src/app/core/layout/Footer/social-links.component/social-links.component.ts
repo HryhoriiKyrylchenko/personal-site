@@ -9,7 +9,7 @@ import {SiteInfoService} from '../../../services/site-info.service';
   changeDetection: ChangeDetectionStrategy.Default
 })
 export class SocialLinksComponent {
-  private _iconSize = '3.5rem';
+  private _iconSize = '3rem';
 
   @Input()
   set iconSize(size: string) {

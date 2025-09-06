@@ -1,26 +1,33 @@
+$header-sm: 700px;
+$header-lg: 1401px;
+
 .site-header {
   width: 100%;
-  padding: 0.625rem 3.25rem;
+  padding: 0.625rem 0;
   position: relative;
   z-index: 10;
   background: var(--color-background);
   color: var(--color-text-primary);
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.25);
 
-  @media (min-width: var(--bp-sm)) {
-    padding: 0 4.5rem;
-  }
-
-  @media (min-width: var(--bp-lg)) {
-    padding: 0 6rem;
-  }
-
   .header-content {
     display: flex;
     align-items: center;
-    justify-content: space-evenly;
+    justify-content: space-between;
+    align-self: center;
+    width: 20rem;
+    max-width: 100%;
+    margin: 0 auto;
     padding: 0;
     height: 4.25rem;
+
+    @media (min-width: $header-sm) {
+      width: 44rem;
+    }
+
+    @media (min-width: $header-lg) {
+      width: 87.5rem;
+    }
   }
 }
 
@@ -35,7 +42,7 @@
   align-items: center;
   gap: 2.5rem;
 
-  @media (min-width: var(--bp-lg)) {
+  @media (min-width: $header-lg) {
     gap: 1.5rem;
     height: 1.8125rem;
   }
