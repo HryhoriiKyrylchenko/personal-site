@@ -1,1 +1,26 @@
-<p>general.component works!</p>
+<div class="general-page">
+  <div class="tabs-container">
+    @for (tab of tabs; track tab.label) {
+      <button
+        class="tab"
+        (click)="selectedTab = tabs.indexOf(tab)"
+        [class.active]="selectedTab === tabs.indexOf(tab)">
+        {{ tab.label }}
+      </button>
+    }
+  </div>
+
+  <div class="tab-content">
+    @switch (selectedTab) {
+      @case (0) {
+        <app-info-tab></app-info-tab>
+      }
+      @case (1) {
+        <app-pages-tab></app-pages-tab>
+      }
+      @case (2) {
+        <app-skills-tab></app-skills-tab>
+      }
+    }
+  </div>
+</div>

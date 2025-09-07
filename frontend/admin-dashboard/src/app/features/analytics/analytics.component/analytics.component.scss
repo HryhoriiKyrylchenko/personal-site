@@ -1,0 +1,67 @@
+$analytics-sm: 700px;
+$analytics-lg: 1400px;
+
+.analytics-page {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 22rem;
+  max-width: 100%;
+  position: relative;
+}
+
+.tabs-container {
+  display: flex;
+  width: 100%;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.tabs-container .tab {
+  flex: 1;
+  text-align: center;
+  padding: 0.75rem 0;
+  background: var(--color-tab-background);
+  border-top: none;
+  border-bottom: none;
+  border-right: 1px solid white;
+  border-left: 1px solid white;
+  cursor: pointer;
+  font-size: 1.25rem;
+  color: var(--color-text-primary);
+}
+
+.tabs-container .tab:first-child {
+  border-left: none;
+}
+
+.tabs-container .tab:last-child {
+  border-right: none;
+}
+
+.tabs-container .tab.active {
+  background: var(--color-tab-active);
+  border-bottom: 2px solid #636363;
+  color: #141414;
+  z-index: 20;
+}
+
+.tab-content {
+  flex: 1;
+  border: 1px solid #ccc;
+  border-top: none;
+  overflow: auto;
+}
+
+@media (min-width: $analytics-sm) {
+  .analytics-page {
+    width: 44rem;
+  }
+}
+
+@media (min-width: $analytics-lg) {
+  .analytics-page {
+    width: 87.5rem;
+  }
+}
