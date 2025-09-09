@@ -1,1 +1,37 @@
-<p>logs-tab.component works!</p>
+<div class="logs-container">
+  <h2>Logs</h2>
+
+  <div class="controls">
+    <label>
+      Delete older than:
+      <input type="date" [(ngModel)]="cutoffDate" />
+    </label>
+    <button (click)="deleteOlderThan()" [disabled]="!cutoffDate ">Delete</button>
+    <button (click)="loadLogs()">Reload</button>
+  </div>
+
+  <table class="logs-table">
+    <thead>
+    <tr>
+      <th>Timestamp</th>
+      <th>Level</th>
+      <th>Message</th>
+      <th>Exception</th>
+      <th>Properties</th>
+      <th>Source Context</th>
+    </tr>
+    </thead>
+    <tbody>
+      @for (log of logs; track log.timestamp) {
+        <tr>
+          <td>{{ log.timestamp | date:'medium' }}</td>
+          <td>{{ log.level }}</td>
+          <td>{{ log.message }}</td>
+          <td>{{ log.exception }}</td>
+          <td><pre>{{ log.properties | json }}</pre></td>
+          <td>{{ log.sourceContext }}</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

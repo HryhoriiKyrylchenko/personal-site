@@ -4,6 +4,7 @@ import {AnalyticsTabComponent} from '../analytics-tab.component/analytics-tab.co
 
 @Component({
   selector: 'app-analytics',
+  standalone: true,
   imports: [
     LogsTabComponent,
     AnalyticsTabComponent

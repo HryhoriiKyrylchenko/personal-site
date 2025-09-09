@@ -9,7 +9,7 @@ namespace PersonalSite.Web.Controllers.Admin.Analytics;
 
 [Route("api/admin/[controller]")]
 [ApiController]
-[Authorize]
+//[Authorize]
 public class AnalyticsEventController : ControllerBase
 {
     private readonly IMediator _mediator;
@@ -20,7 +20,9 @@ public class AnalyticsEventController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<PaginatedResult<AnalyticsEventDto>>> GetAll(GetAnalyticsEventsQuery query,CancellationToken cancellationToken)
+    public async Task<ActionResult<PaginatedResult<AnalyticsEventDto>>> GetAll(
+        [FromQuery] GetAnalyticsEventsQuery query,
+        CancellationToken cancellationToken)
     {
         var result = await _mediator.Send(query, cancellationToken);
         return Ok(result);

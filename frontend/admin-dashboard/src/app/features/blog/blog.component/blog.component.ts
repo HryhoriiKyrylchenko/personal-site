@@ -3,6 +3,7 @@ import {BlogTabComponent} from '../blog-tab.component/blog-tab.component';
 
 @Component({
   selector: 'app-blog',
+  standalone: true,
   imports: [
     BlogTabComponent
   ],

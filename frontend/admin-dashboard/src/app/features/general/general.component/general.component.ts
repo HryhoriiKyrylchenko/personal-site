@@ -5,6 +5,7 @@ import {SkillsTabComponent} from '../skills-tab.component/skills-tab.component';
 
 @Component({
   selector: 'app-general',
+  standalone: true,
   imports: [
     InfoTabComponent,
     PagesTabComponent,

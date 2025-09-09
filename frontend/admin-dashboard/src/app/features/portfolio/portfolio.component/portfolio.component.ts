@@ -3,6 +3,7 @@ import {ProjectsTabComponent} from '../projects-tab.component/projects-tab.compo
 
 @Component({
   selector: 'app-portfolio',
+  standalone: true,
   imports: [
     ProjectsTabComponent
 

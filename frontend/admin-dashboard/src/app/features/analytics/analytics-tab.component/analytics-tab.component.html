@@ -1,3 +1,59 @@
 <div class="analytics-tab">
-  <p>Some content...</p>
+  <div class="filter-bar">
+    <input placeholder="Event Type" [(ngModel)]="filters().eventType" />
+    <input placeholder="Page Slug" [(ngModel)]="filters().pageSlug" />
+    <input type="date" [(ngModel)]="filters().from" />
+    <input type="date" [(ngModel)]="filters().to" />
+    <button (click)="applyFilters()">Apply Filters</button>
+  </div>
+
+  <button (click)="deleteSelected()" [disabled]="selectedIds().size === 0">
+    Delete Selected ({{ selectedIds().size }})
+  </button>
+
+  <table class="events-table">
+    <thead>
+    <tr>
+      <th>Select</th>
+      <th>Event Type</th>
+      <th>Page Slug</th>
+      <th>Referrer</th>
+      <th>User Agent</th>
+      <th>Created At</th>
+      <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+      @for (event of data().items; track event.id) {
+        <tr>
+          <td>
+            <input
+              type="checkbox"
+              [checked]="selectedIds().has(event.id)"
+              (change)="toggleSelection(event.id)"
+            />
+          </td>
+          <td>{{ event.eventType }}</td>
+          <td>{{ event.pageSlug }}</td>
+          <td>{{ event.referrer }}</td>
+          <td>{{ event.userAgent }}</td>
+          <td>{{ event.createdAt | date:'medium' }}</td>
+          <td>
+            <button (click)="deleteEvent(event.id)">Delete</button>
+          </td>
+        </tr>
+      } @empty {
+        <tr>
+          <td colspan="7">No analytics events found.</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+
+  <div class="pagination">
+    <button (click)="prevPage()" [disabled]="!data().hasPrevious">Prev</button>
+    <span>Page {{ data().pageNumber }} of {{ data().totalPages }}</span>
+    <button (click)="nextPage()" [disabled]="!data().hasNext">Next</button>
+    <span>Total: {{ totalCount() }}</span>
+  </div>
 </div>
