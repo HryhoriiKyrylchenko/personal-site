@@ -11,7 +11,7 @@ namespace PersonalSite.Web.Controllers.Admin.Blog;
 
 [Route("api/admin/[controller]")]
 [ApiController]
-[Authorize]
+//[Authorize]
 public class BlogPostController : ControllerBase
 {
     private readonly IMediator _mediator;

@@ -1,1 +1,47 @@
-<p>blog-tag.component works!</p>
+<div>
+  <h2>Blog Posts</h2>
+
+  <div class="filters">
+    <input type="text" placeholder="Slug filter" [(ngModel)]="slugFilterValue" />
+    <select [(ngModel)]="isPublishedFilterValue">
+      <option [ngValue]="undefined">All</option>
+      <option [ngValue]="true">Published</option>
+      <option [ngValue]="false">Unpublished</option>
+    </select>
+    <button (click)="loadPosts()">Apply Filters</button>
+  </div>
+
+  <table>
+    <thead>
+    <tr>
+      <th>Slug</th>
+      <th>Published</th>
+      <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+      @for (post of posts(); track post.id) {
+        <tr>
+          <td>{{ post.slug }}</td>
+          <td>{{ post.isPublished ? 'Yes' : 'No' }}</td>
+          <td>
+            <button (click)="publishPost(post.id, post.isPublished)">
+              {{ post.isPublished ? 'Unpublish' : 'Publish' }}
+            </button>
+            <button (click)="deletePost(post.id)">Delete</button>
+          </td>
+        </tr>
+      } @empty {
+        <tr>
+          <td colspan="3">No posts found</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+
+  <div class="pagination">
+    <button (click)="prevPage()" [disabled]="page() <= 1">Prev</button>
+    Page {{ page() }} of {{ totalPages() }}
+    <button (click)="nextPage()" [disabled]="page() >= totalPages()">Next</button>
+  </div>
+</div>
