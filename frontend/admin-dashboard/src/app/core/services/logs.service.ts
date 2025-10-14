@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import {map, Observable} from 'rxjs';
 import {environment} from '../../../environments/environment';
+import {PaginatedResult} from './analytics.service';
 
 export interface LogEntryDto {
   timestamp: string;
@@ -15,18 +16,38 @@ export interface LogEntryDto {
 
 @Injectable({ providedIn: 'root' })
 export class LogsService {
-  private baseUrl = `${environment.apiUrl}/Logs`;
+  private baseUrl = `${environment.apiUrl}/logs`;
 
   constructor(private http: HttpClient) {}
 
-  getRecentLogs(count: number): Observable<LogEntryDto[]> {
-    return this.http.get<{ value: LogEntryDto[] }>(this.baseUrl, { params: { count: count.toString() } })
-      .pipe(
-        map(res => res.value)
-      );
+  getLogsPaginated(
+    page: number,
+    pageSize: number,
+    from?: string,
+    to?: string,
+    level?: number
+  ): Observable<PaginatedResult<LogEntryDto>> {
+    let params = new HttpParams()
+      .set('Page', String(page))
+      .set('PageSize', String(pageSize));
+
+    if (from) params = params.set('From', from);
+    if (to) params = params.set('To', to);
+    if (level) params = params.set('Level', level);
+
+    return this.http.get<any>(this.baseUrl, { params }).pipe(
+      map(res => ({
+        ...res,
+        items: res.value.map((x: any) => ({
+          ...x,
+          timestamp: new Date(x.timestamp)
+        }))
+      }))
+    );
   }
 
-  deleteOlderThan(cutoff: string): Observable<{ deleted: number }> {
-    return this.http.delete<{ deleted: number }>(this.baseUrl, { params: { cutoff } });
+  deleteOlderThan(cutoffDate: string): Observable<void> {
+    const params = new HttpParams().set('cutoffDate', cutoffDate);
+    return this.http.delete<void>(`${this.baseUrl}/older-than`, { params });
   }
 }

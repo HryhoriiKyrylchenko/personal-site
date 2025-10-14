@@ -7,7 +7,7 @@
     <button (click)="applyFilters()">Apply Filters</button>
   </div>
 
-  <button (click)="deleteSelected()" [disabled]="selectedIds().size === 0">
+  <button class="button-delete-selected" (click)="deleteSelected()" [disabled]="selectedIds().size === 0">
     Delete Selected ({{ selectedIds().size }})
   </button>
 
@@ -39,7 +39,7 @@
           <td>{{ event.userAgent }}</td>
           <td>{{ event.createdAt | date:'medium' }}</td>
           <td>
-            <button (click)="deleteEvent(event.id)">Delete</button>
+            <button class="button-delete" (click)="deleteEvent(event.id)">Delete</button>
           </td>
         </tr>
       } @empty {

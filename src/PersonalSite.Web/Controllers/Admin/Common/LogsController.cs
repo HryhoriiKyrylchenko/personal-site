@@ -1,5 +1,7 @@
 using PersonalSite.Application.Features.Common.Logs.Commands.DeleteOldLogs;
-using PersonalSite.Application.Features.Common.Logs.Queries.GetRecentLogs;
+using PersonalSite.Application.Features.Common.Logs.Dtos;
+using PersonalSite.Application.Features.Common.Logs.Queries.GetLogsPaginated;
+using PersonalSite.Domain.Common.Results;
 
 namespace PersonalSite.Web.Controllers.Admin.Common;
 
@@ -12,16 +14,20 @@ public class LogsController : ControllerBase
     public LogsController(IMediator mediator) => _mediator = mediator;
 
     [HttpGet]
-    public async Task<IActionResult> Get([FromQuery] int count = 50)
+    public async Task<ActionResult<PaginatedResult<LogEntryDto>>> GetAllPaginated(
+        [FromQuery] GetLogsPaginatedQuery query,
+        CancellationToken cancellationToken)
     {
-        var logs = await _mediator.Send(new GetRecentLogsQuery(count));
-        return Ok(logs);
+        var result = await _mediator.Send(query, cancellationToken);
+        return Ok(result);
     }
 
-    [HttpDelete]
-    public async Task<IActionResult> Delete([FromQuery] DateTime cutoff)
+    [HttpDelete("older-than")]
+    public async Task<IActionResult> DeleteOlderThan(
+        [FromQuery] DateTime cutoffDate,
+        CancellationToken cancellationToken)
     {
-        var deleted = await _mediator.Send(new DeleteOldLogsCommand(cutoff));
-        return Ok(new { Deleted = deleted });
+        await _mediator.Send(new DeleteOldLogsCommand(cutoffDate), cancellationToken);
+        return NoContent();
     }
 }
