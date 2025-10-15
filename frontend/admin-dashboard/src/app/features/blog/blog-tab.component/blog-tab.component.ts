@@ -20,6 +20,8 @@ export class BlogTabComponent implements OnInit {
   slugFilter = signal('');
   isPublishedFilter = signal<boolean | undefined>(undefined);
 
+  editingPost = signal<BlogPostAdminDto | null>(null);
+
   ngOnInit() {
     this.loadPosts();
   }
@@ -42,6 +44,69 @@ export class BlogTabComponent implements OnInit {
   publishPost(id: string, isPublished: boolean) {
     this.blogService.publish(id, !isPublished, new Date().toISOString())
       .subscribe(() => this.loadPosts());
+  }
+
+  activeLang = this.editingPost()?.translations[0]?.languageCode ?? 'en';
+
+  openCreate() {
+    this.editingPost.set({
+      id: '',
+      slug: '',
+      coverImage: '',
+      createdAt: new Date().toISOString(),
+      updatedAt: undefined,
+      publishedAt: undefined,
+      isDeleted: false,
+      isPublished: false,
+      translations: [
+        { languageCode: 'en', title: '', excerpt: '', content: '', metaTitle: '', metaDescription: '', ogImage: '' },
+        { languageCode: 'pl', title: '', excerpt: '', content: '', metaTitle: '', metaDescription: '', ogImage: '' },
+        { languageCode: 'ru', title: '', excerpt: '', content: '', metaTitle: '', metaDescription: '', ogImage: '' },
+        { languageCode: 'uk', title: '', excerpt: '', content: '', metaTitle: '', metaDescription: '', ogImage: '' }
+      ],
+      tags: []
+    });
+
+    this.activeLang = 'en';
+  }
+
+  editPost(post: BlogPostAdminDto) {
+    this.editingPost.set(JSON.parse(JSON.stringify(post))); // clone
+  }
+
+  cancelEdit() {
+    this.editingPost.set(null);
+  }
+
+  savePost() {
+    const post = this.editingPost();
+    if (!post) return;
+
+    const request = post.id
+      ? this.blogService.update(post.id, post)
+      : this.blogService.create(post);
+
+    request.subscribe(() => {
+      this.loadPosts();
+      this.cancelEdit();
+    });
+  }
+
+  addTag(name: string) {
+    if (!name.trim()) return;
+    this.editingPost.update(p => {
+      if (!p) return p;
+      if (!p.tags.find(t => t.name === name)) p.tags.push({ name } as any);
+      return p;
+    });
+  }
+
+  removeTag(name: string) {
+    this.editingPost.update(p => {
+      if (!p) return p;
+      p.tags = p.tags.filter(t => t.name !== name);
+      return p;
+    });
   }
 
   prevPage() {

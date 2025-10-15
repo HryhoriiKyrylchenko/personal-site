@@ -4,7 +4,6 @@ import { FormsModule } from '@angular/forms';
 import {rxResource} from '@angular/core/rxjs-interop';
 import {AnalyticsEventDto, AnalyticsService, PaginatedResult} from '../../../core/services/analytics.service';
 
-
 @Component({
   selector: 'app-analytics-tab',
   standalone: true,

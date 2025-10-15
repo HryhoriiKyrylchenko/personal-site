@@ -6,7 +6,11 @@ import { environment } from '../../../environments/environment';
 export interface BlogPostTranslationDto {
   languageCode: string;
   title: string;
+  excerpt: string;
   content: string;
+  metaTitle: string;
+  metaDescription: string;
+  ogImage: string;
 }
 
 export interface BlogPostTagDto {
@@ -18,8 +22,11 @@ export interface BlogPostAdminDto {
   id: string;
   slug: string;
   coverImage: string;
-  isPublished: boolean;
+  createdAt: string;
+  updatedAt?: string;
   isDeleted: boolean;
+  isPublished: boolean;
+  publishedAt?: string;
   translations: BlogPostTranslationDto[];
   tags: BlogPostTagDto[];
 }

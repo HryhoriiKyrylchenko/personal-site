@@ -42,8 +42,15 @@ export class AnalyticsService {
 
     if (eventType) params = params.set('EventType', eventType);
     if (pageSlug) params = params.set('PageSlug', pageSlug);
-    if (from) params = params.set('From', from);
-    if (to) params = params.set('To', to);
+    if (from) {
+      const fromDate = new Date(from);
+      params = params.set('From', fromDate.toISOString());
+    }
+    if (to) {
+      const toDate = new Date(to);
+      toDate.setHours(23, 59, 59, 999);
+      params = params.set('To', toDate.toISOString());
+    }
 
     return this.http.get<any>(this.baseUrl, { params }).pipe(
       map(res => ({
