@@ -4,7 +4,9 @@ import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
 export interface BlogPostTranslationDto {
+  id?: string;
   languageCode: string;
+  blogPostId?: string;
   title: string;
   excerpt: string;
   content: string;
@@ -63,12 +65,55 @@ export class BlogPostService {
     return this.http.get<BlogPostAdminDto>(`${this.baseUrl}/${id}`);
   }
 
-  create(data: any) {
-    return this.http.post<string>(this.baseUrl, data);
+  create(post: BlogPostAdminDto) {
+    const payload = {
+      slug: post.slug,
+      coverImage: post.coverImage,
+      isPublished: post.isPublished,
+      translations: post.translations.map(t => ({
+        id: t.id || '00000000-0000-0000-0000-000000000000', // optional placeholder
+        languageCode: t.languageCode,
+        blogPostId: post.id || '00000000-0000-0000-0000-000000000000',
+        title: t.title,
+        excerpt: t.excerpt,
+        content: t.content,
+        metaTitle: t.metaTitle,
+        metaDescription: t.metaDescription,
+        ogImage: t.ogImage
+      })),
+      tags: post.tags.map(tag => ({
+        id: tag.id || '00000000-0000-0000-0000-000000000000',
+        name: tag.name
+      }))
+    };
+
+    return this.http.post<string>(this.baseUrl, payload);
   }
 
-  update(id: string, data: any) {
-    return this.http.put(`${this.baseUrl}/${id}`, data);
+  update(id: string, post: BlogPostAdminDto) {
+    const payload = {
+      id,
+      slug: post.slug,
+      coverImage: post.coverImage,
+      isDeleted: post.isDeleted,
+      translations: post.translations.map(t => ({
+        id: t.id || '00000000-0000-0000-0000-000000000000',
+        languageCode: t.languageCode,
+        blogPostId: id,
+        title: t.title,
+        excerpt: t.excerpt,
+        content: t.content,
+        metaTitle: t.metaTitle,
+        metaDescription: t.metaDescription,
+        ogImage: t.ogImage
+      })),
+      tags: post.tags.map(tag => ({
+        id: tag.id || '00000000-0000-0000-0000-000000000000',
+        name: tag.name
+      }))
+    };
+
+    return this.http.put(`${this.baseUrl}/${id}`, payload);
   }
 
   delete(id: string) {

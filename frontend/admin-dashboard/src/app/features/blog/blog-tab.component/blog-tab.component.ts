@@ -44,6 +44,7 @@ export class BlogTabComponent implements OnInit {
   publishPost(id: string, isPublished: boolean) {
     this.blogService.publish(id, !isPublished, new Date().toISOString())
       .subscribe(() => this.loadPosts());
+    this.loadPosts();
   }
 
   activeLang = this.editingPost()?.translations[0]?.languageCode ?? 'en';
@@ -71,7 +72,7 @@ export class BlogTabComponent implements OnInit {
   }
 
   editPost(post: BlogPostAdminDto) {
-    this.editingPost.set(JSON.parse(JSON.stringify(post))); // clone
+    this.editingPost.set(JSON.parse(JSON.stringify(post)));
   }
 
   cancelEdit() {
