@@ -65,7 +65,7 @@ public class CreateProjectCommandHandler : IRequestHandler<CreateProjectCommand,
                 if (language == null)
                 {
                     _logger.LogWarning($"Language '{dto.LanguageCode}' not found.");
-                    return Result<Guid>.Failure($"Language '{dto.LanguageCode}' not found.");
+                    continue;
                 }
 
                 var translation = new ProjectTranslation
@@ -90,7 +90,7 @@ public class CreateProjectCommandHandler : IRequestHandler<CreateProjectCommand,
                 if (skill == null)
                 {
                     _logger.LogWarning($"Skill with ID {skillId} not found.");
-                    return Result<Guid>.Failure($"Skill with ID {skillId} not found.");
+                    continue;
                 }
 
                 var projectSkill = new ProjectSkill

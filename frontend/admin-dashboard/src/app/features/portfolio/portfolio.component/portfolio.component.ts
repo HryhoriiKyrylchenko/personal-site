@@ -6,7 +6,6 @@ import {ProjectsTabComponent} from '../projects-tab.component/projects-tab.compo
   standalone: true,
   imports: [
     ProjectsTabComponent
-
   ],
   templateUrl: './portfolio.component.html',
   styleUrl: './portfolio.component.scss'

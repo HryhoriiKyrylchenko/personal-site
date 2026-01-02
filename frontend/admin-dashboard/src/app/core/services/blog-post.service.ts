@@ -50,7 +50,8 @@ export class BlogPostService {
   private http = inject(HttpClient);
   private baseUrl = `${environment.apiUrl}/BlogPost`;
 
-  getAll(page = 1, pageSize = 10, slugFilter?: string, isPublishedFilter?: boolean): Observable<PaginatedResult<BlogPostAdminDto>> {
+  getAll(page = 1, pageSize = 10, slugFilter?: string, isPublishedFilter?: boolean)
+    : Observable<PaginatedResult<BlogPostAdminDto>> {
     let params = new HttpParams()
       .set('Page', page)
       .set('PageSize', pageSize);
