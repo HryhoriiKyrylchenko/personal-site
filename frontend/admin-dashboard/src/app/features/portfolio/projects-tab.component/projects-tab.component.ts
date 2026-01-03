@@ -9,9 +9,6 @@ import {
 import {
   SkillService,
   SkillAdminDto,
-  SkillTranslationDto,
-  SkillCategoryAdminDto,
-  SkillCategoryTranslationDto
 } from '../../../core/services/skills.service';
 
 @Component({
@@ -154,12 +151,7 @@ export class ProjectsTabComponent implements OnInit {
     const projectSkill: ProjectSkillAdminDto = {
       id: '00000000-0000-0000-0000-000000000000',
       projectId: project.id ?? '00000000-0000-0000-0000-000000000000',
-      skill: skill // {
-      //   id: skill.id,
-      //   key: skill.key,
-      //   category: skill.category,
-      //   translations: skill.translations
-      // }
+      skill: skill
     };
 
     project.skills.push(projectSkill);

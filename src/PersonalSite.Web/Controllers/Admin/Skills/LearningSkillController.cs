@@ -5,17 +5,18 @@ using PersonalSite.Application.Features.Skills.LearningSkills.Dtos;
 using PersonalSite.Application.Features.Skills.LearningSkills.Queries.GetLearningSkillById;
 using PersonalSite.Application.Features.Skills.LearningSkills.Queries.GetLearningSkills;
 using PersonalSite.Domain.Common.Results;
+using PersonalSite.Domain.Enums;
 
 namespace PersonalSite.Web.Controllers.Admin.Skills;
 
 [Route("api/admin/[controller]")]
 [ApiController]
-[Authorize]
-public class LearningSkillController : ControllerBase
+//[Authorize]
+public class LearningSkillsController : ControllerBase
 {
     private readonly IMediator _mediator;
 
-    public LearningSkillController(IMediator mediator)
+    public LearningSkillsController(IMediator mediator)
     {
         _mediator = mediator;
     }
@@ -75,9 +76,11 @@ public class LearningSkillController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<List<LearningSkillAdminDto>>> GetAll(CancellationToken cancellationToken)
+    public async Task<ActionResult<List<LearningSkillAdminDto>>> GetAll(
+        [FromQuery] GetLearningSkillsQuery query, 
+        CancellationToken cancellationToken)
     {
-        var result = await _mediator.Send(new GetLearningSkillsQuery(), cancellationToken);
+        var result = await _mediator.Send(query, cancellationToken);
         if (result.IsFailure)
             return NotFound();
 

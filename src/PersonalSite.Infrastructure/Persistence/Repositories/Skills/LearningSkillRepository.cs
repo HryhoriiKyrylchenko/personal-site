@@ -55,9 +55,10 @@ public class LearningSkillRepository : EfRepository<LearningSkill>, ILearningSki
             .AnyAsync(ls => ls.SkillId == skillId, cancellationToken);   
     }
 
-    public async Task<List<LearningSkill>> GetFilteredAsync(Guid? skillId, LearningStatus? status, CancellationToken cancellationToken = default)
+    public async Task<List<LearningSkill>> GetFilteredAsync(LearningStatus? status, CancellationToken cancellationToken = default)
     {
         var query = DbContext.LearningSkills.AsQueryable()
+            .Where(x => !x.IsDeleted)
             .Include(x => x.Skill)
                 .ThenInclude(s => s.Translations.Where(t => !t.Language.IsDeleted))
                     .ThenInclude(t => t.Language)
@@ -68,9 +69,6 @@ public class LearningSkillRepository : EfRepository<LearningSkill>, ILearningSki
             .AsSplitQuery()
             .AsNoTracking();
 
-        if (skillId.HasValue)
-            query = query.Where(x => x.SkillId == skillId.Value);
-
         if (status.HasValue)
             query = query.Where(x => x.LearningStatus == status.Value);
 
@@ -79,5 +77,15 @@ public class LearningSkillRepository : EfRepository<LearningSkill>, ILearningSki
             .ToListAsync(cancellationToken);
         
         return entities;   
+    }
+
+    public async Task<LearningSkill?> GetBySkillIdAsync(Guid skillId, CancellationToken cancellationToken)
+    {
+        var query = DbContext.LearningSkills.AsQueryable()
+            .Where(x => x.SkillId == skillId)
+            .AsSplitQuery()
+            .AsNoTracking();
+        
+        return await query.FirstOrDefaultAsync(cancellationToken);
     }
 }

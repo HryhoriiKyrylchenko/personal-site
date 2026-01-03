@@ -11,4 +11,5 @@ public interface IUserSkillRepository : IRepository<UserSkill>
         short? minProficiency,
         short? maxProficiency,
         CancellationToken cancellationToken = default);
+    Task<UserSkill?> GetBySkillIdAsync(Guid skillId, CancellationToken cancellationToken);
 }

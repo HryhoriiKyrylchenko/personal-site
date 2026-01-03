@@ -3,6 +3,7 @@ using PersonalSite.Application.Features.Skills.LearningSkills.Dtos;
 using PersonalSite.Application.Features.Skills.LearningSkills.Queries.GetLearningSkills;
 using PersonalSite.Application.Tests.Fixtures.TestDataFactories;
 using PersonalSite.Domain.Entities.Skills;
+using PersonalSite.Domain.Enums;
 using PersonalSite.Domain.Interfaces.Repositories.Skills;
 
 namespace PersonalSite.Application.Tests.Handlers.Skills.LearningSkills;
@@ -43,7 +44,7 @@ public class GetLearningSkillsQueryHandlerTests
             .Returns(dtos);
 
         // Act
-        var result = await _handler.Handle(new GetLearningSkillsQuery(), CancellationToken.None);
+        var result = await _handler.Handle(new GetLearningSkillsQuery(LearningStatus.InProgress), CancellationToken.None);
 
         // Assert
         result.IsSuccess.Should().BeTrue();
@@ -58,7 +59,7 @@ public class GetLearningSkillsQueryHandlerTests
             .ReturnsAsync(new List<LearningSkill>());
 
         // Act
-        var result = await _handler.Handle(new GetLearningSkillsQuery(), CancellationToken.None);
+        var result = await _handler.Handle(new GetLearningSkillsQuery(LearningStatus.InProgress), CancellationToken.None);
 
         // Assert
         result.IsSuccess.Should().BeFalse();
@@ -73,7 +74,7 @@ public class GetLearningSkillsQueryHandlerTests
             .ThrowsAsync(new Exception("Database error"));
 
         // Act
-        var result = await _handler.Handle(new GetLearningSkillsQuery(), CancellationToken.None);
+        var result = await _handler.Handle(new GetLearningSkillsQuery(LearningStatus.InProgress), CancellationToken.None);
 
         // Assert
         result.IsSuccess.Should().BeFalse();

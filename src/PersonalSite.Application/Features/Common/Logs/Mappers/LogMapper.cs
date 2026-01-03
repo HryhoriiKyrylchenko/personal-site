@@ -12,11 +12,11 @@ public class LogMapper: IMapper<LogEntry, LogEntryDto>
         (
             Timestamp: entity.Timestamp,
             Level: entity.Level,
-            Message: entity.Message,
-            MessageTemplate:entity.MessageTemplate,
-            Exception: entity.Exception,
+            Message: entity.Message ?? string.Empty,
+            MessageTemplate:entity.MessageTemplate?? string.Empty,
+            Exception: entity.Exception?? string.Empty,
             Properties: entity.Properties,
-            SourceContext: entity.SourceContext
+            SourceContext: entity.SourceContext?? string.Empty
         );
     }
 
