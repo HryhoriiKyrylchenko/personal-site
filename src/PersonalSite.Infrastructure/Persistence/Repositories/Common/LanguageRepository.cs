@@ -26,4 +26,18 @@ public class LanguageRepository : EfRepository<Language>, ILanguageRepository
         
         return await DbContext.Languages.FirstOrDefaultAsync(l => l.Code == code, cancellationToken);  
     }
+
+    public async Task<List<Language>> GetAllActiveAsync(CancellationToken cancellationToken = default)
+    {
+        var query = DbContext.Languages.AsQueryable()
+            .Where(l => !l.IsDeleted)
+            .AsSplitQuery()
+            .AsNoTracking();
+        
+        var entities = await query
+            .OrderBy(l => l.Code)
+            .ToListAsync(cancellationToken);
+        
+        return entities;
+    }
 }

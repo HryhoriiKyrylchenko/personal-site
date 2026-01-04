@@ -1,1 +1,117 @@
-<p>info-tab.component works!</p>
+<div class="admin-section">
+
+  <!-- ================= LANGUAGES ================= -->
+  <h2>Languages</h2>
+  <button (click)="createLanguage()">➕ New Language</button>
+
+  <table>
+    <tr>
+      <th>Name (code)</th>
+      <th>Edit</th>
+      <th>Delete</th>
+    </tr>
+    @for (l of languages(); track l.id) {
+      <tr>
+        <td>{{ l.name }} ({{ l.code }})</td>
+        <td>
+          <button (click)="editLanguage(l)">Edit</button>
+        </td>
+        <td>
+          <button (click)="deleteLanguage(l.id)">Delete</button>
+        </td>
+      </tr>
+    }
+  </table>
+
+  @if (editingLanguage()) {
+    <div class="editor">
+      <label>Code <input [(ngModel)]="editingLanguage()!.code"></label>
+      <label>Name <input [(ngModel)]="editingLanguage()!.name"></label>
+      <div class="editButtons">
+        <button (click)="saveLanguage()">💾 Save</button>
+        <button (click)="cancelLanguageEdit()">✖ Cancel</button>
+      </div>
+    </div>
+  }
+
+  <!-- ================= RESUME ================= -->
+  <h2>Resume</h2>
+
+  @if (activeResume() && !editingResume()) {
+    <table class="info-table">
+      <tr>
+        <th>File</th>
+        <td>
+          {{ activeResume()?.fileName }}
+        </td>
+      </tr>
+      <tr>
+        <th>URL</th>
+        <td>
+          <a [href]="activeResume()?.fileUrl" target="_blank">{{ activeResume()?.fileUrl }}</a>
+        </td>
+      </tr>
+      <tr>
+        <th>Action</th>
+        <td>
+          <button (click)="startResumeEdit()">Edit</button>
+        </td>
+      </tr>
+    </table>
+  }
+
+  @if (editingResume()) {
+    <div class="editor">
+      <label>File URL <input [(ngModel)]="newResumeFileUrl"></label>
+      <label>File Name <input [(ngModel)]="newResumeFileName"></label>
+      <div class="editButtons">
+        <button (click)="saveResume()">💾 Save</button>
+        <button (click)="cancelResumeEdit()">✖ Cancel</button>
+      </div>
+    </div>
+  }
+
+  <!-- ================= SOCIAL MEDIA LINKS ================= -->
+  <h2>Social Media Links</h2>
+  <button (click)="createSocialLink()">➕ New Link</button>
+
+  <table>
+    <tr>
+      <th>Social Media</th>
+      <th>Activation</th>
+      <th>Actions</th>
+    </tr>
+    @for (s of socialLinks(); track s.id) {
+      <tr>
+        <td>
+          {{ s.platform }} - {{ s.url }}
+          @if (s.isActive) {
+            <span>[Active]</span>
+          }
+        </td>
+        <td>
+          <button (click)="toggleSocialActive(s)">
+            {{ s.isActive ? 'Deactivate' : 'Activate' }}
+          </button>
+        </td>
+        <td>
+          <button (click)="editSocialLink(s)">Edit</button>
+          <button (click)="deleteSocialLink(s.id)">Delete</button>
+        </td>
+      </tr>
+    }
+  </table>
+
+  @if (editingSocialLink()) {
+    <div class="editor">
+      <label>Platform <input [(ngModel)]="editingSocialLink()!.platform"></label>
+      <label>URL <input [(ngModel)]="editingSocialLink()!.url"></label>
+      <label>Display Order <input type="number" [(ngModel)]="editingSocialLink()!.displayOrder"></label>
+      <div class="editButtons">
+        <button (click)="saveSocialLink()">💾 Save</button>
+        <button (click)="cancelSocialEdit()">✖ Cancel</button>
+      </div>
+    </div>
+  }
+
+</div>
