@@ -7,6 +7,7 @@ namespace PersonalSite.Application.Tests.Handlers.Skills.SkillCategories;
 public class DeleteSkillCategoryCommandHandlerTests
 {
     private readonly Mock<ISkillCategoryRepository> _repositoryMock = new();
+    private readonly Mock<ISkillRepository> _skillRepositoryMock = new();
     private readonly Mock<IUnitOfWork> _unitOfWorkMock = new();
     private readonly Mock<ILogger<DeleteSkillCategoryCommandHandler>> _loggerMock = new();
 
@@ -16,6 +17,7 @@ public class DeleteSkillCategoryCommandHandlerTests
     {
         _handler = new DeleteSkillCategoryCommandHandler(
             _repositoryMock.Object,
+            _skillRepositoryMock.Object,
             _unitOfWorkMock.Object,
             _loggerMock.Object);
     }

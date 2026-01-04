@@ -8,16 +8,19 @@ namespace PersonalSite.Application.Tests.Handlers.Skills.LearningSkills;
 public class CreateLearningSkillCommandHandlerTests
     {
         private readonly Mock<ILearningSkillRepository> _repositoryMock;
+        private readonly Mock<IUserSkillRepository> _userSkillRepositoryMock;
         private readonly Mock<IUnitOfWork> _unitOfWorkMock;
         private readonly CreateLearningSkillCommandHandler _handler;
 
         public CreateLearningSkillCommandHandlerTests()
         {
             _repositoryMock = new Mock<ILearningSkillRepository>();
+            _userSkillRepositoryMock = new Mock<IUserSkillRepository>();
             _unitOfWorkMock = new Mock<IUnitOfWork>();
             var loggerMock = new Mock<ILogger<CreateLearningSkillCommandHandler>>();
             _handler = new CreateLearningSkillCommandHandler(
                 _repositoryMock.Object,
+                _userSkillRepositoryMock.Object,
                 _unitOfWorkMock.Object,
                 loggerMock.Object);
         }

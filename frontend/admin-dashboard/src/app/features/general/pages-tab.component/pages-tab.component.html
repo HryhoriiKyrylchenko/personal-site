@@ -1,1 +1,100 @@
-<p>pages-tab.component works!</p>
+<div class="admin-section">
+
+  <h2>Pages</h2>
+
+  <!-- Page tabs -->
+  <div class="tabs">
+    @for (p of pages(); track p.id) {
+      <button
+        (click)="selectPage(p.id!)"
+        [class.active]="p.id === selectedPageId()">
+        {{ p.key }}
+      </button>
+    }
+
+    <button (click)="createPage()">➕ New Page</button>
+  </div>
+
+  <!-- Editor -->
+  @if (editingPage()) {
+    <div class="editor">
+
+      <label>
+        Page Key
+        <input [(ngModel)]="editingPage()!.key" [disabled]="!isEditing()" />
+      </label>
+
+      <!-- Language tabs -->
+      <div class="tabs">
+        @for (l of languages; track l) {
+          <button
+            (click)="activeLang = l"
+            [class.active]="activeLang === l">
+            {{ l.toUpperCase() }}
+          </button>
+        }
+      </div>
+
+      @if (currentTranslation(); as t) {
+
+        <label>
+          Title
+          <input [(ngModel)]="t.title" [disabled]="!isEditing()" />
+        </label>
+
+        <label>
+          Description
+          <textarea rows="2" [(ngModel)]="t.description" [disabled]="!isEditing()" ></textarea>
+        </label>
+
+        <label>
+          Meta Title
+          <input [(ngModel)]="t.metaTitle" [disabled]="!isEditing()" />
+        </label>
+
+        <label>
+          Meta Description
+          <textarea rows="2" [(ngModel)]="t.metaDescription" [disabled]="!isEditing()" ></textarea>
+        </label>
+
+        <label>
+          OG Image
+          <input [(ngModel)]="t.ogImage" [disabled]="!isEditing()" />
+        </label>
+
+        <label>
+          Data (JSON)
+          <textarea
+            rows="6"
+            [(ngModel)]="t.data"
+            [disabled]="!isEditing()"
+            placeholder='{"key":"value"}'>
+          </textarea>
+        </label>
+
+      }
+
+      <!-- Actions -->
+      <div class="editButtons">
+
+        @if (!isEditing()) {
+          <button (click)="editPage()">Edit</button>
+
+          @if (editingPage()!.id) {
+            <button (click)="deletePage(editingPage()!.id!)">
+              Delete
+            </button>
+          }
+        }
+
+        @if (isEditing()) {
+          <button (click)="savePage()">💾 Save</button>
+          <button (click)="cancelEdit()">✖ Cancel</button>
+        }
+
+      </div>
+
+    </div>
+  }
+
+</div>
