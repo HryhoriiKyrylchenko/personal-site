@@ -10,7 +10,7 @@ namespace PersonalSite.Web.Controllers.Admin.Common;
 
 [Route("api/admin/[controller]")]
 [ApiController]
-[Authorize]
+//[Authorize]
 public class SocialMediaLinkController : ControllerBase
 {
     private readonly IMediator _mediator;

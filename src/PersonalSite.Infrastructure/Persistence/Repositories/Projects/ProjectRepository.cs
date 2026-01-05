@@ -78,6 +78,7 @@ public class ProjectRepository : EfRepository<Project>, IProjectRepository
     public async Task<PaginatedResult<Project>> GetFilteredAsync(int page, int pageSize, string? slugFilter, CancellationToken cancellationToken = default)
     {
         var query = DbContext.Projects.AsQueryable()
+            .Where(p => p.IsDeleted == false)
             .Include(p => p.Translations.Where(t => !t.Language.IsDeleted))
                 .ThenInclude(t => t.Language)
             .Include(p => p.ProjectSkills)

@@ -41,6 +41,7 @@ public static class RepositoryRegistration
         services.AddScoped<IProjectTranslationRepository, ProjectTranslationRepository>();
         services.AddScoped<ISkillCategoryTranslationRepository, SkillCategoryTranslationRepository>();
         services.AddScoped<ISkillTranslationRepository, SkillTranslationRepository>();
+        services.AddScoped<ILogRepository, LogRepository>();
 
         return services;
     }

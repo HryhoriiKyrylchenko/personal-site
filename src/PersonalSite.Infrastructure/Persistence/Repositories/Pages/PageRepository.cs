@@ -26,6 +26,7 @@ public class PageRepository : EfRepository<Page>, IPageRepository
     public async Task<List<Page>> GetAllWithTranslationsAsync(CancellationToken cancellationToken = default)
     {
         return await DbContext.Pages
+            .Where(p => !p.IsDeleted)
             .Include(p => p.Translations.Where(t => !t.Language.IsDeleted))
                 .ThenInclude(t => t.Language)
             .AsSplitQuery()

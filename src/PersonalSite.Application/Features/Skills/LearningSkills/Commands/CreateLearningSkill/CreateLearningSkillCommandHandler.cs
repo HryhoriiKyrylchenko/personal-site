@@ -7,15 +7,18 @@ namespace PersonalSite.Application.Features.Skills.LearningSkills.Commands.Creat
 public class CreateLearningSkillCommandHandler : IRequestHandler<CreateLearningSkillCommand, Result<Guid>>
 {
     private readonly ILearningSkillRepository _repository;
+    private readonly IUserSkillRepository _userSkillRepository;
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<CreateLearningSkillCommandHandler> _logger;
 
     public CreateLearningSkillCommandHandler(
         ILearningSkillRepository repository,
+        IUserSkillRepository userSkillRepository,
         IUnitOfWork unitOfWork,
         ILogger<CreateLearningSkillCommandHandler> logger)
     {
         _repository = repository;
+        _userSkillRepository = userSkillRepository;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -24,13 +27,25 @@ public class CreateLearningSkillCommandHandler : IRequestHandler<CreateLearningS
     {
         try
         {
-            var existingSkill = await _repository.ExistsBySkillIdAsync(request.SkillId, cancellationToken);
-            if (existingSkill)
+            var existingSkill = await _repository.GetBySkillIdAsync(request.SkillId, cancellationToken);
+            var existingUserSkill = await _userSkillRepository.ExistsBySkillIdAsync(
+                request.SkillId,
+                cancellationToken);
+            if (existingSkill is { IsDeleted: false } || existingUserSkill)
             {
-                _logger.LogWarning($"Learning skill with skill id {request.SkillId} already exists.");
-                return Result<Guid>.Failure($"Learning skill with skill id {request.SkillId} already exists.");           
+                _logger.LogWarning($"Learning skill or User skill with skill id {request.SkillId} already exists.");
+                return Result<Guid>.Failure(
+                    $"Learning skill or User skill with skill id {request.SkillId} already exists.");
             }
-            
+
+            if (existingSkill is { IsDeleted: true })
+            {
+                existingSkill.IsDeleted = false;
+                await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+                return Result<Guid>.Success(existingSkill.Id);
+            }
+
             var entity = new LearningSkill
             {
                 Id = Guid.NewGuid(),

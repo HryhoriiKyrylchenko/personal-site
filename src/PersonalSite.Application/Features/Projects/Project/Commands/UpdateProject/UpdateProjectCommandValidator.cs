@@ -29,7 +29,9 @@ public class UpdateProjectCommandValidator : AbstractValidator<UpdateProjectComm
         
         RuleForEach(x => x.Translations).SetValidator(new ProjectTranslationDtoValidator());
         
-        RuleForEach(x => x.SkillIds).NotEmpty().WithMessage("At least one skill is required.");
+        RuleFor(x => x.SkillIds)
+            .NotNull().WithMessage("SkillIds must be provided.")
+            .NotEmpty().WithMessage("At least one skill is required.");
     }
     
     private bool BeValidUrlOrEmpty(string url)

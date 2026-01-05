@@ -5,6 +5,5 @@ using PersonalSite.Domain.Enums;
 namespace PersonalSite.Application.Features.Skills.LearningSkills.Queries.GetLearningSkills;
 
 public record GetLearningSkillsQuery(
-    Guid? SkillId = null,
-    LearningStatus? Status = null
-) : IRequest<Result<List<LearningSkillAdminDto>>>;
+    LearningStatus? LearningStatus = null
+    ) : IRequest<Result<List<LearningSkillAdminDto>>>;

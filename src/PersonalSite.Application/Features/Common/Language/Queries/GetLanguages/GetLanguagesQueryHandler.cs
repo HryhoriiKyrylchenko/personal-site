@@ -25,7 +25,7 @@ public class GetLanguagesQueryHandler : IRequestHandler<GetLanguagesQuery, Resul
     {
         try
         {
-            var languages = await _repository.ListAsync(cancellationToken);
+            var languages = await _repository.GetAllActiveAsync(cancellationToken);
             var result = _mapper.MapToDtoList(languages);
             return Result<List<LanguageDto>>.Success(result);
         }

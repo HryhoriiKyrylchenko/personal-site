@@ -10,7 +10,7 @@ namespace PersonalSite.Web.Controllers.Admin.Projects;
 
 [Route("api/admin/[controller]")]
 [ApiController]
-[Authorize]
+//[Authorize]
 public class ProjectController : ControllerBase
 {
     private readonly IMediator _mediator;
@@ -75,12 +75,14 @@ public class ProjectController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<List<ProjectAdminDto>>> GetAll(CancellationToken cancellationToken)
+    public async Task<ActionResult<PaginatedResult<ProjectAdminDto>>> GetAll(
+        [FromQuery] GetProjectsQuery query, 
+        CancellationToken cancellationToken)
     {
-        var result = await _mediator.Send(new GetProjectsQuery(), cancellationToken);
+        var result = await _mediator.Send(query, cancellationToken);
         if (result.IsFailure)
             return NotFound();
 
-        return Ok(result.Value);
+        return Ok(result);
     }
 }

@@ -8,6 +8,8 @@ namespace PersonalSite.Application.Tests.Handlers.Skills.Skills;
 public class DeleteSkillCommandHandlerTests
 {
     private readonly Mock<ISkillRepository> _skillRepoMock = new();
+    private readonly Mock<IUserSkillRepository> _userSkillRepoMock = new(); 
+    private readonly Mock<ILearningSkillRepository> _learningSkillRepoMock = new();
     private readonly Mock<IUnitOfWork> _unitOfWorkMock = new();
     private readonly Mock<ILogger<DeleteSkillCommandHandler>> _loggerMock = new();
 
@@ -17,6 +19,8 @@ public class DeleteSkillCommandHandlerTests
     {
         _handler = new DeleteSkillCommandHandler(
             _skillRepoMock.Object,
+            _learningSkillRepoMock.Object,
+            _userSkillRepoMock.Object,
             _unitOfWorkMock.Object,
             _loggerMock.Object);
     }

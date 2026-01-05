@@ -10,9 +10,6 @@ public class SkillTranslationDtoValidator : AbstractValidator<SkillTranslationDt
             .NotEmpty().WithMessage("Language code is required.")
             .Length(2).WithMessage("Language code must be exactly 2 characters.");
 
-        RuleFor(x => x.SkillId)
-            .NotEmpty().WithMessage("SkillId is required.");
-
         RuleFor(x => x.Name)
             .NotEmpty().WithMessage("Name is required.")
             .MaximumLength(100).WithMessage("Name must be 100 characters or fewer.");

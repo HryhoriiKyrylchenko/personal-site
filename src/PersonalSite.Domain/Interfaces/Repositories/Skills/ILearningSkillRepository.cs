@@ -9,7 +9,7 @@ public interface ILearningSkillRepository : IRepository<LearningSkill>
     Task<LearningSkill?> GetWithFullDataByIdAsync(Guid id, CancellationToken cancellationToken);
     Task<bool> ExistsBySkillIdAsync(Guid skillId, CancellationToken cancellationToken);
     Task<List<LearningSkill>> GetFilteredAsync(
-        Guid? skillId,
         LearningStatus? status,
         CancellationToken cancellationToken = default);
+    Task<LearningSkill?> GetBySkillIdAsync(Guid skillId, CancellationToken cancellationToken);
 }

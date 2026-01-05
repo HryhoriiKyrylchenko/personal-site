@@ -7,6 +7,7 @@ namespace PersonalSite.Application.Tests.Handlers.Skills.UserSkills;
 public class CreateUserSkillCommandHandlerTests
 {
     private readonly Mock<IUserSkillRepository> _repositoryMock = new();
+    private readonly Mock<ILearningSkillRepository> _learningSkillRepositoryMock = new();
     private readonly Mock<IUnitOfWork> _unitOfWorkMock = new();
     private readonly Mock<ILogger<CreateUserSkillCommandHandler>> _loggerMock = new();
 
@@ -16,6 +17,7 @@ public class CreateUserSkillCommandHandlerTests
     {
         _handler = new CreateUserSkillCommandHandler(
             _repositoryMock.Object,
+            _learningSkillRepositoryMock.Object,
             _unitOfWorkMock.Object,
             _loggerMock.Object);
     }

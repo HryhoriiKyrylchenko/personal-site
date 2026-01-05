@@ -134,6 +134,12 @@ builder.Services.AddDbContext<ApplicationDbContext>((sp, options) =>
     options.UseNpgsql(dataSource);
 });
 
+builder.Services.AddDbContext<LoggingDbContext>((sp, options) =>
+{
+    var dataSource = sp.GetRequiredService<NpgsqlDataSource>();
+    options.UseNpgsql(dataSource);
+});
+
 // -------------------------
 // App services
 // -------------------------

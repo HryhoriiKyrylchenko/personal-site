@@ -37,6 +37,7 @@ public class SkillRepository : EfRepository<Skill>, ISkillRepository
     public async Task<List<Skill>> GetFilteredAsync(Guid? categoryId, string? keyFilter, CancellationToken cancellationToken = default)
     {
         var query = DbContext.Skills.AsQueryable()
+            .Where(s => !s.IsDeleted)
             .Include(s => s.Category)
                 .ThenInclude(c => c.Translations.Where(t => !t.Language.IsDeleted))
                     .ThenInclude(t => t.Language)

@@ -61,64 +61,82 @@ public class UpdateBlogPostCommandHandler : IRequestHandler<UpdateBlogPostComman
             await _blogPostRepository.UpdateAsync(blogPost, cancellationToken);
 
             var existingTranslations = await _translationRepository.GetByBlogPostIdAsync(blogPost.Id, cancellationToken);
-
-            foreach (var existing in existingTranslations
-                         .Where(existing => request.Translations
-                             .All(t => t.LanguageCode != existing.Language.Code)))
-            {
-                _translationRepository.Remove(existing);
-            }
-
-            foreach (var dto in request.Translations)
-            {
-                var language = await _languageRepository.GetByCodeAsync(dto.LanguageCode, cancellationToken);
-                if (language == null)
-                {
-                    _logger.LogWarning($"Language {dto.LanguageCode} not found.");
-                    return Result.Failure($"Language {dto.LanguageCode} not found.");
-                }
             
-                var existing = existingTranslations
-                    .FirstOrDefault(t => t.LanguageId == language.Id);
+            var requestedLanguageCodes = request.Translations?
+                .Where(t => t?.LanguageCode != null)
+                .Select(t => t.LanguageCode)
+                .ToHashSet();
 
-                if (existing != null)
+            foreach (var existing in existingTranslations)
+            {
+                var existingCode = existing.Language?.Code;
+
+                if (existingCode == null)
+                    continue;
+
+                if (requestedLanguageCodes == null || !requestedLanguageCodes.Contains(existingCode))
                 {
-                    existing.Title = dto.Title;
-                    existing.Excerpt = dto.Excerpt;
-                    existing.Content = dto.Content;
-                    existing.MetaTitle = dto.MetaTitle;
-                    existing.MetaDescription = dto.MetaDescription;
-                    existing.OgImage = dto.OgImage;
-
-                    await _translationRepository.UpdateAsync(existing, cancellationToken);
-                }
-                else
-                {
-                    var newTranslation = new BlogPostTranslation
-                    {
-                        Id = Guid.NewGuid(),
-                        LanguageId = language.Id,
-                        BlogPostId = blogPost.Id,
-                        Title = dto.Title,
-                        Excerpt = dto.Excerpt,
-                        Content = dto.Content,
-                        MetaTitle = dto.MetaTitle,
-                        MetaDescription = dto.MetaDescription,
-                        OgImage = dto.OgImage
-                    };
-
-                    await _translationRepository.AddAsync(newTranslation, cancellationToken);
+                    _translationRepository.Remove(existing);
                 }
             }
-        
+
+            if (request.Translations != null)
+                foreach (var dto in request.Translations)
+                {
+                    var language = await _languageRepository.GetByCodeAsync(dto.LanguageCode, cancellationToken);
+                    if (language == null)
+                    {
+                        _logger.LogWarning($"Language {dto.LanguageCode} not found.");
+                        return Result.Failure($"Language {dto.LanguageCode} not found.");
+                    }
+
+                    var existing = existingTranslations
+                        .FirstOrDefault(t => t.LanguageId == language.Id);
+
+                    if (existing != null)
+                    {
+                        existing.Title = dto.Title;
+                        existing.Excerpt = dto.Excerpt;
+                        existing.Content = dto.Content;
+                        existing.MetaTitle = dto.MetaTitle;
+                        existing.MetaDescription = dto.MetaDescription;
+                        existing.OgImage = dto.OgImage;
+
+                        await _translationRepository.UpdateAsync(existing, cancellationToken);
+                    }
+                    else
+                    {
+                        var newTranslation = new BlogPostTranslation
+                        {
+                            Id = Guid.NewGuid(),
+                            LanguageId = language.Id,
+                            BlogPostId = blogPost.Id,
+                            Title = dto.Title,
+                            Excerpt = dto.Excerpt,
+                            Content = dto.Content,
+                            MetaTitle = dto.MetaTitle,
+                            MetaDescription = dto.MetaDescription,
+                            OgImage = dto.OgImage
+                        };
+
+                        await _translationRepository.AddAsync(newTranslation, cancellationToken);
+                    }
+                }
+
             var existingPostTags = await _postTagRepository.GetByBlogPostIdAsync(blogPost.Id, cancellationToken);
 
-            foreach (var existing in existingPostTags
-                         .Where(existing => request.Tags
-                             .All(t => t.Id != existing.BlogPostTagId)))
+            var requestedTagIds = request.Tags
+                .Select(t => t.Id)
+                .ToHashSet();
+
+            foreach (var existing in existingPostTags)
             {
-                _postTagRepository.Remove(existing);
+                if (requestedTagIds == null || !requestedTagIds.Contains(existing.BlogPostTagId))
+                {
+                    _postTagRepository.Remove(existing);
+                }
             }
+
 
             foreach (var tag in request.Tags)
             {
