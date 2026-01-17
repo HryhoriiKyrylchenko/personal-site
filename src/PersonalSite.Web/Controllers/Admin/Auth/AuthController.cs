@@ -1,3 +1,4 @@
+using PersonalSite.Application.Features.Auth.Authentication.Commands.ChangePassword;
 using PersonalSite.Application.Features.Auth.Authentication.Commands.Login;
 using PersonalSite.Application.Features.Auth.Authentication.Commands.Logout;
 using PersonalSite.Application.Features.Auth.Authentication.Queries.GetCurrentUser;
@@ -35,6 +36,20 @@ public class AuthController : ControllerBase
         if (result.IsFailure)
             return BadRequest(result.Error);
         
+        return Ok();
+    }
+    
+    [Authorize]
+    [HttpPost("change-password")]
+    public async Task<IActionResult> ChangePassword(
+        [FromBody] ChangePasswordCommand command,
+        CancellationToken cancellationToken)
+    {
+        var result = await _mediator.Send(command, cancellationToken);
+
+        if (result.IsFailure)
+            return BadRequest(new { message = result.Error });
+
         return Ok();
     }
     

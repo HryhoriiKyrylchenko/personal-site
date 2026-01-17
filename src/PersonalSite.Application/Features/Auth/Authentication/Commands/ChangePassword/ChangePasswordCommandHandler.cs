@@ -30,6 +30,9 @@ public sealed class ChangePasswordCommandHandler
         ChangePasswordCommand request,
         CancellationToken cancellationToken)
     {
+        if (!_currentUser.IsAuthenticated)
+            return Result.Failure("Unauthorized");
+        
         var user = await _userRepository.GetById(_currentUser.UserId, cancellationToken);
 
         if (user is null)
