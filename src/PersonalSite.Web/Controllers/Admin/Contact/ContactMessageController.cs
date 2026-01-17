@@ -10,7 +10,7 @@ namespace PersonalSite.Web.Controllers.Admin.Contact;
 
 [Route("api/admin/[controller]")]
 [ApiController]
-[Authorize]
+[Authorize(Roles = "Admin", Policy = "PasswordChanged")]
 public class ContactMessageController : ControllerBase
 {
     private readonly IMediator _mediator;

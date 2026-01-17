@@ -6,6 +6,7 @@ using PersonalSite.Domain.Interfaces.Repositories.Pages;
 using PersonalSite.Domain.Interfaces.Repositories.Projects;
 using PersonalSite.Domain.Interfaces.Repositories.Skills;
 using PersonalSite.Domain.Interfaces.Repositories.Translations;
+using PersonalSite.Domain.Interfaces.Repositories.User;
 using PersonalSite.Infrastructure.Persistence.Repositories.Analytics;
 using PersonalSite.Infrastructure.Persistence.Repositories.Blog;
 using PersonalSite.Infrastructure.Persistence.Repositories.Common;
@@ -14,6 +15,7 @@ using PersonalSite.Infrastructure.Persistence.Repositories.Pages;
 using PersonalSite.Infrastructure.Persistence.Repositories.Projects;
 using PersonalSite.Infrastructure.Persistence.Repositories.Skills;
 using PersonalSite.Infrastructure.Persistence.Repositories.Translations;
+using PersonalSite.Infrastructure.Persistence.Repositories.User;
 
 namespace PersonalSite.Infrastructure.DependencyInjection;
 
@@ -42,6 +44,7 @@ public static class RepositoryRegistration
         services.AddScoped<ISkillCategoryTranslationRepository, SkillCategoryTranslationRepository>();
         services.AddScoped<ISkillTranslationRepository, SkillTranslationRepository>();
         services.AddScoped<ILogRepository, LogRepository>();
+        services.AddScoped<IUserRepository, UserRepository>();
 
         return services;
     }

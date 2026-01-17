@@ -6,6 +6,7 @@ using PersonalSite.Domain.Entities.Pages;
 using PersonalSite.Domain.Entities.Projects;
 using PersonalSite.Domain.Entities.Skills;
 using PersonalSite.Domain.Entities.Translations;
+using PersonalSite.Domain.Entities.User;
 
 namespace PersonalSite.Infrastructure.Persistence;
 
@@ -32,6 +33,8 @@ public class ApplicationDbContext : DbContext
     public DbSet<SkillCategoryTranslation> SkillCategoryTranslations { get; set; }
     public DbSet<SkillTranslation> SkillTranslations { get; set; }
     public DbSet<Translation> Translations { get; set; }
+    
+    public DbSet<User> Users { get; set; }
     
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options)

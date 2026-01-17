@@ -9,7 +9,7 @@ namespace PersonalSite.Web.Controllers.Admin.Analytics;
 
 [Route("api/admin/[controller]")]
 [ApiController]
-//[Authorize]
+[Authorize(Roles = "Admin", Policy = "PasswordChanged")]
 public class AnalyticsEventController : ControllerBase
 {
     private readonly IMediator _mediator;

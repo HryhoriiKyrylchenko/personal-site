@@ -2,6 +2,7 @@ namespace PersonalSite.Web.Controllers.Admin.Storage;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize(Roles = "Admin", Policy = "PasswordChanged")]
 public class FileUploadController : ControllerBase
 {
     private readonly IStorageService _storageService;

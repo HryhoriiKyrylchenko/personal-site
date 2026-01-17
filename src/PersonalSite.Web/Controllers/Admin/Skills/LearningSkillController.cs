@@ -11,7 +11,7 @@ namespace PersonalSite.Web.Controllers.Admin.Skills;
 
 [Route("api/admin/[controller]")]
 [ApiController]
-//[Authorize]
+[Authorize(Roles = "Admin", Policy = "PasswordChanged")]
 public class LearningSkillsController : ControllerBase
 {
     private readonly IMediator _mediator;

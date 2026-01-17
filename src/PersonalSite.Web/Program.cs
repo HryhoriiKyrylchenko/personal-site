@@ -2,11 +2,12 @@ using System.Text;
 using Amazon;
 using Amazon.SecretsManager;
 using Amazon.SecretsManager.Extensions.Caching;
-using Amazon.SecretsManager.Model;
 using AspNetCoreRateLimit;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Npgsql;
 using PersonalSite.Application.DependencyInjection;
 using PersonalSite.Infrastructure.DependencyInjection;
+using PersonalSite.Infrastructure.Persistence.Seed;
 using PersonalSite.Web.Configuration;
 using PersonalSite.Web.Middlewares;
 
@@ -141,6 +142,32 @@ builder.Services.AddDbContext<LoggingDbContext>((sp, options) =>
 });
 
 // -------------------------
+// App authentication
+// -------------------------
+
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/admin/Login";
+        options.LogoutPath = "/admin/Logout";
+
+        options.ExpireTimeSpan = TimeSpan.FromHours(8);
+        options.SlidingExpiration = true;
+
+        options.Cookie.Name = "PersonalSite.Admin.Auth";
+        options.Cookie.HttpOnly = true;
+        options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+        options.Cookie.SameSite = SameSiteMode.Strict;
+    });
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy(
+        "PasswordChanged",
+        policy => policy.RequireClaim("must_change_password", "False"));
+});
+
+// -------------------------
 // App services
 // -------------------------
 builder.Services.Configure<SmtpSettings>(builder.Configuration.GetSection("SmtpSettings"));
@@ -157,6 +184,18 @@ builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
 var app = builder.Build();
+
+// -------------------------
+// Admin user seeder
+// -------------------------
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider
+        .GetRequiredService<ApplicationDbContext>();
+    
+    dbContext.Database.Migrate();
+    AdminSeeder.Seed(dbContext);
+}
 
 app.UseIpRateLimiting();
 
@@ -175,6 +214,7 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
+app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 

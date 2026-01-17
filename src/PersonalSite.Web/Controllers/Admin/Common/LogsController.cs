@@ -7,7 +7,7 @@ namespace PersonalSite.Web.Controllers.Admin.Common;
 
 [Route("api/admin/logs")]
 [ApiController]
-//[Authorize]
+[Authorize(Roles = "Admin", Policy = "PasswordChanged")]
 public class LogsController : ControllerBase
 {
     private readonly IMediator _mediator;
