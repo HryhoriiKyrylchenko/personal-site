@@ -10,7 +10,7 @@ namespace PersonalSite.Web.Controllers.Admin.Projects;
 
 [Route("api/admin/[controller]")]
 [ApiController]
-//[Authorize]
+[Authorize(Roles = "Admin", Policy = "PasswordChanged")]
 public class ProjectController : ControllerBase
 {
     private readonly IMediator _mediator;

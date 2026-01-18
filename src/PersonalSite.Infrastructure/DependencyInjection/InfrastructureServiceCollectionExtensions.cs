@@ -1,4 +1,6 @@
-﻿using PersonalSite.Infrastructure.Storage.S3ReferenceProviders;
+﻿using PersonalSite.Domain.Interfaces.Auth;
+using PersonalSite.Infrastructure.Auth;
+using PersonalSite.Infrastructure.Storage.S3ReferenceProviders;
 
 namespace PersonalSite.Infrastructure.DependencyInjection;
 
@@ -6,6 +8,7 @@ public static class InfrastructureServiceCollectionExtensions
 {
     public static IServiceCollection AddInfrastructureServices(this IServiceCollection services)
     {
+        services.AddHttpContextAccessor();
         services.AddValidatorsFromAssembly(typeof(ContactMessageValidator).Assembly);
         services.AddFluentValidationAutoValidation();
         services.AddFluentValidationClientsideAdapters();
@@ -25,6 +28,9 @@ public static class InfrastructureServiceCollectionExtensions
         services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
         services.AddScoped(typeof(IReadOnlyRepository<>), typeof(EfRepository<>));
         services.AddScoped<IUnitOfWork, EfUnitOfWork>();
+        
+        services.AddScoped<IAuthenticationService, CookieAuthenticationService>();
+        services.AddScoped<ICurrentUserService, CurrentUserService>();
         
         services.AddRepositories();
         
