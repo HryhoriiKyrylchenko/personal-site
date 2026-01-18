@@ -53,7 +53,7 @@ export class ChangePasswordComponent {
       .changePassword(currentPassword!, newPassword!)
       .subscribe({
         next: () => {
-          void this.router.navigate(['/admin']);
+          void this.router.navigate(['']);
         },
         error: (err) => {
           this.error =

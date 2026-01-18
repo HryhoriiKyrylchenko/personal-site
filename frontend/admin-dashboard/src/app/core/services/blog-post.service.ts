@@ -59,11 +59,11 @@ export class BlogPostService {
     if (slugFilter) params = params.set('SlugFilter', slugFilter);
     if (isPublishedFilter !== undefined) params = params.set('IsPublishedFilter', isPublishedFilter);
 
-    return this.http.get<PaginatedResult<BlogPostAdminDto>>(this.baseUrl, { params });
+    return this.http.get<PaginatedResult<BlogPostAdminDto>>(this.baseUrl, { params, withCredentials: true });
   }
 
   getById(id: string) {
-    return this.http.get<BlogPostAdminDto>(`${this.baseUrl}/${id}`);
+    return this.http.get<BlogPostAdminDto>(`${this.baseUrl}/${id}`, { withCredentials: true });
   }
 
   create(post: BlogPostAdminDto) {
@@ -88,7 +88,7 @@ export class BlogPostService {
       }))
     };
 
-    return this.http.post<string>(this.baseUrl, payload);
+    return this.http.post<string>(this.baseUrl, payload, { withCredentials: true });
   }
 
   update(id: string, post: BlogPostAdminDto) {
@@ -114,14 +114,14 @@ export class BlogPostService {
       }))
     };
 
-    return this.http.put(`${this.baseUrl}/${id}`, payload);
+    return this.http.put(`${this.baseUrl}/${id}`, payload, { withCredentials: true });
   }
 
   delete(id: string) {
-    return this.http.delete(`${this.baseUrl}/${id}`);
+    return this.http.delete(`${this.baseUrl}/${id}`, { withCredentials: true });
   }
 
   publish(id: string, isPublished: boolean, publishDate?: string) {
-    return this.http.post(`${this.baseUrl}/${id}/publish`, { id, isPublished, publishDate });
+    return this.http.post(`${this.baseUrl}/${id}/publish`, { id, isPublished, publishDate }, { withCredentials: true });
   }
 }

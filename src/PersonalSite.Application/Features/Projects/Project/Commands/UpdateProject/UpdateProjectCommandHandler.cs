@@ -15,9 +15,9 @@ public class UpdateProjectCommandHandler : IRequestHandler<UpdateProjectCommand,
     private readonly IProjectTranslationRepository _translationRepository;
     private readonly IProjectSkillRepository _projectSkillRepository;
     private readonly ISkillRepository _skillRepository;
-    
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<UpdateProjectCommandHandler> _logger;
+    private readonly IS3UrlBuilder _urlBuilder;
 
     public UpdateProjectCommandHandler(
         IProjectRepository projectRepository,
@@ -26,7 +26,8 @@ public class UpdateProjectCommandHandler : IRequestHandler<UpdateProjectCommand,
         IProjectSkillRepository projectSkillRepository,
         ISkillRepository skillRepository,
         IUnitOfWork unitOfWork,
-        ILogger<UpdateProjectCommandHandler> logger)
+        ILogger<UpdateProjectCommandHandler> logger,
+        IS3UrlBuilder urlBuilder)
     {
         _projectRepository = projectRepository;
         _languageRepository = languageRepository;
@@ -35,6 +36,7 @@ public class UpdateProjectCommandHandler : IRequestHandler<UpdateProjectCommand,
         _skillRepository = skillRepository;
         _unitOfWork = unitOfWork;
         _logger = logger;
+        _urlBuilder = urlBuilder;
     }
 
     public async Task<Result> Handle(UpdateProjectCommand request, CancellationToken cancellationToken)
@@ -55,7 +57,9 @@ public class UpdateProjectCommandHandler : IRequestHandler<UpdateProjectCommand,
             }
 
             project.Slug = request.Slug;
-            project.CoverImage = request.CoverImage;
+            project.CoverImage = string.IsNullOrWhiteSpace(request.CoverImage)
+                ? string.Empty
+                : _urlBuilder.ExtractKey(request.CoverImage);
             project.DemoUrl = request.DemoUrl;
             project.RepoUrl = request.RepoUrl;
             project.UpdatedAt = DateTime.UtcNow;
@@ -102,7 +106,9 @@ public class UpdateProjectCommandHandler : IRequestHandler<UpdateProjectCommand,
                         existing.DescriptionSections = dto.DescriptionSections;
                         existing.MetaTitle = dto.MetaTitle;
                         existing.MetaDescription = dto.MetaDescription;
-                        existing.OgImage = dto.OgImage;
+                        existing.OgImage = string.IsNullOrWhiteSpace(request.CoverImage)
+                            ? string.Empty
+                            : _urlBuilder.ExtractKey(dto.OgImage);
 
                         await _translationRepository.UpdateAsync(existing, cancellationToken);
                     }
@@ -118,7 +124,9 @@ public class UpdateProjectCommandHandler : IRequestHandler<UpdateProjectCommand,
                             DescriptionSections = dto.DescriptionSections,
                             MetaTitle = dto.MetaTitle,
                             MetaDescription = dto.MetaDescription,
-                            OgImage = dto.OgImage
+                            OgImage = string.IsNullOrWhiteSpace(request.CoverImage)
+                                ? string.Empty
+                                : _urlBuilder.ExtractKey(dto.OgImage)
                         };
 
                         await _translationRepository.AddAsync(translation, cancellationToken);

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {map, Observable} from 'rxjs';
 import {environment} from '../../../environments/environment';
@@ -17,8 +17,7 @@ export interface LogEntryDto {
 @Injectable({ providedIn: 'root' })
 export class LogsService {
   private baseUrl = `${environment.apiUrl}/logs`;
-
-  constructor(private http: HttpClient) {}
+  private http = inject(HttpClient);
 
   getLogsPaginated(
     page: number,
@@ -35,7 +34,7 @@ export class LogsService {
     if (to) params = params.set('To', to);
     if (level) params = params.set('Level', level);
 
-    return this.http.get<any>(this.baseUrl, { params }).pipe(
+    return this.http.get<any>(this.baseUrl, { params, withCredentials: true }).pipe(
       map(res => ({
         ...res,
         items: res.value.map((x: any) => ({
@@ -48,6 +47,6 @@ export class LogsService {
 
   deleteOlderThan(cutoffDate: string): Observable<void> {
     const params = new HttpParams().set('cutoffDate', cutoffDate);
-    return this.http.delete<void>(`${this.baseUrl}/older-than`, { params });
+    return this.http.delete<void>(`${this.baseUrl}/older-than`, { params, withCredentials: true });
   }
 }

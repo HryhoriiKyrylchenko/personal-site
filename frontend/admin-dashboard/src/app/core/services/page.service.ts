@@ -27,7 +27,7 @@ export class PageService {
   private baseUrl = `${environment.apiUrl}/Page`;
 
   getAll(): Observable<PageAdminDto[]> {
-    return this.http.get<PageAdminDto[]>(this.baseUrl).pipe(
+    return this.http.get<PageAdminDto[]>(this.baseUrl, { withCredentials: true }).pipe(
       map(res => {
         res.forEach(page =>
           page.translations.forEach(t =>
@@ -40,7 +40,7 @@ export class PageService {
   }
 
   getById(id: string): Observable<PageAdminDto> {
-    return this.http.get<PageAdminDto>(`${this.baseUrl}/${id}`);
+    return this.http.get<PageAdminDto>(`${this.baseUrl}/${id}`, { withCredentials: true });
   }
 
   create(page: PageAdminDto): Observable<string> {
@@ -59,7 +59,7 @@ export class PageService {
       }))
     };
 
-    return this.http.post<string>(this.baseUrl, payload);
+    return this.http.post<string>(this.baseUrl, payload, { withCredentials: true });
   }
 
   update(page: PageAdminDto) {
@@ -79,10 +79,10 @@ export class PageService {
       }))
     };
 
-    return this.http.put(`${this.baseUrl}/${page.id}`, payload);
+    return this.http.put(`${this.baseUrl}/${page.id}`, payload, { withCredentials: true });
   }
 
   delete(id: string): Observable<void> {
-    return this.http.delete<void>(`${this.baseUrl}/${id}`);
+    return this.http.delete<void>(`${this.baseUrl}/${id}`, { withCredentials: true });
   }
 }

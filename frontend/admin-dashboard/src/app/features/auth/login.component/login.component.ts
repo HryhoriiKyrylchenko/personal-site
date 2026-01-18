@@ -26,9 +26,9 @@ export class LoginComponent {
     this.auth.login(this.username, this.password).subscribe({
       next: res => {
         if (res.mustChangePassword) {
-          void this.router.navigate(['/admin/change-password']);
+          void this.router.navigate(['/change-password']);
         } else {
-          void this.router.navigate(['/admin']);
+          void this.router.navigate(['/']);
         }
       },
       error: () => {

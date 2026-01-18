@@ -37,11 +37,11 @@ export class SkillService {
     if (categoryId) params = params.set('CategoryId', categoryId);
     if (keyFilter) params = params.set('KeyFilter', keyFilter);
 
-    return this.http.get<SkillAdminDto[]>(this.baseUrl, { params });
+    return this.http.get<SkillAdminDto[]>(this.baseUrl, { params, withCredentials: true });
   }
 
   getById(id: string): Observable<SkillAdminDto> {
-    return this.http.get<SkillAdminDto>(`${this.baseUrl}/${id}`);
+    return this.http.get<SkillAdminDto>(`${this.baseUrl}/${id}`, { withCredentials: true });
   }
 
   create(categoryId: string, key: string, translations: CreateSkillTranslation[]): Observable<string> {
@@ -50,7 +50,7 @@ export class SkillService {
       Key: key,
       Translations: translations
     };
-    return this.http.post<string>(this.baseUrl, payload);
+    return this.http.post<string>(this.baseUrl, payload, { withCredentials: true });
   }
 
   update(skill: SkillAdminDto) {
@@ -60,10 +60,10 @@ export class SkillService {
       Key: skill.key,
       Translations: skill.translations
     };
-    return this.http.put(`${this.baseUrl}/${skill.id}`, payload);
+    return this.http.put(`${this.baseUrl}/${skill.id}`, payload, { withCredentials: true });
   }
 
   delete(id: string): Observable<void> {
-    return this.http.delete<void>(`${this.baseUrl}/${id}`);
+    return this.http.delete<void>(`${this.baseUrl}/${id}`, { withCredentials: true });
   }
 }

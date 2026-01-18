@@ -13,19 +13,22 @@ public class UpdatePageCommandHandler : IRequestHandler<UpdatePageCommand, Resul
     private readonly IPageTranslationRepository _translationRepository;
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<UpdatePageCommandHandler> _logger;
+    private readonly IS3UrlBuilder _urlBuilder;
 
     public UpdatePageCommandHandler(
         IPageRepository pageRepository, 
         ILanguageRepository languageRepository, 
         IPageTranslationRepository translationRepository,
         IUnitOfWork unitOfWork,
-        ILogger<UpdatePageCommandHandler> logger)
+        ILogger<UpdatePageCommandHandler> logger,
+        IS3UrlBuilder urlBuilder)
     {
         _pageRepository = pageRepository;
         _languageRepository = languageRepository;
         _translationRepository = translationRepository;
         _unitOfWork = unitOfWork;
         _logger = logger;
+        _urlBuilder = urlBuilder;
     }
 
     public async Task<Result> Handle(UpdatePageCommand request, CancellationToken cancellationToken)
@@ -78,7 +81,9 @@ public class UpdatePageCommandHandler : IRequestHandler<UpdatePageCommand, Resul
                     existing.Description = dto.Description;
                     existing.MetaTitle = dto.MetaTitle;
                     existing.MetaDescription = dto.MetaDescription;
-                    existing.OgImage = dto.OgImage;
+                    existing.OgImage = string.IsNullOrWhiteSpace(dto.OgImage)
+                        ? string.Empty
+                        : _urlBuilder.ExtractKey(dto.OgImage);
 
                     await _translationRepository.UpdateAsync(existing, cancellationToken);
                 }
@@ -94,7 +99,9 @@ public class UpdatePageCommandHandler : IRequestHandler<UpdatePageCommand, Resul
                         Description = dto.Description,
                         MetaTitle = dto.MetaTitle,
                         MetaDescription = dto.MetaDescription,
-                        OgImage = dto.OgImage
+                        OgImage = string.IsNullOrWhiteSpace(dto.OgImage)
+                            ? string.Empty
+                            : _urlBuilder.ExtractKey(dto.OgImage)
                     };
 
                     await _translationRepository.AddAsync(newTranslation, cancellationToken);

@@ -39,11 +39,11 @@ export class SocialMediaLinkService {
     if (platform) params = params.set('Platform', platform);
     if (isActive !== undefined) params = params.set('IsActive', isActive);
 
-    return this.http.get<PaginatedResult<SocialMediaLinkDto>>(this.baseUrl, { params });
+    return this.http.get<PaginatedResult<SocialMediaLinkDto>>(this.baseUrl, { params, withCredentials: true });
   }
 
   getById(id: string): Observable<SocialMediaLinkDto> {
-    return this.http.get<SocialMediaLinkDto>(`${this.baseUrl}/${id}`);
+    return this.http.get<SocialMediaLinkDto>(`${this.baseUrl}/${id}`, { withCredentials: true });
   }
 
   create(
@@ -53,7 +53,7 @@ export class SocialMediaLinkService {
     isActive: boolean
   ): Observable<string> {
     const payload = { platform, url, displayOrder, isActive };
-    return this.http.post<string>(this.baseUrl, payload);
+    return this.http.post<string>(this.baseUrl, payload, { withCredentials: true });
   }
 
   update(link: SocialMediaLinkDto) {
@@ -65,10 +65,10 @@ export class SocialMediaLinkService {
       isActive: link.isActive
     };
 
-    return this.http.put(`${this.baseUrl}/${link.id}`, payload);
+    return this.http.put(`${this.baseUrl}/${link.id}`, payload, { withCredentials: true });
   }
 
   delete(id: string): Observable<void> {
-    return this.http.delete<void>(`${this.baseUrl}/${id}`);
+    return this.http.delete<void>(`${this.baseUrl}/${id}`, { withCredentials: true });
   }
 }
