@@ -53,14 +53,30 @@ public class S3StorageService : IStorageService
     {
         try
         {
-            var key = fileUrl.Split(".amazonaws.com/").LastOrDefault();
-            if (string.IsNullOrWhiteSpace(key)) return;
+            if (string.IsNullOrWhiteSpace(fileUrl))
+                return;
+            
+            if (!Uri.TryCreate(fileUrl, UriKind.Absolute, out var uri))
+                return;
+            
+            var path = uri.AbsolutePath.TrimStart('/');
+            
+            if (path.StartsWith(_settings.BucketName + "/", StringComparison.OrdinalIgnoreCase))
+            {
+                path = path.Substring(_settings.BucketName.Length + 1);
+            }
 
-            await _s3Client.DeleteObjectAsync(_settings.BucketName, key, cancellationToken);
+            if (string.IsNullOrWhiteSpace(path))
+                return;
+
+            await _s3Client.DeleteObjectAsync(
+                _settings.BucketName,
+                path,
+                cancellationToken);
         }
         catch (Exception e)
         {
-            _logger.LogError(e, "Error deleting file from S3");
+            _logger.LogError(e, "Error deleting file from storage");
             throw;
         }
     }

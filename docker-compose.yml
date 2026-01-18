@@ -1,0 +1,10 @@
+services:
+  minio:
+    extends:
+      file: ./minio/docker-compose.yml
+      service: minio
+
+volumes:
+  minio_data:
+
+

@@ -33,11 +33,11 @@ export class UserSkillService {
     if (filter?.maxProficiency !== undefined)
       params = params.set('MaxProficiency', filter.maxProficiency);
 
-    return this.http.get<UserSkillAdminDto[]>(this.baseUrl, { params });
+    return this.http.get<UserSkillAdminDto[]>(this.baseUrl, { params, withCredentials: true });
   }
 
   getById(id: string): Observable<UserSkillAdminDto> {
-    return this.http.get<UserSkillAdminDto>(`${this.baseUrl}/${id}`);
+    return this.http.get<UserSkillAdminDto>(`${this.baseUrl}/${id}`, { withCredentials: true });
   }
 
   create(skillId: string, proficiency: number): Observable<string> {
@@ -46,7 +46,7 @@ export class UserSkillService {
       proficiency
     };
 
-    return this.http.post<string>(this.baseUrl, payload);
+    return this.http.post<string>(this.baseUrl, payload, { withCredentials: true });
   }
 
   update(id: string, proficiency: number): Observable<void> {
@@ -55,10 +55,10 @@ export class UserSkillService {
       proficiency
     };
 
-    return this.http.put<void>(`${this.baseUrl}/${id}`, payload);
+    return this.http.put<void>(`${this.baseUrl}/${id}`, payload, { withCredentials: true });
   }
 
   delete(id: string): Observable<void> {
-    return this.http.delete<void>(`${this.baseUrl}/${id}`);
+    return this.http.delete<void>(`${this.baseUrl}/${id}`, { withCredentials: true });
   }
 }

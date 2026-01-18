@@ -4,6 +4,7 @@ using Amazon.SecretsManager;
 using Amazon.SecretsManager.Extensions.Caching;
 using AspNetCoreRateLimit;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.Extensions.Options;
 using Npgsql;
 using PersonalSite.Application.DependencyInjection;
 using PersonalSite.Infrastructure.DependencyInjection;
@@ -70,7 +71,32 @@ if (builder.Environment.IsProduction())
 // AWS SDK integration for other AWS services (S3)
 // -------------------------
 builder.Services.Configure<AwsS3Settings>(builder.Configuration.GetSection("AwsS3Settings"));
-builder.Services.AddAWSService<IAmazonS3>();
+
+if (env.IsDevelopment())
+{
+    // MinIO
+    builder.Services.AddSingleton<IAmazonS3>(sp =>
+    {
+        var s = sp.GetRequiredService<IOptions<AwsS3Settings>>().Value;
+
+        var config = new AmazonS3Config
+        {
+            RegionEndpoint = RegionEndpoint.GetBySystemName(s.Region),
+            ServiceURL = s.ServiceUrl,
+            ForcePathStyle = true // REQUIRED for MinIO
+        };
+
+        return new AmazonS3Client(
+            s.AccessKey,
+            s.SecretKey,
+            config);
+    });
+}
+else
+{
+    // AWS S3 (IAM / Secrets Manager)
+    builder.Services.AddAWSService<IAmazonS3>();
+}
 
 // -------------------------
 // Serilog
@@ -148,10 +174,10 @@ builder.Services.AddDbContext<LoggingDbContext>((sp, options) =>
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
-        options.LoginPath = "/admin/Login";
-        options.LogoutPath = "/admin/Logout";
+        options.LoginPath = null;
+        options.LogoutPath = null;
 
-        options.ExpireTimeSpan = TimeSpan.FromHours(8);
+        options.ExpireTimeSpan = TimeSpan.FromHours(1);
         options.SlidingExpiration = true;
 
         options.Cookie.Name = "PersonalSite.Admin.Auth";

@@ -15,4 +15,20 @@ public class S3UrlBuilder : IS3UrlBuilder
             ? string.Empty
             : $"{_baseUrl}{path.TrimStart('/')}";
     }
+
+    public string ExtractKey(string url)
+    {
+        if (string.IsNullOrWhiteSpace(url))
+            return string.Empty;
+
+        if (!url.StartsWith("http", StringComparison.OrdinalIgnoreCase))
+            return url.TrimStart('/');
+
+        if (!url.StartsWith(_baseUrl, StringComparison.OrdinalIgnoreCase))
+            throw new InvalidOperationException($"URL does not belong to this storage: {url}");
+
+        return url
+            .Substring(_baseUrl.Length)
+            .TrimStart('/');
+    }
 }

@@ -52,7 +52,7 @@ export class AnalyticsService {
       params = params.set('To', toDate.toISOString());
     }
 
-    return this.http.get<any>(this.baseUrl, { params }).pipe(
+    return this.http.get<any>(this.baseUrl, { params, withCredentials: true }).pipe(
       map(res => ({
         ...res,
         items: res.value.map((x: any) => ({ ...x, createdAt: new Date(x.createdAt) }))
@@ -61,10 +61,10 @@ export class AnalyticsService {
   }
 
   deleteEvent(id: string) {
-    return this.http.delete<void>(`${this.baseUrl}/${id}`, { body: { id } });
+    return this.http.delete<void>(`${this.baseUrl}/${id}`, { body: { id }, withCredentials: true });
   }
 
   deleteEventsRange(ids: string[]) {
-    return this.http.post<void>(`${this.baseUrl}/range`, { ids });
+    return this.http.post<void>(`${this.baseUrl}/range`, { ids }, { withCredentials: true });
   }
 }

@@ -40,11 +40,11 @@ export class SkillCategoryService {
       params = params.set('MaxDisplayOrder', maxDisplayOrder);
     }
 
-    return this.http.get<SkillCategoryAdminDto[]>(this.baseUrl, { params });
+    return this.http.get<SkillCategoryAdminDto[]>(this.baseUrl, { params, withCredentials: true });
   }
 
   getById(id: string): Observable<SkillCategoryAdminDto> {
-    return this.http.get<SkillCategoryAdminDto>(`${this.baseUrl}/${id}`);
+    return this.http.get<SkillCategoryAdminDto>(`${this.baseUrl}/${id}`, { withCredentials: true });
   }
 
   create(
@@ -64,7 +64,7 @@ export class SkillCategoryService {
       }))
     };
 
-    return this.http.post<string>(this.baseUrl, payload);
+    return this.http.post<string>(this.baseUrl, payload, { withCredentials: true });
   }
 
   update(
@@ -86,10 +86,10 @@ export class SkillCategoryService {
       }))
     };
 
-    return this.http.put(`${this.baseUrl}/${id}`, payload);
+    return this.http.put(`${this.baseUrl}/${id}`, payload, { withCredentials: true });
   }
 
   delete(id: string): Observable<void> {
-    return this.http.delete<void>(`${this.baseUrl}/${id}`);
+    return this.http.delete<void>(`${this.baseUrl}/${id}`, { withCredentials: true });
   }
 }

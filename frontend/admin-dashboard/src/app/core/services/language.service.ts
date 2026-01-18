@@ -15,11 +15,11 @@ export class LanguageService {
   private baseUrl = `${environment.apiUrl}/Language`;
 
   getAll(): Observable<LanguageDto[]> {
-    return this.http.get<LanguageDto[]>(this.baseUrl);
+    return this.http.get<LanguageDto[]>(this.baseUrl, { withCredentials: true });
   }
 
   getById(id: string): Observable<LanguageDto> {
-    return this.http.get<LanguageDto>(`${this.baseUrl}/${id}`);
+    return this.http.get<LanguageDto>(`${this.baseUrl}/${id}`, { withCredentials: true });
   }
 
   create(code: string, name: string): Observable<string> {
@@ -28,7 +28,7 @@ export class LanguageService {
       name
     };
 
-    return this.http.post<string>(this.baseUrl, payload);
+    return this.http.post<string>(this.baseUrl, payload, { withCredentials: true });
   }
 
   update(language: LanguageDto) {
@@ -38,10 +38,10 @@ export class LanguageService {
       name: language.name
     };
 
-    return this.http.put(`${this.baseUrl}/${language.id}`, payload);
+    return this.http.put(`${this.baseUrl}/${language.id}`, payload, { withCredentials: true });
   }
 
   delete(id: string): Observable<void> {
-    return this.http.delete<void>(`${this.baseUrl}/${id}`);
+    return this.http.delete<void>(`${this.baseUrl}/${id}`, { withCredentials: true });
   }
 }

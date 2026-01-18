@@ -15,9 +15,9 @@ public class CreateProjectCommandHandler : IRequestHandler<CreateProjectCommand,
     private readonly IProjectTranslationRepository _translationRepository;
     private readonly IProjectSkillRepository _projectSkillRepository;
     private readonly ISkillRepository _skillRepository;
-    
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<CreateProjectCommandHandler> _logger;
+    private readonly IS3UrlBuilder _urlBuilder;
 
     public CreateProjectCommandHandler(
         IProjectRepository projectRepository,
@@ -26,7 +26,8 @@ public class CreateProjectCommandHandler : IRequestHandler<CreateProjectCommand,
         IProjectSkillRepository projectSkillRepository,
         ISkillRepository skillRepository,
         IUnitOfWork unitOfWork,
-        ILogger<CreateProjectCommandHandler> logger)
+        ILogger<CreateProjectCommandHandler> logger,
+        IS3UrlBuilder urlBuilder)
     {
         _projectRepository = projectRepository;
         _languageRepository = languageRepository;
@@ -35,6 +36,7 @@ public class CreateProjectCommandHandler : IRequestHandler<CreateProjectCommand,
         _skillRepository = skillRepository;
         _unitOfWork = unitOfWork;
         _logger = logger;
+        _urlBuilder = urlBuilder;
     }
 
     public async Task<Result<Guid>> Handle(CreateProjectCommand request, CancellationToken cancellationToken)
@@ -51,7 +53,9 @@ public class CreateProjectCommandHandler : IRequestHandler<CreateProjectCommand,
             {
                 Id = Guid.NewGuid(),
                 Slug = request.Slug,
-                CoverImage = request.CoverImage,
+                CoverImage = string.IsNullOrWhiteSpace(request.CoverImage)
+                    ? string.Empty
+                    : _urlBuilder.ExtractKey(request.CoverImage),
                 DemoUrl = request.DemoUrl,
                 RepoUrl = request.RepoUrl,
                 CreatedAt = DateTime.UtcNow
@@ -78,7 +82,9 @@ public class CreateProjectCommandHandler : IRequestHandler<CreateProjectCommand,
                     DescriptionSections = dto.DescriptionSections,
                     MetaTitle = dto.MetaTitle,
                     MetaDescription = dto.MetaDescription,
-                    OgImage = dto.OgImage
+                    OgImage = string.IsNullOrWhiteSpace(request.CoverImage)
+                        ? string.Empty
+                        : _urlBuilder.ExtractKey(dto.OgImage)
                 };
 
                 await _translationRepository.AddAsync(translation, cancellationToken);

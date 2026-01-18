@@ -58,7 +58,7 @@ export class ProjectService {
       .set('PageSize', pageSize);
 
     if (slugFilter) params = params.set('SlugFilter', slugFilter);
-    return this.http.get<PaginatedResult<ProjectAdminDto>>(this.baseUrl, { params }).pipe(
+    return this.http.get<PaginatedResult<ProjectAdminDto>>(this.baseUrl, { params, withCredentials: true }).pipe(
       map(res => {
         res.value.forEach(project =>
           project.translations.forEach(t =>
@@ -71,7 +71,7 @@ export class ProjectService {
   }
 
   getById(id: string): Observable<ProjectAdminDto> {
-    return this.http.get<ProjectAdminDto>(`${this.baseUrl}/${id}`);
+    return this.http.get<ProjectAdminDto>(`${this.baseUrl}/${id}`, { withCredentials: true });
   }
 
   create(project: ProjectAdminDto): Observable<string> {
@@ -94,7 +94,7 @@ export class ProjectService {
       skillIds: project.skills.map(s => s.skill.id)
     };
 
-    return this.http.post<string>(this.baseUrl, payload);
+    return this.http.post<string>(this.baseUrl, payload, { withCredentials: true });
   }
 
   update(id: string, project: ProjectAdminDto) {
@@ -118,10 +118,10 @@ export class ProjectService {
       skillIds: project.skills.map(s => s.skill.id)
     };
 
-    return this.http.put(`${this.baseUrl}/${id}`, payload);
+    return this.http.put(`${this.baseUrl}/${id}`, payload, { withCredentials: true });
   }
 
   delete(id: string): Observable<void> {
-    return this.http.delete<void>(`${this.baseUrl}/${id}`);
+    return this.http.delete<void>(`${this.baseUrl}/${id}`, { withCredentials: true });
   }
 }

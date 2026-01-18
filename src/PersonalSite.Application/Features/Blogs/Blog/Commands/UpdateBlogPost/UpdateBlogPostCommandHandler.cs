@@ -16,6 +16,7 @@ public class UpdateBlogPostCommandHandler : IRequestHandler<UpdateBlogPostComman
     private readonly IPostTagRepository _postTagRepository;
     private readonly ILanguageRepository _languageRepository;
     private readonly ILogger<UpdateBlogPostCommandHandler> _logger;
+    private readonly IS3UrlBuilder _urlBuilder;
 
     public UpdateBlogPostCommandHandler(
         IUnitOfWork unitOfWork, 
@@ -24,7 +25,8 @@ public class UpdateBlogPostCommandHandler : IRequestHandler<UpdateBlogPostComman
         IBlogPostTagRepository tagRepository,
         IPostTagRepository postTagRepository,
         ILanguageRepository languageRepository,
-        ILogger<UpdateBlogPostCommandHandler> logger)
+        ILogger<UpdateBlogPostCommandHandler> logger,
+        IS3UrlBuilder urlBuilder)
     {
         _unitOfWork = unitOfWork;
         _blogPostRepository = blogPostRepository;
@@ -33,6 +35,7 @@ public class UpdateBlogPostCommandHandler : IRequestHandler<UpdateBlogPostComman
         _postTagRepository = postTagRepository;
         _languageRepository = languageRepository;
         _logger = logger;
+        _urlBuilder = urlBuilder;
     }
 
     public async Task<Result> Handle(UpdateBlogPostCommand request, CancellationToken cancellationToken)
@@ -54,7 +57,9 @@ public class UpdateBlogPostCommandHandler : IRequestHandler<UpdateBlogPostComman
             }
 
             blogPost.Slug = request.Slug;
-            blogPost.CoverImage = request.CoverImage;
+            blogPost.CoverImage = string.IsNullOrWhiteSpace(request.CoverImage)
+                ? string.Empty
+                : _urlBuilder.ExtractKey(request.CoverImage);
             blogPost.IsDeleted = request.IsDeleted;
             blogPost.UpdatedAt = DateTime.UtcNow;
         
@@ -100,7 +105,9 @@ public class UpdateBlogPostCommandHandler : IRequestHandler<UpdateBlogPostComman
                         existing.Content = dto.Content;
                         existing.MetaTitle = dto.MetaTitle;
                         existing.MetaDescription = dto.MetaDescription;
-                        existing.OgImage = dto.OgImage;
+                        existing.OgImage = string.IsNullOrWhiteSpace(dto.OgImage)
+                            ? string.Empty
+                            : _urlBuilder.ExtractKey(dto.OgImage);
 
                         await _translationRepository.UpdateAsync(existing, cancellationToken);
                     }
@@ -116,7 +123,9 @@ public class UpdateBlogPostCommandHandler : IRequestHandler<UpdateBlogPostComman
                             Content = dto.Content,
                             MetaTitle = dto.MetaTitle,
                             MetaDescription = dto.MetaDescription,
-                            OgImage = dto.OgImage
+                            OgImage = string.IsNullOrWhiteSpace(dto.OgImage)
+                                ? string.Empty
+                                : _urlBuilder.ExtractKey(dto.OgImage)
                         };
 
                         await _translationRepository.AddAsync(newTranslation, cancellationToken);

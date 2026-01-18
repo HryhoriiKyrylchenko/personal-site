@@ -6,6 +6,7 @@ using PersonalSite.Domain.Entities.Translations;
 using PersonalSite.Domain.Interfaces.Repositories.Common;
 using PersonalSite.Domain.Interfaces.Repositories.Pages;
 using PersonalSite.Domain.Interfaces.Repositories.Translations;
+using PersonalSite.Infrastructure.Storage;
 
 namespace PersonalSite.Application.Tests.Handlers.Pages.Page;
 
@@ -16,13 +17,15 @@ public class CreatePageCommandHandlerTests
     private readonly Mock<IPageTranslationRepository> _translationRepositoryMock = new();
     private readonly Mock<IUnitOfWork> _unitOfWorkMock = new();
     private readonly Mock<ILogger<CreatePageCommandHandler>> _loggerMock = new();
+    private readonly Mock<IS3UrlBuilder> _urlBuilderMock = new();
 
     private CreatePageCommandHandler CreateHandler() => new(
         _pageRepositoryMock.Object,
         _languageRepositoryMock.Object,
         _translationRepositoryMock.Object,
         _unitOfWorkMock.Object,
-        _loggerMock.Object
+        _loggerMock.Object,
+        _urlBuilderMock.Object
     );
 
     [Fact]

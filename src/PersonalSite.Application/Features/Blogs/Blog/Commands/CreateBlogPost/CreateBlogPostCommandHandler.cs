@@ -16,6 +16,7 @@ public class CreateBlogPostCommandHandler : IRequestHandler<CreateBlogPostComman
     private readonly IPostTagRepository _postTagRepository;
     private readonly ILanguageRepository _languageRepository;
     private readonly ILogger<CreateBlogPostCommandHandler> _logger;
+    private readonly IS3UrlBuilder _urlBuilder;
 
     public CreateBlogPostCommandHandler(
         IUnitOfWork unitOfWork, 
@@ -24,7 +25,8 @@ public class CreateBlogPostCommandHandler : IRequestHandler<CreateBlogPostComman
         IBlogPostTagRepository tagRepository,
         IPostTagRepository postTagRepository,
         ILanguageRepository languageRepository,
-        ILogger<CreateBlogPostCommandHandler> logger)
+        ILogger<CreateBlogPostCommandHandler> logger,
+        IS3UrlBuilder urlBuilder)
     {
         _unitOfWork = unitOfWork;
         _blogPostRepository = blogPostRepository;
@@ -33,6 +35,7 @@ public class CreateBlogPostCommandHandler : IRequestHandler<CreateBlogPostComman
         _postTagRepository = postTagRepository;
         _languageRepository = languageRepository;
         _logger = logger;
+        _urlBuilder = urlBuilder;
     }
 
     public async Task<Result<Guid>> Handle(CreateBlogPostCommand request, CancellationToken cancellationToken)
@@ -49,7 +52,9 @@ public class CreateBlogPostCommandHandler : IRequestHandler<CreateBlogPostComman
             {
                 Id = Guid.NewGuid(),
                 Slug = request.Slug,
-                CoverImage = request.CoverImage,
+                CoverImage = string.IsNullOrWhiteSpace(request.CoverImage)
+                    ? string.Empty
+                    : _urlBuilder.ExtractKey(request.CoverImage),
                 CreatedAt = DateTime.UtcNow,
                 IsPublished = request.IsPublished,
                 PublishedAt = request.IsPublished ? DateTime.UtcNow : null,
@@ -76,7 +81,9 @@ public class CreateBlogPostCommandHandler : IRequestHandler<CreateBlogPostComman
                     Content = translation.Content,
                     MetaTitle = translation.MetaTitle,
                     MetaDescription = translation.MetaDescription,
-                    OgImage = translation.OgImage
+                    OgImage = string.IsNullOrWhiteSpace(translation.OgImage)
+                        ? string.Empty
+                        : _urlBuilder.ExtractKey(translation.OgImage)
                 };
             
                 await _translationRepository.AddAsync(newTranslation, cancellationToken);
