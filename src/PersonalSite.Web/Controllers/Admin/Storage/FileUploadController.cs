@@ -1,7 +1,7 @@
 namespace PersonalSite.Web.Controllers.Admin.Storage;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/admin/[controller]")]
 [Authorize(Roles = "Admin", Policy = "PasswordChanged")]
 public class FileUploadController : ControllerBase
 {

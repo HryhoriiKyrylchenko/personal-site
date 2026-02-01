@@ -61,7 +61,7 @@ public class ProjectMapper
         {
             Id = entity.Id,
             Slug = entity.Slug,
-            CoverImage = entity.CoverImage,
+            CoverImage = string.IsNullOrWhiteSpace(entity.CoverImage) ? string.Empty : _s3UrlBuilder.BuildUrl(entity.CoverImage),
             DemoUrl = entity.DemoUrl,
             RepoUrl = entity.RepoUrl,
             CreatedAt = entity.CreatedAt,

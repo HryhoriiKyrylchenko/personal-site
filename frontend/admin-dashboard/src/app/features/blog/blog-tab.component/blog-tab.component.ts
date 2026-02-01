@@ -2,6 +2,7 @@ import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { BlogPostService, BlogPostAdminDto } from '../../../core/services/blog-post.service';
+import {FileUploadService, UploadFolder} from '../../../core/services/file-upload.service';
 
 @Component({
   selector: 'app-blog-tab',
@@ -12,6 +13,7 @@ import { BlogPostService, BlogPostAdminDto } from '../../../core/services/blog-p
 })
 export class BlogTabComponent implements OnInit {
   private blogService = inject(BlogPostService);
+  private readonly fileUploadService = inject(FileUploadService);
 
   posts = signal<BlogPostAdminDto[]>([]);
   page = signal(1);
@@ -136,5 +138,63 @@ export class BlogTabComponent implements OnInit {
   }
   set isPublishedFilterValue(val: boolean | undefined) {
     this.isPublishedFilter.set(val);
+  }
+
+  uploadCoverImage(event: Event) {
+    const file = (event.target as HTMLInputElement).files?.[0];
+    if (!file) return;
+
+    this.fileUploadService
+      .upload(file, UploadFolder.Blog)
+      .subscribe(url => {
+        this.editingPost.update(p => {
+          if (!p) return p;
+          p.coverImage = url;
+          return p;
+        });
+      });
+  }
+
+  deleteCoverImage() {
+    const url = this.editingPost()?.coverImage;
+    if (!url) return;
+
+    this.fileUploadService.delete(url).subscribe(() => {
+      this.editingPost.update(p => {
+        if (!p) return p;
+        p.coverImage = '';
+        return p;
+      });
+    });
+  }
+
+  uploadOgImage(event: Event, languageCode: string) {
+    const file = (event.target as HTMLInputElement).files?.[0];
+    if (!file) return;
+
+    this.fileUploadService
+      .upload(file, UploadFolder.Seo)
+      .subscribe(url => {
+        this.editingPost.update(p => {
+          if (!p) return p;
+          const tr = p.translations.find(t => t.languageCode === languageCode);
+          if (tr) tr.ogImage = url;
+          return p;
+        });
+      });
+  }
+
+  deleteOgImage(languageCode: string) {
+    const tr = this.editingPost()?.translations.find(t => t.languageCode === languageCode);
+    if (!tr?.ogImage) return;
+
+    this.fileUploadService.delete(tr.ogImage).subscribe(() => {
+      this.editingPost.update(p => {
+        if (!p) return p;
+        const t = p.translations.find(x => x.languageCode === languageCode);
+        if (t) t.ogImage = '';
+        return p;
+      });
+    });
   }
 }

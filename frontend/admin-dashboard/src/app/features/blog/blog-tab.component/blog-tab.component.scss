@@ -147,3 +147,26 @@ button:hover {
   display: flex;
   gap: 1rem;
 }
+
+.file-field {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.file-url {
+  font-size: 0.85rem;
+  color: #666;
+  max-width: 700px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.image-preview {
+  width: 180px;
+  height: 120px;
+  object-fit: cover;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
