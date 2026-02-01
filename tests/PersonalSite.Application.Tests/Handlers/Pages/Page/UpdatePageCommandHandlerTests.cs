@@ -123,7 +123,7 @@ public class UpdatePageCommandHandlerTests
                 ogImage: "image.png"
             );
 
-            var command = new UpdatePageCommand(page.Id, page.Key, [dto]);
+            var command = new UpdatePageCommand(page.Id, page.Key, "pageimage.pgn", [dto]);
 
             _pageRepositoryMock.Setup(r => r.GetWithTranslationByIdAsync(page.Id, It.IsAny<CancellationToken>()))
                 .ReturnsAsync(page);

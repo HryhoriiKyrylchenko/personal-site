@@ -5,5 +5,6 @@ namespace PersonalSite.Application.Features.Pages.Page.Commands.CreatePage;
 
 public record CreatePageCommand(
     string Key,
+    string PageImage,
     List<PageTranslationDto> Translations
 ) : IRequest<Result<Guid>>;

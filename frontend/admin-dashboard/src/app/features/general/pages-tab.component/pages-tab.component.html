@@ -24,6 +24,38 @@
         <input [(ngModel)]="editingPage()!.key" [disabled]="!isEditing()" />
       </label>
 
+      <label>Page Image:</label>
+
+      <div class="file-field">
+        @if (editingPage()!.pageImage) {
+          <img
+            class="image-preview"
+            [src]="editingPage()!.pageImage"
+            alt="Page image preview"
+          />
+        }
+
+        <span class="file-url">
+          {{ editingPage()!.pageImage || '— not set —' }}
+        </span>
+
+        <input
+          type="file"
+          accept="image/*"
+          hidden
+          #pageInput
+          (change)="uploadPageImage($event)"
+        />
+
+        @if (isEditing()) {
+          <button type="button" (click)="pageInput.click()">Upload</button>
+
+          @if (editingPage()!.pageImage) {
+            <button type="button" (click)="deletePageImage()">Delete</button>
+          }
+        }
+      </div>
+
       <!-- Language tabs -->
       <div class="tabs">
         @for (l of languages; track l) {

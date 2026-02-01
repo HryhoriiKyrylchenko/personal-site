@@ -49,6 +49,9 @@ public class UpdatePageCommandHandler : IRequestHandler<UpdatePageCommand, Resul
             }
 
             page.Key = request.Key;
+            page.PageImage = string.IsNullOrWhiteSpace(request.PageImage)
+                ? string.Empty
+                : _urlBuilder.ExtractKey(request.PageImage);
             
             await _pageRepository.UpdateAsync(page, cancellationToken);
 

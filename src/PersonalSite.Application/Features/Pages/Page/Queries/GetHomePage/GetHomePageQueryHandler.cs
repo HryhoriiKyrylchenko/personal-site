@@ -80,9 +80,6 @@ public class GetHomePageQueryHandler : IRequestHandler<GetHomePageQuery, Result<
         
             var aboutPage = new HomePageDto
             {
-                ImageUrl = string.IsNullOrWhiteSpace(pageData.Data["ImageUrl"]) 
-                    ? string.Empty 
-                    : _urlBuilder.BuildUrl(pageData.Data["ImageUrl"]),
                 PageData = pageData,
                 UserSkills = userSkillsData,
                 LastProject = lastProjectData

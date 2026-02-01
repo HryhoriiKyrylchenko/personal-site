@@ -17,6 +17,7 @@ public class PageTestDataFactory
         {
             Id = pageId,
             Key = key,
+            PageImage = "pageimage.png",
             Translations = [
                 new PageTranslation
                 {
@@ -54,6 +55,7 @@ public class PageTestDataFactory
         {
             Id = page.Id,
             Key = page.Key,
+            PageImage = page.PageImage,
             Data = page.Translations.First().Data,
             Title = page.Translations.First().Title,
             Description = page.Translations.First().Description,
@@ -69,6 +71,7 @@ public class PageTestDataFactory
         {
             Id = page.Id,
             Key = page.Key,
+            PageImage = page.PageImage,
             Translations = []
         };
 
@@ -116,6 +119,7 @@ public class PageTestDataFactory
     
     public static CreatePageCommand CreateCreatePageCommand(string key = "about") => new(
         key,
+        "pageimage.png",
         [
             new PageTranslationDto
             {
@@ -135,6 +139,7 @@ public class PageTestDataFactory
         return new UpdatePageCommand(
             page.Id,
             page.Key,
+            page.PageImage,
             page.Translations.Select(t => new PageTranslationDto
             {
                 LanguageCode = t.Language.Code,
@@ -152,6 +157,7 @@ public class PageTestDataFactory
         return new UpdatePageCommand(
             id,
             key,
+            "pageimage.png",
             translations);       
     }
 }

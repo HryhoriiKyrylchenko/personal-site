@@ -45,6 +45,9 @@ public class CreatePageCommandHandler : IRequestHandler<CreatePageCommand, Resul
             {
                 Id = Guid.NewGuid(),
                 Key = request.Key,
+                PageImage = string.IsNullOrWhiteSpace(request.PageImage)
+                    ? string.Empty
+                    : _urlBuilder.ExtractKey(request.PageImage)
             };
             
             await _pageRepository.AddAsync(page, cancellationToken);

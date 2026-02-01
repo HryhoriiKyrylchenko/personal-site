@@ -76,9 +76,6 @@ public class GetAboutPageQueryHandler : IRequestHandler<GetAboutPageQuery, Resul
         
             var aboutPage = new AboutPageDto
             {
-                ImageUrl = string.IsNullOrWhiteSpace(pageData.Data["ImageUrl"]) 
-                    ? string.Empty 
-                    : _urlBuilder.BuildUrl(pageData.Data["ImageUrl"]),
                 PageData = pageData,
                 UserSkills = userSkillsData,
                 LearningSkills = learningSkillsData

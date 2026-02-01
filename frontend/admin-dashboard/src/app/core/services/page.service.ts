@@ -18,6 +18,7 @@ export interface PageTranslationDto {
 export interface PageAdminDto {
   id?: string;
   key: string;
+  pageImage: string | null;
   translations: PageTranslationDto[];
 }
 
@@ -48,6 +49,7 @@ export class PageService {
   create(page: PageAdminDto): Observable<string> {
     const payload = {
       Key: page.key,
+      PageImage: page.pageImage,
       Translations: page.translations.map(t => ({
         id: '00000000-0000-0000-0000-000000000000',
         languageCode: t.languageCode,
@@ -68,6 +70,7 @@ export class PageService {
     const payload = {
       Id: page.id,
       Key: page.key,
+      PageImage: page.pageImage,
       Translations: page.translations.map(t => ({
         id: t.id ?? '00000000-0000-0000-0000-000000000000',
         languageCode: t.languageCode,
