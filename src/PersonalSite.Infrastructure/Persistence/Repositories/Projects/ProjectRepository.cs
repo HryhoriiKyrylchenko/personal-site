@@ -15,6 +15,7 @@ public class ProjectRepository : EfRepository<Project>, IProjectRepository
     public async Task<List<Project>> GetAllWithFullDataAsync(CancellationToken cancellationToken = default)
     {
         return await DbContext.Projects
+            .Where(p => !p.IsDeleted)
             .Include(p => p.Translations.Where(t => !t.Language.IsDeleted))
                 .ThenInclude(t => t.Language)
             .Include(p => p.ProjectSkills)
@@ -34,6 +35,7 @@ public class ProjectRepository : EfRepository<Project>, IProjectRepository
     public async Task<Project?> GetLastAsync(CancellationToken cancellationToken)
     {
         return await DbContext.Projects
+            .Where(p => !p.IsDeleted)
             .Include(p => p.Translations.Where(t => !t.Language.IsDeleted))
                 .ThenInclude(t => t.Language)
             .Include(p => p.ProjectSkills)
