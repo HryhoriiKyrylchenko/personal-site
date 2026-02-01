@@ -65,6 +65,7 @@ export class PagesTabComponent implements OnInit {
 
     this.editingPage.set({
       key: '',
+      pageImage: '',
       translations: this.emptyTranslations()
     });
 
@@ -132,6 +133,34 @@ export class PagesTabComponent implements OnInit {
       metaDescription: '',
       ogImage: ''
     }));
+  }
+
+  uploadPageImage(event: Event) {
+    const file = (event.target as HTMLInputElement).files?.[0];
+    if (!file) return;
+
+    this.fileUploadService
+      .upload(file, UploadFolder.Profile)
+      .subscribe(url => {
+        this.editingPage.update(p => {
+          if (!p) return p;
+          p.pageImage = url;
+          return p;
+        });
+      });
+  }
+
+  deletePageImage() {
+    const url = this.editingPage()?.pageImage;
+    if (!url) return;
+
+    this.fileUploadService.delete(url).subscribe(() => {
+      this.editingPage.update(p => {
+        if (!p) return p;
+        p.pageImage = '';
+        return p;
+      });
+    });
   }
 
   uploadOgImage(event: Event, languageCode: string) {

@@ -6,5 +6,6 @@ namespace PersonalSite.Application.Features.Pages.Page.Commands.UpdatePage;
 public record UpdatePageCommand(
     Guid Id,
     string Key,
+    string PageImage,
     List<PageTranslationDto> Translations
 ) : IRequest<Result>;

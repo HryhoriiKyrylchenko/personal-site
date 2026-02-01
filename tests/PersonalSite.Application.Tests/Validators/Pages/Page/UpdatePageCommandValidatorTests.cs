@@ -19,6 +19,7 @@ public class UpdatePageCommandValidatorTests
         var command = new UpdatePageCommand(
             Guid.Empty,
             "valid-key",
+            "pageimage.pgn",
             new List<PageTranslationDto> { new PageTranslationDto { LanguageCode = "en", Title = "Title" } });
 
         var result = _validator.TestValidate(command);
@@ -33,6 +34,7 @@ public class UpdatePageCommandValidatorTests
         var command = new UpdatePageCommand(
             Guid.NewGuid(),
             "",
+            "pageimage.pgn",
             new List<PageTranslationDto> { new PageTranslationDto { LanguageCode = "en", Title = "Title" } });
 
         var result = _validator.TestValidate(command);
@@ -49,6 +51,7 @@ public class UpdatePageCommandValidatorTests
         var command = new UpdatePageCommand(
             Guid.NewGuid(),
             longKey,
+            "pageimage.pgn",
             new List<PageTranslationDto> { new PageTranslationDto { LanguageCode = "en", Title = "Title" } });
 
         var result = _validator.TestValidate(command);
@@ -63,6 +66,7 @@ public class UpdatePageCommandValidatorTests
         var command = new UpdatePageCommand(
             Guid.NewGuid(),
             "valid-key",
+            "pageimage.pgn",
             new List<PageTranslationDto>());
 
         var result = _validator.TestValidate(command);
@@ -82,6 +86,7 @@ public class UpdatePageCommandValidatorTests
         var command = new UpdatePageCommand(
             Guid.NewGuid(),
             "valid-key",
+            "pageimage.pgn",
             translations);
 
         var result = _validator.TestValidate(command);
@@ -103,6 +108,7 @@ public class UpdatePageCommandValidatorTests
         var command = new UpdatePageCommand(
             Guid.NewGuid(),
             "valid-key",
+            "pageimage.pgn",
             translations);
 
         var result = _validator.TestValidate(command);
