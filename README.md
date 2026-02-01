@@ -2,7 +2,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
-> ⚠️ This project is currently under active development. Functionality is incomplete and evolving rapidly.
+> ⚠️ Completed initial MVP implementation. Project is functional and production ready at baseline level.
 
 A modern, multi-language personal website and portfolio with a blog, contact form, project showcase, and secure admin panel.
 
@@ -14,7 +14,7 @@ This full-stack site is built to showcase development projects, publish articles
 
 - 🖥 **Backend**: .NET 9 (C#), REST API, PostgreSQL, Domain-Driven Design, Clean Architecture, Vertical Slice Architecture
 - 🌐 **Frontend**: Angular, responsive layout, light/dark themes, i18n (EN, PL, UA, RU)
-- 🔐 **Admin Panel**: AWS Cognito authentication for content management
+- 🔐 **Admin Panel**: Authentication for content management
 - 🌍 **Localization**: Hybrid static and dynamic translation system
 - 🧪 **Testing**: Unit tests for core business logic
 
@@ -27,7 +27,7 @@ This full-stack site is built to showcase development projects, publish articles
 - 👤 About page with skills, roadmap, and experience
 - 📬 Contact form with email notifications
 - 🔗 Social media links
-- ⚙️ Admin panel for content management (Cognito-protected)
+- ⚙️ Admin panel for content management
 - 🈳 Localization with JSON + database translations
 - 🧪 Unit testing with xUnit, Moq, and FluentAssertions
 
@@ -58,7 +58,7 @@ This full-stack site is built to showcase development projects, publish articles
 - [.NET 9 SDK](https://dotnet.microsoft.com/en-us/download)
 - [Node.js & npm](https://nodejs.org/)
 - PostgreSQL
-- AWS account (for Cognito authentication)
+- AWS account (for S3 storage) or MinIO (as S3 compatible service)
 
 ---
 
@@ -133,10 +133,10 @@ The application supports the following languages:
 
 ### 🔐 Admin Panel
 
-The admin interface is secured using **AWS Cognito authentication**.
+The admin interface is secured using cookie-based authentication.
 
 **Access Control:**
-- Admin user accounts must be **manually created** in the AWS Cognito user pool.
+- The admin user account is seeded and requires an initial password change.
 - Only **authenticated users** can manage:
     - Portfolio projects
     - Blog posts
@@ -152,15 +152,14 @@ The admin interface is secured using **AWS Cognito authentication**.
 - Entity Framework Core (EF Core)
 - MediatR
 - PostgreSQL
+- MinIO (optional)
 
 **Frontend:**
 - Angular
 - SCSS
 
 **Cloud:**
-- AWS Cognito *(planned)*
 - AWS S3 
-- AWS SES / SQS *(optional)*
 
 **Tooling:**
 - xUnit
