@@ -1,0 +1,29 @@
+.account-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.account-buttons button {
+  background: none;
+  border: none;
+  padding: 4px;
+  cursor: pointer;
+  color: var(--color-text-secondary);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.account-buttons button:hover {
+  color: var(--color-link);
+}
+
+.account-buttons button:active {
+  color: var(--color-active-text);
+}
+
+.account-buttons button:focus-visible {
+  outline: 2px solid #ccc;
+  outline-offset: 2px;
+}

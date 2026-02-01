@@ -9,6 +9,7 @@ import {LoginComponent} from './features/auth/login.component/login.component';
 import {AuthGuard} from './core/auth/auth.guard';
 import {ChangePasswordComponent} from './features/auth/change-password.component/change-password.component';
 import {PasswordChangedGuard} from './core/auth/password-changed.guard';
+import {AccountComponent} from './features/account/account.component/account.component';
 
 export const routes: Routes = [
   {
@@ -29,6 +30,7 @@ export const routes: Routes = [
       { path: 'blog', component: BlogComponent, data: { title: 'Blog'} },
       { path: 'portfolio', component: PortfolioComponent, data: { title: 'Portfolio'} },
       { path: 'general', component: GeneralComponent, data: { title: 'General'} },
+      { path: 'account', component: AccountComponent, data: { title: 'Account'} },
       { path: '**', component: ErrorComponent, data: { title: 'Error'} }
     ]
   },
