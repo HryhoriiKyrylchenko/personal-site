@@ -34,7 +34,7 @@ public class FileUploadController : ControllerBase
         {
             await using var stream = file.OpenReadStream();
 
-            var fileName = $"{Guid.NewGuid()}{extension}";
+            var fileName = $"{file.FileName}";
             
             var normalizedFolder = folder.ToString().ToLowerInvariant();
             

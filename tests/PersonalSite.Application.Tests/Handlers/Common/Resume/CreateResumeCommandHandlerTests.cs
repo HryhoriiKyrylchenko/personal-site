@@ -1,6 +1,7 @@
 using PersonalSite.Application.Features.Common.Resume.Commands.CreateResume;
 using PersonalSite.Application.Tests.Fixtures.TestDataFactories;
 using PersonalSite.Domain.Interfaces.Repositories.Common;
+using PersonalSite.Infrastructure.Storage;
 
 namespace PersonalSite.Application.Tests.Handlers.Common.Resume;
 
@@ -10,17 +11,22 @@ public class CreateResumeCommandHandlerTests
     private readonly Mock<IUnitOfWork> _unitOfWorkMock;
     private readonly Mock<ILogger<CreateResumeCommandHandler>> _loggerMock;
     private readonly CreateResumeCommandHandler _handler;
+    
 
     public CreateResumeCommandHandlerTests()
     {
         _repositoryMock = new Mock<IResumeRepository>();
         _unitOfWorkMock = new Mock<IUnitOfWork>();
         _loggerMock = new Mock<ILogger<CreateResumeCommandHandler>>();
+        var urlBuilderMock = new Mock<IS3UrlBuilder>();
 
         _handler = new CreateResumeCommandHandler(
             _repositoryMock.Object,
             _unitOfWorkMock.Object,
-            _loggerMock.Object);
+            _loggerMock.Object,
+            urlBuilderMock.Object);
+        
+        
     }
 
     [Fact]
