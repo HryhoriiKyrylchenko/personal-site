@@ -10,6 +10,7 @@ import {
   SkillService,
   SkillAdminDto,
 } from '../../../core/services/skills.service';
+import {FileUploadService, UploadFolder} from '../../../core/services/file-upload.service';
 
 @Component({
   selector: 'app-project-tab',
@@ -21,6 +22,7 @@ import {
 export class ProjectsTabComponent implements OnInit {
   private projectService = inject(ProjectService);
   private skillService = inject(SkillService);
+  private readonly fileUploadService = inject(FileUploadService);
 
   projects = signal<ProjectAdminDto[]>([]);
   skills = signal<SkillAdminDto[]>([]);
@@ -164,5 +166,63 @@ export class ProjectsTabComponent implements OnInit {
     project.skills = project.skills.filter(
       s => s.skill.id !== skillId
     );
+  }
+
+  uploadCoverImage(event: Event) {
+    const file = (event.target as HTMLInputElement).files?.[0];
+    if (!file) return;
+
+    this.fileUploadService
+      .upload(file, UploadFolder.Projects)
+      .subscribe(url => {
+        this.editingProject.update(p => {
+          if (!p) return p;
+          p.coverImage = url;
+          return p;
+        });
+      });
+  }
+
+  deleteCoverImage() {
+    const url = this.editingProject()?.coverImage;
+    if (!url) return;
+
+    this.fileUploadService.delete(url).subscribe(() => {
+      this.editingProject.update(p => {
+        if (!p) return p;
+        p.coverImage = '';
+        return p;
+      });
+    });
+  }
+
+  uploadOgImage(event: Event, languageCode: string) {
+    const file = (event.target as HTMLInputElement).files?.[0];
+    if (!file) return;
+
+    this.fileUploadService
+      .upload(file, UploadFolder.Seo)
+      .subscribe(url => {
+        this.editingProject.update(p => {
+          if (!p) return p;
+          const tr = p.translations.find(t => t.languageCode === languageCode);
+          if (tr) tr.ogImage = url;
+          return p;
+        });
+      });
+  }
+
+  deleteOgImage(languageCode: string) {
+    const tr = this.editingProject()?.translations.find(t => t.languageCode === languageCode);
+    if (!tr?.ogImage) return;
+
+    this.fileUploadService.delete(tr.ogImage).subscribe(() => {
+      this.editingProject.update(p => {
+        if (!p) return p;
+        const t = p.translations.find(x => x.languageCode === languageCode);
+        if (t) t.ogImage = '';
+        return p;
+      });
+    });
   }
 }

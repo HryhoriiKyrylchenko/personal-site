@@ -7,6 +7,7 @@ import {
   PageAdminDto,
   PageTranslationDto
 } from '../../../core/services/page.service';
+import {FileUploadService, UploadFolder} from '../../../core/services/file-upload.service';
 
 @Component({
   selector: 'app-pages-tab',
@@ -17,6 +18,7 @@ import {
 })
 export class PagesTabComponent implements OnInit {
   private pageService = inject(PageService);
+  private readonly fileUploadService = inject(FileUploadService);
 
   pages = signal<PageAdminDto[]>([]);
   selectedPageId = signal<string | null>(null);
@@ -130,5 +132,35 @@ export class PagesTabComponent implements OnInit {
       metaDescription: '',
       ogImage: ''
     }));
+  }
+
+  uploadOgImage(event: Event, languageCode: string) {
+    const file = (event.target as HTMLInputElement).files?.[0];
+    if (!file) return;
+
+    this.fileUploadService
+      .upload(file, UploadFolder.Seo)
+      .subscribe(url => {
+        this.editingPage.update(p => {
+          if (!p) return p;
+          const tr = p.translations.find(t => t.languageCode === languageCode);
+          if (tr) tr.ogImage = url;
+          return p;
+        });
+      });
+  }
+
+  deleteOgImage(languageCode: string) {
+    const tr = this.editingPage()?.translations.find(t => t.languageCode === languageCode);
+    if (!tr?.ogImage) return;
+
+    this.fileUploadService.delete(tr.ogImage).subscribe(() => {
+      this.editingPage.update(p => {
+        if (!p) return p;
+        const t = p.translations.find(x => x.languageCode === languageCode);
+        if (t) t.ogImage = '';
+        return p;
+      });
+    });
   }
 }

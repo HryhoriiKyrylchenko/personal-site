@@ -83,13 +83,40 @@ if (env.IsDevelopment())
         {
             RegionEndpoint = RegionEndpoint.GetBySystemName(s.Region),
             ServiceURL = s.ServiceUrl,
-            ForcePathStyle = true // REQUIRED for MinIO
+            ForcePathStyle = true 
         };
 
-        return new AmazonS3Client(
+        var client = new AmazonS3Client(
             s.AccessKey,
             s.SecretKey,
             config);
+
+        var bucketName = s.BucketName;
+        var publicPrefix = "public/";
+
+        var policyJson = $@"
+        {{
+            ""Version"": ""2012-10-17"",
+            ""Statement"": [
+                {{
+                    ""Effect"": ""Allow"",
+                    ""Principal"": ""*"",
+                    ""Action"": [""s3:GetObject""],
+                    ""Resource"": [""arn:aws:s3:::{bucketName}/{publicPrefix}*""]
+                }}
+            ]
+        }}";
+
+        var putPolicyRequest = new Amazon.S3.Model.PutBucketPolicyRequest
+        {
+            BucketName = bucketName,
+            Policy = policyJson
+        };
+
+        client.PutBucketPolicyAsync(putPolicyRequest).GetAwaiter().GetResult();
+        // ------------------------------------
+
+        return client;
     });
 }
 else

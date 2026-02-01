@@ -83,7 +83,7 @@ export class AboutComponent implements OnInit {
       this.metaService.setSeo({
         title: page.pageData.metaTitle || 'Hryhorii Kyrylchenko | About',
         description: page.pageData.metaDescription || 'Personal portfolio about page',
-        imageUrl: page.pageData.ogImage || page.imageUrl || undefined,
+        imageUrl: page.pageData.ogImage,// || page.imageUrl || undefined,
         url: window.location.href,
         type: 'profile',
         jsonLd: {

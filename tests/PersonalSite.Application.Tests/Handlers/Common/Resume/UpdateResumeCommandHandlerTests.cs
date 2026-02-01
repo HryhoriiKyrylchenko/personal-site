@@ -1,6 +1,7 @@
 using PersonalSite.Application.Features.Common.Resume.Commands.UpdateResume;
 using PersonalSite.Application.Tests.Fixtures.TestDataFactories;
 using PersonalSite.Domain.Interfaces.Repositories.Common;
+using PersonalSite.Infrastructure.Storage;
 
 namespace PersonalSite.Application.Tests.Handlers.Common.Resume;
 
@@ -15,11 +16,14 @@ public class UpdateResumeCommandHandlerTests
         _repositoryMock = new Mock<IResumeRepository>();
         _unitOfWorkMock = new Mock<IUnitOfWork>();
         var loggerMock = new Mock<ILogger<UpdateResumeCommandHandler>>();
+        var urlBuilderMock = new Mock<IS3UrlBuilder>();
+        
 
         _handler = new UpdateResumeCommandHandler(
             _repositoryMock.Object,
             _unitOfWorkMock.Object,
-            loggerMock.Object);
+            loggerMock.Object,
+            urlBuilderMock.Object);
     }
 
     [Fact]

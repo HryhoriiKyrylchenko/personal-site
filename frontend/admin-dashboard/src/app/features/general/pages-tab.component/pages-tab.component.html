@@ -57,10 +57,41 @@
           <textarea rows="2" [(ngModel)]="t.metaDescription" [disabled]="!isEditing()" ></textarea>
         </label>
 
-        <label>
-          OG Image
-          <input [(ngModel)]="t.ogImage" [disabled]="!isEditing()" />
-        </label>
+        <label>OG Image:</label>
+
+        <div class="file-field">
+          @if (t.ogImage) {
+            <img
+              class="image-preview"
+              [src]="t.ogImage"
+              alt="OG image preview"
+            />
+          }
+
+          <span class="file-url">
+                {{ t.ogImage || '— not set —' }}
+              </span>
+
+          <input
+            type="file"
+            accept="image/*"
+            hidden
+            #ogInput
+            (change)="uploadOgImage($event, t.languageCode)"
+          />
+
+          @if (isEditing()) {
+            <button type="button" (click)="ogInput.click()">Upload</button>
+
+            @if (t.ogImage) {
+              <button
+                type="button"
+                (click)="deleteOgImage(t.languageCode)">
+                Delete
+              </button>
+            }
+          }
+        </div>
 
         <label>
           Data (JSON)

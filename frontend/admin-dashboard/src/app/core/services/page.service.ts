@@ -30,8 +30,10 @@ export class PageService {
     return this.http.get<PageAdminDto[]>(this.baseUrl, { withCredentials: true }).pipe(
       map(res => {
         res.forEach(page =>
-          page.translations.forEach(t =>
-            t.data = JSON.stringify(t.data)
+          page.translations.forEach(t => {
+              t.data = JSON.stringify(t.data);
+              t.id = t.id ?? '';
+            }
           )
         );
         return res;

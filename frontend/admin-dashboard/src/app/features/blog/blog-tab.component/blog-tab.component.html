@@ -55,9 +55,35 @@
         <input [(ngModel)]="editingPost()!.slug" />
       </label>
 
-      <label>Cover Image URL:
-        <input [(ngModel)]="editingPost()!.coverImage" />
-      </label>
+      <label>Cover Image:</label>
+
+      <div class="file-field">
+        @if (editingPost()!.coverImage) {
+          <img
+            class="image-preview"
+            [src]="editingPost()!.coverImage"
+            alt="Cover image preview"
+          />
+        }
+
+        <span class="file-url">
+          {{ editingPost()!.coverImage || '— not set —' }}
+        </span>
+
+        <input
+          type="file"
+          accept="image/*"
+          hidden
+          #coverInput
+          (change)="uploadCoverImage($event)"
+        />
+
+        <button type="button" (click)="coverInput.click()">Upload</button>
+
+        @if (editingPost()!.coverImage) {
+          <button type="button" (click)="deleteCoverImage()">Delete</button>
+        }
+      </div>
 
       <h4>Translations</h4>
 
@@ -97,9 +123,36 @@
               <textarea [(ngModel)]="tr.metaDescription"></textarea>
             </label>
 
-            <label>OG Image:
-              <input [(ngModel)]="tr.ogImage" />
-            </label>
+            <label>OG Image:</label>
+
+            <div class="file-field">
+              @if (tr.ogImage) {
+                <img
+                  class="image-preview"
+                  [src]="tr.ogImage"
+                  alt="OG image preview"
+                />
+              }
+
+              <span class="file-url">
+                {{ tr.ogImage || '— not set —' }}
+              </span>
+
+              <input
+                type="file"
+                accept="image/*"
+                hidden
+                #ogInput
+                (change)="uploadOgImage($event, tr.languageCode)"
+              />
+
+              <button type="button" (click)="ogInput.click()">Upload</button>
+
+              @if (tr.ogImage) {
+                <button type="button" (click)="deleteOgImage(tr.languageCode)">Delete</button>
+              }
+            </div>
+
           </div>
         }
       }

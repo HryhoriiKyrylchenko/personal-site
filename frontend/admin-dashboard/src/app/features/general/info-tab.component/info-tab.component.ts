@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { LanguageService, LanguageDto } from '../../../core/services/language.service';
 import { ResumeService, ResumeDto } from '../../../core/services/resume.service';
 import { SocialMediaLinkService, SocialMediaLinkDto } from '../../../core/services/social-media-link.service';
+import {FileUploadService, UploadFolder} from '../../../core/services/file-upload.service';
 
 @Component({
   selector: 'app-info-tab',
@@ -17,13 +18,14 @@ export class InfoTabComponent implements OnInit {
   private languageService = inject(LanguageService);
   private resumeService = inject(ResumeService);
   private socialService = inject(SocialMediaLinkService);
+  private readonly fileUploadService = inject(FileUploadService);
 
   // ================= SIGNALS =================
   languages = signal<LanguageDto[]>([]);
   editingLanguage = signal<LanguageDto | null>(null);
 
   activeResume = signal<ResumeDto | null>(null);
-  editingResume = signal<boolean>(false);
+  editingResume = signal<ResumeDto | null>(null);
   newResumeFileUrl = signal('');
   newResumeFileName = signal('');
 
@@ -90,31 +92,43 @@ export class InfoTabComponent implements OnInit {
     const r = this.activeResume();
     this.newResumeFileUrl.set(r?.fileUrl ?? '');
     this.newResumeFileName.set(r?.fileName ?? '');
-    this.editingResume.set(true);
+    this.editingResume.set(r);
+  }
+
+  uploadResume(event: Event) {
+    const file = (event.target as HTMLInputElement).files?.[0];
+    if (!file) return;
+
+    this.fileUploadService
+      .upload(file, UploadFolder.Resumes)
+      .subscribe(url => {
+        this.editingResume.update(r => {
+          if (!r) return r;
+          r.fileUrl = url;
+          r.fileName = url.split('/').pop() ?? '';
+          r.uploadedAt = new Date().toISOString();
+          return r;
+        });
+      });
   }
 
   saveResume() {
-    const r = this.activeResume();
-    const payload = {
-      id: r?.id ?? '',
-      fileUrl: this.newResumeFileUrl(),
-      fileName: this.newResumeFileName(),
-      isActive: true,
-      uploadedAt: r?.uploadedAt.toString() ?? new Date().toString()
-    };
+    const resume = this.activeResume();
+    if (!resume) return;
 
-    const action = r
-      ? this.resumeService.update(payload)
-      : this.resumeService.create(payload.fileUrl, payload.fileName, payload.isActive);
+    const action = resume.id
+      ? this.resumeService.update(resume)
+      : this.resumeService.create(resume.fileUrl, resume.fileName, resume.isActive);
 
     action.subscribe(() => {
       this.loadResume();
-      this.editingResume.set(false);
+      this.editingResume.set(null);
     });
   }
 
   cancelResumeEdit() {
-    this.editingResume.set(false);
+    this.editingResume.set(null);
+    this.loadResume();
   }
 
   // ================= SOCIAL LINKS =================
