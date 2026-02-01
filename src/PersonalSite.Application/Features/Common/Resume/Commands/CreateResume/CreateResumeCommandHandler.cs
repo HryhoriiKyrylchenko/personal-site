@@ -8,15 +8,18 @@ public class CreateResumeCommandHandler : IRequestHandler<CreateResumeCommand, R
     private readonly IResumeRepository _repository;
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<CreateResumeCommandHandler> _logger;
+    private readonly IS3UrlBuilder _urlBuilder;
 
     public CreateResumeCommandHandler(
         IResumeRepository repository, 
         IUnitOfWork unitOfWork,
-        ILogger<CreateResumeCommandHandler> logger)
+        ILogger<CreateResumeCommandHandler> logger,
+        IS3UrlBuilder urlBuilder)
     {
         _repository = repository;
         _unitOfWork = unitOfWork;
         _logger = logger;   
+        _urlBuilder = urlBuilder;
     }
 
     public async Task<Result<Guid>> Handle(CreateResumeCommand request, CancellationToken cancellationToken)
@@ -26,7 +29,9 @@ public class CreateResumeCommandHandler : IRequestHandler<CreateResumeCommand, R
             var resume = new Domain.Entities.Common.Resume
             {
                 Id = Guid.NewGuid(),
-                FileUrl = request.FileUrl,
+                FileUrl = string.IsNullOrWhiteSpace(request.FileUrl)
+                    ? string.Empty
+                    : _urlBuilder.ExtractKey(request.FileUrl),
                 FileName = request.FileName,
                 UploadedAt = DateTime.UtcNow,
                 IsActive = request.IsActive

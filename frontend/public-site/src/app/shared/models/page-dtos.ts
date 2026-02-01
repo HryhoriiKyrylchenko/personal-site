@@ -1,5 +1,4 @@
 export interface HomePageDto {
-  imageUrl: string | null;
   pageData: PageDto;
   userSkills: UserSkillDto[];
   lastProject: ProjectDto | null;
@@ -8,6 +7,7 @@ export interface HomePageDto {
 export interface PageDto {
   id: string;  // GUID
   key: string;
+  pageImage: string | null;
   language: string;
   data: Record<string, string>;
   title: string;
@@ -69,7 +69,6 @@ export interface ProjectSkillDto {
 }
 
 export interface AboutPageDto {
-  imageUrl: string | null;
   pageData: PageDto;
   userSkills: UserSkillDto[];
   learningSkills: LearningSkillDto[];

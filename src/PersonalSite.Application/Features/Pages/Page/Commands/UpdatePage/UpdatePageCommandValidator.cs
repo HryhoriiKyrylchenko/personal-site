@@ -13,6 +13,9 @@ public class UpdatePageCommandValidator : AbstractValidator<UpdatePageCommand>
             .NotEmpty().WithMessage("Key is required.")
             .MaximumLength(50).WithMessage("Key must be 50 characters or fewer.");
         
+        RuleFor(x => x.PageImage)
+            .MaximumLength(255).WithMessage("Page image path must be 255 characters or fewer.");
+        
         RuleFor(x => x.Translations)
             .NotEmpty().WithMessage("At least one translation is required.");
         

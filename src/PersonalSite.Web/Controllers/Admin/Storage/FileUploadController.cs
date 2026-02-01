@@ -1,7 +1,8 @@
 namespace PersonalSite.Web.Controllers.Admin.Storage;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/admin/[controller]")]
+[Authorize(Roles = "Admin", Policy = "PasswordChanged")]
 public class FileUploadController : ControllerBase
 {
     private readonly IStorageService _storageService;
@@ -33,7 +34,7 @@ public class FileUploadController : ControllerBase
         {
             await using var stream = file.OpenReadStream();
 
-            var fileName = $"{Guid.NewGuid()}{extension}";
+            var fileName = $"{file.FileName}";
             
             var normalizedFolder = folder.ToString().ToLowerInvariant();
             

@@ -15,9 +15,9 @@ public class UpdateProjectCommandHandler : IRequestHandler<UpdateProjectCommand,
     private readonly IProjectTranslationRepository _translationRepository;
     private readonly IProjectSkillRepository _projectSkillRepository;
     private readonly ISkillRepository _skillRepository;
-    
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<UpdateProjectCommandHandler> _logger;
+    private readonly IS3UrlBuilder _urlBuilder;
 
     public UpdateProjectCommandHandler(
         IProjectRepository projectRepository,
@@ -26,7 +26,8 @@ public class UpdateProjectCommandHandler : IRequestHandler<UpdateProjectCommand,
         IProjectSkillRepository projectSkillRepository,
         ISkillRepository skillRepository,
         IUnitOfWork unitOfWork,
-        ILogger<UpdateProjectCommandHandler> logger)
+        ILogger<UpdateProjectCommandHandler> logger,
+        IS3UrlBuilder urlBuilder)
     {
         _projectRepository = projectRepository;
         _languageRepository = languageRepository;
@@ -35,6 +36,7 @@ public class UpdateProjectCommandHandler : IRequestHandler<UpdateProjectCommand,
         _skillRepository = skillRepository;
         _unitOfWork = unitOfWork;
         _logger = logger;
+        _urlBuilder = urlBuilder;
     }
 
     public async Task<Result> Handle(UpdateProjectCommand request, CancellationToken cancellationToken)
@@ -55,7 +57,9 @@ public class UpdateProjectCommandHandler : IRequestHandler<UpdateProjectCommand,
             }
 
             project.Slug = request.Slug;
-            project.CoverImage = request.CoverImage;
+            project.CoverImage = string.IsNullOrWhiteSpace(request.CoverImage)
+                ? string.Empty
+                : _urlBuilder.ExtractKey(request.CoverImage);
             project.DemoUrl = request.DemoUrl;
             project.RepoUrl = request.RepoUrl;
             project.UpdatedAt = DateTime.UtcNow;
@@ -63,56 +67,72 @@ public class UpdateProjectCommandHandler : IRequestHandler<UpdateProjectCommand,
             await _projectRepository.UpdateAsync(project, cancellationToken);
             
             var existingTranslations = await _translationRepository.GetByProjectIdAsync(project.Id, cancellationToken);
-
-            foreach (var existing in existingTranslations
-                         .Where(existing => request.Translations
-                             .All(t => t.LanguageCode != existing.Language.Code)))
-            {
-                _translationRepository.Remove(existing);
-            }
             
-            foreach (var dto in request.Translations)
-            {
-                var language = await _languageRepository.GetByCodeAsync(dto.LanguageCode, cancellationToken);
-                if (language == null)
-                {
-                    _logger.LogWarning($"Language {dto.LanguageCode} not found.");
-                    return Result.Failure($"Language '{dto.LanguageCode}' not found.");
-                }
+            var requestedLanguageCodes = request.Translations?
+                .Where(t => t?.LanguageCode != null)
+                .Select(t => t.LanguageCode)
+                .ToHashSet();
 
-                var existing = existingTranslations
-                    .FirstOrDefault(t => t.LanguageId == language.Id);
-                
-                if (existing != null)
+            foreach (var existing in existingTranslations)
+            {
+                var existingCode = existing.Language?.Code;
+
+                if (existingCode == null)
+                    continue;
+
+                if (requestedLanguageCodes == null || !requestedLanguageCodes.Contains(existingCode))
                 {
-                    existing.Title = dto.Title;
-                    existing.ShortDescription = dto.ShortDescription;
-                    existing.DescriptionSections = dto.DescriptionSections;
-                    existing.MetaTitle = dto.MetaTitle;
-                    existing.MetaDescription = dto.MetaDescription;
-                    existing.OgImage = dto.OgImage;
-                    
-                    await _translationRepository.UpdateAsync(existing, cancellationToken);
+                    _translationRepository.Remove(existing);
                 }
-                else
+            }
+
+            if (request.Translations != null)
+                foreach (var dto in request.Translations)
                 {
-                    var translation = new ProjectTranslation
+                    var language = await _languageRepository.GetByCodeAsync(dto.LanguageCode, cancellationToken);
+                    if (language == null)
                     {
-                        Id = Guid.NewGuid(),
-                        LanguageId = language.Id,
-                        ProjectId = project.Id,
-                        Title = dto.Title,
-                        ShortDescription = dto.ShortDescription,
-                        DescriptionSections = dto.DescriptionSections,
-                        MetaTitle = dto.MetaTitle,
-                        MetaDescription = dto.MetaDescription,
-                        OgImage = dto.OgImage
-                    };
-                    
-                    await _translationRepository.AddAsync(translation, cancellationToken);
+                        _logger.LogWarning($"Language {dto.LanguageCode} not found.");
+                        return Result.Failure($"Language '{dto.LanguageCode}' not found.");
+                    }
+
+                    var existing = existingTranslations
+                        .FirstOrDefault(t => t.LanguageId == language.Id);
+
+                    if (existing != null)
+                    {
+                        existing.Title = dto.Title;
+                        existing.ShortDescription = dto.ShortDescription;
+                        existing.DescriptionSections = dto.DescriptionSections;
+                        existing.MetaTitle = dto.MetaTitle;
+                        existing.MetaDescription = dto.MetaDescription;
+                        existing.OgImage = string.IsNullOrWhiteSpace(request.CoverImage)
+                            ? string.Empty
+                            : _urlBuilder.ExtractKey(dto.OgImage);
+
+                        await _translationRepository.UpdateAsync(existing, cancellationToken);
+                    }
+                    else
+                    {
+                        var translation = new ProjectTranslation
+                        {
+                            Id = Guid.NewGuid(),
+                            LanguageId = language.Id,
+                            ProjectId = project.Id,
+                            Title = dto.Title,
+                            ShortDescription = dto.ShortDescription,
+                            DescriptionSections = dto.DescriptionSections,
+                            MetaTitle = dto.MetaTitle,
+                            MetaDescription = dto.MetaDescription,
+                            OgImage = string.IsNullOrWhiteSpace(request.CoverImage)
+                                ? string.Empty
+                                : _urlBuilder.ExtractKey(dto.OgImage)
+                        };
+
+                        await _translationRepository.AddAsync(translation, cancellationToken);
+                    }
                 }
-            }
-            
+
             var existingSkills = await _projectSkillRepository.GetByProjectIdAsync(project.Id, cancellationToken);
             foreach (var skill in existingSkills.Where(skill => !request.SkillIds.Contains(skill.Id)))
             {

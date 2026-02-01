@@ -1,6 +1,7 @@
 using PersonalSite.Application.Features.Skills.LearningSkills.Dtos;
 using PersonalSite.Domain.Common.Results;
 using PersonalSite.Domain.Entities.Skills;
+using PersonalSite.Domain.Enums;
 using PersonalSite.Domain.Interfaces.Repositories.Skills;
 
 namespace PersonalSite.Application.Features.Skills.LearningSkills.Queries.GetLearningSkills;
@@ -25,7 +26,7 @@ public class GetLearningSkillsQueryHandler : IRequestHandler<GetLearningSkillsQu
     {
         try
         {
-            var learningSkills = await _repository.ListAsync(cancellationToken);
+            var learningSkills = await _repository.GetFilteredAsync(request.LearningStatus, cancellationToken);
 
             if (learningSkills.Count == 0)
             {

@@ -39,6 +39,7 @@ public class UserSkillRepository : EfRepository<UserSkill>, IUserSkillRepository
         CancellationToken cancellationToken = default)
     {
         var query = DbContext.UserSkills.AsQueryable()
+            .Where(x => !x.IsDeleted)
             .Include(x => x.Skill)
                 .ThenInclude(s => s.Translations.Where(t => !t.Language.IsDeleted))
                     .ThenInclude(t => t.Language)
@@ -63,5 +64,15 @@ public class UserSkillRepository : EfRepository<UserSkill>, IUserSkillRepository
             .ToListAsync(cancellationToken);
         
         return entities;   
+    }
+
+    public async Task<UserSkill?> GetBySkillIdAsync(Guid skillId, CancellationToken cancellationToken)
+    {
+        var query = DbContext.UserSkills.AsQueryable()
+            .Where(x => x.SkillId == skillId)
+            .AsSplitQuery()
+            .AsNoTracking();
+        
+        return await query.FirstOrDefaultAsync(cancellationToken);
     }
 }

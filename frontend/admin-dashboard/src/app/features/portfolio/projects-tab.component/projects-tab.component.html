@@ -1,0 +1,204 @@
+<div>
+  <div class="controls">
+    <input type="text" placeholder="Slug filter" [(ngModel)]="slugFilterValue" />
+    <button (click)="loadProjects()">Apply</button>
+    <button (click)="openCreate()">➕ New Project</button>
+  </div>
+
+  <div class="table-container">
+    <table class="project-table">
+      <thead>
+      <tr>
+        <th>Slug</th>
+        <th>Updated</th>
+        <th>Actions</th>
+      </tr>
+      </thead>
+      <tbody>
+        @for (project of projects(); track project.id) {
+          <tr>
+            <td>{{ project.slug }}</td>
+            <td>{{ project.updatedAt ? (project.updatedAt | date:'short') : '-' }}</td>
+            <td class="actions">
+              <button (click)="editProject(project)">Edit</button>
+              <button (click)="deleteProject(project.id)">Delete</button>
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="3">No projects found</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <div class="pagination">
+    <button (click)="prevPage()" [disabled]="page() <= 1">Prev</button>
+    <span>Page {{ page() }} of {{ totalPages() }}</span>
+    <button (click)="nextPage()" [disabled]="page() >= totalPages()">Next</button>
+  </div>
+
+  @if (editingProject()) {
+    <div class="editor">
+
+      <h3>{{ editingProject()?.id ? 'Edit Project' : 'Create Project' }}</h3>
+
+      <label>Slug
+        <input [(ngModel)]="editingProject()!.slug" />
+      </label>
+
+      <label>Demo URL
+        <input [(ngModel)]="editingProject()!.demoUrl" />
+      </label>
+
+      <label>Repository URL
+        <input [(ngModel)]="editingProject()!.repoUrl" />
+      </label>
+
+      <label>Cover Image:</label>
+
+      <div class="file-field">
+        @if (editingProject()!.coverImage) {
+          <img
+            class="image-preview"
+            [src]="editingProject()!.coverImage"
+            alt="Cover image preview"
+          />
+        }
+
+        <span class="file-url">
+          {{ editingProject()!.coverImage || '— not set —' }}
+        </span>
+
+        <input
+          type="file"
+          accept="image/*"
+          hidden
+          #coverInput
+          (change)="uploadCoverImage($event)"
+        />
+
+        <button type="button" (click)="coverInput.click()">Upload</button>
+
+        @if (editingProject()!.coverImage) {
+          <button type="button" (click)="deleteCoverImage()">Delete</button>
+        }
+      </div>
+
+      <h4>Translations</h4>
+
+      <div class="tabs">
+        @for (tr of editingProject()!.translations; track tr.languageCode) {
+          <button
+            (click)="activeLang = tr.languageCode"
+            [class.active]="activeLang === tr.languageCode">
+            {{ tr.languageCode.toUpperCase() }}
+          </button>
+        }
+      </div>
+
+      @for (tr of editingProject()!.translations; track tr.languageCode) {
+        @if (activeLang === tr.languageCode) {
+          <div class="translation-editor">
+
+            <label>Title
+              <input [(ngModel)]="tr.title" />
+            </label>
+
+            <label>Short Description
+              <textarea [(ngModel)]="tr.shortDescription"></textarea>
+            </label>
+
+            <label>Description Sections (JSON)
+              <textarea
+                rows="6"
+                [(ngModel)]="tr.descriptionSections"
+                placeholder='{"key":"value"}'>
+              </textarea>
+            </label>
+
+            <label>Meta Title
+              <input [(ngModel)]="tr.metaTitle" />
+            </label>
+
+            <label>Meta Description
+              <textarea [(ngModel)]="tr.metaDescription"></textarea>
+            </label>
+
+            <label>OG Image:</label>
+
+            <div class="file-field">
+              @if (tr.ogImage) {
+                <img
+                  class="image-preview"
+                  [src]="tr.ogImage"
+                  alt="OG image preview"
+                />
+              }
+
+              <span class="file-url">
+                {{ tr.ogImage || '— not set —' }}
+              </span>
+
+              <input
+                type="file"
+                accept="image/*"
+                hidden
+                #ogInput
+                (change)="uploadOgImage($event, tr.languageCode)"
+              />
+
+              <button type="button" (click)="ogInput.click()">Upload</button>
+
+              @if (tr.ogImage) {
+                <button type="button" (click)="deleteOgImage(tr.languageCode)">Delete</button>
+              }
+            </div>
+          </div>
+
+          <h4>Skills</h4>
+          <div class="skills-container">
+            <label for="skillSelect">Add Skill</label>
+
+            <select #skillSelect id="skillSelect">
+              <option value="" disabled>Select skill</option>
+              @for (skill of skills(); track skill.id) {
+                <option [value]="skill.id">
+                  {{ skill.translations[0].name }}
+                </option>
+              }
+            </select>
+
+            <button
+              type="button"
+              (click)="addSkill(skillSelect.value)">
+              Add
+            </button>
+
+            <div class="skills">
+              @for (item of editingProject()!.skills; track item.skill.id) {
+                <span class="skill">
+                  {{ item.skill.key }}
+                            <button
+                              type="button"
+                              (click)="removeSkill(item.skill.id)">
+                    ×
+                  </button>
+                </span>
+              } @empty {
+                <span>No skills yet</span>
+              }
+            </div>
+          </div>
+        }
+      }
+
+      <div class="buttons">
+        <button (click)="saveProject()">💾 Save</button>
+        <button (click)="cancelEdit()">✖ Cancel</button>
+      </div>
+
+    </div>
+  }
+</div>

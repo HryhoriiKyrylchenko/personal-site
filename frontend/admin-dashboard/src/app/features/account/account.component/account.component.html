@@ -1,0 +1,46 @@
+<div class="editor">
+  <h2>Change password</h2>
+
+  <form (ngSubmit)="changePassword()" #form="ngForm">
+    <div class="controls">
+      <input
+        type="password"
+        placeholder="Current password"
+        [(ngModel)]="currentPassword"
+        name="currentPassword"
+        required
+      />
+
+      <input
+        type="password"
+        placeholder="New password"
+        [(ngModel)]="newPassword"
+        name="newPassword"
+        required
+      />
+
+      <input
+        type="password"
+        placeholder="Confirm new password"
+        [(ngModel)]="confirmPassword"
+        name="confirmPassword"
+        required
+      />
+    </div>
+
+    <div class="buttons">
+      <button
+        type="submit"
+        [disabled]="!form.valid || newPassword !== confirmPassword"
+      >
+        Change
+      </button>
+    </div>
+
+    @if (passwordMismatch()) {
+      <div class="error">
+        Passwords do not match
+      </div>
+    }
+  </form>
+</div>

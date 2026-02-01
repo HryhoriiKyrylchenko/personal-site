@@ -10,7 +10,7 @@ namespace PersonalSite.Web.Controllers.Admin.Common;
 
 [Route("api/admin/[controller]")]
 [ApiController]
-[Authorize]
+[Authorize(Roles = "Admin", Policy = "PasswordChanged")]
 public class LanguageController : ControllerBase
 {
     private readonly IMediator _mediator;
@@ -68,6 +68,6 @@ public class LanguageController : ControllerBase
         var result = await _mediator.Send(query, cancellationToken);
         if (result.IsFailure || result.Value?.Count == 0)
             return NotFound();
-        return Ok(result);
+        return Ok(result.Value);
     }
 }

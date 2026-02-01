@@ -5,22 +5,25 @@ public class S3StorageService : IStorageService
     private readonly IAmazonS3 _s3Client;
     private readonly ILogger<S3StorageService> _logger;
     private readonly AwsS3Settings _settings;
+    private readonly IS3UrlBuilder _urlBuilder;
 
     public S3StorageService(
         IAmazonS3 s3Client,
         IOptions<AwsS3Settings> options,
-        ILogger<S3StorageService> logger)
+        ILogger<S3StorageService> logger,
+        IS3UrlBuilder urlBuilder)
     {
         _s3Client = s3Client;
         _settings = options.Value;
         _logger = logger;
+        _urlBuilder = urlBuilder;
     }
 
     public async Task<string> UploadFileAsync(Stream fileStream, string fileName, string contentType, string folder = "", CancellationToken cancellationToken = default)
     {
         try
         {
-            var key = string.IsNullOrEmpty(folder) ? fileName : $"{folder}/{fileName}";
+            var key = string.IsNullOrEmpty(folder) ? fileName : $"public/{folder}/{fileName}";
 
             var uploadRequest = new TransferUtilityUploadRequest
             {
@@ -40,11 +43,11 @@ public class S3StorageService : IStorageService
 
             await fileTransferUtility.UploadAsync(uploadRequest, cancellationToken);
 
-            return key;
+            return _urlBuilder.BuildUrl(key);
         }
         catch (Exception e)
         {
-            _logger.LogError(e, "Error uploading file to S3");
+            _logger.LogError(e, "Error uploading file to storage");
             throw;
         }
     }
@@ -53,14 +56,30 @@ public class S3StorageService : IStorageService
     {
         try
         {
-            var key = fileUrl.Split(".amazonaws.com/").LastOrDefault();
-            if (string.IsNullOrWhiteSpace(key)) return;
+            if (string.IsNullOrWhiteSpace(fileUrl))
+                return;
+            
+            if (!Uri.TryCreate(fileUrl, UriKind.Absolute, out var uri))
+                return;
+            
+            var path = uri.AbsolutePath.TrimStart('/');
+            
+            if (path.StartsWith(_settings.BucketName + "/", StringComparison.OrdinalIgnoreCase))
+            {
+                path = path.Substring(_settings.BucketName.Length + 1);
+            }
 
-            await _s3Client.DeleteObjectAsync(_settings.BucketName, key, cancellationToken);
+            if (string.IsNullOrWhiteSpace(path))
+                return;
+
+            await _s3Client.DeleteObjectAsync(
+                _settings.BucketName,
+                path,
+                cancellationToken);
         }
         catch (Exception e)
         {
-            _logger.LogError(e, "Error deleting file from S3");
+            _logger.LogError(e, "Error deleting file from storage");
             throw;
         }
     }

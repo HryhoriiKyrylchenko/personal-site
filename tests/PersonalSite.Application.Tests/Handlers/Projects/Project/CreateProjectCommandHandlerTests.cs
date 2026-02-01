@@ -7,6 +7,7 @@ using PersonalSite.Domain.Interfaces.Repositories.Common;
 using PersonalSite.Domain.Interfaces.Repositories.Projects;
 using PersonalSite.Domain.Interfaces.Repositories.Skills;
 using PersonalSite.Domain.Interfaces.Repositories.Translations;
+using PersonalSite.Infrastructure.Storage;
 
 namespace PersonalSite.Application.Tests.Handlers.Projects.Project;
 
@@ -19,6 +20,7 @@ public class CreateProjectCommandHandlerTests
     private readonly Mock<ISkillRepository> _skillRepositoryMock = new();
     private readonly Mock<IUnitOfWork> _unitOfWorkMock = new();
     private readonly Mock<ILogger<CreateProjectCommandHandler>> _loggerMock = new();
+    private readonly Mock<IS3UrlBuilder> _urlBuilderMock = new();
 
     private readonly CreateProjectCommandHandler _handler;
 
@@ -31,7 +33,8 @@ public class CreateProjectCommandHandlerTests
             _projectSkillRepositoryMock.Object,
             _skillRepositoryMock.Object,
             _unitOfWorkMock.Object,
-            _loggerMock.Object
+            _loggerMock.Object,
+            _urlBuilderMock.Object
         );
     }
 

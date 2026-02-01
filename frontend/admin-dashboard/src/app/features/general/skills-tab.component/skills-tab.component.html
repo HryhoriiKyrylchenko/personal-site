@@ -1,0 +1,218 @@
+<div class="admin-section">
+
+  <h2>Skill Categories</h2>
+
+  <button (click)="createCategory()">➕ New Category</button>
+
+  <table>
+    <tr>
+      <th>Key</th>
+      <th>Order</th>
+      <th>Actions</th>
+    </tr>
+    @for (c of categories(); track c.id) {
+      <tr>
+        <td>{{ c.key }}</td>
+        <td>{{ c.displayOrder }}</td>
+        <td>
+          <button (click)="editingCategory.set(c)">Edit</button>
+          <button (click)="deleteCategory(c.id)">Delete</button>
+        </td>
+      </tr>
+    }
+  </table>
+
+  @if (editingCategory()) {
+    <div class="editor">
+      <label>Key <input [(ngModel)]="editingCategory()!.key"></label>
+      <label>Order <input type="number" [(ngModel)]="editingCategory()!.displayOrder"></label>
+
+      <div class="tabs">
+        @for (t of editingCategory()!.translations; track t.languageCode) {
+          <button
+            (click)="activeLang = t.languageCode"
+            [class.active]="activeLang === t.languageCode"
+          >
+            {{ t.languageCode }}
+          </button>
+        }
+      </div>
+
+      @for (t of editingCategory()!.translations; track t.languageCode) {
+        @if (t.languageCode === activeLang) {
+          <label>Name <input [(ngModel)]="t.name"></label>
+          <label>Description <textarea [(ngModel)]="t.description"></textarea></label>
+        }
+      }
+      <div class="editButtons">
+        <button (click)="saveCategory()">💾 Save</button>
+        <button (click)="cancelCategoryEdit()">✖ Cancel</button>
+      </div>
+    </div>
+  }
+
+  <h2>Skills</h2>
+
+  <select [(ngModel)]="selectedCategoryId" (change)="loadSkills()">
+    <option [ngValue]="null">Select category</option>
+    @for (c of categories(); track c.id) {
+      <option [value]="c.id">{{ c.key }}</option>
+    }
+  </select>
+
+  <button (click)="createSkill()" [disabled]="!selectedCategoryId()">➕ New Skill</button>
+
+  <table>
+    <tr>
+      <th>Key</th>
+      <th>Learning Skill</th>
+      <th>User Skill</th>
+      <th>Actions</th>
+    </tr>
+    @for (s of skills(); track s.id) {
+      <tr>
+        <td>{{ s.key }}</td>
+        <td>
+          @if (isInUserSkills(s.id)) {
+            Already User Skill
+          } @else if (isInLearningSkills(s.id)) {
+            Added
+          } @else {
+            <div class="skillTableDivider">
+              <select #displayOrderSelect>
+                @for (n of [1,2,3,4,5,6,7,8,9]; track n) {
+                  <option [value]="n">{{ n }}</option>
+                }
+              </select>
+              <button
+                (click)="addLearningSkill(s.id, LearningStatus.Planned, Number(displayOrderSelect.value))"
+              >
+                Add To Learning Skills
+              </button>
+            </div>
+          }
+        </td>
+        <td>
+          @if (isInUserSkills(s.id)) {
+            Added
+          } @else {
+            <div class="skillTableDivider">
+              <select #proficiencySelect>
+                @for (n of [1,2,3,4,5]; track n) {
+                  <option [value]="n">{{ n }}</option>
+                }
+              </select>
+              <button (click)="addUserSkill(s.id, Number(proficiencySelect.value))"
+              >
+                Add To User Skills
+              </button>
+            </div>
+          }
+        </td>
+        <td>
+          <button (click)="editingSkill.set(s)">Edit</button>
+          <button (click)="deleteSkill(s.id)">Delete</button>
+        </td>
+      </tr>
+    }
+  </table>
+
+  @if (editingSkill()) {
+    <div class="editor">
+      <label>Key <input [(ngModel)]="editingSkill()!.key"></label>
+
+      <div class="tabs">
+        @for (t of editingSkill()!.translations; track t.languageCode) {
+          <button
+            (click)="activeLang = t.languageCode"
+            [class.active]="activeLang === t.languageCode"
+          >
+            {{ t.languageCode }}
+          </button>
+        }
+      </div>
+
+      @for (t of editingSkill()!.translations; track t.languageCode) {
+        @if (t.languageCode === activeLang) {
+          <label>Name <input [(ngModel)]="t.name"></label>
+          <label>Description <textarea [(ngModel)]="t.description"></textarea></label>
+        }
+      }
+      <div class="editButtons">
+        <button (click)="saveSkill()">💾 Save</button>
+        <button (click)="cancelSkillEdit()">✖ Cancel</button>
+      </div>
+    </div>
+  }
+
+  <h2>User Skills</h2>
+
+  <table>
+    <tr>
+      <th>Key</th>
+      <th>Proficiency</th>
+      <th>Actions</th>
+    </tr>
+    @for (us of userSkills(); track us.id) {
+      <tr>
+        <td>{{ us.skill.key }}</td>
+        <td>
+          <div class="skillTableDivider">
+            <select #proficiencySelect>
+              @for (n of [1,2,3,4,5]; track n) {
+                <option [value]="n" [selected]="n === us.proficiency">
+                  {{ n }}
+                </option>
+              }
+            </select>
+            <button (click)="updateUserSkill(us.id, Number(proficiencySelect.value))">
+              Edit
+            </button>
+          </div>
+        </td>
+        <td>
+          <button (click)="deleteUserSkill(us.id)">Delete</button>
+        </td>
+      </tr>
+    }
+  </table>
+
+  <h2>Learning Skills</h2>
+
+  <table>
+    <tr>
+      <th>Key</th>
+      <th>Learning Status</th>
+      <th>Actions</th>
+    </tr>
+    @for (ls of learningSkills(); track ls.id) {
+      <tr>
+        <td>{{ ls.skill.key }}</td>
+        <td>
+          <div class="skillTableDivider">
+            <select #orderSelect>
+              @for (n of [1,2,3,4,5,6,7,8,9]; track n) {
+                <option [value]="n" [selected]="n === ls.displayOrder">
+                  {{ n }}
+                </option>
+              }
+            </select>
+            <select #statusSelect>
+              @for (s of learningStatusOptions; track s.value) {
+                <option [value]="s.value" [selected]="s.value === ls.learningStatus">
+                  {{ s.label }}
+                </option>
+              }
+            </select>
+            <button (click)="updateLearningSkill(ls.id, Number(statusSelect.value), Number(orderSelect.value))">
+              Edit
+            </button>
+          </div>
+        </td>
+        <td>
+          <button (click)="deleteLearningSkill(ls.id)">Delete</button>
+        </td>
+      </tr>
+    }
+  </table>
+</div>

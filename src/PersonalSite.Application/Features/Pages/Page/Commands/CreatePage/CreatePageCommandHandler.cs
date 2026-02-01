@@ -13,19 +13,22 @@ public class CreatePageCommandHandler : IRequestHandler<CreatePageCommand, Resul
     private readonly IPageTranslationRepository _translationRepository;
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<CreatePageCommandHandler> _logger;
+    private readonly IS3UrlBuilder _urlBuilder;
 
     public CreatePageCommandHandler(
         IPageRepository pageRepository, 
         ILanguageRepository languageRepository, 
         IPageTranslationRepository translationRepository,
         IUnitOfWork unitOfWork,
-        ILogger<CreatePageCommandHandler> logger)
+        ILogger<CreatePageCommandHandler> logger,
+        IS3UrlBuilder urlBuilder)
     {
         _pageRepository = pageRepository;
         _languageRepository = languageRepository;
         _translationRepository = translationRepository;
         _unitOfWork = unitOfWork;
         _logger = logger;
+        _urlBuilder = urlBuilder;
     }
 
     public async Task<Result<Guid>> Handle(CreatePageCommand request, CancellationToken cancellationToken)
@@ -42,6 +45,9 @@ public class CreatePageCommandHandler : IRequestHandler<CreatePageCommand, Resul
             {
                 Id = Guid.NewGuid(),
                 Key = request.Key,
+                PageImage = string.IsNullOrWhiteSpace(request.PageImage)
+                    ? string.Empty
+                    : _urlBuilder.ExtractKey(request.PageImage)
             };
             
             await _pageRepository.AddAsync(page, cancellationToken);
@@ -65,7 +71,9 @@ public class CreatePageCommandHandler : IRequestHandler<CreatePageCommand, Resul
                     Description = dto.Description,
                     MetaTitle = dto.MetaTitle,
                     MetaDescription = dto.MetaDescription,
-                    OgImage = dto.OgImage
+                    OgImage = string.IsNullOrWhiteSpace(dto.OgImage)
+                        ? string.Empty
+                        : _urlBuilder.ExtractKey(dto.OgImage)
                 };
 
                 await _translationRepository.AddAsync(translation, cancellationToken);           

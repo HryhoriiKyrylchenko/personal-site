@@ -2,11 +2,13 @@ using System.Text;
 using Amazon;
 using Amazon.SecretsManager;
 using Amazon.SecretsManager.Extensions.Caching;
-using Amazon.SecretsManager.Model;
 using AspNetCoreRateLimit;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.Extensions.Options;
 using Npgsql;
 using PersonalSite.Application.DependencyInjection;
 using PersonalSite.Infrastructure.DependencyInjection;
+using PersonalSite.Infrastructure.Persistence.Seed;
 using PersonalSite.Web.Configuration;
 using PersonalSite.Web.Middlewares;
 
@@ -69,7 +71,59 @@ if (builder.Environment.IsProduction())
 // AWS SDK integration for other AWS services (S3)
 // -------------------------
 builder.Services.Configure<AwsS3Settings>(builder.Configuration.GetSection("AwsS3Settings"));
-builder.Services.AddAWSService<IAmazonS3>();
+
+if (env.IsDevelopment())
+{
+    // MinIO
+    builder.Services.AddSingleton<IAmazonS3>(sp =>
+    {
+        var s = sp.GetRequiredService<IOptions<AwsS3Settings>>().Value;
+
+        var config = new AmazonS3Config
+        {
+            RegionEndpoint = RegionEndpoint.GetBySystemName(s.Region),
+            ServiceURL = s.ServiceUrl,
+            ForcePathStyle = true 
+        };
+
+        var client = new AmazonS3Client(
+            s.AccessKey,
+            s.SecretKey,
+            config);
+
+        var bucketName = s.BucketName;
+        var publicPrefix = "public/";
+
+        var policyJson = $@"
+        {{
+            ""Version"": ""2012-10-17"",
+            ""Statement"": [
+                {{
+                    ""Effect"": ""Allow"",
+                    ""Principal"": ""*"",
+                    ""Action"": [""s3:GetObject""],
+                    ""Resource"": [""arn:aws:s3:::{bucketName}/{publicPrefix}*""]
+                }}
+            ]
+        }}";
+
+        var putPolicyRequest = new Amazon.S3.Model.PutBucketPolicyRequest
+        {
+            BucketName = bucketName,
+            Policy = policyJson
+        };
+
+        client.PutBucketPolicyAsync(putPolicyRequest).GetAwaiter().GetResult();
+        // ------------------------------------
+
+        return client;
+    });
+}
+else
+{
+    // AWS S3 (IAM / Secrets Manager)
+    builder.Services.AddAWSService<IAmazonS3>();
+}
 
 // -------------------------
 // Serilog
@@ -134,6 +188,38 @@ builder.Services.AddDbContext<ApplicationDbContext>((sp, options) =>
     options.UseNpgsql(dataSource);
 });
 
+builder.Services.AddDbContext<LoggingDbContext>((sp, options) =>
+{
+    var dataSource = sp.GetRequiredService<NpgsqlDataSource>();
+    options.UseNpgsql(dataSource);
+});
+
+// -------------------------
+// App authentication
+// -------------------------
+
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = null;
+        options.LogoutPath = null;
+
+        options.ExpireTimeSpan = TimeSpan.FromHours(1);
+        options.SlidingExpiration = true;
+
+        options.Cookie.Name = "PersonalSite.Admin.Auth";
+        options.Cookie.HttpOnly = true;
+        options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+        options.Cookie.SameSite = SameSiteMode.Strict;
+    });
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy(
+        "PasswordChanged",
+        policy => policy.RequireClaim("must_change_password", "False"));
+});
+
 // -------------------------
 // App services
 // -------------------------
@@ -152,6 +238,18 @@ builder.Services.AddOpenApi();
 
 var app = builder.Build();
 
+// -------------------------
+// Admin user seeder
+// -------------------------
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider
+        .GetRequiredService<ApplicationDbContext>();
+    
+    dbContext.Database.Migrate();
+    AdminSeeder.Seed(dbContext);
+}
+
 app.UseIpRateLimiting();
 
 app.UseHttpsRedirection();
@@ -169,6 +267,7 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
+app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 

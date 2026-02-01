@@ -16,7 +16,7 @@ public class CreatePageCommandValidatorTests
     [Fact]
     public void Should_Have_Error_When_Key_Is_Empty()
     {
-        var command = new CreatePageCommand("", new List<PageTranslationDto> { new PageTranslationDto() });
+        var command = new CreatePageCommand("", "pageimage.pgn", new List<PageTranslationDto> { new PageTranslationDto() });
 
         var result = _validator.TestValidate(command);
 
@@ -28,7 +28,7 @@ public class CreatePageCommandValidatorTests
     public void Should_Have_Error_When_Key_Exceeds_MaxLength()
     {
         var longKey = new string('a', 51);
-        var command = new CreatePageCommand(longKey, new List<PageTranslationDto> { new PageTranslationDto() });
+        var command = new CreatePageCommand(longKey, "pageimage.pgn", new List<PageTranslationDto> { new PageTranslationDto() });
 
         var result = _validator.TestValidate(command);
 
@@ -39,7 +39,7 @@ public class CreatePageCommandValidatorTests
     [Fact]
     public void Should_Have_Error_When_Translations_Is_Empty()
     {
-        var command = new CreatePageCommand("valid-key", new List<PageTranslationDto>());
+        var command = new CreatePageCommand("valid-key", "pageimage.pgn", new List<PageTranslationDto>());
 
         var result = _validator.TestValidate(command);
 
@@ -55,7 +55,7 @@ public class CreatePageCommandValidatorTests
             new PageTranslationDto { LanguageCode = "en", Title = "Title" }
         };
 
-        var command = new CreatePageCommand("valid-key", translations);
+        var command = new CreatePageCommand("valid-key", "pageimage.pgn", translations);
 
         var result = _validator.TestValidate(command);
 

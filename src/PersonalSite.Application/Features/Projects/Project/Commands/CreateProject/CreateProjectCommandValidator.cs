@@ -25,6 +25,7 @@ public class CreateProjectCommandValidator : AbstractValidator<CreateProjectComm
         RuleForEach(x => x.Translations).SetValidator(new ProjectTranslationDtoValidator());
 
         RuleFor(x => x.SkillIds)
+            .NotNull().WithMessage("SkillIds must be provided.")
             .NotEmpty().WithMessage("At least one skill is required.");
     }
     

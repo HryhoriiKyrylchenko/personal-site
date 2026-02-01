@@ -1,0 +1,72 @@
+<div class="logs-tab">
+  <div class="controls">
+    <label>
+      From:
+      <input type="date" [(ngModel)]="fromDate" />
+    </label>
+
+    <label>
+      To:
+      <input type="date" [(ngModel)]="toDate" />
+    </label>
+
+    <label>
+      Level:
+      <select [(ngModel)]="level">
+        <option value="">All</option>
+        <option value="1">Verbose</option>
+        <option value="2">Debug</option>
+        <option value="3">Information</option>
+        <option value="4">Warning</option>
+        <option value="5">Error</option>
+      </select>
+    </label>
+
+    <button (click)="applyFilters()">Apply</button>
+    <button (click)="resetFilters()">Reset</button>
+
+    <label>
+      Delete older than:
+      <input type="date" [(ngModel)]="cutoffDate" />
+    </label>
+    <button (click)="deleteOlderThan()" [disabled]="!cutoffDate">Delete</button>
+    <button (click)="reload()">Reload</button>
+  </div>
+
+  <div class="table-container">
+    <table class="logs-table">
+      <thead>
+      <tr>
+        <th>Timestamp</th>
+        <th>Level</th>
+        <th>Message</th>
+        <th>Exception</th>
+        <th>Properties</th>
+        <th>Source Context</th>
+      </tr>
+      </thead>
+      <tbody>
+        @for (log of data().items; track log.timestamp) {
+          <tr>
+            <td>{{ log.timestamp | date:'medium' }}</td>
+            <td>{{ log.level }}</td>
+            <td>{{ log.message }}</td>
+            <td>{{ log.exception }}</td>
+            <td><pre>{{ log.properties | json }}</pre></td>
+            <td>{{ log.sourceContext }}</td>
+          </tr>
+        } @empty {
+          <tr><td colspan="6">No logs found.</td></tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <div class="pagination">
+    <button (click)="prevPage()" [disabled]="!data().hasPrevious">Prev</button>
+    <span>Page {{ data().pageNumber }} of {{ data().totalPages }}</span>
+    <button (click)="nextPage()" [disabled]="!data().hasNext">Next</button>
+    <span>Total: {{ totalCount() }}</span>
+  </div>
+</div>
+

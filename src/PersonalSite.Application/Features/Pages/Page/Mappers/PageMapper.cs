@@ -28,6 +28,9 @@ public class PageMapper
         {
             Id = entity.Id,
             Key = entity.Key,
+            PageImage = string.IsNullOrWhiteSpace(entity.PageImage) 
+                ? string.Empty 
+                : _urlBuilder.BuildUrl(entity.PageImage),
             LanguageCode = translation?.Language.Code ?? string.Empty,
             Data = translation?.Data ?? new Dictionary<string, string>(),
             Title = translation?.Title ?? string.Empty,
@@ -51,6 +54,9 @@ public class PageMapper
         {
             Id = entity.Id,
             Key = entity.Key,
+            PageImage = string.IsNullOrWhiteSpace(entity.PageImage) 
+                ? string.Empty 
+                : _urlBuilder.BuildUrl(entity.PageImage),
             Translations = _translationMapper.MapToDtoList(entity.Translations)
         };
     }

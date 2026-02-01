@@ -10,7 +10,7 @@ namespace PersonalSite.Web.Controllers.Admin.Pages;
 
 [Route("api/admin/[controller]")]
 [ApiController]
-[Authorize]
+[Authorize(Roles = "Admin", Policy = "PasswordChanged")]
 public class PageController : ControllerBase
 {
     private readonly IMediator _mediator;

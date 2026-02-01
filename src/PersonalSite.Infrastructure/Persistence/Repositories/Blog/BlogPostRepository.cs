@@ -49,6 +49,7 @@ public class BlogPostRepository : EfRepository<BlogPost>, IBlogPostRepository
         int pageSize, CancellationToken cancellationToken = default)
     {
         var query = DbContext.BlogPosts
+            .Where(bp => bp.IsDeleted == false)
             .Include(x => x.Translations.Where(t => !t.Language.IsDeleted))
                 .ThenInclude(t => t.Language)
             .Include(x => x.PostTags)

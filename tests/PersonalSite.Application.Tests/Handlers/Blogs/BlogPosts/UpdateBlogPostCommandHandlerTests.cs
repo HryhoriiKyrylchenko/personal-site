@@ -6,6 +6,7 @@ using PersonalSite.Domain.Entities.Translations;
 using PersonalSite.Domain.Interfaces.Repositories.Blog;
 using PersonalSite.Domain.Interfaces.Repositories.Common;
 using PersonalSite.Domain.Interfaces.Repositories.Translations;
+using PersonalSite.Infrastructure.Storage;
 
 namespace PersonalSite.Application.Tests.Handlers.Blogs.BlogPosts;
 
@@ -18,6 +19,7 @@ public class UpdateBlogPostCommandHandlerTests
     private readonly Mock<IPostTagRepository> _postTagRepoMock = new();
     private readonly Mock<ILanguageRepository> _languageRepoMock = new();
     private readonly Mock<ILogger<UpdateBlogPostCommandHandler>> _loggerMock = new();
+    private readonly Mock<IS3UrlBuilder> _urlBuilderMock = new();
 
     private readonly UpdateBlogPostCommandHandler _handler;
 
@@ -30,7 +32,8 @@ public class UpdateBlogPostCommandHandlerTests
             _tagRepoMock.Object,
             _postTagRepoMock.Object,
             _languageRepoMock.Object,
-            _loggerMock.Object
+            _loggerMock.Object,
+            _urlBuilderMock.Object
         );
     }
     

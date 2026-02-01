@@ -4,6 +4,7 @@ using PersonalSite.Domain.Entities.Common;
 using PersonalSite.Domain.Interfaces.Repositories.Common;
 using PersonalSite.Domain.Interfaces.Repositories.Pages;
 using PersonalSite.Domain.Interfaces.Repositories.Translations;
+using PersonalSite.Infrastructure.Storage;
 
 namespace PersonalSite.Application.Tests.Handlers.Pages.Page;
 
@@ -13,6 +14,7 @@ public class UpdatePageCommandHandlerTests
         private readonly Mock<ILanguageRepository> _languageRepositoryMock;
         private readonly Mock<IPageTranslationRepository> _translationRepositoryMock;
         private readonly Mock<IUnitOfWork> _unitOfWorkMock;
+        private readonly Mock<IS3UrlBuilder> _urlBuilderMock = new();
         private readonly UpdatePageCommandHandler _handler;
 
         public UpdatePageCommandHandlerTests()
@@ -28,7 +30,8 @@ public class UpdatePageCommandHandlerTests
                 _languageRepositoryMock.Object,
                 _translationRepositoryMock.Object,
                 _unitOfWorkMock.Object,
-                loggerMock.Object
+                loggerMock.Object,
+                _urlBuilderMock.Object
             );
         }
 
@@ -120,7 +123,7 @@ public class UpdatePageCommandHandlerTests
                 ogImage: "image.png"
             );
 
-            var command = new UpdatePageCommand(page.Id, page.Key, [dto]);
+            var command = new UpdatePageCommand(page.Id, page.Key, "pageimage.pgn", [dto]);
 
             _pageRepositoryMock.Setup(r => r.GetWithTranslationByIdAsync(page.Id, It.IsAny<CancellationToken>()))
                 .ReturnsAsync(page);

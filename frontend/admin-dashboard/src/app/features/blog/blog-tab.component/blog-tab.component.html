@@ -1,0 +1,183 @@
+<div>
+  <div class="controls">
+    <input type="text" placeholder="Slug filter" [(ngModel)]="slugFilterValue" />
+    <select [(ngModel)]="isPublishedFilterValue">
+      <option [ngValue]="undefined">All</option>
+      <option [ngValue]="true">Published</option>
+      <option [ngValue]="false">Unpublished</option>
+    </select>
+    <button (click)="loadPosts()">Apply</button>
+    <button (click)="openCreate()">➕ New Post</button>
+  </div>
+
+  <div class="table-container">
+    <table class="blog-table">
+      <thead>
+      <tr>
+        <th>Slug</th>
+        <th>Published</th>
+        <th>Updated</th>
+        <th>Actions</th>
+      </tr>
+      </thead>
+      <tbody>
+        @for (post of posts(); track post.id) {
+          <tr>
+            <td>{{ post.slug }}</td>
+            <td>{{ post.isPublished ? 'Yes' : 'No' }}</td>
+            <td>{{ post.updatedAt ? (post.updatedAt | date:'short') : '-' }}</td>
+            <td class="actions">
+              <button (click)="editPost(post)">Edit</button>
+              <button (click)="publishPost(post.id, post.isPublished)">
+                {{ post.isPublished ? 'Unpublish' : 'Publish' }}
+              </button>
+              <button (click)="deletePost(post.id)">Delete</button>
+            </td>
+          </tr>
+        } @empty {
+          <tr><td colspan="4">No posts found</td></tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <div class="pagination">
+    <button (click)="prevPage()" [disabled]="page() <= 1">Prev</button>
+    <span>Page {{ page() }} of {{ totalPages() }}</span>
+    <button (click)="nextPage()" [disabled]="page() >= totalPages()">Next</button>
+  </div>
+
+  @if (editingPost()) {
+    <div class="editor">
+      <h3>{{ editingPost()?.id ? 'Edit Post' : 'Create New Post' }}</h3>
+
+      <label>Slug:
+        <input [(ngModel)]="editingPost()!.slug" />
+      </label>
+
+      <label>Cover Image:</label>
+
+      <div class="file-field">
+        @if (editingPost()!.coverImage) {
+          <img
+            class="image-preview"
+            [src]="editingPost()!.coverImage"
+            alt="Cover image preview"
+          />
+        }
+
+        <span class="file-url">
+          {{ editingPost()!.coverImage || '— not set —' }}
+        </span>
+
+        <input
+          type="file"
+          accept="image/*"
+          hidden
+          #coverInput
+          (change)="uploadCoverImage($event)"
+        />
+
+        <button type="button" (click)="coverInput.click()">Upload</button>
+
+        @if (editingPost()!.coverImage) {
+          <button type="button" (click)="deleteCoverImage()">Delete</button>
+        }
+      </div>
+
+      <h4>Translations</h4>
+
+      <div class="tabs">
+        @for (tr of editingPost()!.translations; track tr.languageCode) {
+          <button
+            (click)="activeLang = tr.languageCode"
+            [class.active]="activeLang === tr.languageCode"
+          >
+            {{ tr.languageCode.toUpperCase() }}
+          </button>
+        }
+      </div>
+
+      @for (tr of editingPost()!.translations; track tr.languageCode) {
+        @if (activeLang === tr.languageCode) {
+          <div class="translation-editor">
+            <h5>{{ tr.languageCode.toUpperCase() }}</h5>
+
+            <label>Title:
+              <input [(ngModel)]="tr.title" />
+            </label>
+
+            <label>Excerpt:
+              <textarea [(ngModel)]="tr.excerpt"></textarea>
+            </label>
+
+            <label>Content:
+              <textarea [(ngModel)]="tr.content"></textarea>
+            </label>
+
+            <label>Meta Title:
+              <input [(ngModel)]="tr.metaTitle" />
+            </label>
+
+            <label>Meta Description:
+              <textarea [(ngModel)]="tr.metaDescription"></textarea>
+            </label>
+
+            <label>OG Image:</label>
+
+            <div class="file-field">
+              @if (tr.ogImage) {
+                <img
+                  class="image-preview"
+                  [src]="tr.ogImage"
+                  alt="OG image preview"
+                />
+              }
+
+              <span class="file-url">
+                {{ tr.ogImage || '— not set —' }}
+              </span>
+
+              <input
+                type="file"
+                accept="image/*"
+                hidden
+                #ogInput
+                (change)="uploadOgImage($event, tr.languageCode)"
+              />
+
+              <button type="button" (click)="ogInput.click()">Upload</button>
+
+              @if (tr.ogImage) {
+                <button type="button" (click)="deleteOgImage(tr.languageCode)">Delete</button>
+              }
+            </div>
+
+          </div>
+        }
+      }
+
+      <h4>Tags</h4>
+      <div class="tags-container">
+        <input #tagInput placeholder="New tag" />
+        <button (click)="addTag(tagInput.value); tagInput.value=''">Add</button>
+
+        <div class="tags">
+          @for (tag of editingPost()!.tags; track tag.name) {
+            <span>
+              {{ tag.name }}
+              <button (click)="removeTag(tag.name)">x</button>
+            </span>
+          } @empty {
+            <span>No tags yet</span>
+          }
+        </div>
+      </div>
+
+      <div class="buttons">
+        <button (click)="savePost()">💾 Save</button>
+        <button (click)="cancelEdit()">✖ Cancel</button>
+      </div>
+    </div>
+  }
+</div>
