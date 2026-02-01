@@ -62,8 +62,19 @@
 
   @if (editingResume()) {
     <div class="editor">
-      <label>File URL <input [(ngModel)]="newResumeFileUrl"></label>
-      <label>File Name <input [(ngModel)]="newResumeFileName"></label>
+      <label>File URL:
+        <span class="file-url">
+          {{ editingResume()!.fileUrl || '— not set —' }}
+        </span>
+      </label>
+      <label>File Name:
+        <span class="file-name">
+          {{ editingResume()!.fileName || '— not set —' }}
+        </span>
+      </label>
+      <input type="file" accept="application/pdf" hidden #resumeInput (change)="uploadResume($event)" />
+      <button class="uploadButton" (click)="resumeInput.click()">Upload New File</button>
+
       <div class="editButtons">
         <button (click)="saveResume()">💾 Save</button>
         <button (click)="cancelResumeEdit()">✖ Cancel</button>
